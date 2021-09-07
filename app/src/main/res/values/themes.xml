@@ -1,0 +1,44 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.PharmacyStockManagement" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primaryDarkColor</item>
+
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.PharmacyStockManagement.Distribution" parent="Theme.PharmacyStockManagement">
+
+    </style>
+
+    <style name="Theme.PharmacyStockManagement.Discard" parent="Theme.PharmacyStockManagement">
+
+    </style>
+
+    <style name="Theme.PharmacyStockManagement.Correction" parent="Theme.PharmacyStockManagement">
+
+    </style>
+
+    <style name="Theme.PharmacyStockManagement.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.PharmacyStockManagement.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:text">@string/app_name</item>
+    </style>
+
+    <style name="Theme.PharmacyStockManagement.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PharmacyStockManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

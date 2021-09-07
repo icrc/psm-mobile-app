@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Pharmacy Stock Management</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="label_distribution">Distribution</string>
+    <string name="label_discard">Discard</string>
+    <string name="label_correction">Correction</string>
+    <string name="label_transaction_date">Date of Transaction</string>
+    <string name="label_recent_activity_list">Recent Activity</string>
+    <string name="label_last_synced">Last synced:</string>
+    <string name="label_select_facility">Select Facility</string>
+    <string name="next_fab_label">Next</string>
+</resources>

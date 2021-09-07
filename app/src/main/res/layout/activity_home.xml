@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.PharmacyStockManagement.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/more_options">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textSize="@dimen/toolbar_text_size"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/primaryTextColor"
+            android:textAppearance="?attr/titleTextAppearance" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/transaction_buttons_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/transaction_button_group_margin"
+        android:layout_marginTop="@dimen/transaction_button_group_margin"
+        android:layout_marginEnd="@dimen/transaction_button_group_margin"
+        android:divider="@drawable/transaction_button_divider"
+        android:showDividers="middle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/distribution_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/transaction_button_min_padding"
+            android:text="@string/label_distribution"
+            android:textAllCaps="false"
+            android:textSize="@dimen/transaction_button_text_size"
+            app:backgroundTint="@color/green"
+            app:cornerRadius="@dimen/transaction_button_corner_radius" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/discard_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/transaction_button_min_padding"
+            android:text="@string/label_discard"
+            android:textAllCaps="false"
+            android:textSize="@dimen/transaction_button_text_size"
+            app:backgroundTint="@color/red"
+            app:cornerRadius="@dimen/transaction_button_corner_radius" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/correction_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/transaction_button_min_padding"
+            android:text="@string/label_correction"
+            android:textAllCaps="false"
+            android:textSize="@dimen/transaction_button_text_size"
+            app:backgroundTint="@color/grey"
+            app:cornerRadius="@dimen/transaction_button_corner_radius" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/choices_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transaction_buttons_group">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/label_select_facility"
+            app:layout_constraintStart_toStartOf="@id/choices_panel"
+            app:layout_constraintTop_toTopOf="@id/choices_panel" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_next_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next_fab_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        app:icon="@drawable/arrow_forward"
+        app:iconGravity="textEnd"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
