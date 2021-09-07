@@ -1,4 +1,4 @@
-package com.baosystems.icrc.pharmacystockmanagement;
+package com.baosystems.icrc.pharmacystockmanagement.views.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.baosystems.icrc.pharmacystockmanagement.R;
+
 public class HomeActivity extends AppCompatActivity {
 
     @Override
@@ -17,22 +19,23 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Log.d("HomeActivity", "onCreate HomeActivity");
 
-        // TODO: Figure out a way to not do this.
-        //  Removing the line without fixing the issue adds the activity name
-        //  to the left of the toolbar
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//
+//        // TODO: Figure out a way to not do this.
+//        //  Removing the line without fixing the issue adds the activity name
+//        //  to the left of the toolbar
+//        toolbar.setTitle("");
+//        setSupportActionBar(toolbar);
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.more_options, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.more_options, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

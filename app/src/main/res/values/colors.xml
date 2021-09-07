@@ -9,10 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
 
-    <color name="red">#FFAF2D3B</color>
-    <color name="green">#FF5F8D79</color>
+    <color name="distribution">#FFAF2D3B</color>
+    <color name="discard">#FF5F8D79</color>
+    <color name="correction">#FF969191</color>
+
     <color name="dark_grey">#FF716C6C</color>
-    <color name="grey">#FF969191</color>
     <color name="light_grey">#FFF6F5F5</color>
     <color name="cyan">#FF62A3BB</color>
 

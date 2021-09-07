@@ -34,10 +34,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.PharmacyStockManagement.ActionBar" parent="Widget.AppCompat.ActionBar">
-        <item name="android:text">@string/app_name</item>
-    </style>
-
     <style name="Theme.PharmacyStockManagement.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PharmacyStockManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
