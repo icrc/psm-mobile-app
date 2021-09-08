@@ -6,8 +6,13 @@
     <string name="label_discard">Discard</string>
     <string name="label_correction">Correction</string>
     <string name="label_transaction_date">Date of Transaction</string>
+    <string name="label_transaction_date_content_desc">
+        Show Datepicker to select transaction date
+    </string>
     <string name="label_recent_activity_list">Recent Activity</string>
     <string name="label_last_synced">Last synced:</string>
-    <string name="label_select_facility">Select Facility</string>
+    <string name="label_select_facility_hint">Select Facility</string>
+    <string name="label_distributed_to">Distributed to</string>
+    <string name="label_select_one">Select one</string>
     <string name="next_fab_label">Next</string>
 </resources>

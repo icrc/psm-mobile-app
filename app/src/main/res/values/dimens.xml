@@ -10,4 +10,17 @@
     <dimen name="transaction_button_group_margin">24dp</dimen>
     <dimen name="transaction_button_divider">16dp</dimen>
     <dimen name="transaction_button_corner_radius">8dp</dimen>
+
+    <!-- Misc -->
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="input_to_label_top_margin">8dp</dimen>
+
+    <!-- Container -->
+    <dimen name="choices_top_margin">32dp</dimen>
+    <dimen name="choices_padding_top">24dp</dimen>
+    <dimen name="choices_padding_left">16dp</dimen>
+    <dimen name="choices_padding_bottomm">40dp</dimen>
+    <dimen name="choices_padding_right">16dp</dimen>
+
+    <dimen name="select_facility_bottom_margin">32dp</dimen>
 </resources>

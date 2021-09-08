@@ -2,15 +2,16 @@ package com.baosystems.icrc.pharmacystockmanagement.views.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.baosystems.icrc.pharmacystockmanagement.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -29,6 +30,40 @@ public class HomeActivity extends AppCompatActivity {
 //        toolbar.setTitle("");
 //        setSupportActionBar(toolbar);
 
+        setupComponents();
+    }
+
+    private void setupComponents() {
+        populateFacilities();
+//        populateDistributedToList();
+
+        // Add a listener to the calendar icon
+        TextInputLayout transactionDateBox = findViewById(R.id.transaction_date_wrapper);
+        transactionDateBox.setEndIconOnClickListener(view -> {
+            // TODO: Show the datepicker when the calendar icon is clicked
+            Log.d("HomeActivity", "Show the datepicker");
+        });
+    }
+
+    private void populateDistributedToList() {
+//        ArrayList items = (ArrayList<String>) Arrays.asList(
+//                "Akobo Hospital - [HOS], Borno State Specialist Hospital - [HOS]",
+//                "Jnah Rafic Hariri University Hospital - [HOS]","Kaga Bandoro Hopital - [HOS]"
+//        );
+//        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.list_item, items);
+//        ((AutoCompleteTextView)findViewById(R.id.tv_facilities_menu)).setAdapter(adapter);
+    }
+
+    private void populateFacilities() {
+        String[] items = new String[]{"Banadir", "Borno State",
+                "Central African Republic Generic"};
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                R.layout.list_item, items);
+        AutoCompleteTextView textView = findViewById(R.id.tv_facilities_menu);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_expandable_list_item_1, items);
+        textView.setAdapter(adapter);
     }
 
     @Override

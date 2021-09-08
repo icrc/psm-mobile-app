@@ -34,8 +34,8 @@
         android:id="@+id/content_area"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/transaction_button_group_margin"
         android:layout_marginLeft="@dimen/transaction_button_group_margin"
+        android:layout_marginTop="32dp"
         android:layout_marginRight="@dimen/transaction_button_group_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,9 +90,118 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/discard_button"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/choices_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/choices_top_margin"
+            android:background="@color/light_grey"
+            android:paddingStart="@dimen/choices_padding_left"
+            android:paddingTop="@dimen/choices_padding_top"
+            android:paddingEnd="@dimen/choices_padding_right"
+            android:paddingBottom="@dimen/choices_padding_bottomm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/distribution_button">
+
+            <TextView
+                android:id="@+id/select_facility_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Select Facility"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/choices_container" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/facilities_container"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/input_to_label_top_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/select_facility_label"
+                app:placeholderText="@string/label_select_one">
+
+                <AutoCompleteTextView
+                    android:id="@+id/tv_facilities_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/transaction_date_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/select_facility_bottom_margin"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toBottomOf="@id/facilities_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/distributed_to_container"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/transaction_date_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_transaction_date"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/transaction_date_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/input_to_label_top_margin"
+                    app:placeholderText="@string/label_select_one"
+                    app:endIconContentDescription="@string/label_transaction_date_content_desc"
+                    app:endIconDrawable="@drawable/calendar_icon"
+                    app:endIconMode="custom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/tv_transaction_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/distributed_to_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toTopOf="@id/transaction_date_container"
+                app:layout_constraintStart_toEndOf="@id/transaction_date_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/distributed_to_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_distributed_to"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/distributed_to_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/input_to_label_top_margin"
+                    app:placeholderText="@string/label_select_one">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/tv_distributed_to"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
