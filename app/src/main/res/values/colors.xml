@@ -16,6 +16,7 @@
     <color name="dark_grey">#FF716C6C</color>
     <color name="light_grey">#FFF6F5F5</color>
     <color name="cyan">#FF62A3BB</color>
+    <color name="grey_border">#FFC7C7C7</color>
 
     <!-- New -->
     <color name="gray_400">#BDBDBD</color>

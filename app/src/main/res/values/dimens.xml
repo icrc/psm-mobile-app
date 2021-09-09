@@ -7,7 +7,7 @@
     <!-- Transaction buttons -->
     <dimen name="transaction_button_text_size">24sp</dimen>
     <dimen name="transaction_button_min_padding">40dp</dimen>
-    <dimen name="transaction_button_group_margin">24dp</dimen>
+    <dimen name="content_area_margin">24dp</dimen>
     <dimen name="transaction_button_divider">16dp</dimen>
     <dimen name="transaction_button_corner_radius">8dp</dimen>
 
@@ -21,6 +21,15 @@
     <dimen name="choices_padding_left">16dp</dimen>
     <dimen name="choices_padding_bottomm">40dp</dimen>
     <dimen name="choices_padding_right">16dp</dimen>
+    <dimen name="recent_activity_top_margin">48dp</dimen>
+    <dimen name="recent_activity_label_bottom_margin">48dp</dimen>
 
     <dimen name="select_facility_bottom_margin">32dp</dimen>
+    <dimen name="border_radius">4dp</dimen>
+
+    <!-- Footer -->
+    <dimen name="last_sync_label_top_margin">8dp</dimen>
+    <dimen name="last_sync_label_bottom_margin">8dp</dimen>
+    <dimen name="last_sync_label_left_margin">16dp</dimen>
+    <dimen name="recent_activity_list_margin_bottom">96</dimen>
 </resources>

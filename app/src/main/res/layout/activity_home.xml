@@ -1,207 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.activities.HomeActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/app_name"
-            android:textAllCaps="true"
-            android:textAppearance="?attr/titleTextAppearance"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="@dimen/toolbar_text_size" />
-    </androidx.appcompat.widget.Toolbar>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.baosystems.icrc.pharmacystockmanagement.viewmodels.HomeViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/content_area"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/transaction_button_group_margin"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="@dimen/transaction_button_group_margin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.activities.HomeActivity">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/distribution_button"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="@dimen/transaction_button_min_padding"
-            android:text="@string/label_distribution"
-            android:textAllCaps="false"
-            android:textSize="@dimen/transaction_button_text_size"
-            app:backgroundTint="@color/distribution"
-            app:cornerRadius="@dimen/transaction_button_corner_radius"
-            app:layout_constraintEnd_toStartOf="@+id/discard_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/discard_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:padding="@dimen/transaction_button_min_padding"
-            android:text="@string/label_discard"
-            android:textAllCaps="false"
-            android:textSize="@dimen/transaction_button_text_size"
-            app:backgroundTint="@color/discard"
-            app:cornerRadius="@dimen/transaction_button_corner_radius"
-            app:layout_constraintEnd_toStartOf="@+id/correction_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/distribution_button"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/correction_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="@dimen/transaction_button_min_padding"
-            android:text="@string/label_correction"
-            android:textAllCaps="false"
-            android:textSize="@dimen/transaction_button_text_size"
-            app:backgroundTint="@color/correction"
-            app:cornerRadius="@dimen/transaction_button_corner_radius"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/discard_button"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/choices_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/choices_top_margin"
-            android:background="@color/light_grey"
-            android:paddingStart="@dimen/choices_padding_left"
-            android:paddingTop="@dimen/choices_padding_top"
-            android:paddingEnd="@dimen/choices_padding_right"
-            android:paddingBottom="@dimen/choices_padding_bottomm"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/distribution_button">
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
-                android:id="@+id/select_facility_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/app_name"
+                android:textAllCaps="true"
+                android:textAppearance="?attr/titleTextAppearance"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="@dimen/toolbar_text_size" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- Content Area -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_area_margin"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="@dimen/content_area_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/distribution_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Select Facility"
-                android:textAppearance="?attr/textAppearanceSubtitle2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/choices_container" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/facilities_container"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/input_to_label_top_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/select_facility_label"
-                app:placeholderText="@string/label_select_one">
-
-                <AutoCompleteTextView
-                    android:id="@+id/tv_facilities_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:id="@+id/transaction_date_container"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/select_facility_bottom_margin"
+                app:backgroundTint="@color/distribution"
+                android:padding="@dimen/transaction_button_min_padding"
+                android:text="@string/label_distribution"
+                android:textAllCaps="false"
+                android:textSize="@dimen/transaction_button_text_size"
+                app:cornerRadius="@dimen/transaction_button_corner_radius"
+                app:layout_constraintEnd_toStartOf="@+id/discard_button"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toBottomOf="@id/facilities_container"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/distributed_to_container"
-                android:orientation="vertical">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/transaction_date_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_transaction_date"
-                    android:textAppearance="?attr/textAppearanceSubtitle2" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/transaction_date_wrapper"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/input_to_label_top_margin"
-                    app:placeholderText="@string/label_select_one"
-                    app:endIconContentDescription="@string/label_transaction_date_content_desc"
-                    app:endIconDrawable="@drawable/calendar_icon"
-                    app:endIconMode="custom">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/tv_transaction_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/distributed_to_container"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/discard_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:padding="@dimen/transaction_button_min_padding"
+                android:text="@string/label_discard"
+                android:textAllCaps="false"
+                android:textSize="@dimen/transaction_button_text_size"
+                app:backgroundTint="@color/discard"
+                app:cornerRadius="@dimen/transaction_button_corner_radius"
+                app:layout_constraintEnd_toStartOf="@+id/correction_button"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toTopOf="@id/transaction_date_container"
-                app:layout_constraintStart_toEndOf="@id/transaction_date_container"
+                app:layout_constraintStart_toEndOf="@+id/distribution_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/correction_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/transaction_button_min_padding"
+                android:text="@string/label_correction"
+                android:textAllCaps="false"
+                android:textSize="@dimen/transaction_button_text_size"
+                app:backgroundTint="@color/correction"
+                app:cornerRadius="@dimen/transaction_button_corner_radius"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="vertical">
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/discard_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/choices_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/choices_top_margin"
+                android:background="@color/light_grey"
+                android:paddingStart="@dimen/choices_padding_left"
+                android:paddingTop="@dimen/choices_padding_top"
+                android:paddingEnd="@dimen/choices_padding_right"
+                android:paddingBottom="@dimen/choices_padding_bottomm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distribution_button">
 
                 <TextView
-                    android:id="@+id/distributed_to_label"
-                    android:layout_width="match_parent"
+                    android:id="@+id/select_facility_label"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_distributed_to"
-                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+                    android:text="@string/label_select_facility"
+                    android:textAppearance="?attr/textAppearanceSubtitle2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/choices_container" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/distributed_to_wrapper"
+                    android:id="@+id/facilities_container"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/input_to_label_top_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/select_facility_label"
                     app:placeholderText="@string/label_select_one">
 
                     <AutoCompleteTextView
-                        android:id="@+id/tv_distributed_to"
+                        android:id="@+id/tv_facilities_menu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/transaction_date_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/select_facility_bottom_margin"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintTop_toBottomOf="@id/facilities_container"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/distributed_to_container"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transaction_date_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_transaction_date"
+                        android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/transaction_date_wrapper"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/input_to_label_top_margin"
+                        app:placeholderText="@string/label_select_one"
+                        app:endIconContentDescription="@string/label_transaction_date_content_desc"
+                        app:endIconDrawable="@drawable/calendar_icon"
+                        app:endIconMode="custom">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/tv_transaction_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/distributed_to_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintTop_toTopOf="@id/transaction_date_container"
+                    app:layout_constraintStart_toEndOf="@id/transaction_date_container"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/distributed_to_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_distributed_to"
+                        android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/distributed_to_wrapper"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/input_to_label_top_margin"
+                        app:placeholderText="@string/label_select_one">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/tv_distributed_to"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/recent_activity_label"
+                android:text="@string/label_recent_activity"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/recent_activity_top_margin"
+                android:layout_marginBottom="@dimen/recent_activity_label_bottom_margin"
+                app:layout_constraintTop_toBottomOf="@id/choices_container"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recent_activity_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recent_activity_label"
+                tools:itemCount="18"
+                tools:listitem="@layout/list_item_recent_activity" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Footer -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/footer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/border">
+
+            <ImageView
+                android:id="@+id/lastSyncIconImageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_area_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/last_sync" />
+
+            <TextView
+                android:id="@+id/lastSyncDescTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="@dimen/last_sync_label_top_margin"
+                android:layout_marginBottom="@dimen/last_sync_label_bottom_margin"
+                android:text="@string/label_last_synced"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lastSyncIconImageview"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/label_last_synced" />
+
+            <TextView
+                android:id="@+id/lastSyncDateTextView"
+                android:text="@{viewModel.lastSyncDate}"
+                tools:text="2021-06-30 14:32:33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@id/lastSyncDescTextView"
+                app:layout_constraintStart_toEndOf="@id/lastSyncDescTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
