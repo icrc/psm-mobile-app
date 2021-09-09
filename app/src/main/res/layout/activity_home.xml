@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.baosystems.icrc.pharmacystockmanagement.viewmodels.HomeViewModel" />
@@ -125,7 +126,7 @@
                     app:layout_constraintTop_toTopOf="@id/choices_container" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/facilities_container"
+                    android:id="@+id/facilitiesMenu"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -136,7 +137,7 @@
                     app:placeholderText="@string/label_select_one">
 
                     <AutoCompleteTextView
-                        android:id="@+id/tv_facilities_menu"
+                        android:id="@+id/selectedFacilityTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -148,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/select_facility_bottom_margin"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintTop_toBottomOf="@id/facilities_container"
+                    app:layout_constraintTop_toBottomOf="@id/facilitiesMenu"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/distributed_to_container"
                     android:orientation="vertical">
@@ -161,7 +162,7 @@
                         android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/transaction_date_wrapper"
+                        android:id="@+id/transactionDateTextInputLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -172,7 +173,9 @@
                         app:endIconMode="custom">
 
                         <AutoCompleteTextView
-                            android:id="@+id/tv_transaction_date"
+                            android:id="@+id/transactionDateTextView"
+                            android:inputType="none"
+                            android:text="@{viewModel.friendlyTransactionDate}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -187,7 +190,8 @@
                     app:layout_constraintTop_toTopOf="@id/transaction_date_container"
                     app:layout_constraintStart_toEndOf="@id/transaction_date_container"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.distribution ? View.VISIBLE : View.GONE}">
 
                     <TextView
                         android:id="@+id/distributed_to_label"
@@ -205,7 +209,7 @@
                         app:placeholderText="@string/label_select_one">
 
                         <AutoCompleteTextView
-                            android:id="@+id/tv_distributed_to"
+                            android:id="@+id/distributedToTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none" />
@@ -279,5 +283,18 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/lastSyncDescTextView"
                 app:layout_constraintStart_toEndOf="@id/lastSyncDescTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Floating Button -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/extended_next_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:text="@string/next_fab_label"
+            app:icon="@drawable/arrow_forward"
+            app:iconGravity="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -16,4 +16,8 @@
     <string name="label_distributed_to">Distributed to</string>
     <string name="label_select_one">Select one</string>
     <string name="next_fab_label">Next</string>
+
+    <string name="cannot_proceed_from_home_message">
+        All fields must be filled before you can proceed.
+    </string>
 </resources>

@@ -6,29 +6,35 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
+import com.baosystems.icrc.pharmacystockmanagement.ManageStockActivity;
 import com.baosystems.icrc.pharmacystockmanagement.R;
 import com.baosystems.icrc.pharmacystockmanagement.data.TransactionType;
 import com.baosystems.icrc.pharmacystockmanagement.data.models.Destination;
+import com.baosystems.icrc.pharmacystockmanagement.data.models.Facility;
 import com.baosystems.icrc.pharmacystockmanagement.databinding.ActivityHomeBinding;
 import com.baosystems.icrc.pharmacystockmanagement.viewmodels.HomeViewModel;
 import com.baosystems.icrc.pharmacystockmanagement.views.adapters.RecentActivityAdapter;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
+    private HomeViewModel hvm;
     private RecentActivityAdapter recentActivityAdapter;
 
-    private AutoCompleteTextView facilitiesDropdown;
-    private AutoCompleteTextView distributedToDropdown;
+    private AutoCompleteTextView facilityTextView;
+    private AutoCompleteTextView distributedToTextView;
     private AutoCompleteTextView transactionDateTextView;
     private RecyclerView recentActivitiesRecyclerView;
 
@@ -36,18 +42,18 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        HomeViewModel hvm = new ViewModelProvider(this).get(HomeViewModel.class);
+        hvm = new ViewModelProvider(this).get(HomeViewModel.class);
         ActivityHomeBinding binding = configureBinding(hvm);
-        setupComponents(binding, hvm);
+        setupComponents(binding);
     }
 
     private ActivityHomeBinding configureBinding(HomeViewModel hvm) {
         ActivityHomeBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_home);
 
-        facilitiesDropdown = binding.tvFacilitiesMenu;
-        transactionDateTextView = binding.tvTransactionDate;
-        distributedToDropdown = binding.tvDistributedTo;
+        facilityTextView = binding.selectedFacilityTextView;
+        transactionDateTextView = binding.transactionDateTextView;
+        distributedToTextView = binding.distributedToTextView;
         recentActivitiesRecyclerView = binding.recentActivityList;
 
         binding.setViewModel(hvm);
@@ -66,58 +72,99 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             // TODO: Show the app settings UI
-            Log.d(this.getLocalClassName(), "Settings clicked");
+            Log.d("HA", "Settings clicked");
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupComponents(ActivityHomeBinding binding, HomeViewModel hvm) {
+    private void setupComponents(ActivityHomeBinding binding) {
         setupToolbar();
 
-        setupButtons(binding, hvm);
+        setupButtons(binding);
 
         hvm.getFacilitiesList().observe(this, facilitiesList -> {
-            facilitiesDropdown.setAdapter(new ArrayAdapter<>(
+            facilityTextView.setAdapter(new ArrayAdapter<>(
                     this, R.layout.list_item, facilitiesList));
         });
 
         hvm.getDestinationsList().observe(this, destinations -> {
-            distributedToDropdown.setAdapter(new ArrayAdapter<Destination>(
+            distributedToTextView.setAdapter(new ArrayAdapter<Destination>(
                     this, R.layout.list_item, destinations
             ));
         });
 
+        facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
+                hvm.setFacility((Facility) facilityTextView.getAdapter().getItem(position))
+        );
+
+        distributedToTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
+                hvm.setDestination(
+                        (Destination) distributedToTextView.getAdapter().getItem(position))
+        );
+
+        setupTransactionDateField(binding);
+
+        binding.extendedNextFab.setOnClickListener(view -> {
+
+            // TODO: Show light alert if all the fields haven't been filled, otherwise
+            //  navigate to the next activity
+            Log.d("HA", "Selected transaction: " +
+                    hvm.getTransactionType().getValue());
+            Log.d("HA", "Selected facility: " + hvm.getFacility().getValue());
+            Log.d("HA", "Selected date: " + hvm.getTransactionDate().getValue());
+            Log.d("HA", "Selected distributed to: " + hvm.getDestination().getValue());
+
+            if (!canProceed()) {
+                Toast.makeText(this,
+                        this.getString(R.string.cannot_proceed_from_home_message),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            navigateToManageStock();
+        });
+
         setupRecentActivities(hvm);
-        setupTransactionDateField();
     }
 
-    private void setupButtons(ActivityHomeBinding binding, HomeViewModel hvm) {
+    private void setupButtons(ActivityHomeBinding binding) {
         // Add listeners to the buttons
-        MaterialButton[] buttons = Arrays.asList(
-                binding.distributionButton,
-                binding.discardButton,
-                binding.correctionButton
-        ).toArray(new MaterialButton[0]);
+        Map<TransactionType, MaterialButton> buttonsMap =
+                new HashMap<TransactionType, MaterialButton>() {
+            {
+                put(TransactionType.DISTRIBUTION, binding.distributionButton);
+                put(TransactionType.DISCARD, binding.discardButton);
+                put(TransactionType.CORRECTION, binding.correctionButton);
+            }
+        };
 
-        TransactionType[] buttonTransactions = Arrays.asList(
-                TransactionType.DISTRIBUTION,
-                TransactionType.DISCARD,
-                TransactionType.CORRECTION
-        ).toArray(new TransactionType[0]);
+        hvm.getTransactionType().observe(this, transactionType -> {
+            Log.d("HA", "New transaction selected: " + transactionType.name());
 
-        for (int i = 0; i < buttons.length; i++) {
-            int btnIndex = i;
-            buttons[i].setOnClickListener(button -> {
-                hvm.setSelectedTransaction(buttonTransactions[btnIndex]);
-            });
-        }
+            // TODO: Add a border around the selected button, and reset the
+            //  other buttons to the default
+//            ColorStateList backgroundTintList = ContextCompat.getColorStateList(
+//                    this, R.color.selector_distribution_button_background);
+//            Paris.style(buttonsMap.get(transactionType)).apply(R.style.SelectedButtonStyle);
+        });
+
+        buttonsMap.entrySet().iterator().forEachRemaining(entry -> {
+            TransactionType type = entry.getKey();
+            MaterialButton button = entry.getValue();
+
+            button.setOnClickListener(view -> selectTransaction(((MaterialButton)view), type, hvm));
+        });
     }
 
-    private void setupTransactionDateField() {
+    private void selectTransaction(
+            View button, TransactionType buttonTransaction, HomeViewModel hvm) {
+        hvm.selectTransaction(buttonTransaction);
+    }
+
+    private void setupTransactionDateField(ActivityHomeBinding binding) {
         // Add a listener to the calendar icon
-        TextInputLayout transactionDateBox = findViewById(R.id.transaction_date_wrapper);
-        transactionDateBox.setEndIconOnClickListener(view -> {
+        binding.transactionDateTextInputLayout.setEndIconOnClickListener(view -> {
             // TODO: Show the datepicker when the calendar icon is clicked
             Log.d("HomeActivity", "Show the datepicker");
         });
@@ -144,5 +191,22 @@ public class HomeActivity extends AppCompatActivity {
 //        DividerItemDecoration decoration =
 //                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //        recentActivitiesRecyclerView.addItemDecoration(decoration);
+    }
+
+
+    private void navigateToManageStock() {
+        Intent intent = ManageStockActivity.getManageStockActivityIntent(this, hvm);
+        startActivity(intent);
+    }
+
+    private boolean canProceed() {
+        if (hvm.getTransactionType().getValue() == null)
+            return false;
+
+        if (hvm.isDistribution().getValue() && hvm.getDestination().getValue() == null)
+            return false;
+
+        return hvm.getFacility().getValue() != null &&
+                hvm.getTransactionDate().getValue() != null;
     }
 }

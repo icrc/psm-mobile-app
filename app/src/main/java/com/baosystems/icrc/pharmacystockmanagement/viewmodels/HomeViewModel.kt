@@ -1,6 +1,5 @@
 package com.baosystems.icrc.pharmacystockmanagement.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.pharmacystockmanagement.data.TransactionType
@@ -10,19 +9,19 @@ import com.baosystems.icrc.pharmacystockmanagement.data.models.UserActivity
 import com.baosystems.icrc.pharmacystockmanagement.data.repositories.DestinationRepository
 import com.baosystems.icrc.pharmacystockmanagement.data.repositories.FacilityRepository
 import com.baosystems.icrc.pharmacystockmanagement.data.repositories.UserActivityRepository
+import com.baosystems.icrc.pharmacystockmanagement.utils.Constants
 import com.baosystems.icrc.pharmacystockmanagement.utils.humanReadable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class HomeViewModel: ViewModel() {
-    val selectedTransactionType: MutableLiveData<TransactionType> = MutableLiveData()
-    val selectedFacility: MutableLiveData<Facility> = MutableLiveData()
+    val transactionType: MutableLiveData<TransactionType> = MutableLiveData()
+    val isDistribution: MutableLiveData<Boolean> = MutableLiveData(false)
+    val facility: MutableLiveData<Facility> = MutableLiveData()
 
-    // TODO: Set default date to today
-    val selectedTransactionDate: MutableLiveData<Date> = MutableLiveData()
-    val selectedDestination: MutableLiveData<Destination> = MutableLiveData()
+    val transactionDate: MutableLiveData<LocalDateTime> = MutableLiveData()
+    val destination: MutableLiveData<Destination> = MutableLiveData()
 
     val lastSyncDate: MutableLiveData<String> = MutableLiveData()
 
@@ -31,6 +30,8 @@ class HomeViewModel: ViewModel() {
     val recentActivityList = fetchSampleRecentActivities()
 
     init {
+        transactionDate.value = LocalDateTime.now()
+
         // TODO: Change to real implementation (fetch the last sync date from the repository)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         lastSyncDate.value = LocalDateTime.parse("2021-09-30 14:32:33", formatter).humanReadable()
@@ -54,7 +55,25 @@ class HomeViewModel: ViewModel() {
         return MutableLiveData(repository.activities)
     }
 
-    fun setSelectedTransaction(type: TransactionType) {
-        selectedTransactionType.value = type
+    fun selectTransaction(type: TransactionType) {
+        transactionType.value = type
+        isDistribution.value = type == TransactionType.DISTRIBUTION
     }
+
+    fun setFacility(facility: Facility) {
+        this.facility.value = facility
+    }
+
+    fun setDestination(destination: Destination) {
+        this.destination.value = destination
+    }
+
+    fun setTransactionDate(dateTime: LocalDateTime) {
+        transactionDate.value = dateTime
+    }
+
+    fun getFriendlyTransactionDate() = transactionDate.value?.format(
+        DateTimeFormatter.ofPattern(Constants.TRANSACTION_DATE_FORMAT)) ?: ""
+
+//    fun isDistribution() = transactionType.value == TransactionType.DISTRIBUTION
 }

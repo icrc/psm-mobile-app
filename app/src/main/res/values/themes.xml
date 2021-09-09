@@ -37,4 +37,9 @@
     <style name="Theme.PharmacyStockManagement.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PharmacyStockManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+<!--    <style name="SelectedButtonStyle" parent="Widget.MaterialComponents.Button">-->
+<!--        <item name="strokeColor">@color/mtrl_btn_stroke_color_selector</item>-->
+<!--        <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>-->
+<!--    </style>-->
 </resources>
