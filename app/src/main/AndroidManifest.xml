@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.baosystems.icrc.pharmacystockmanagement">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- TODO: Add required permissions for using voice -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,28 +15,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PharmacyStockManagement.NoActionBar">
         <activity
-            android:name=".ManageStockActivity"
-            android:exported="true" />
-        <activity
-            android:name=".views.activities.BaseActivity"
-            android:parentActivityName=".views.activities.HomeActivity"
+            android:name=".views.activities.SplashActivity"
             android:exported="true">
 
-            <!-- Add support for API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.activities.HomeActivity" />
-        </activity>
-        <activity
-            android:name=".views.activities.HomeActivity"
-            android:exported="true"
-            android:label="@string/title_activity_home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".views.activities.ManageStockActivity"
+            android:exported="true" />
+        <activity
+            android:name=".views.activities.BaseActivity"
+            android:exported="true"
+            android:parentActivityName=".views.activities.HomeActivity" />
+        <activity
+            android:name=".views.activities.HomeActivity"
+            android:exported="true"
+            android:label="@string/title_activity_home" />
+
+        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

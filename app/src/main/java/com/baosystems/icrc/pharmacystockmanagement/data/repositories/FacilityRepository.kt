@@ -5,12 +5,10 @@ import com.baosystems.icrc.pharmacystockmanagement.data.models.Facility
 /**
  * TODO: Remove later. Temporarily used for bootstrapping
  */
-class FacilityRepository(
-    val facilities: ArrayList<Facility>
-) {
-    constructor(): this(ArrayList())
+class FacilityRepository {
+    val facilities: ArrayList<Facility> = ArrayList()
 
-    fun addSampleFacilities() {
+    init {
         facilities.addAll(getSampleFacilities())
     }
 

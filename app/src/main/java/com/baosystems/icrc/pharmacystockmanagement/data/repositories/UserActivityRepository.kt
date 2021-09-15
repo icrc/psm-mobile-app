@@ -5,10 +5,10 @@ import com.baosystems.icrc.pharmacystockmanagement.data.models.UserActivity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class UserActivityRepository() {
+class UserActivityRepository {
     val activities = ArrayList<UserActivity>()
 
-    fun addSampleActivities() {
+    init {
         activities.addAll(getSampleData())
     }
 

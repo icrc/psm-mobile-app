@@ -18,15 +18,13 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
         // TODO: Figure out a way to not do this.
         //  Removing the line without fixing the issue adds the activity name
         //  to the left of the toolbar
 //        toolbar.title = ""
-        setSupportActionBar(toolbar)
-
-        Log.d("BaseActivity", "BaseActivity::onCreate()")
+//        setSupportActionBar(toolbar)
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {

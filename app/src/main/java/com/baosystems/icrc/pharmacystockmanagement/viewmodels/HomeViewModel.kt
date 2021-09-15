@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel: PSMViewModel() {
     val transactionType: MutableLiveData<TransactionType> = MutableLiveData()
     val isDistribution: MutableLiveData<Boolean> = MutableLiveData(false)
     val facility: MutableLiveData<Facility> = MutableLiveData()
@@ -23,35 +23,26 @@ class HomeViewModel: ViewModel() {
     val transactionDate: MutableLiveData<LocalDateTime> = MutableLiveData()
     val destination: MutableLiveData<Destination> = MutableLiveData()
 
-    val lastSyncDate: MutableLiveData<String> = MutableLiveData()
-
     val facilitiesList = fetchSampleFacilities()
     val destinationsList = fetchSampleDestinations()
     val recentActivityList = fetchSampleRecentActivities()
 
     init {
         transactionDate.value = LocalDateTime.now()
-
-        // TODO: Change to real implementation (fetch the last sync date from the repository)
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        lastSyncDate.value = LocalDateTime.parse("2021-09-30 14:32:33", formatter).humanReadable()
     }
 
     private fun fetchSampleFacilities(): MutableLiveData<ArrayList<Facility>> {
         val repository = FacilityRepository()
-        repository.addSampleFacilities()
         return MutableLiveData(repository.facilities)
     }
 
     private fun fetchSampleDestinations(): MutableLiveData<ArrayList<Destination>> {
         val repository = DestinationRepository()
-        repository.addSampleDestinations()
         return MutableLiveData(repository.destinations)
     }
 
     private fun fetchSampleRecentActivities(): MutableLiveData<ArrayList<UserActivity>> {
         val repository = UserActivityRepository()
-        repository.addSampleActivities()
         return MutableLiveData(repository.activities)
     }
 

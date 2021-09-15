@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.baosystems.icrc.pharmacystockmanagement.viewmodels.ManageStockViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.activities.ManageStockActivity">
+
+        <include layout="@layout/toolbar" />
+
+        <!-- Content Area -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_area_margin"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="@dimen/content_area_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/choices_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/choices_top_margin"
+                android:background="@color/light_grey"
+                android:paddingStart="@dimen/choices_padding_left"
+                android:paddingTop="@dimen/choices_padding_top"
+                android:paddingEnd="@dimen/choices_padding_right"
+                android:paddingBottom="@dimen/choices_padding_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/facilityTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableLeftCompat="@drawable/home"
+                    app:layout_constraintEnd_toStartOf="@+id/transactionDateTextView"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
+
+                <TextView
+                    android:id="@+id/transactionDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableLeftCompat="@drawable/calendar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/facilityTextView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="2021-08-09" />
+
+                <TextView
+                    android:id="@+id/distributedToTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="14dp"
+                    android:gravity="center"
+                    app:drawableLeftCompat="@drawable/destination"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/facilityTextView"
+                    tools:text="Diagnostic imaging (X-Ray)" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchFieldLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginRight="@dimen/margin_16"
+                app:endIconContentDescription="@string/search"
+                app:endIconDrawable="@drawable/search"
+                app:endIconMode="custom"
+                app:layout_constraintEnd_toStartOf="@+id/scan_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/choices_container"
+                app:placeholderText="@string/search"
+                app:layout_constraintHorizontal_weight="7">
+
+                <AutoCompleteTextView
+                    android:id="@+id/searchFieldTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/scan_button"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/scan_barcode"
+                app:icon="@drawable/barcode"
+                app:iconGravity="end"
+                app:cornerRadius="@dimen/scan_button_corner_radius"
+                app:layout_constraintStart_toEndOf="@id/searchFieldLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/choices_container"
+                app:layout_constraintHorizontal_weight="3" />
+
+            <!-- Table header -->
+            <include layout="@layout/stock_table_header"
+                android:id="@+id/stockEntriesTableHeader" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stock_items_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
+                tools:itemCount="18"
+                tools:listitem="@layout/stock_item_entry" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Footer -->
+        <include layout="@layout/footer" app:lastSyncDate="@{viewModel.lastSyncDate}" />
+
+        <!-- Floating Button -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/extended_next_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:text="@string/review"
+            app:icon="@drawable/arrow_forward"
+            app:iconGravity="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

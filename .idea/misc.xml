@@ -9,12 +9,17 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2864583333333333" />
         <entry key="app/src/main/res/drawable/transaction_button_divider.xml" value="0.21484375" />
         <entry key="app/src/main/res/drawable/transaction_button_highlight.xml" value="0.105078125" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.15625" />
-        <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.4413265306122449" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.1503623188405797" />
+        <entry key="app/src/main/res/layout/footer.xml" value="0.10190886699507389" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1503623188405797" />
         <entry key="app/src/main/res/layout/list_item.xml" value="0.105859375" />
         <entry key="app/src/main/res/layout/list_item_recent_activity.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/stock_item_entry.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/stock_table_header.xml" value="0.10190886699507389" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.10190886699507389" />
         <entry key="app/src/main/res/menu/menu_options.xml" value="0.105859375" />
         <entry key="app/src/main/res/menu/more_options.xml" value="0.105859375" />
       </map>

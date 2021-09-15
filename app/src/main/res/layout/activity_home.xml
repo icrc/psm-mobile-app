@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 app:backgroundTint="@color/distribution"
                 android:padding="@dimen/transaction_button_min_padding"
-                android:text="@string/label_distribution"
+                android:text="@string/distribution"
                 android:textAllCaps="false"
                 android:textSize="@dimen/transaction_button_text_size"
                 app:cornerRadius="@dimen/transaction_button_corner_radius"
@@ -75,7 +75,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_weight="1"
                 android:padding="@dimen/transaction_button_min_padding"
-                android:text="@string/label_discard"
+                android:text="@string/discard"
                 android:textAllCaps="false"
                 android:textSize="@dimen/transaction_button_text_size"
                 app:backgroundTint="@color/discard"
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="@dimen/transaction_button_min_padding"
-                android:text="@string/label_correction"
+                android:text="@string/correction"
                 android:textAllCaps="false"
                 android:textSize="@dimen/transaction_button_text_size"
                 app:backgroundTint="@color/correction"
@@ -110,7 +110,7 @@
                 android:paddingStart="@dimen/choices_padding_left"
                 android:paddingTop="@dimen/choices_padding_top"
                 android:paddingEnd="@dimen/choices_padding_right"
-                android:paddingBottom="@dimen/choices_padding_bottomm"
+                android:paddingBottom="@dimen/choices_padding_bottom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/distribution_button">
@@ -119,7 +119,7 @@
                     android:id="@+id/select_facility_label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_select_facility"
+                    android:text="@string/select_facility"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +134,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/select_facility_label"
-                    app:placeholderText="@string/label_select_one">
+                    app:placeholderText="@string/select_one">
 
                     <AutoCompleteTextView
                         android:id="@+id/selectedFacilityTextView"
@@ -158,7 +158,7 @@
                         android:id="@+id/transaction_date_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_transaction_date"
+                        android:text="@string/transaction_date"
                         android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -167,8 +167,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/input_to_label_top_margin"
-                        app:placeholderText="@string/label_select_one"
-                        app:endIconContentDescription="@string/label_transaction_date_content_desc"
+                        app:placeholderText="@string/select_one"
+                        app:endIconContentDescription="@string/transaction_date_content_desc"
                         app:endIconDrawable="@drawable/calendar_icon"
                         app:endIconMode="custom">
 
@@ -197,7 +197,7 @@
                         android:id="@+id/distributed_to_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_distributed_to"
+                        android:text="@string/distributed_to"
                         android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -206,7 +206,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/input_to_label_top_margin"
-                        app:placeholderText="@string/label_select_one">
+                        app:placeholderText="@string/select_one">
 
                         <AutoCompleteTextView
                             android:id="@+id/distributedToTextView"
@@ -219,7 +219,7 @@
 
             <TextView
                 android:id="@+id/recent_activity_label"
-                android:text="@string/label_recent_activity"
+                android:text="@string/recent_activity"
                 android:textAppearance="?attr/textAppearanceSubtitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -241,48 +241,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/footer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/border">
+        <include layout="@layout/footer" app:lastSyncDate="@{viewModel.lastSyncDate}" />
 
-            <ImageView
-                android:id="@+id/lastSyncIconImageview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/content_area_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/last_sync" />
-
-            <TextView
-                android:id="@+id/lastSyncDescTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="@dimen/last_sync_label_top_margin"
-                android:layout_marginBottom="@dimen/last_sync_label_bottom_margin"
-                android:text="@string/label_last_synced"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/lastSyncIconImageview"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/label_last_synced" />
-
-            <TextView
-                android:id="@+id/lastSyncDateTextView"
-                android:text="@{viewModel.lastSyncDate}"
-                tools:text="2021-06-30 14:32:33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBaseline_toBaselineOf="@id/lastSyncDescTextView"
-                app:layout_constraintStart_toEndOf="@id/lastSyncDescTextView" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -291,7 +251,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:text="@string/next_fab_label"
+            android:text="@string/next"
             app:icon="@drawable/arrow_forward"
             app:iconGravity="textEnd"
             app:layout_constraintBottom_toBottomOf="parent"

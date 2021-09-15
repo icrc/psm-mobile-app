@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-import com.baosystems.icrc.pharmacystockmanagement.ManageStockActivity;
 import com.baosystems.icrc.pharmacystockmanagement.R;
 import com.baosystems.icrc.pharmacystockmanagement.data.TransactionType;
 import com.baosystems.icrc.pharmacystockmanagement.data.models.Destination;
@@ -30,7 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
-    private HomeViewModel hvm;
+    private HomeViewModel homeViewModel;
+    private ActivityHomeBinding binding;
     private RecentActivityAdapter recentActivityAdapter;
 
     private AutoCompleteTextView facilityTextView;
@@ -42,24 +42,18 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        hvm = new ViewModelProvider(this).get(HomeViewModel.class);
-        ActivityHomeBinding binding = configureBinding(hvm);
-        setupComponents(binding);
-    }
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-    private ActivityHomeBinding configureBinding(HomeViewModel hvm) {
-        ActivityHomeBinding binding = DataBindingUtil.setContentView(
-                this, R.layout.activity_home);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        binding.setViewModel(homeViewModel);
+        binding.setLifecycleOwner(this);
 
         facilityTextView = binding.selectedFacilityTextView;
         transactionDateTextView = binding.transactionDateTextView;
         distributedToTextView = binding.distributedToTextView;
         recentActivitiesRecyclerView = binding.recentActivityList;
 
-        binding.setViewModel(hvm);
-        binding.setLifecycleOwner(this);
-
-        return binding;
+        setupComponents();
     }
 
     @Override
@@ -78,46 +72,46 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupComponents(ActivityHomeBinding binding) {
+    private void setupComponents() {
         setupToolbar();
 
-        setupButtons(binding);
+        setupButtons();
 
-        hvm.getFacilitiesList().observe(this, facilitiesList -> {
+        homeViewModel.getFacilitiesList().observe(this, facilitiesList -> {
             facilityTextView.setAdapter(new ArrayAdapter<>(
                     this, R.layout.list_item, facilitiesList));
         });
 
-        hvm.getDestinationsList().observe(this, destinations -> {
+        homeViewModel.getDestinationsList().observe(this, destinations -> {
             distributedToTextView.setAdapter(new ArrayAdapter<Destination>(
                     this, R.layout.list_item, destinations
             ));
         });
 
         facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
-                hvm.setFacility((Facility) facilityTextView.getAdapter().getItem(position))
+                homeViewModel.setFacility((Facility) facilityTextView.getAdapter().getItem(position))
         );
 
         distributedToTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
-                hvm.setDestination(
+                homeViewModel.setDestination(
                         (Destination) distributedToTextView.getAdapter().getItem(position))
         );
 
-        setupTransactionDateField(binding);
+        setupTransactionDateField();
 
         binding.extendedNextFab.setOnClickListener(view -> {
 
             // TODO: Show light alert if all the fields haven't been filled, otherwise
             //  navigate to the next activity
             Log.d("HA", "Selected transaction: " +
-                    hvm.getTransactionType().getValue());
-            Log.d("HA", "Selected facility: " + hvm.getFacility().getValue());
-            Log.d("HA", "Selected date: " + hvm.getTransactionDate().getValue());
-            Log.d("HA", "Selected distributed to: " + hvm.getDestination().getValue());
+                    homeViewModel.getTransactionType().getValue());
+            Log.d("HA", "Selected facility: " + homeViewModel.getFacility().getValue());
+            Log.d("HA", "Selected date: " + homeViewModel.getTransactionDate().getValue());
+            Log.d("HA", "Selected distributed to: " + homeViewModel.getDestination().getValue());
 
             if (!canProceed()) {
                 Toast.makeText(this,
-                        this.getString(R.string.cannot_proceed_from_home_message),
+                        this.getString(R.string.cannot_proceed_from_home_warning),
                         Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -125,10 +119,10 @@ public class HomeActivity extends AppCompatActivity {
             navigateToManageStock();
         });
 
-        setupRecentActivities(hvm);
+        setupRecentActivities();
     }
 
-    private void setupButtons(ActivityHomeBinding binding) {
+    private void setupButtons() {
         // Add listeners to the buttons
         Map<TransactionType, MaterialButton> buttonsMap =
                 new HashMap<TransactionType, MaterialButton>() {
@@ -139,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
 
-        hvm.getTransactionType().observe(this, transactionType -> {
+        homeViewModel.getTransactionType().observe(this, transactionType -> {
             Log.d("HA", "New transaction selected: " + transactionType.name());
 
             // TODO: Add a border around the selected button, and reset the
@@ -153,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
             TransactionType type = entry.getKey();
             MaterialButton button = entry.getValue();
 
-            button.setOnClickListener(view -> selectTransaction(((MaterialButton)view), type, hvm));
+            button.setOnClickListener(view -> selectTransaction(((MaterialButton)view), type, homeViewModel));
         });
     }
 
@@ -162,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         hvm.selectTransaction(buttonTransaction);
     }
 
-    private void setupTransactionDateField(ActivityHomeBinding binding) {
+    private void setupTransactionDateField() {
         // Add a listener to the calendar icon
         binding.transactionDateTextInputLayout.setEndIconOnClickListener(view -> {
             // TODO: Show the datepicker when the calendar icon is clicked
@@ -172,17 +166,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         // TODO: Figure out a way to fix the toolbar title that shows the activity name on the left
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//
-//        //  Removing the line without fixing the issue adds the activity name
-//        //  to the left of the toolbar
-//        toolbar.setTitle("");
-//        setSupportActionBar(toolbar);
+
+        //  Removing the line without fixing the issue adds the activity name
+        //  to the left of the toolbar
+        binding.toolbar.setTitle("");
+        setSupportActionBar(binding.toolbar);
     }
 
-    private void setupRecentActivities(HomeViewModel hvm) {
+    private void setupRecentActivities() {
         recentActivityAdapter = new RecentActivityAdapter();
-        hvm.getRecentActivityList().observe(this, recentActivities -> {
+        homeViewModel.getRecentActivityList().observe(this, recentActivities -> {
             recentActivityAdapter.submitList(recentActivities);
         });
         recentActivitiesRecyclerView.setAdapter(recentActivityAdapter);
@@ -195,18 +188,20 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void navigateToManageStock() {
-        Intent intent = ManageStockActivity.getManageStockActivityIntent(this, hvm);
+        Intent intent = ManageStockActivity.getManageStockActivityIntent(this, homeViewModel);
         startActivity(intent);
     }
 
     private boolean canProceed() {
-        if (hvm.getTransactionType().getValue() == null)
+        if (homeViewModel.getTransactionType().getValue() == null)
             return false;
 
-        if (hvm.isDistribution().getValue() && hvm.getDestination().getValue() == null)
+
+        // TODO: Can bring about NullPointerException
+        if (homeViewModel.isDistribution().getValue() && homeViewModel.getDestination().getValue() == null)
             return false;
 
-        return hvm.getFacility().getValue() != null &&
-                hvm.getTransactionDate().getValue() != null;
+        return homeViewModel.getFacility().getValue() != null &&
+                homeViewModel.getTransactionDate().getValue() != null;
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+
+    <FrameLayout
+        android:id="@+id/itemNameColumn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="7">
+
+        <TextView
+            android:id="@+id/itemNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/stock_item_margin"
+            android:layout_marginTop="@dimen/stock_item_margin"
+            android:textAlignment="textStart"
+            tools:text="DORAPARA5T - PARACETAMOL (acetaminophen), 500 mg, tab." />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/stockOnHandColumn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5">
+
+        <TextView
+            android:id="@+id/stockOnHandValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/stock_item_margin"
+            android:textAlignment="textEnd"
+            tools:text="537" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/qtyColumn"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5">
+
+        <EditText
+            android:id="@+id/qtyValueTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/stock_item_margin"
+            android:layout_marginEnd="@dimen/stock_item_margin"
+            android:ems="10"
+            android:inputType="number"
+            android:textAlignment="textEnd"
+            tools:text="20" />
+    </FrameLayout>
+</LinearLayout>

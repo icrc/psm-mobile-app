@@ -5,12 +5,10 @@ import com.baosystems.icrc.pharmacystockmanagement.data.models.Destination
 /**
  * TODO: Remove later. Temporarily used for bootstrapping
  */
-class DestinationRepository(
-    val destinations: ArrayList<Destination>
-) {
-    constructor(): this(ArrayList())
+class DestinationRepository {
+    val destinations: ArrayList<Destination> = ArrayList()
 
-    fun addSampleDestinations() {
+    init {
         destinations.addAll(getSampleDestinations())
     }
 
