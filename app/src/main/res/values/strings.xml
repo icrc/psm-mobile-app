@@ -18,7 +18,7 @@
     <string name="select_one">Select one</string>
 
     <!-- Sign in -->
-    <string name="server_url_placeholder">Server URL</string>
+    <string name="server_url">Server URL</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_to_your_account">Sign in to your account</string>
     <string name="sign_in_to_with_oidc">Sign in with Microsoft</string>
@@ -96,4 +96,13 @@
         <item quantity="one">%d item found</item>
         <item quantity="other">%d items found</item>
     </plurals>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="resync">Resync</string>
 </resources>

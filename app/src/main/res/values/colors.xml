@@ -12,6 +12,8 @@
     <color name="distribution">#FFAF2D3B</color>
     <color name="discard">#FF5F8D79</color>
     <color name="correction">#FF969191</color>
+    <!-- Change to actual red color for errors -->
+    <color name="error">#FFAF2D3B</color>
 
     <color name="dark_grey">#FF716C6C</color>
     <color name="light_grey">#FFF6F5F5</color>

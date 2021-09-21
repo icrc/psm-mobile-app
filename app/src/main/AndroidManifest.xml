@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.baosystems.icrc.pharmacystockmanagement">
+    package="com.baosystems.icrc.psm">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- TODO: Add required permissions for using voice -->
 
     <application
         android:allowBackup="true"
@@ -15,9 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PharmacyStockManagement.NoActionBar">
         <activity
+            android:name=".views.activities.SyncActivity"
+            android:exported="true" />
+        <activity
+            android:name=".views.activities.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".views.activities.SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,9 +39,9 @@
             android:name=".views.activities.HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home" />
-
-        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
-            android:exported="true"/>
+        <activity
+            android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

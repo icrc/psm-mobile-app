@@ -7,13 +7,13 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.pharmacystockmanagement.viewmodels.HomeViewModel" />
+            type="com.baosystems.icrc.psm.viewmodels.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.activities.HomeActivity">
+        tools:context="com.baosystems.icrc.psm.views.activities.HomeActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -151,7 +151,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintTop_toBottomOf="@id/facilitiesMenu"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/distributed_to_container"
+                    app:layout_constraintEnd_toStartOf="@id/distributedToContainer"
                     android:orientation="vertical">
 
                     <TextView
@@ -182,7 +182,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/distributed_to_container"
+                    android:id="@+id/distributedToContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -194,14 +194,14 @@
                     android:visibility="@{viewModel.distribution ? View.VISIBLE : View.GONE}">
 
                     <TextView
-                        android:id="@+id/distributed_to_label"
+                        android:id="@+id/distributedToLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/distributed_to"
                         android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/distributed_to_wrapper"
+                        android:id="@+id/distributedToWrapper"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
