@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.TransactionType;
+import com.baosystems.icrc.psm.data.models.UserIntent;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
 import com.baosystems.icrc.psm.service.MetadataManager;
 import com.baosystems.icrc.psm.service.MetadataManagerImpl;
@@ -137,22 +138,6 @@ public class HomeActivity extends AppCompatActivity {
         setupTransactionDateField();
 
         binding.extendedNextFab.setOnClickListener(view -> {
-
-            // TODO: Show light alert if all the fields haven't been filled, otherwise
-            //  navigate to the next activity
-            Log.d("HA", "Selected transaction: " +
-                    homeViewModel.getTransactionType().getValue());
-            Log.d("HA", "Selected facility: " + homeViewModel.getFacility().getValue());
-            Log.d("HA", "Selected date: " + homeViewModel.getTransactionDate().getValue());
-            Log.d("HA", "Selected distributed to: " + homeViewModel.getDestination().getValue());
-
-            if (!canProceed()) {
-                Toast.makeText(this,
-                        this.getString(R.string.cannot_proceed_from_home_warning),
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             navigateToManageStock();
         });
 
@@ -184,13 +169,13 @@ public class HomeActivity extends AppCompatActivity {
             TransactionType type = entry.getKey();
             MaterialButton button = entry.getValue();
 
-            button.setOnClickListener(view -> selectTransaction(((MaterialButton)view), type, homeViewModel));
+            button.setOnClickListener(view -> selectTransaction(
+                    ((MaterialButton)view), type));
         });
     }
 
-    private void selectTransaction(
-            View button, TransactionType buttonTransaction, HomeViewModel hvm) {
-        hvm.selectTransaction(buttonTransaction);
+    private void selectTransaction(View button, TransactionType buttonTransaction) {
+        homeViewModel.selectTransaction(buttonTransaction);
     }
 
     private void setupTransactionDateField() {
@@ -225,22 +210,21 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void navigateToManageStock() {
+        if (!homeViewModel.readyManageStock()) {
+            Toast.makeText(this,
+                    this.getString(R.string.cannot_proceed_from_home_warning),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+//        UserIntent data = new UserIntent(
+//                homeViewModel.getTransactionType().getValue(),
+//                homeViewModel.get
+//        );
         startActivity(
-                ManageStockActivity.getManageStockActivityIntent(this, homeViewModel)
+                ManageStockActivity.getManageStockActivityIntent(this,
+                        homeViewModel.getData())
         );
-    }
-
-    private boolean canProceed() {
-        if (homeViewModel.getTransactionType().getValue() == null)
-            return false;
-
-
-        // TODO: Can bring about NullPointerException
-        if (homeViewModel.isDistribution().getValue() && homeViewModel.getDestination().getValue() == null)
-            return false;
-
-        return homeViewModel.getFacility().getValue() != null &&
-                homeViewModel.getTransactionDate().getValue() != null;
     }
 
     public static Intent getHomeActivityIntent(Context context) {

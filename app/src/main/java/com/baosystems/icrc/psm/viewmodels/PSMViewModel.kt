@@ -3,7 +3,7 @@ package com.baosystems.icrc.psm.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.utils.Constants
-import com.baosystems.icrc.psm.utils.humanReadable
+import com.baosystems.icrc.psm.utils.humanReadableDateTime
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -20,6 +20,6 @@ open class PSMViewModel: ViewModel() {
         updateLastSyncDate(dateTime)
     }
     fun updateLastSyncDate(syncDate: LocalDateTime) {
-        lastSyncDate.value = syncDate.humanReadable()
+        lastSyncDate.value = syncDate.humanReadableDateTime()
     }
 }

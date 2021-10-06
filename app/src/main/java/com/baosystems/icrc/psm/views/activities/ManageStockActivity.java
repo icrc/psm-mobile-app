@@ -4,33 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.TransactionType;
-import com.baosystems.icrc.psm.data.models.Destination;
+import com.baosystems.icrc.psm.data.models.UserIntent;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
-import com.baosystems.icrc.psm.viewmodels.HomeViewModel;
 import com.baosystems.icrc.psm.viewmodels.ManageStockViewModel;
 
-import org.hisp.dhis.android.core.option.Option;
-import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
-
-import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ManageStockActivity extends BaseActivity {
     private ActivityManageStockBinding binding;
     private ManageStockViewModel manageStockViewModel;
 
-    private enum IntentExtra {
-        TRANSACTION_TYPE,
-        FACILITY,
-        DATETIME,
-        DISTRIBUTED_TO
-    }
+    private static final String INTENT_DATA = "STOCK_CHOICES";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -44,34 +35,12 @@ public class ManageStockActivity extends BaseActivity {
 //        binding.
 //        setSupportActionBar(binding);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    public static Intent getManageStockActivityIntent(
-            Context context,
-            HomeViewModel homeViewModel
-            ) {
-        Bundle bundle = new Bundle();
-
-        TransactionType type = homeViewModel.getTransactionType().getValue();
-        if (type != null)
-            bundle.putString(IntentExtra.TRANSACTION_TYPE.name(), type.name());
-
-        OrganisationUnit facility = homeViewModel.getFacility().getValue();
-        if (facility != null)
-            bundle.putString(IntentExtra.FACILITY.name(), facility.displayName());
-
-        Option destination = homeViewModel.getDestination().getValue();
-        if (destination != null)
-            bundle.putString(IntentExtra.DISTRIBUTED_TO.name(), destination.displayName());
-
-        LocalDateTime transactionDate = homeViewModel.getTransactionDate().getValue();
-        if (transactionDate != null)
-            bundle.putString(IntentExtra.DATETIME.name(), transactionDate.toString());
-
-
+    public static Intent getManageStockActivityIntent(Context context, UserIntent bundle) {
         Intent intent = new Intent(context, ManageStockActivity.class);
-        intent.putExtras(bundle);
+        intent.putExtra(INTENT_DATA, bundle);
         return intent;
     }
 
@@ -79,6 +48,13 @@ public class ManageStockActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_stock);
+
+        UserIntent data = getIntent().getParcelableExtra(INTENT_DATA);
+        // TODO: Pull the intent data passed and store it in the view model for this acitvity
+        if (data != null) {
+            Log.d("MSA", data.getTransactionType().name());
+            Log.d("MSA", data.getFacility().getDisplayName());
+        }
 
         ManageStockViewModel viewModel =
                 new ViewModelProvider(this).get(ManageStockViewModel.class);
