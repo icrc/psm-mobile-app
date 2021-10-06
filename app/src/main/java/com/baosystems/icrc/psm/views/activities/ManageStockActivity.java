@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -49,17 +48,22 @@ public class ManageStockActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_stock);
 
-        UserIntent data = getIntent().getParcelableExtra(INTENT_DATA);
-        // TODO: Pull the intent data passed and store it in the view model for this acitvity
-        if (data != null) {
-            Log.d("MSA", data.getTransactionType().name());
-            Log.d("MSA", data.getFacility().getDisplayName());
-        }
-
         ManageStockViewModel viewModel =
                 new ViewModelProvider(this).get(ManageStockViewModel.class);
+        updateViewModel(getIntent().getParcelableExtra(INTENT_DATA));
 
         ActivityManageStockBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
+    }
+
+    private void updateViewModel(UserIntent data) {
+        if (data != null) {
+            manageStockViewModel.setTransactionType(data.getTransactionType());
+            manageStockViewModel.setFacility(data.getFacility());
+            manageStockViewModel.setTransactionDate(data.getTransactionDate());
+
+            if (data.getDistributedTo() != null)
+                manageStockViewModel.setDistributedTo(data.getDistributedTo());
+        }
     }
 }
