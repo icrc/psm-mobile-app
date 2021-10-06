@@ -16,6 +16,7 @@ import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.viewmodels.HomeViewModel;
 import com.baosystems.icrc.psm.viewmodels.ManageStockViewModel;
 
+import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
 import java.time.LocalDateTime;
@@ -58,11 +59,11 @@ public class ManageStockActivity extends BaseActivity {
 
         OrganisationUnit facility = homeViewModel.getFacility().getValue();
         if (facility != null)
-            bundle.putString(IntentExtra.FACILITY.name(), facility.name());
+            bundle.putString(IntentExtra.FACILITY.name(), facility.displayName());
 
-        Destination destination = homeViewModel.getDestination().getValue();
+        Option destination = homeViewModel.getDestination().getValue();
         if (destination != null)
-            bundle.putString(IntentExtra.DISTRIBUTED_TO.name(), destination.getName());
+            bundle.putString(IntentExtra.DISTRIBUTED_TO.name(), destination.displayName());
 
         LocalDateTime transactionDate = homeViewModel.getTransactionDate().getValue();
         if (transactionDate != null)

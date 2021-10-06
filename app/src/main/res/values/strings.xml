@@ -105,4 +105,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="resync">Resync</string>
+
+    <!-- Errors -->
+    <string name="login_error">Unable to login</string>
 </resources>

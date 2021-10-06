@@ -35,3 +35,5 @@ while communicating with the invalid server. This currently isn't handled approp
 - Handle session expired scenarios (See _ActivityGlobalAbstract.showSessionExpired_) for example
 - On logout, delete preferences relating to metadata sync so that a new sync can happen
   when next the user logs in
+- Add localization
+- Handle Crash Reporting

@@ -1,6 +1,8 @@
 package com.baosystems.icrc.psm.utils
 
 import android.content.Context
+import com.baosystems.icrc.psm.BuildConfig
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.service.FlipperManager
 import okhttp3.Interceptor
 import org.hisp.dhis.android.core.D2
@@ -10,6 +12,7 @@ import org.hisp.dhis.android.core.D2Manager
 class Sdk {
     companion object {
         @Throws(IllegalArgumentException::class)
+        @JvmStatic
         fun d2(): D2? {
             return D2Manager.getD2()
         }
@@ -22,10 +25,8 @@ class Sdk {
                 networkInterceptors.add(flipperInterceptor)
             }
             return D2Configuration.builder()
-                // TODO: Dynamically load the app name from the resource string
-                .appName("Pharmacy Stock Management")
-                // TODO: Dynamically load the app version
-                .appVersion("0.0.1")
+                .appName(context.getString(R.string.app_name))
+                .appVersion(BuildConfig.VERSION_NAME)
                 .readTimeoutInSeconds(30)
                 .connectTimeoutInSeconds(30)
                 .writeTimeoutInSeconds(30)

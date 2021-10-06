@@ -1,11 +1,5 @@
 package com.baosystems.icrc.psm.views.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,19 +7,33 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.TransactionType;
-import com.baosystems.icrc.psm.data.models.Destination;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
+import com.baosystems.icrc.psm.service.MetadataManager;
+import com.baosystems.icrc.psm.service.MetadataManagerImpl;
+import com.baosystems.icrc.psm.service.UserManager;
+import com.baosystems.icrc.psm.service.UserManagerImpl;
+import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
+import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
+import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.HomeViewModel;
-import com.baosystems.icrc.psm.views.adapters.FacilityListAdapter;
+import com.baosystems.icrc.psm.viewmodels.factories.HomeViewModelFactory;
+import com.baosystems.icrc.psm.views.adapters.GenericListAdapter;
 import com.baosystems.icrc.psm.views.adapters.RecentActivityAdapter;
 import com.google.android.material.button.MaterialButton;
 
+import org.hisp.dhis.android.core.D2;
+import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
 import java.util.HashMap;
@@ -45,7 +53,28 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        // TODO: Inject D2
+        D2 d2 = Sdk.d2();
+
+        // TODO: Inject MetadataManager
+        assert d2 != null;
+        MetadataManager metadataManager = new MetadataManagerImpl(d2);
+
+        // TODO: Inject UserManager using DI
+        UserManager userManager = new UserManagerImpl(d2);
+
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
+//        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        // TODO: Handle situations where d2 is probably null
+        homeViewModel = new ViewModelProvider(this,
+                new HomeViewModelFactory(
+                        schedulerProvider,
+                        metadataManager,
+                        userManager
+                )).get(HomeViewModel.class);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setViewModel(homeViewModel);
@@ -77,23 +106,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupComponents() {
         setupToolbar();
-
         setupButtons();
-
-//        homeViewModel.getFacilitiesList().observe(this, facilitiesList -> {
-//            facilityTextView.setAdapter(new ArrayAdapter<>(
-//                    this, R.layout.list_item, facilitiesList));
-//        });
 
         // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
         // TODO: Inject FacilityListAdapter with DI
-        homeViewModel.getFacilitiesList().observe(this, facilitiesList -> {
-            facilityTextView.setAdapter(new FacilityListAdapter(
+        homeViewModel.getFacilities().observe(this, facilitiesList -> {
+            facilityTextView.setAdapter(new GenericListAdapter<>(
                     this, R.layout.list_item, facilitiesList));
         });
 
         homeViewModel.getDestinationsList().observe(this, destinations -> {
-            distributedToTextView.setAdapter(new ArrayAdapter<Destination>(
+            distributedToTextView.setAdapter(new GenericListAdapter<>(
                     this, R.layout.list_item, destinations
             ));
         });
@@ -108,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
 
         distributedToTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
                 homeViewModel.setDestination(
-                        (Destination) distributedToTextView.getAdapter().getItem(position))
+                        (Option) distributedToTextView.getAdapter().getItem(position))
         );
 
         setupTransactionDateField();
