@@ -10,14 +10,17 @@ object DestinationFactory {
     private val uidGenerator: UidGenerator = UidGeneratorImpl()
     private val faker: Faker = Faker()
 
+    fun create(id: Long): Option {
+        val name = faker.address().streetName()
+
+        return Option.builder()
+            .id(id)
+            .uid(uidGenerator.generate())
+            .name(name)
+            .displayName(name).build()
+    }
+
     fun getListOf(num: Int): List<Option> {
-        return (1..num).map {
-            val name = faker.address().streetName()
-            Option.builder()
-                .id(it.toLong())
-                .uid(uidGenerator.generate())
-                .name(name)
-                .displayName(name).build()
-        }
+        return (1..num).map { create(it.toLong()) }
     }
 }
