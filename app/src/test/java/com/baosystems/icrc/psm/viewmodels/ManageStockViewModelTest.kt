@@ -24,13 +24,6 @@ class ManageStockViewModelTest {
     private lateinit var distributedTo: IdentifiableModel
     lateinit var transactionDate: String
 
-    private fun getModel(type: TransactionType) =
-        ManageStockViewModel(
-            type, facility,
-            transactionDate,
-            if (type == TransactionType.DISTRIBUTION) distributedTo else null
-        )
-
     private fun getModel(type: TransactionType,
                          distributedTo: IdentifiableModel?) =
         ManageStockViewModel(
@@ -42,8 +35,7 @@ class ManageStockViewModelTest {
     @Before
     fun setUp() {
         facility = ParcelUtils.facilityToIdentifiableModelParcel(
-            FacilityFactory.getListOf(1).first()
-        )
+            FacilityFactory.create(57L))
         distributedTo = ParcelUtils.distributedTo_ToIdentifiableModelParcel(
             DestinationFactory.create(23L))
         transactionDate = "2021-08-05"
@@ -51,7 +43,7 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityDateAndDistributedToForDistribution() {
-        val viewModel = getModel(TransactionType.DISTRIBUTION)
+        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
 
         assertNotNull(viewModel.facility)
         assertEquals(viewModel.facility.displayName, facility.displayName)
@@ -76,7 +68,7 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityAndDateForDiscard() {
-        val viewModel = getModel(TransactionType.DISCARD)
+        val viewModel = getModel(TransactionType.DISCARD, null)
 
         assertNotNull(viewModel.facility)
         assertNull(viewModel.distributedTo)
@@ -86,7 +78,7 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityAndDateForCorrection() {
-        val viewModel = getModel(TransactionType.CORRECTION)
+        val viewModel = getModel(TransactionType.CORRECTION, null)
 
         assertNotNull(viewModel.facility)
         assertNull(viewModel.distributedTo)
