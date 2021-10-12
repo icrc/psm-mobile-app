@@ -45,6 +45,8 @@ import java.util.Properties;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class HomeActivity extends BaseActivity {
+    private static String TAG = "HomeActivity";
+
     private ActivityHomeBinding binding;
     private RecentActivityAdapter recentActivityAdapter;
 
@@ -117,6 +119,13 @@ public class HomeActivity extends BaseActivity {
 
         homeViewModel.getRecentActivityList().observe(this, recentActivities -> {
             recentActivityAdapter.submitList(recentActivities);
+        });
+
+        homeViewModel.getError().observe(this, message -> {
+            Log.d(TAG, "Error: " + message);
+            if (message != null) {
+                ActivityManager.showErrorMessage(binding.getRoot(), message);
+            }
         });
     }
 

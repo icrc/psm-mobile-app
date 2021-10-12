@@ -64,18 +64,16 @@ class MetadataManagerImpl(
 //            .subscribe()
     }
 
-    override fun stockManagementProgram(): Single<Program> {
-        return Single.just {
-            val programUid = configProps.getProperty(CONFIG_PROGRAM_KEY)
-            if (programUid.isNullOrBlank())
-                throw InitializationException("No value was set for $CONFIG_PROGRAM_KEY")
+    override fun stockManagementProgram(): Single<Program?> {
+        return Single.just(configProps.getProperty(CONFIG_PROGRAM_KEY)).map { programUid ->
+            if (programUid.isBlank())
+                throw InitializationException(
+                    "The '$CONFIG_PROGRAM_KEY' config has not been set in the configuration file")
 
-            programUid
-        }.map {
             d2.programModule()
                 .programs()
                 .byUid()
-                .eq(it.toString())
+                .eq(programUid)
                 .one()
                 .blockingGet()
         }

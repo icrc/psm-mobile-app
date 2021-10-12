@@ -34,6 +34,7 @@ class HomeViewModel(
 ): PSMViewModel() {
     val TAG = "HomeViewModel"
 
+    // TODO: Move all the properties below into a singular object
     var program: Program? = null
 
     private val _transactionType =  MutableLiveData<TransactionType>()
@@ -61,6 +62,10 @@ class HomeViewModel(
     private val _destinations = MutableLiveData<List<Option>>()
     val destinationsList: MutableLiveData<List<Option>>
         get() = _destinations
+
+    private val _error = MutableLiveData<String>(null)
+    val error: MutableLiveData<String>
+        get() = _error
 
     val recentActivityList = fetchSampleRecentActivities()
 
@@ -120,15 +125,6 @@ class HomeViewModel(
             metadataManager.facilities()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-//                .doOnSuccess {
-//                    _facilities.postValue(it)
-//                    it.forEach { ou -> Log.d(TAG, "Facility: Uid: ${ou.uid()}, Name: ${ou.name()}") }
-//
-//                    if (it.size == 1) _facility.postValue(it[0])
-//                }
-//                .doOnError {
-//                    // TODO: Notify the user of an error in case the facilities cannot be fetched
-//                }
                 .doOnTerminate {
                     // TODO: Remove later (temporarily used for debugging)
                     Log.d(TAG, "Finished fetching facilities (program OUs)")
@@ -141,7 +137,8 @@ class HomeViewModel(
 
                         if (it.size == 1) _facility.postValue(it[0])
                     }, {
-                        // TODO: Handle errors that occur while loading the facilities
+                        // TODO: Use resource file for facilities loading error messages
+                        _error.postValue("Unable to load facilities - ${it.message}")
                     }
                 )
         )

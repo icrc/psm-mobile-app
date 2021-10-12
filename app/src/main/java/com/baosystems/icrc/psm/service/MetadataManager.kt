@@ -9,7 +9,7 @@ import org.hisp.dhis.android.core.program.Program
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 
 interface MetadataManager {
-    fun stockManagementProgram(): Single<Program>
+    fun stockManagementProgram(): Single<Program?>
     fun facilities(): Single<MutableList<OrganisationUnit>>
     fun destinations(): Single<List<Option>>
     fun queryStock(search: String?): LiveData<PagedList<TrackedEntityInstance>>
