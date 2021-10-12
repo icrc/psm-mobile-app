@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.viewmodels
+package com.baosystems.icrc.psm.viewmodels.settings
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

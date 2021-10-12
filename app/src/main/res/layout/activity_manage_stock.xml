@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.psm.viewmodels.ManageStockViewModel" />
+            type="com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

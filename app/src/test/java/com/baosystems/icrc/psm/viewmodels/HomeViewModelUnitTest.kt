@@ -11,8 +11,9 @@ import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.service.scheduler.TrampolineSchedulerProvider
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
+import com.baosystems.icrc.psm.viewmodels.home.HomeViewModel
 import io.reactivex.Single
-import kotlinx.coroutines.Dispatchers
+import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
@@ -28,7 +29,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
-import java.io.FileInputStream
 import java.lang.UnsupportedOperationException
 import java.time.LocalDateTime
 
@@ -44,6 +44,7 @@ class HomeViewModelUnitTest {
     private lateinit var schedulerProvider: BaseSchedulerProvider
     private lateinit var facilities: List<OrganisationUnit>
     private lateinit var destinations: List<Option>
+    private val disposable = CompositeDisposable()
 
     @Mock
     private lateinit var d2: D2
@@ -75,7 +76,7 @@ class HomeViewModelUnitTest {
             .thenReturn(Single.just(destinations))
 
         userManager = UserManagerImpl(d2)
-        viewModel = HomeViewModel(schedulerProvider, metadataManager, userManager)
+        viewModel = HomeViewModel(disposable, schedulerProvider, metadataManager, userManager)
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)

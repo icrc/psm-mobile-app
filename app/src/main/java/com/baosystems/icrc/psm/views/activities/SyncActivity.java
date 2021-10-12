@@ -1,7 +1,6 @@
 package com.baosystems.icrc.psm.views.activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,8 +24,8 @@ import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.Sdk;
-import com.baosystems.icrc.psm.viewmodels.SyncViewModel;
-import com.baosystems.icrc.psm.viewmodels.factories.SyncViewModelFactory;
+import com.baosystems.icrc.psm.viewmodels.sync.SyncViewModel;
+import com.baosystems.icrc.psm.viewmodels.sync.SyncViewModelFactory;
 
 import org.hisp.dhis.android.core.D2;
 

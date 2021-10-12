@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.viewmodels
+package com.baosystems.icrc.psm.viewmodels.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -15,13 +15,12 @@ import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.Constants
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
+import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
-import java.io.FileInputStream
-import java.io.InputStream
 import java.lang.UnsupportedOperationException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

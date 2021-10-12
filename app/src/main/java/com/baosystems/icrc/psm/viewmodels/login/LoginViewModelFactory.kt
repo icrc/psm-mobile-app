@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.viewmodels.factories
+package com.baosystems.icrc.psm.viewmodels.login
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.baosystems.icrc.psm.service.PreferenceProvider
 import com.baosystems.icrc.psm.service.UserManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
-import com.baosystems.icrc.psm.viewmodels.LoginViewModel
 
 class LoginViewModelFactory(
     private val application: Application,

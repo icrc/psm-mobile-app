@@ -24,8 +24,8 @@ import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.KeyboardUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
-import com.baosystems.icrc.psm.viewmodels.LoginViewModel;
-import com.baosystems.icrc.psm.viewmodels.factories.LoginViewModelFactory;
+import com.baosystems.icrc.psm.viewmodels.login.LoginViewModel;
+import com.baosystems.icrc.psm.viewmodels.login.LoginViewModelFactory;
 
 import org.hisp.dhis.android.core.D2;
 

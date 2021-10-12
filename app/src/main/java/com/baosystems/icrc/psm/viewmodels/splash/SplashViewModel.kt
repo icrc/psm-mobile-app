@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.viewmodels
+package com.baosystems.icrc.psm.viewmodels.splash
 
 import android.app.Application
 import android.content.Context

@@ -1,10 +1,10 @@
-package com.baosystems.icrc.psm.viewmodels
+package com.baosystems.icrc.psm.viewmodels.stock
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
-import com.baosystems.icrc.psm.data.models.StockItem
+import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import org.hisp.dhis.android.core.attribute.AttributeValue
 import java.lang.UnsupportedOperationException
 

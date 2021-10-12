@@ -11,7 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,8 +27,8 @@ import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.Sdk;
-import com.baosystems.icrc.psm.viewmodels.HomeViewModel;
-import com.baosystems.icrc.psm.viewmodels.factories.HomeViewModelFactory;
+import com.baosystems.icrc.psm.viewmodels.home.HomeViewModel;
+import com.baosystems.icrc.psm.viewmodels.home.HomeViewModelFactory;
 import com.baosystems.icrc.psm.views.adapters.GenericListAdapter;
 import com.baosystems.icrc.psm.views.adapters.RecentActivityAdapter;
 import com.google.android.material.button.MaterialButton;
@@ -121,9 +120,17 @@ public class HomeActivity extends BaseActivity {
         });
     }
 
-    private Properties loadConfigFile() throws IOException {
+    private Properties loadConfigFile() {
         Properties configProps = new Properties();
-        configProps.load(getResources().openRawResource(R.raw.config));
+
+        try {
+            configProps.load(getResources().openRawResource(R.raw.config));
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            ActivityManager.showErrorMessage(binding.getRoot(),
+                    getResources().getString(R.string.config_file_error));
+        }
 
         return configProps;
     }
@@ -253,19 +260,7 @@ public class HomeActivity extends BaseActivity {
         // TODO: Inject MetadataManager
         assert d2 != null; // TODO: Remove once d2 has been injected
 
-
-        Properties configProps = null;
-        try {
-            configProps = loadConfigFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            // TODO: Find a way of logging this error: Unable to load config file
-//            ActivityManager.showErrorMessage(binding.getRoot(),
-//                    getResources().getString(R.string.config_file_error));
-        }
-
-        MetadataManager metadataManager = new MetadataManagerImpl(d2, configProps);
+        MetadataManager metadataManager = new MetadataManagerImpl(d2, loadConfigFile());
 
         // TODO: Inject UserManager using DI
         UserManager userManager = new UserManagerImpl(d2);

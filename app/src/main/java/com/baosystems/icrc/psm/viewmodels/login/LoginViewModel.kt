@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.viewmodels
+package com.baosystems.icrc.psm.viewmodels.login
 
 import android.app.Application
 import android.util.Log
@@ -7,9 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.service.*
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
-import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl
 import com.baosystems.icrc.psm.utils.Constants
-import com.baosystems.icrc.psm.utils.Sdk
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.maintenance.D2Error

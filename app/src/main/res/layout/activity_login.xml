@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.psm.viewmodels.LoginViewModel" />
+            type="com.baosystems.icrc.psm.viewmodels.login.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

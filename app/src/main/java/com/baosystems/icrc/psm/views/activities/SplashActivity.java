@@ -15,8 +15,8 @@ import com.baosystems.icrc.psm.service.SecurePreferenceProviderImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
-import com.baosystems.icrc.psm.viewmodels.SplashViewModel;
-import com.baosystems.icrc.psm.viewmodels.factories.SplashViewModelFactory;
+import com.baosystems.icrc.psm.viewmodels.splash.SplashViewModel;
+import com.baosystems.icrc.psm.viewmodels.splash.SplashViewModelFactory;
 
 import org.jetbrains.annotations.NotNull;
 

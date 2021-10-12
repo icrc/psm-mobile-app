@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.viewmodels
+package com.baosystems.icrc.psm.viewmodels.sync
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +13,6 @@ import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.maintenance.D2Error
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class SyncViewModel(

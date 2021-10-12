@@ -1,25 +1,24 @@
-package com.baosystems.icrc.psm.viewmodels.factories
+package com.baosystems.icrc.psm.viewmodels.splash
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.baosystems.icrc.psm.service.PreferenceProvider
-import com.baosystems.icrc.psm.service.SyncManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
-import com.baosystems.icrc.psm.viewmodels.SyncViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-class SyncViewModelFactory(
+class SplashViewModelFactory(
+    private val application: Application,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
-    private val preferenceProvider: PreferenceProvider,
-    private val syncManager: SyncManager,
+    private val preferenceProvider: PreferenceProvider
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return SyncViewModel(
+        return SplashViewModel(
+            application,
             disposable,
             schedulerProvider,
-            preferenceProvider,
-            syncManager
+            preferenceProvider
         ) as T
     }
 }

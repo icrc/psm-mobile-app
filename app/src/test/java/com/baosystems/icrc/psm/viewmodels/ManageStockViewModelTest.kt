@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.service.MetadataManager
 import com.baosystems.icrc.psm.utils.ParcelUtils
+import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel
 import org.hisp.dhis.android.core.attribute.AttributeValue
 import org.junit.Assert.*
 

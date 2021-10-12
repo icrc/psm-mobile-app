@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.psm.viewmodels.SyncViewModel" />
+            type="com.baosystems.icrc.psm.viewmodels.sync.SyncViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

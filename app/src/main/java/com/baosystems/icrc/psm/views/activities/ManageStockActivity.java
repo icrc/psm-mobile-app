@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.models.UserIntent;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
-import com.baosystems.icrc.psm.viewmodels.ManageStockViewModel;
-import com.baosystems.icrc.psm.viewmodels.factories.ManageStockViewModelFactory;
+import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
+import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
 
 import io.reactivex.disposables.CompositeDisposable;
 

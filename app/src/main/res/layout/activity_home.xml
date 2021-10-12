@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.psm.viewmodels.HomeViewModel" />
+            type="com.baosystems.icrc.psm.viewmodels.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
