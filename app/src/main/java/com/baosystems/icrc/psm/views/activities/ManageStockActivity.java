@@ -16,6 +16,8 @@ import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ManageStockActivity extends BaseActivity {
@@ -24,23 +26,6 @@ public class ManageStockActivity extends BaseActivity {
 
     private static final String TAG = "ManageStockActivity";
     private static final String INTENT_DATA = "STOCK_CHOICES";
-
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-//        super.onCreate(savedInstanceState, persistentState);
-//
-//
-//
-//        manageStockViewModel = new ViewModelProvider(this).get(ManageStockViewModel.class);
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
-//        binding.setViewModel(manageStockViewModel);
-//        binding.setLifecycleOwner(this);
-//
-////        binding.
-////        setSupportActionBar(binding);
-//
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-//    }
 
     public static Intent getManageStockActivityIntent(Context context, UserIntent bundle) {
         Intent intent = new Intent(context, ManageStockActivity.class);
@@ -62,7 +47,6 @@ public class ManageStockActivity extends BaseActivity {
         binding.setViewModel(manageStockViewModel);
         binding.setLifecycleOwner(this);
 
-//        binding.
         setSupportActionBar(binding.toolbarContainer.toolbar);
 
         if (getSupportActionBar() != null)
@@ -72,7 +56,7 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     @Override
-    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+    public ViewModel createViewModel(@NotNull CompositeDisposable disposable) {
         UserIntent intentExtra = getIntent().getParcelableExtra(INTENT_DATA);
         ManageStockViewModel viewModel = new ViewModelProvider(
                 this,

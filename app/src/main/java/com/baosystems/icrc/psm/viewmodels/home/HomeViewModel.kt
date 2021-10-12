@@ -152,13 +152,19 @@ class HomeViewModel(
     fun selectTransaction(type: TransactionType) {
         transactionType.value = type
         isDistribution.value = type == TransactionType.DISTRIBUTION
+
+        // Distributed to cannot only be set for DISTRIBUTION,
+        // so ensure you clear it for others if it has been set
+        if (type != TransactionType.DISTRIBUTION) {
+            _destination.value = null
+        }
     }
 
     fun setFacility(facility: OrganisationUnit) {
         _facility.value = facility
     }
 
-    fun setDestination(destination: Option) {
+    fun setDestination(destination: Option?) {
         if (isDistribution.value == false)
             throw UnsupportedOperationException(
                 "Cannot set 'distributed to' for non-distribution transactions")

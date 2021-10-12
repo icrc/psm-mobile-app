@@ -1,6 +1,7 @@
 package com.baosystems.icrc.psm.viewmodels.sync
 
 import android.util.Log
+import androidx.annotation.DrawableRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
@@ -46,6 +47,7 @@ class SyncViewModel(
         var completed: Boolean = false
         var error: String? = null
         var progress: Int = 0
+        @DrawableRes
         var drawableRes: Int? = null
 
         constructor(completed: Boolean, drawableRes: Int) {
