@@ -3,13 +3,11 @@ package com.baosystems.icrc.psm.views.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
@@ -18,11 +16,11 @@ import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.viewmodels.ManageStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.factories.ManageStockViewModelFactory;
 
-import java.util.Objects;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class ManageStockActivity extends BaseActivity {
     private ActivityManageStockBinding binding;
-//    private ManageStockViewModel manageStockViewModel;
+    private ManageStockViewModel manageStockViewModel;
 
     private static final String TAG = "ManageStockActivity";
     private static final String INTENT_DATA = "STOCK_CHOICES";
@@ -53,12 +51,28 @@ public class ManageStockActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_stock);
+
+        manageStockViewModel = (ManageStockViewModel) getViewModel();
 
 //        ManageStockViewModel viewModel =
 //                new ViewModelProvider(this).get(ManageStockViewModel.class);
 //        updateViewModel(getIntent().getParcelableExtra(INTENT_DATA));
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
+        binding.setViewModel(manageStockViewModel);
+        binding.setLifecycleOwner(this);
+
+//        binding.
+        setSupportActionBar(binding.toolbarContainer.toolbar);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        else
+            Log.w(TAG, "Support action bar is null");
+    }
+
+    @Override
+    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
         UserIntent intentExtra = getIntent().getParcelableExtra(INTENT_DATA);
         ManageStockViewModel viewModel = new ViewModelProvider(
                 this,
@@ -72,18 +86,7 @@ public class ManageStockActivity extends BaseActivity {
 
         Log.d(TAG, intentExtra.toString());
 
-        ActivityManageStockBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
-        binding.setViewModel(viewModel);
-        binding.setLifecycleOwner(this);
-
-//        binding.
-        setSupportActionBar(binding.toolbarContainer.toolbar);
-
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        else
-            Log.w(TAG, "Support action bar is null");
+        return viewModel;
     }
 
     //    private void updateViewModel(UserIntent data) {

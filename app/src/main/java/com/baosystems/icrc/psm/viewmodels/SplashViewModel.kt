@@ -5,16 +5,21 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.baosystems.icrc.psm.service.PreferenceProvider
+import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.utils.Constants
 import com.baosystems.icrc.psm.utils.Sdk
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.D2Manager
 
 
-class SplashViewModel(application: Application) : AndroidViewModel(application) {
-    private val disposable = CompositeDisposable()
+class SplashViewModel(
+    application: Application,
+    private val disposable: CompositeDisposable,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val preferenceProvider: PreferenceProvider
+) : AndroidViewModel(application) {
 
     companion object {
         const val TAG = "SplashViewModel"
@@ -32,8 +37,11 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
                 .flatMap { d2: D2 ->
                     d2.userModule().isLogged
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .doOnSuccess() {
+                    Log.d(TAG, "Login check completed: Status = $it")
+                }
                 .subscribe(
                     {isLogged ->
                         loggedIn.postValue(isLogged)
@@ -62,7 +70,5 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
         return this.loggedIn
     }
 
-    fun cleanUp() {
-        disposable.dispose()
-    }
+    fun hasSyncedMetadata(): Boolean = preferenceProvider.contains(Constants.LAST_SYNC_DATE)
 }

@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class HomeViewModel(
+    private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     private val metadataManager: MetadataManager,
     private val userManager: UserManager
@@ -63,9 +64,6 @@ class HomeViewModel(
         get() = _destinations
 
     val recentActivityList = fetchSampleRecentActivities()
-
-    // TODO: Inject CompositeDisposable with DI
-    private val disposable = CompositeDisposable()
 
     init {
         _transactionDate.value = LocalDateTime.now()

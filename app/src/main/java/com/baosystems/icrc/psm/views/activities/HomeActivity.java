@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,8 +43,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class HomeActivity extends AppCompatActivity {
-    private HomeViewModel homeViewModel;
+import io.reactivex.disposables.CompositeDisposable;
+
+public class HomeActivity extends BaseActivity {
     private ActivityHomeBinding binding;
     private RecentActivityAdapter recentActivityAdapter;
 
@@ -51,58 +53,39 @@ public class HomeActivity extends AppCompatActivity {
     private AutoCompleteTextView distributedToTextView;
     private AutoCompleteTextView transactionDateTextView;
     private RecyclerView recentActivitiesRecyclerView;
+    private HomeViewModel homeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        homeViewModel = (HomeViewModel) getViewModel();
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setLifecycleOwner(this);
+        binding.setViewModel(homeViewModel);
 
         facilityTextView = binding.selectedFacilityTextView;
         transactionDateTextView = binding.transactionDateTextView;
         distributedToTextView = binding.distributedToTextView;
         recentActivitiesRecyclerView = binding.recentActivityList;
 
-        // TODO: Inject D2
-        D2 d2 = Sdk.d2();
+        attachObservers();
 
-        // TODO: Inject MetadataManager
-        assert d2 != null; // TODO: Remove once d2 has been injected
-        try {
-            initViewModel(d2);
-            setupComponents();
-        } catch (IOException e) {
-            e.printStackTrace();
+//        try {
+//            initViewModel(d2);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//
+//            ActivityManager.showErrorMessage(binding.getRoot(),
+//                    getResources().getString(R.string.config_file_error));
+//        }
 
-            ActivityManager.showErrorMessage(binding.getRoot(),
-                    getResources().getString(R.string.config_file_error));
-        }
+        setupComponents();
     }
 
-    private void initViewModel(D2 d2) throws IOException {
-        MetadataManager metadataManager = new MetadataManagerImpl(d2, loadConfigFile());
-
-        // TODO: Inject UserManager using DI
-        UserManager userManager = new UserManagerImpl(d2);
-
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-        // TODO: Handle situations where d2 is probably null
-
-        // TODO: Handle errors that can occur if expected configuration properties
-        //  (e.g. program id, item code id etc) weren't found.
-        //  The application cannot proceed without them
-        homeViewModel = new ViewModelProvider(this,
-                new HomeViewModelFactory(
-                        schedulerProvider,
-                        metadataManager,
-                        userManager
-                )).get(HomeViewModel.class);
-
-        binding.setViewModel(homeViewModel);
-
+    private void attachObservers() {
         // TODO: remove later. temporarily used for testing
         homeViewModel.loadTestStockItems("").observe(this, teis -> {
             teis.forEach(tei -> {
@@ -259,5 +242,48 @@ public class HomeActivity extends AppCompatActivity {
 
     public static Intent getHomeActivityIntent(Context context) {
         return new Intent(context, HomeActivity.class);
+    }
+
+    @NonNull
+    @Override
+    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+        // TODO: Inject D2
+        D2 d2 = Sdk.d2();
+
+        // TODO: Inject MetadataManager
+        assert d2 != null; // TODO: Remove once d2 has been injected
+
+
+        Properties configProps = null;
+        try {
+            configProps = loadConfigFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            // TODO: Find a way of logging this error: Unable to load config file
+//            ActivityManager.showErrorMessage(binding.getRoot(),
+//                    getResources().getString(R.string.config_file_error));
+        }
+
+        MetadataManager metadataManager = new MetadataManagerImpl(d2, configProps);
+
+        // TODO: Inject UserManager using DI
+        UserManager userManager = new UserManagerImpl(d2);
+
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
+        // TODO: Handle situations where d2 is probably null
+
+        // TODO: Handle errors that can occur if expected configuration properties
+        //  (e.g. program id, item code id etc) weren't found.
+        //  The application cannot proceed without them
+        return new ViewModelProvider(this,
+                new HomeViewModelFactory(
+                        disposable,
+                        schedulerProvider,
+                        metadataManager,
+                        userManager
+                )).get(HomeViewModel.class);
     }
 }

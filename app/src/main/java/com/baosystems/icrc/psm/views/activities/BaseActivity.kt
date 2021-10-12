@@ -1,19 +1,23 @@
 package com.baosystems.icrc.psm.views.activities
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
-import android.os.PersistableBundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * The base Activity
  * Has the menu set, and also sets the action bar.
  */
 abstract class BaseActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    private lateinit var viewModel: ViewModel
+
+    // TODO: Inject via DI if possible/necessary
+    private val disposable = CompositeDisposable()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
@@ -22,7 +26,24 @@ abstract class BaseActivity : AppCompatActivity() {
         //  to the left of the toolbar
 //        toolbar.title = ""
 //        setSupportActionBar(toolbar)
+
+        viewModel = createViewModel(disposable)
     }
+
+    fun getViewModel(): ViewModel = viewModel
+
+    /**
+     * Initialize the ViewModel for this Activity
+     */
+    abstract fun createViewModel(disposable: CompositeDisposable): ViewModel
+
+    override fun onDestroy() {
+        Log.d("BaseActivity", "About to dispose 'disposable'")
+        disposable.dispose()
+        super.onDestroy()
+    }
+
+
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 //        val inflater: MenuInflater = menuInflater
