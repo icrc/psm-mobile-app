@@ -38,8 +38,8 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun createViewModel(disposable: CompositeDisposable): ViewModel
 
     override fun onDestroy() {
-        Log.d("BaseActivity", "About to dispose 'disposable'")
-        disposable.dispose()
+        Log.d("BaseActivity", "About to clear existing 'disposables'")
+        disposable.clear()
         super.onDestroy()
     }
 

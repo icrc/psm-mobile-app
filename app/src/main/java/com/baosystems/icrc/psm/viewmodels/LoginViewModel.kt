@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.viewmodels
 import android.app.Application
 import android.util.Log
 import android.util.Patterns
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.service.*
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
@@ -16,20 +17,13 @@ import org.hisp.dhis.android.core.maintenance.D2ErrorCode
 import org.hisp.dhis.android.core.user.User
 
 // TODO: Extend 'ViewModel' if it doesn't eventually require the application context
-class LoginModel(application: Application) : ContextualViewModel(application) {
-    private val TAG = "LoginModel"
-
-    // TODO: Inject SchedulerProvider using DI
-    private val schedulerProvider: BaseSchedulerProvider
-
-    // TODO: Inject UserManager using DI
+class LoginViewModel(
+    application: Application,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val preferenceProvider: PreferenceProvider,
     private val userManager: UserManager
-
-    // TODO: Inject PreferenceProvider with DI
-    private val preferenceProvider: PreferenceProvider
-
-    // TODO: Inject CompositeDisposable with DI
-    private val disposable = CompositeDisposable()
+) : AndroidViewModel(application) {
+    private val TAG = "LoginModel"
 
     // TODO: Remove the temporary values added for testing
     val username: MutableLiveData<String> = MutableLiveData()
@@ -44,17 +38,20 @@ class LoginModel(application: Application) : ContextualViewModel(application) {
 
     private val loginResult: MutableLiveData<Result> = MutableLiveData()
 
+    private val disposable = CompositeDisposable()
 
 
     init {
-        schedulerProvider = SchedulerProviderImpl()
-
-        // TODO: Inject D2
-        val d2 = Sdk.d2()
-        userManager = d2?.let { UserManagerImpl(it) }!!
-
-        preferenceProvider = SecurePreferenceProviderImpl(getApplication())
-        loadUserCredentials().subscribe()
+//        schedulerProvider = SchedulerProviderImpl()
+//
+//        // TODO: Inject D2
+//        val d2 = Sdk.d2()
+//        userManager = d2?.let { UserManagerImpl(it) }!!
+//
+//        preferenceProvider = SecurePreferenceProviderImpl(getApplication())
+        disposable.add(
+            loadUserCredentials().subscribe()
+        )
     }
 
     class Result {
@@ -88,7 +85,7 @@ class LoginModel(application: Application) : ContextualViewModel(application) {
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doOnComplete {
-                    saveUserCredentials().subscribe()
+                    disposable.add(saveUserCredentials().subscribe())
                 }
                 .doOnTerminate {
                     // TODO: Perform any cleanups after the background login process is done
@@ -158,10 +155,6 @@ class LoginModel(application: Application) : ContextualViewModel(application) {
 
     fun getLoginResult(): MutableLiveData<Result> {
         return loginResult
-    }
-
-    override fun cleanUp() {
-        disposable.dispose()
     }
 
     private fun saveUserCredentials(): Completable {

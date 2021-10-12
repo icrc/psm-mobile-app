@@ -17,6 +17,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class SyncViewModel(
+    private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     private val preferenceProvider: PreferenceProvider,
     private val syncManager: SyncManager
@@ -24,7 +25,7 @@ class SyncViewModel(
     private val TAG = "SyncViewModel"
     private val SYNC_COMPLETED_DELAY = 1L
 
-    private val disposable = CompositeDisposable()
+//    private val disposable = CompositeDisposable()
 
     val syncResult: MutableLiveData<Result> = MutableLiveData()
     val description: MutableLiveData<String> = MutableLiveData()

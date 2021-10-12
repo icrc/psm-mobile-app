@@ -1,8 +1,10 @@
 package com.baosystems.icrc.psm.views.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -29,7 +31,9 @@ import com.baosystems.icrc.psm.viewmodels.factories.SyncViewModelFactory;
 
 import org.hisp.dhis.android.core.D2;
 
-public class SyncActivity extends AppCompatActivity {
+import io.reactivex.disposables.CompositeDisposable;
+
+public class SyncActivity extends BaseActivity {
     private static String TAG = "SyncActivity";
 
     private SyncViewModel viewModel;
@@ -41,9 +45,12 @@ public class SyncActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        viewModel = (SyncViewModel) getViewModel();
+
         ActivitySyncBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_sync);
         binding.setLifecycleOwner(this);
+        binding.setViewModel(viewModel);
 
         progressBar = binding.progressBar;
         infoIcon = binding.infoIcon;
@@ -51,36 +58,11 @@ public class SyncActivity extends AppCompatActivity {
 
         resyncButton.setOnClickListener(view -> sync());
 
-        initViewModel();
-        binding.setViewModel(viewModel);
-
+        addObservers();
         sync();
     }
 
-    private void initViewModel() {
-        // TODO: Inject D2
-        D2 d2 = Sdk.d2();
-
-        assert d2 != null; // TODO: Remove once d2 has been injected
-
-        // TODO: Inject SyncManager using DI
-        SyncManager syncManager = new SyncManagerImpl(d2);
-
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-        // TODO: Inject PreferenceProvider with DI
-        PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
-
-        viewModel = new ViewModelProvider(
-                this,
-                new SyncViewModelFactory(
-                        schedulerProvider,
-                        preferenceProvider,
-                        syncManager
-                )
-        ).get(SyncViewModel.class);
-
+    private void addObservers() {
         viewModel.getSyncResult().observe(this, result -> {
             if (result != null) {
                 if (result.getDrawableRes() != null) {
@@ -114,5 +96,33 @@ public class SyncActivity extends AppCompatActivity {
 
     public static Intent getSyncActivityIntent(Context context) {
         return new Intent(context, SyncActivity.class);
+    }
+
+    @NonNull
+    @Override
+    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+        // TODO: Inject D2
+        D2 d2 = Sdk.d2();
+
+        assert d2 != null; // TODO: Remove once d2 has been injected
+
+        // TODO: Inject SyncManager using DI
+        SyncManager syncManager = new SyncManagerImpl(d2);
+
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
+        // TODO: Inject PreferenceProvider with DI
+        PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
+
+        return new ViewModelProvider(
+                this,
+                new SyncViewModelFactory(
+                        disposable,
+                        schedulerProvider,
+                        preferenceProvider,
+                        syncManager
+                )
+        ).get(SyncViewModel.class);
     }
 }

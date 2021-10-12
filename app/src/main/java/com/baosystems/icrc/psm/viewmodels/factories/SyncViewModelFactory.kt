@@ -6,14 +6,17 @@ import com.baosystems.icrc.psm.service.PreferenceProvider
 import com.baosystems.icrc.psm.service.SyncManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.viewmodels.SyncViewModel
+import io.reactivex.disposables.CompositeDisposable
 
 class SyncViewModelFactory(
+    private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     private val preferenceProvider: PreferenceProvider,
     private val syncManager: SyncManager,
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return SyncViewModel(
+            disposable,
             schedulerProvider,
             preferenceProvider,
             syncManager

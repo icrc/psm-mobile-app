@@ -8,18 +8,31 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivityLoginBinding;
+import com.baosystems.icrc.psm.service.PreferenceProvider;
+import com.baosystems.icrc.psm.service.SecurePreferenceProviderImpl;
+import com.baosystems.icrc.psm.service.UserManager;
+import com.baosystems.icrc.psm.service.UserManagerImpl;
+import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
+import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.KeyboardUtils;
-import com.baosystems.icrc.psm.viewmodels.LoginModel;
+import com.baosystems.icrc.psm.utils.Sdk;
+import com.baosystems.icrc.psm.viewmodels.LoginViewModel;
+import com.baosystems.icrc.psm.viewmodels.factories.LoginViewModelFactory;
 
-public class LoginActivity extends AppCompatActivity {
-    private LoginModel loginModel;
+import org.hisp.dhis.android.core.D2;
+
+import io.reactivex.disposables.CompositeDisposable;
+
+public class LoginActivity extends BaseActivity {
+    private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 
     // TODO: See if the view model and the two-way binding can handle
@@ -35,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
             Log.d("LoginActivity", "Text changed");
-            loginModel.loginDataChanged();
+            loginViewModel.loginDataChanged();
         }
     };
 
@@ -43,9 +56,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loginModel = new ViewModelProvider(this).get(LoginModel.class);
+        loginViewModel = (LoginViewModel) getViewModel();
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        binding.setViewModel(loginModel);
+        binding.setViewModel(loginViewModel);
         binding.setLifecycleOwner(this);
 
         // TODO: Ensure the user doesn't have to enter the server URL and username everytime.
@@ -57,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.passwordTextField.addTextChangedListener(afterTextChangedListener);
         binding.signInButton.setOnClickListener(view -> login());
 
-        loginModel.getLoginResult().observe(this, loginResult -> {
+        loginViewModel.getLoginResult().observe(this, loginResult -> {
             if (loginResult == null)
                 return;
 
@@ -94,16 +108,37 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: Hide whatever component needs to be hidden,
         //  and show whichever one needs showing (e.g. progress bar)
 
-        loginModel.login();
+        loginViewModel.login();
     }
 
     public static Intent getLoginActivityIntent(Context context) {
         return new Intent(context, LoginActivity.class);
     }
 
+    @NonNull
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        loginModel.cleanUp();
+    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+        // TODO: Inject D2
+        D2 d2 = Sdk.d2();
+
+        // TODO: Inject MetadataManager
+        assert d2 != null; // TODO: Remove once d2 has been injected
+
+        // TODO: Inject UserManager using DI
+        UserManager userManager = new UserManagerImpl(d2);
+
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
+        // TODO: Inject PreferenceProvider using DI
+        PreferenceProvider preferenceProvider =
+                new SecurePreferenceProviderImpl(getApplication());
+
+        return new ViewModelProvider(this, new LoginViewModelFactory(
+                getApplication(),
+                schedulerProvider,
+                preferenceProvider,
+                userManager
+        )).get(LoginViewModel.class);
     }
 }
