@@ -1,18 +1,26 @@
 package com.baosystems.icrc.psm.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.DestinationFactory
 import com.baosystems.icrc.psm.data.FacilityFactory
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
+import com.baosystems.icrc.psm.service.MetadataManager
 import com.baosystems.icrc.psm.utils.ParcelUtils
+import org.hisp.dhis.android.core.attribute.AttributeValue
 import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
+import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.verify
 import java.lang.UnsupportedOperationException
 
 @RunWith(MockitoJUnitRunner::class)
@@ -23,6 +31,13 @@ class ManageStockViewModelTest {
     private lateinit var facility: IdentifiableModel
     private lateinit var distributedTo: IdentifiableModel
     lateinit var transactionDate: String
+
+    @Mock
+    private lateinit var metadataManager: MetadataManager
+    @Mock
+    private lateinit var stockItemsObserver: Observer<PagedList<AttributeValue>>
+    @Captor
+    private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
     private fun getModel(type: TransactionType,
                          distributedTo: IdentifiableModel?) =
@@ -85,4 +100,36 @@ class ManageStockViewModelTest {
         assertEquals(viewModel.facility.displayName, facility.displayName)
         assertEquals(viewModel.transactionDate, transactionDate)
     }
+
+    // TODO: init_shouldFetchAllStockItems
+    @Test
+    fun init_shouldFetchAllStockItems() {
+        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+        viewModel.stockItems.observeForever(stockItemsObserver)
+
+        val search = ""
+        viewModel.setSearchTerm(search)
+        verify(metadataManager).queryStock(search)
+        verify(stockItemsObserver).onChanged(stockItemsCaptor.capture())
+    }
+
+    // TODO: Implement shouldSearchStockItems_onSearchQueryChange()
+    @Test
+    fun shouldSearchStockItems_onSearchQueryChange() {
+
+    }
+
+    @Test
+    fun canFetchPaginatedStockItems() {
+
+    }
+
+//    @Test
+//    fun canSetQueryStockList() {
+//        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+//        val q = "Parac"
+//        viewModel.setSearchTerm(q)
+//
+//        assertEquals(viewModel.search.value, q)
+//    }
 }

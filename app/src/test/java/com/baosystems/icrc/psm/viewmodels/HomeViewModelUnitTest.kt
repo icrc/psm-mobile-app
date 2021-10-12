@@ -12,6 +12,7 @@ import com.baosystems.icrc.psm.service.scheduler.TrampolineSchedulerProvider
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
@@ -27,6 +28,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
+import java.io.FileInputStream
 import java.lang.UnsupportedOperationException
 import java.time.LocalDateTime
 
@@ -46,7 +48,6 @@ class HomeViewModelUnitTest {
     @Mock
     private lateinit var d2: D2
 
-//    private lateinit var facilitiesObserver: Single<List<OrganisationUnit>>
     @Mock
     private lateinit var facilitiesObserver: Observer<List<OrganisationUnit>>
 
@@ -78,6 +79,12 @@ class HomeViewModelUnitTest {
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)
+    }
+
+    @Test
+    fun init_shouldLoadProgram() {
+        verify(metadataManager).stockManagementProgram()
+        assertNotNull(viewModel.program)
     }
 
     @Test
@@ -356,7 +363,6 @@ class HomeViewModelUnitTest {
 
     @Test
     fun discardWithCompleteInformation_canCreateUserIntent() {
-        val destination = destinations[2]
         val facility = facilities[1]
         val now = LocalDateTime.now()
 
@@ -373,7 +379,6 @@ class HomeViewModelUnitTest {
 
     @Test
     fun correctionWithCompleteInformation_canCreateUserIntent() {
-        val destination = destinations[2]
         val facility = facilities[1]
         val now = LocalDateTime.now()
 

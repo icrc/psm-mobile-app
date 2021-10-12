@@ -5,6 +5,8 @@ import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.call.D2Progress
 
 class SyncManagerImpl(private val d2: D2): SyncManager {
+    val TAG = "SyncManagerImpl"
+
     override fun metadataSync(): Observable<D2Progress> {
         return Observable.defer {
             d2.metadataModule().download()

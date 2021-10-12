@@ -1,6 +1,9 @@
 package com.baosystems.icrc.psm.views.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -8,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
  * The base Activity
  * Has the menu set, and also sets the action bar.
  */
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
 

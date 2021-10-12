@@ -14,7 +14,9 @@
         android:layout_height="match_parent"
         tools:context="com.baosystems.icrc.psm.views.activities.ManageStockActivity">
 
-        <include layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbarContainer"
+            layout="@layout/toolbar" />
 
         <!-- Content Area -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +28,7 @@
             android:layout_marginRight="@dimen/content_area_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbarContainer">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/choices_container"
@@ -52,6 +54,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:text="@{viewModel.facility.displayName}"
                     tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
 
                 <TextView
@@ -64,19 +67,21 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/facilityTextView"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:text="@{viewModel.transactionDate}"
                     tools:text="2021-08-09" />
 
                 <TextView
                     android:id="@+id/distributedToTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/margin_16"
                     android:drawablePadding="14dp"
                     android:gravity="center"
                     app:drawableLeftCompat="@drawable/destination"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/facilityTextView"
+                    android:text="@{viewModel.distributedTo.displayName}"
                     tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -86,7 +91,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginRight="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_16"
                 app:endIconContentDescription="@string/search"
                 app:endIconDrawable="@drawable/search"
                 app:endIconMode="custom"

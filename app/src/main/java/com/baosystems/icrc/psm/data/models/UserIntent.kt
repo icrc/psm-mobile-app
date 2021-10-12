@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.baosystems.icrc.psm.data.TransactionType
+import kotlin.text.StringBuilder
 
 class UserIntent(
     val transactionType: TransactionType,
@@ -37,5 +38,19 @@ class UserIntent(
 
         override fun newArray(size: Int): Array<UserIntent?> =
             arrayOfNulls(size)
+    }
+
+    override fun toString(): String {
+        val strBuffer = StringBuilder()
+        strBuffer.append("[Transaction: ${transactionType.name}\n")
+        strBuffer.append("Facility: ${facility.displayName}\n")
+        strBuffer.append("Transaction Date: ${transactionDate}\n")
+
+        if (transactionType == TransactionType.DISTRIBUTION && distributedTo != null)
+            strBuffer.append("Distributed to: ${distributedTo.displayName}]")
+        else
+            strBuffer.append("]")
+
+        return strBuffer.toString()
     }
 }

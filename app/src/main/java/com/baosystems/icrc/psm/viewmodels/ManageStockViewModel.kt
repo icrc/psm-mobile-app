@@ -1,9 +1,11 @@
 package com.baosystems.icrc.psm.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.data.models.StockItem
+import org.hisp.dhis.android.core.attribute.AttributeValue
 import java.lang.UnsupportedOperationException
 
 class ManageStockViewModel(
@@ -12,9 +14,9 @@ class ManageStockViewModel(
     var transactionDate: String,
     var distributedTo: IdentifiableModel?
 ): PSMViewModel() {
-    var search: String? = null
+    var search = MutableLiveData<String?>()
 
-    val stockItems = MutableLiveData<StockItem>()
+    val stockItems = MutableLiveData<PagedList<AttributeValue>>()
 
     init {
         if (transactionType != TransactionType.DISTRIBUTION && distributedTo != null)
@@ -27,5 +29,13 @@ class ManageStockViewModel(
 
     fun getItems(search: String) {
 //        stockItems.value =
+    }
+
+    fun setSearchTerm(q: String?) {
+        search.value = q
+    }
+
+    fun queryStock(q: String) {
+
     }
 }

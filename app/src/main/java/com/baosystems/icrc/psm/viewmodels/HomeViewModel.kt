@@ -1,7 +1,9 @@
 package com.baosystems.icrc.psm.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.UserActivity
 import com.baosystems.icrc.psm.data.models.UserIntent
@@ -16,6 +18,10 @@ import com.baosystems.icrc.psm.utils.humanReadableDate
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
+import org.hisp.dhis.android.core.program.Program
+import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
+import java.io.FileInputStream
+import java.io.InputStream
 import java.lang.UnsupportedOperationException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -27,6 +33,8 @@ class HomeViewModel(
     private val userManager: UserManager
 ): PSMViewModel() {
     val TAG = "HomeViewModel"
+
+    var program: Program? = null
 
     private val _transactionType =  MutableLiveData<TransactionType>()
     val transactionType: MutableLiveData<TransactionType>
@@ -66,6 +74,31 @@ class HomeViewModel(
         loadDestinations()
     }
 
+    fun loadTestStockItems(q: String?): LiveData<PagedList<TrackedEntityInstance>> {
+        return metadataManager.queryStock(q)
+//        disposable.add(
+//            metadataManager.queryStock("")
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui())
+//                .doOnSuccess {
+//                    Log.d(TAG, "Successfully fetched TEIs!")
+//                }
+//                .doOnError {
+//                    Log.e(TAG, "Unable to fetch the available TEIs: ${it.localizedMessage}")
+//                }
+//                .subscribe({ results ->
+//                    Log.d(TAG, "TEI count: ${results.size}")
+//                    results.forEach { tei ->
+//                        Log.d(TAG, tei.toString())
+//                        Log.d(TAG, tei.)
+//                    }
+//                }, { e ->
+//                    Log.e(TAG, e.localizedMessage)
+//                    e.printStackTrace()
+//                })
+//        )
+    }
+
     private fun loadDestinations() {
         // TODO: Handle situations where the list of destinations cannot be loaded
         disposable.add(
@@ -90,17 +123,30 @@ class HomeViewModel(
             metadataManager.facilities()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doOnSuccess {
-                    _facilities.postValue(it)
-                    it.forEach { ou -> Log.d(TAG, "Facility: Uid: ${ou.uid()}, Name: ${ou.name()}") }
-
-                    if (it.size == 1) _facility.postValue(it[0])
-                }.doOnError {
-                    // TODO: Notify the user of an error in case the facilities cannot be fetched
-                }.doOnTerminate {
+//                .doOnSuccess {
+//                    _facilities.postValue(it)
+//                    it.forEach { ou -> Log.d(TAG, "Facility: Uid: ${ou.uid()}, Name: ${ou.name()}") }
+//
+//                    if (it.size == 1) _facility.postValue(it[0])
+//                }
+//                .doOnError {
+//                    // TODO: Notify the user of an error in case the facilities cannot be fetched
+//                }
+                .doOnTerminate {
                     // TODO: Remove later (temporarily used for debugging)
                     Log.d(TAG, "Finished fetching facilities (program OUs)")
-                }.subscribe()
+                }
+                .subscribe(
+                    {
+                        _facilities.postValue(it)
+                        it.forEach { ou -> Log.d(TAG,
+                            "Facility: Uid: ${ou.uid()}, Name: ${ou.name()}") }
+
+                        if (it.size == 1) _facility.postValue(it[0])
+                    }, {
+                        // TODO: Handle errors that occur while loading the facilities
+                    }
+                )
         )
     }
 

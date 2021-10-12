@@ -69,16 +69,20 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (loginResult.getUser() != null) {
-                navigateToHomeScreen();
+                navigateToSyncScreen();
             }
 
             setResult(Activity.RESULT_OK);
         });
     }
 
-    private void navigateToHomeScreen() {
-        ActivityManager.startActivity(this,
-                HomeActivity.getHomeActivityIntent(this), true);
+
+    private void navigateToSyncScreen() {
+        ActivityManager.startActivity(
+                this,
+                SyncActivity.getSyncActivityIntent(this),
+                true
+        );
     }
 
     private void showLoginFailed(String error) {

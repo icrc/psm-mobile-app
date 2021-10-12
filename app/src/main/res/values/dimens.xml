@@ -25,7 +25,7 @@
 
     <!-- Container -->
     <dimen name="choices_top_margin">32dp</dimen>
-    <dimen name="choices_padding_top">24dp</dimen>
+    <dimen name="choices_padding_top">16dp</dimen>
     <dimen name="choices_padding_left">16dp</dimen>
     <dimen name="choices_padding_bottom">24dp</dimen>
     <dimen name="choices_padding_right">16dp</dimen>

@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.TransactionType;
-import com.baosystems.icrc.psm.data.models.UserIntent;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
 import com.baosystems.icrc.psm.service.MetadataManager;
 import com.baosystems.icrc.psm.service.MetadataManagerImpl;
@@ -26,6 +25,7 @@ import com.baosystems.icrc.psm.service.UserManager;
 import com.baosystems.icrc.psm.service.UserManagerImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
+import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.HomeViewModel;
 import com.baosystems.icrc.psm.viewmodels.factories.HomeViewModelFactory;
@@ -37,8 +37,10 @@ import org.hisp.dhis.android.core.D2;
 import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class HomeActivity extends AppCompatActivity {
     private HomeViewModel homeViewModel;
@@ -54,31 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: Inject D2
-        D2 d2 = Sdk.d2();
-
-        // TODO: Inject MetadataManager
-        assert d2 != null;
-        MetadataManager metadataManager = new MetadataManagerImpl(d2);
-
-        // TODO: Inject UserManager using DI
-        UserManager userManager = new UserManagerImpl(d2);
-
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-//        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
-        // TODO: Handle situations where d2 is probably null
-        homeViewModel = new ViewModelProvider(this,
-                new HomeViewModelFactory(
-                        schedulerProvider,
-                        metadataManager,
-                        userManager
-                )).get(HomeViewModel.class);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        binding.setViewModel(homeViewModel);
         binding.setLifecycleOwner(this);
 
         facilityTextView = binding.selectedFacilityTextView;
@@ -86,7 +64,85 @@ public class HomeActivity extends AppCompatActivity {
         distributedToTextView = binding.distributedToTextView;
         recentActivitiesRecyclerView = binding.recentActivityList;
 
-        setupComponents();
+        // TODO: Inject D2
+        D2 d2 = Sdk.d2();
+
+        // TODO: Inject MetadataManager
+        assert d2 != null; // TODO: Remove once d2 has been injected
+        try {
+            initViewModel(d2);
+            setupComponents();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            ActivityManager.showErrorMessage(binding.getRoot(),
+                    getResources().getString(R.string.config_file_error));
+        }
+    }
+
+    private void initViewModel(D2 d2) throws IOException {
+        MetadataManager metadataManager = new MetadataManagerImpl(d2, loadConfigFile());
+
+        // TODO: Inject UserManager using DI
+        UserManager userManager = new UserManagerImpl(d2);
+
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
+        // TODO: Handle situations where d2 is probably null
+
+        // TODO: Handle errors that can occur if expected configuration properties
+        //  (e.g. program id, item code id etc) weren't found.
+        //  The application cannot proceed without them
+        homeViewModel = new ViewModelProvider(this,
+                new HomeViewModelFactory(
+                        schedulerProvider,
+                        metadataManager,
+                        userManager
+                )).get(HomeViewModel.class);
+
+        binding.setViewModel(homeViewModel);
+
+        // TODO: remove later. temporarily used for testing
+        homeViewModel.loadTestStockItems("").observe(this, teis -> {
+            teis.forEach(tei -> {
+                Log.d("HA", tei.trackedEntityAttributeValues().toString());
+            });
+        });
+
+        // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
+        // TODO: Inject FacilityListAdapter with DI
+        homeViewModel.getFacilities().observe(this, facilitiesList -> {
+            facilityTextView.setAdapter(new GenericListAdapter<>(
+                    this, R.layout.list_item, facilitiesList));
+        });
+
+        homeViewModel.getDestinationsList().observe(this, destinations -> {
+            distributedToTextView.setAdapter(new GenericListAdapter<>(
+                    this, R.layout.list_item, destinations
+            ));
+        });
+
+        homeViewModel.getTransactionType().observe(this, transactionType -> {
+            Log.d("HA", "New transaction selected: " + transactionType.name());
+
+            // TODO: Add a border around the selected button, and reset the
+            //  other buttons to the default
+//            ColorStateList backgroundTintList = ContextCompat.getColorStateList(
+//                    this, R.color.selector_distribution_button_background);
+//            Paris.style(buttonsMap.get(transactionType)).apply(R.style.SelectedButtonStyle);
+        });
+
+        homeViewModel.getRecentActivityList().observe(this, recentActivities -> {
+            recentActivityAdapter.submitList(recentActivities);
+        });
+    }
+
+    private Properties loadConfigFile() throws IOException {
+        Properties configProps = new Properties();
+        configProps.load(getResources().openRawResource(R.raw.config));
+
+        return configProps;
     }
 
     @Override
@@ -108,19 +164,6 @@ public class HomeActivity extends AppCompatActivity {
     private void setupComponents() {
         setupToolbar();
         setupButtons();
-
-        // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
-        // TODO: Inject FacilityListAdapter with DI
-        homeViewModel.getFacilities().observe(this, facilitiesList -> {
-            facilityTextView.setAdapter(new GenericListAdapter<>(
-                    this, R.layout.list_item, facilitiesList));
-        });
-
-        homeViewModel.getDestinationsList().observe(this, destinations -> {
-            distributedToTextView.setAdapter(new GenericListAdapter<>(
-                    this, R.layout.list_item, destinations
-            ));
-        });
 
         facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
                 {
@@ -155,16 +198,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
 
-        homeViewModel.getTransactionType().observe(this, transactionType -> {
-            Log.d("HA", "New transaction selected: " + transactionType.name());
-
-            // TODO: Add a border around the selected button, and reset the
-            //  other buttons to the default
-//            ColorStateList backgroundTintList = ContextCompat.getColorStateList(
-//                    this, R.color.selector_distribution_button_background);
-//            Paris.style(buttonsMap.get(transactionType)).apply(R.style.SelectedButtonStyle);
-        });
-
         buttonsMap.entrySet().iterator().forEachRemaining(entry -> {
             TransactionType type = entry.getKey();
             MaterialButton button = entry.getValue();
@@ -197,9 +230,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupRecentActivities() {
         recentActivityAdapter = new RecentActivityAdapter();
-        homeViewModel.getRecentActivityList().observe(this, recentActivities -> {
-            recentActivityAdapter.submitList(recentActivities);
-        });
         recentActivitiesRecyclerView.setAdapter(recentActivityAdapter);
 
         // TODO: Use a custom divider decoration

@@ -12,4 +12,10 @@ object Constants {
     const val PASSWORD = "PASSWORD"
 
     const val LAST_SYNC_DATE = "LAST_SYNC_DATE"
+    const val ITEM_PAGE_SIZE = 10
+
+    // Configuration file keys
+    const val CONFIG_PROGRAM_KEY = "program"
+    const val CONFIG_ITEM_CODE_KEY = "item_code"
+    const val CONFIG_ITEM_DESCRIPTION_KEY = "item_description"
 }

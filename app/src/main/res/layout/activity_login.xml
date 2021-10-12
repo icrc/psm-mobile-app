@@ -42,9 +42,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/serverURLTextField"
+                    android:text="@={viewModel.serverUrl}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.serverUrl}"
                     android:background="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

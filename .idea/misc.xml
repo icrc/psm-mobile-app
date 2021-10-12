@@ -7,15 +7,18 @@
         <entry key="../../../../../layout/custom_preview.xml" value="0.28541666666666665" />
         <entry key="app/src/main/res/drawable/border.xml" value="0.21484375" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2864583333333333" />
+        <entry key="app/src/main/res/drawable/ic_outline_done_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_outline_done_36.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_outline_error_36.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/transaction_button_divider.xml" value="0.21484375" />
         <entry key="app/src/main/res/drawable/transaction_button_highlight.xml" value="0.105078125" />
         <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.45" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.55" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.4413265306122449" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_sync.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_sync.xml" value="0.10078095946448494" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.1503623188405797" />
         <entry key="app/src/main/res/layout/footer.xml" value="0.10190886699507389" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1503623188405797" />
