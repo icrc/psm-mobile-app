@@ -22,7 +22,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val schedulerProvider: BaseSchedulerProvider
 
     init {
-        val d2 = Sdk.d2()
+        val d2 = Sdk.d2(getApplication())
         userManager = d2?.let { UserManagerImpl(it) }!!
 
         schedulerProvider = SchedulerProviderImpl()

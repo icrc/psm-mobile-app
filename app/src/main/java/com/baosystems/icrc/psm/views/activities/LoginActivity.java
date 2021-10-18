@@ -27,8 +27,6 @@ import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.login.LoginViewModel;
 import com.baosystems.icrc.psm.viewmodels.login.LoginViewModelFactory;
 
-import org.hisp.dhis.android.core.D2;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class LoginActivity extends BaseActivity {
@@ -119,13 +117,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
         // TODO: Inject D2
-        D2 d2 = Sdk.d2();
-
-        // TODO: Inject MetadataManager
-        assert d2 != null; // TODO: Remove once d2 has been injected
-
         // TODO: Inject UserManager using DI
-        UserManager userManager = new UserManagerImpl(d2);
+        UserManager userManager = new UserManagerImpl(Sdk.d2(this));
 
         // TODO: Inject SchedulerProvider using DI
         BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();

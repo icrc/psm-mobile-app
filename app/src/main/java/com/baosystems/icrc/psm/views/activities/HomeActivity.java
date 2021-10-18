@@ -26,6 +26,7 @@ import com.baosystems.icrc.psm.service.UserManagerImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
+import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.home.HomeViewModel;
 import com.baosystems.icrc.psm.viewmodels.home.HomeViewModelFactory;
@@ -101,11 +102,9 @@ public class HomeActivity extends BaseActivity {
                     this, R.layout.list_item, facilitiesList));
         });
 
-        homeViewModel.getDestinationsList().observe(this, destinations -> {
-            distributedToTextView.setAdapter(new GenericListAdapter<>(
-                    this, R.layout.list_item, destinations
-            ));
-        });
+        homeViewModel.getDestinationsList().observe(this, destinations -> distributedToTextView.setAdapter(new GenericListAdapter<>(
+                this, R.layout.list_item, destinations
+        )));
 
         homeViewModel.getTransactionType().observe(this, transactionType -> {
             Log.d("HA", "New transaction selected: " + transactionType.name());
@@ -127,21 +126,6 @@ public class HomeActivity extends BaseActivity {
                 ActivityManager.showErrorMessage(binding.getRoot(), message);
             }
         });
-    }
-
-    private Properties loadConfigFile() {
-        Properties configProps = new Properties();
-
-        try {
-            configProps.load(getResources().openRawResource(R.raw.config));
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            ActivityManager.showErrorMessage(binding.getRoot(),
-                    getResources().getString(R.string.config_file_error));
-        }
-
-        return configProps;
     }
 
     @Override
@@ -263,13 +247,15 @@ public class HomeActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+//        assert d2 != null; // TODO: Remove once d2 has been injected
         // TODO: Inject D2
-        D2 d2 = Sdk.d2();
+        D2 d2 = Sdk.d2(this);
 
         // TODO: Inject MetadataManager
-        assert d2 != null; // TODO: Remove once d2 has been injected
-
-        MetadataManager metadataManager = new MetadataManagerImpl(d2, loadConfigFile());
+        MetadataManager metadataManager = new MetadataManagerImpl(
+                d2,
+                ConfigUtils.loadConfigFile(getResources())
+        );
 
         // TODO: Inject UserManager using DI
         UserManager userManager = new UserManagerImpl(d2);

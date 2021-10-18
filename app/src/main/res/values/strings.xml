@@ -112,5 +112,9 @@
     <string name="config_file_program_error">
         Stock program id has not been set in the configuration file
     </string>
-    <string name="sync_info_content_description">Sync innformation icon</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="content_description_sync_info">Sync information</string>
+    <string name="content_description_search">Search</string>
+    <string name="content_description_clear_text">Clear text</string>
 </resources>

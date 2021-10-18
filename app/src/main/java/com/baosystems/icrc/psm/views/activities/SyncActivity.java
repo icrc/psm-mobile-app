@@ -100,12 +100,8 @@ public class SyncActivity extends BaseActivity {
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
         // TODO: Inject D2
-        D2 d2 = Sdk.d2();
-
-        assert d2 != null; // TODO: Remove once d2 has been injected
-
         // TODO: Inject SyncManager using DI
-        SyncManager syncManager = new SyncManagerImpl(d2);
+        SyncManager syncManager = new SyncManagerImpl(Sdk.d2(this));
 
         // TODO: Inject SchedulerProvider using DI
         BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
