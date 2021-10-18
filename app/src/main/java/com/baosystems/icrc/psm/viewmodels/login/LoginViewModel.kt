@@ -25,11 +25,9 @@ class LoginViewModel(
 
     // TODO: Remove the temporary values added for testing
     val username: MutableLiveData<String> = MutableLiveData()
-//    val password: MutableLiveData<String> = MutableLiveData()
+    val password: MutableLiveData<String> = MutableLiveData()
 
     // TODO: Remove later, temporarily used to fill up the password field for testing
-//    val password: MutableLiveData<String> = MutableLiveData("Toromona32-Teloblast27")
-    val password: MutableLiveData<String> = MutableLiveData("Bow-34-Fish?")
     val serverUrl: MutableLiveData<String> = MutableLiveData()
     val loginInProgress: MutableLiveData<Boolean> = MutableLiveData(false)
     val canLogin: MutableLiveData<Boolean> = MutableLiveData(false)

@@ -1,22 +1,21 @@
 package com.baosystems.icrc.psm.viewmodels.stock
 
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
+import com.baosystems.icrc.psm.service.MetadataManager
 import com.baosystems.icrc.psm.viewmodels.PSMViewModel
-import org.hisp.dhis.android.core.attribute.AttributeValue
-import java.lang.UnsupportedOperationException
 
 class ManageStockViewModel(
+    metadataManager: MetadataManager,
     var transactionType: TransactionType,
     var facility: IdentifiableModel,
     var transactionDate: String,
     var distributedTo: IdentifiableModel?
 ): PSMViewModel() {
-    var search = MutableLiveData<String?>()
+    var search = MutableLiveData<String>()
 
-    val stockItems = MutableLiveData<PagedList<AttributeValue>>()
+    val stockItems = metadataManager.queryStock("")
 
     init {
         if (transactionType != TransactionType.DISTRIBUTION && distributedTo != null)
@@ -27,15 +26,15 @@ class ManageStockViewModel(
             throw UnsupportedOperationException("'distributedTo' is mandatory for model creation")
     }
 
-    fun getItems(search: String) {
-//        stockItems.value =
-    }
-
-    fun setSearchTerm(q: String?) {
-        search.value = q
-    }
-
-    fun queryStock(q: String) {
+//    fun getItems(search: String) {
+////        stockItems.value =
+//    }
+//
+//    fun setSearchTerm(q: String) {
+//        search.value = q
+//    }
+//
+    fun onQueryChanged(searchQuery: String) {
 
     }
 }

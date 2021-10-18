@@ -36,4 +36,6 @@
     <color name="secondaryDarkColor">#2f748b</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="input_field_icon_color_tint">#656565</color>
 </resources>

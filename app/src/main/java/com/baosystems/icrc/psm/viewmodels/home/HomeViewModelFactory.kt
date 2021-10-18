@@ -14,11 +14,14 @@ class HomeViewModelFactory(
     private val userManager: UserManager
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return HomeViewModel(
+        @Suppress("UNCHECKED_CAST")
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) return HomeViewModel(
             disposable,
             schedulerProvider,
             metadataManager,
             userManager
         ) as T
+
+        throw IllegalAccessException("Unknown ViewModel class")
     }
 }

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 
 class ViewHolder private constructor(val binding: ListItemRecentActivityBinding):
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: UserActivity) {
+    fun bindTo(item: UserActivity) {
         binding.transactionTypeTextview.text = item.type.name
         binding.creationDateTextview.text = item.date.format(
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -38,7 +38,19 @@ class ViewHolder private constructor(val binding: ListItemRecentActivityBinding)
 }
 
 class RecentActivityAdapter:
-    ListAdapter<UserActivity, ViewHolder> (RecentActivityItemDiffCallback()) {
+    ListAdapter<UserActivity, ViewHolder> (DIFF_CALLBACK) {
+
+    private val TAG = "RecentActivityAdapter"
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserActivity>() {
+            override fun areItemsTheSame(oldItem: UserActivity, newItem: UserActivity) = oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: UserActivity, newItem: UserActivity) =
+                oldItem.type == newItem.type && oldItem.distributedTo == newItem.distributedTo &&
+                        oldItem.date == newItem.date
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int) = ViewHolder.from(parent)
 
@@ -47,15 +59,7 @@ class RecentActivityAdapter:
 
         // TODO: add listeners on the properties as required
 
-        viewHolder.bind(item)
-        Log.d("RAA", "Bind item: " + item.distributedTo)
+        viewHolder.bindTo(item)
+        Log.d(TAG, "Bind item: " + item.distributedTo)
     }
-}
-
-private class RecentActivityItemDiffCallback: DiffUtil.ItemCallback<UserActivity>() {
-    override fun areItemsTheSame(oldItem: UserActivity, newItem: UserActivity) = oldItem == newItem
-
-    override fun areContentsTheSame(oldItem: UserActivity, newItem: UserActivity) =
-        oldItem.type == newItem.type && oldItem.distributedTo == newItem.distributedTo &&
-                oldItem.date == newItem.date
 }

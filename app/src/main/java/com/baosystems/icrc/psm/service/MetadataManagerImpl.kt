@@ -45,23 +45,24 @@ class MetadataManagerImpl(
 //            }
 //            .subscribe()
 //
-//        Log.i(TAG, "Downloading TEI data...")
-//        d2.trackedEntityModule()
-//            .trackedEntityInstanceDownloader()
-//            .byProgramUid("F5ijs28K4s8")
-//            .limitByOrgunit(true)
-//            .limitByProgram(true)
-//            .download()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnComplete {
-//                Log.i(TAG, "Finished downloading TEI data!")
-//            }
-//            .doOnError{
-//                Log.e(TAG, "Error downloading TEI data: ${it.localizedMessage}")
-//                it.printStackTrace()
-//            }
-//            .subscribe()
+        // TODO: Remove later, temporarily used to test functionality
+        Log.i(TAG, "Downloading TEI data...")
+        d2.trackedEntityModule()
+            .trackedEntityInstanceDownloader()
+            .byProgramUid("F5ijs28K4s8")
+            .limitByOrgunit(true)
+            .limitByProgram(true)
+            .download()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                Log.i(TAG, "Finished downloading TEI data!")
+            }
+            .doOnError{
+                Log.e(TAG, "Error downloading TEI data: ${it.localizedMessage}")
+                it.printStackTrace()
+            }
+            .subscribe()
     }
 
     override fun stockManagementProgram(): Single<Program?> {
@@ -199,9 +200,9 @@ class MetadataManagerImpl(
 //                .get()
 //        }
 
+        Log.d(TAG, "About to query TEIs")
 
-        // Option 2
-        return d2.trackedEntityModule()
+        var teiRepository = d2.trackedEntityModule()
             .trackedEntityInstanceQuery()
             .byProgram()
             .eq("F5ijs28K4s8")
@@ -209,9 +210,20 @@ class MetadataManagerImpl(
             .eq("x9sqD4dYb9F")
             .byOrgUnitMode()
             .eq(OrganisationUnitMode.SELECTED)
-//            .orderByAttribute()
+
+        if (!search.isNullOrEmpty()) {
+            teiRepository = teiRepository
+                .byQuery()
+                .like(search)
+        }
+
+        // Option 2
+        return teiRepository
+                // TODO: If indices are being used to determine item name/code,
+            //  we wouldn't have an attribute uid to order with
+            .orderByAttribute("MBczRWvfM46")
+            .eq(RepositoryScope.OrderByDirection.ASC)
             // TODO: Make the pageSize dynamic once you're able to determine
             .getPaged(ITEM_PAGE_SIZE)
-
     }
 }

@@ -92,17 +92,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_16"
-                app:endIconContentDescription="@string/search"
-                app:endIconDrawable="@drawable/search"
-                app:endIconMode="custom"
+                app:startIconDrawable="@drawable/ic_search_24"
+                app:startIconTint="@color/input_field_icon_color_tint"
+                app:startIconContentDescription="@string/content_description_search"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toStartOf="@+id/scan_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/choices_container"
                 app:placeholderText="@string/search"
                 app:layout_constraintHorizontal_weight="7">
 
-                <AutoCompleteTextView
-                    android:id="@+id/searchFieldTextView"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -130,17 +131,21 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stock_items_list"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
+                android:layout_marginBottom="@dimen/margin_32"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
-                tools:itemCount="18"
                 tools:listitem="@layout/stock_item_entry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->
-        <include layout="@layout/footer" app:lastSyncDate="@{viewModel.lastSyncDate}" />
+        <include
+            android:id="@+id/stock_items_footer"
+            layout="@layout/footer"
+            app:lastSyncDate="@{viewModel.lastSyncDate}" />
 
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
