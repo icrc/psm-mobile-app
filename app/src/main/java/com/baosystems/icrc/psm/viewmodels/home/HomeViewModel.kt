@@ -1,6 +1,5 @@
 package com.baosystems.icrc.psm.viewmodels.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
@@ -21,7 +20,7 @@ import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
-import java.lang.UnsupportedOperationException
+import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -32,39 +31,39 @@ class HomeViewModel(
     private val metadataManager: MetadataManager,
     private val userManager: UserManager
 ): PSMViewModel() {
-    val TAG = "HomeViewModel"
-
     // TODO: Move all the properties below into a singular object
     var program: Program? = null
 
     private val _transactionType =  MutableLiveData<TransactionType>()
-    val transactionType: MutableLiveData<TransactionType>
+    val transactionType: LiveData<TransactionType>
         get() = _transactionType
 
-    val isDistribution: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _isDistribution: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isDistribution: LiveData<Boolean>
+        get() = _isDistribution
 
     private val _facility: MutableLiveData<OrganisationUnit> = MutableLiveData()
-    val facility: MutableLiveData<OrganisationUnit>
+    val facility: LiveData<OrganisationUnit>
         get() = _facility
 
     private val _transactionDate: MutableLiveData<LocalDateTime> = MutableLiveData(null)
-    val transactionDate: MutableLiveData<LocalDateTime>
+    val transactionDate: LiveData<LocalDateTime>
         get() = _transactionDate
 
     private val _destination: MutableLiveData<Option> = MutableLiveData(null)
-    val destination: MutableLiveData<Option>
+    val destination: LiveData<Option>
         get() = _destination
 
     private val _facilities = MutableLiveData<List<OrganisationUnit>>()
-    val facilities: MutableLiveData<List<OrganisationUnit>>
+    val facilities: LiveData<List<OrganisationUnit>>
         get() =  _facilities
 
     private val _destinations = MutableLiveData<List<Option>>()
-    val destinationsList: MutableLiveData<List<Option>>
+    val destinationsList: LiveData<List<Option>>
         get() = _destinations
 
     private val _error = MutableLiveData<String>(null)
-    val error: MutableLiveData<String>
+    val error: LiveData<String>
         get() = _error
 
     val recentActivityList = fetchSampleRecentActivities()
@@ -109,13 +108,13 @@ class HomeViewModel(
                 .observeOn(schedulerProvider.ui())
                 .doOnSuccess {
                     _destinations.postValue(it)
-                    Log.d(TAG, "Successfully fetched the available optionsets")
+                    Timber.d("Successfully fetched the available optionsets")
                 }.doOnError {
-                    Log.e(TAG, "Unable to fetch the available optionsets: ${it.localizedMessage}")
+                    Timber.e("Unable to fetch the available optionsets: ${it.localizedMessage}")
                 }.subscribe({
                     it.forEach { option -> println("Option: ${option.uid()} - ${option.name()}") }
                 }, {
-                    Log.e(TAG, "Unable to load destinations: ${it.localizedMessage}")
+                    Timber.e("Unable to load destinations: ${it.localizedMessage}")
                 })
         )
     }
@@ -125,14 +124,10 @@ class HomeViewModel(
             metadataManager.facilities()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doOnTerminate {
-                    // TODO: Remove later (temporarily used for debugging)
-                    Log.d(TAG, "Finished fetching facilities (program OUs)")
-                }
                 .subscribe(
                     {
                         _facilities.postValue(it)
-                        it.forEach { ou -> Log.d(TAG,
+                        it.forEach { ou -> Timber.d(
                             "Facility: Uid: ${ou.uid()}, Name: ${ou.name()}") }
 
                         if (it.size == 1) _facility.postValue(it[0])
@@ -150,8 +145,8 @@ class HomeViewModel(
     }
 
     fun selectTransaction(type: TransactionType) {
-        transactionType.value = type
-        isDistribution.value = type == TransactionType.DISTRIBUTION
+        _transactionType.value = type
+        _isDistribution.value = type == TransactionType.DISTRIBUTION
 
         // Distributed to cannot only be set for DISTRIBUTION,
         // so ensure you clear it for others if it has been set
@@ -186,7 +181,7 @@ class HomeViewModel(
                 it.subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .doOnComplete {
-                        Log.d(TAG, "Logged out successfully")
+                        Timber.d("Logged out successfully")
                     }
                     .subscribe()
             )
@@ -200,10 +195,10 @@ class HomeViewModel(
     }
 
     fun readyManageStock(): Boolean {
-        Log.d(TAG, "Selected transaction: ${transactionType.value}")
-        Log.d(TAG, "Selected facility: ${facility.value}")
-        Log.d(TAG, "Selected date: ${transactionDate.value}")
-        Log.d(TAG, "Selected distributed to: ${destination.value}")
+        Timber.d("Selected transaction: ${transactionType.value}")
+        Timber.d("Selected facility: ${facility.value}")
+        Timber.d("Selected date: ${transactionDate.value}")
+        Timber.d("Selected distributed to: ${destination.value}")
 
         if (transactionType.value == null) return false
 
