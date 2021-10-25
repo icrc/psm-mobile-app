@@ -1,7 +1,6 @@
 package com.baosystems.icrc.psm.views.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.utils.AttributeHelper
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
+import timber.log.Timber
 
 class StockItemHolder(inflater: LayoutInflater, parent: ViewGroup):
     RecyclerView.ViewHolder(
@@ -25,9 +25,9 @@ class StockItemHolder(inflater: LayoutInflater, parent: ViewGroup):
     }
 
     fun bindTo(item: TrackedEntityInstance) {
-        // TODO: Determin if using the indices to get the item name is the best option,
+        // TODO: Determine if using the indices to get the item name is the best option,
         //  or comparing a preconfigured attribute uid to be compared against is better
-        Log.d("TEIHolder", "About to bind: $item")
+        Timber.d("About to bind: $item")
 //        tvItemName?.text = item.trackedEntityAttributeValues().
 //        tvItemName?.text = "Item $pos"
 
@@ -43,16 +43,12 @@ class ManageStockAdapter: PagedListAdapter<TrackedEntityInstance, StockItemHolde
         StockItemHolder(LayoutInflater.from(parent.context), parent)
 
     override fun onBindViewHolder(holder: StockItemHolder, position: Int) {
-        val item = getItem(position)
-
         // Note that the item is a placeholder if it is null
-        if (item != null) {
+        getItem(position)?.let { item ->
             item.trackedEntityAttributeValues()?.forEach {
-                Log.d(TAG, "${it.trackedEntityAttribute()} - ${it.value()}")
+                Timber.d("%s - %s", it.trackedEntityAttribute(), it.value())
             }
             holder.bindTo(item)
-        } else {
-            Log.d(TAG, "Item at position $position is null")
         }
     }
 
