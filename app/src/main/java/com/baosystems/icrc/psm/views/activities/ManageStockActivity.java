@@ -34,6 +34,7 @@ public class ManageStockActivity extends BaseActivity {
 
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
+    private ManageStockAdapter adapter;
 
     private TextInputEditText searchInputField;
     private TextInputLayout searchInputContainer;
@@ -70,15 +71,10 @@ public class ManageStockActivity extends BaseActivity {
 
         // configure the recyclerview
         RecyclerView recyclerView = binding.stockItemsList;
-        ManageStockAdapter adapter = new ManageStockAdapter();
-//        manageStockViewModel.getStockItems().observe(this, adapter::submitList);
-        viewModel.getStockItems().observe(this, list -> {
-//            Log.d(TAG, "Stock items list: " + list.toString());
-            Timber.d("Stock items: list size: %i, , loaded count: %i",
-                    list.size(), list.getLoadedCount());
-            adapter.submitList(list);
-        });
+        adapter = new ManageStockAdapter();
         recyclerView.setAdapter(adapter);
+
+        searchStock("");
     }
 
     private void setupSearchInput() {
@@ -98,7 +94,7 @@ public class ManageStockActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                viewModel.onQueryChanged(editable.toString());
+                searchStock(editable.toString());
             }
         });
 
@@ -118,6 +114,24 @@ public class ManageStockActivity extends BaseActivity {
 //            boolean show = textInput != null && !textInput.getText().toString().isEmpty();
 //            showClearSearchIconStatus(textInputLayout, show);
 //        });
+    }
+
+    private void searchStock(String query) {
+        // Clear the existing list
+        adapter.submitList(null);
+
+        // Invalidate existing observers
+        viewModel.getStockItems().removeObservers(this);
+        viewModel.getSearch().setValue(query);
+
+        // Observe the new PagedList returned
+        viewModel.getStockItems().observe(this, list -> {
+            if (list != null)
+                Timber.d("Stock items: list size: %d, , loaded count: %d",
+                        list.size(), list.getLoadedCount());
+
+            adapter.submitList(list);
+        });
     }
 
     private void showClearSearchIconStatus(TextInputLayout textInputLayout, boolean show) {
