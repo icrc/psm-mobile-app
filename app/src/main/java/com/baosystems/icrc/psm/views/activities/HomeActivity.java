@@ -3,7 +3,6 @@ package com.baosystems.icrc.psm.views.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,16 +37,13 @@ import org.hisp.dhis.android.core.D2;
 import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class HomeActivity extends BaseActivity {
-    private static String TAG = "HomeActivity";
-
     private ActivityHomeBinding binding;
     private RecentActivityAdapter recentActivityAdapter;
 
@@ -91,7 +87,7 @@ public class HomeActivity extends BaseActivity {
         // TODO: remove later. temporarily used for testing
         homeViewModel.loadTestStockItems("").observe(this, teis -> {
             teis.forEach(tei -> {
-                Log.d("HA", tei.trackedEntityAttributeValues().toString());
+                Timber.d(tei.trackedEntityAttributeValues().toString());
             });
         });
 
@@ -107,7 +103,7 @@ public class HomeActivity extends BaseActivity {
         )));
 
         homeViewModel.getTransactionType().observe(this, transactionType -> {
-            Log.d("HA", "New transaction selected: " + transactionType.name());
+            Timber.d( "New transaction selected: " + transactionType.name());
 
             // TODO: Add a border around the selected button, and reset the
             //  other buttons to the default
@@ -121,7 +117,7 @@ public class HomeActivity extends BaseActivity {
         });
 
         homeViewModel.getError().observe(this, message -> {
-            Log.d(TAG, "Error: " + message);
+            Timber.d("Error: " + message);
             if (message != null) {
                 ActivityManager.showErrorMessage(binding.getRoot(), message);
             }
@@ -138,7 +134,7 @@ public class HomeActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             // TODO: Show the app settings UI
-            Log.d("HA", "Settings clicked");
+            Timber.d("Settings clicked");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -198,7 +194,7 @@ public class HomeActivity extends BaseActivity {
         // Add a listener to the calendar icon
         binding.transactionDateTextInputLayout.setEndIconOnClickListener(view -> {
             // TODO: Show the datepicker when the calendar icon is clicked
-            Log.d("HomeActivity", "Show the datepicker");
+            Timber.d("Show the datepicker");
         });
     }
 

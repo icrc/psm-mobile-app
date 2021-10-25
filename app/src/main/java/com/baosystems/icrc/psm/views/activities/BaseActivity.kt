@@ -1,10 +1,10 @@
 package com.baosystems.icrc.psm.views.activities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 
 /**
  * The base Activity
@@ -38,7 +38,7 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun createViewModel(disposable: CompositeDisposable): ViewModel
 
     override fun onDestroy() {
-        Log.d("BaseActivity", "About to clear existing 'disposables'")
+        Timber.d("About to clear existing 'disposables'")
         disposable.clear()
         super.onDestroy()
     }

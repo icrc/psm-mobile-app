@@ -1,11 +1,5 @@
 package com.baosystems.icrc.psm.views.activities;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivitySyncBinding;
@@ -27,13 +27,9 @@ import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.sync.SyncViewModel;
 import com.baosystems.icrc.psm.viewmodels.sync.SyncViewModelFactory;
 
-import org.hisp.dhis.android.core.D2;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SyncActivity extends BaseActivity {
-    private static String TAG = "SyncActivity";
-
     private SyncViewModel viewModel;
     private ProgressBar progressBar;
     private ImageView infoIcon;

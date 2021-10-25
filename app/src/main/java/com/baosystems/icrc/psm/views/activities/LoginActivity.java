@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -28,6 +27,7 @@ import com.baosystems.icrc.psm.viewmodels.login.LoginViewModel;
 import com.baosystems.icrc.psm.viewmodels.login.LoginViewModelFactory;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class LoginActivity extends BaseActivity {
     private LoginViewModel loginViewModel;
@@ -45,7 +45,7 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            Log.d("LoginActivity", "Text changed");
+            Timber.d("Text changed");
             loginViewModel.loginDataChanged();
         }
     };

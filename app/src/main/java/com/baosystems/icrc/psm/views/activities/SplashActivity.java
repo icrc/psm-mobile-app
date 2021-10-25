@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
@@ -21,9 +20,9 @@ import com.baosystems.icrc.psm.viewmodels.splash.SplashViewModelFactory;
 import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class SplashActivity extends BaseActivity {
-    private static final String TAG = "SplashActivity";
     private SplashViewModel viewModel;
 
     @Override
@@ -56,7 +55,7 @@ public class SplashActivity extends BaseActivity {
         viewModel.isLoggedIn().observe(this, loggedIn -> {
             Intent intent;
             if (loggedIn) {
-                Log.d(TAG, "User is logged in. Has metadata being synced? " +
+                Timber.d("User is logged in. Has metadata being synced? %s",
                         viewModel.hasSyncedMetadata());
 
                 if (viewModel.hasSyncedMetadata())

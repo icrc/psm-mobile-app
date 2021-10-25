@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
@@ -28,9 +27,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class ManageStockActivity extends BaseActivity {
-    private static final String TAG = "ManageStockActivity";
     private static final String INTENT_DATA = "STOCK_CHOICES";
 
     private ActivityManageStockBinding binding;
@@ -64,7 +63,7 @@ public class ManageStockActivity extends BaseActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         else
-            Log.w(TAG, "Support action bar is null");
+            Timber.w("Support action bar is null");
 
         // configure the search input
         setupSearchInput();
@@ -75,8 +74,8 @@ public class ManageStockActivity extends BaseActivity {
 //        manageStockViewModel.getStockItems().observe(this, adapter::submitList);
         viewModel.getStockItems().observe(this, list -> {
 //            Log.d(TAG, "Stock items list: " + list.toString());
-            Log.d(TAG, "Stock items: list size: " + list.size() +
-                    ", loaded count: " + list.getLoadedCount());
+            Timber.d("Stock items: list size: %i, , loaded count: %i",
+                    list.size(), list.getLoadedCount());
             adapter.submitList(list);
         });
         recyclerView.setAdapter(adapter);
@@ -146,7 +145,7 @@ public class ManageStockActivity extends BaseActivity {
                 )
         ).get(ManageStockViewModel.class);
 
-        Log.d(TAG, intentExtra.toString());
+        Timber.d(intentExtra.toString());
 
         return viewModel;
     }
