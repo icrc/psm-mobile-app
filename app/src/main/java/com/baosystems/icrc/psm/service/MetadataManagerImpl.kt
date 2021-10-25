@@ -1,13 +1,10 @@
 package com.baosystems.icrc.psm.service
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import com.baosystems.icrc.psm.exceptions.InitializationException
-import com.baosystems.icrc.psm.utils.Constants
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM_KEY
 import com.baosystems.icrc.psm.utils.Constants.ITEM_PAGE_SIZE
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,14 +15,13 @@ import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnitMode
 import org.hisp.dhis.android.core.program.Program
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
+import timber.log.Timber
 import java.util.*
 
 class MetadataManagerImpl(
     private val d2: D2,
     private val configProps: Properties
 ): MetadataManager {
-    val TAG = "MetadataManagerImpl"
-
     init {
 //        Log.d(TAG, "Downloading metadata...")
 
@@ -46,7 +42,7 @@ class MetadataManagerImpl(
 //            .subscribe()
 //
         // TODO: Remove later, temporarily used to test functionality
-        Log.i(TAG, "Downloading TEI data...")
+        Timber.i("Downloading TEI data...")
         d2.trackedEntityModule()
             .trackedEntityInstanceDownloader()
             .byProgramUid("F5ijs28K4s8")
@@ -56,10 +52,10 @@ class MetadataManagerImpl(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
-                Log.i(TAG, "Finished downloading TEI data!")
+                Timber.i("Finished downloading TEI data!")
             }
             .doOnError{
-                Log.e(TAG, "Error downloading TEI data: ${it.localizedMessage}")
+                Timber.e("Error downloading TEI data: ${it.localizedMessage}")
                 it.printStackTrace()
             }
             .subscribe()
@@ -87,12 +83,12 @@ class MetadataManagerImpl(
      * the user data capture OUs (with DESCENDANTS)
      */
     override fun facilities(): Single<MutableList<OrganisationUnit>> {
-        Log.d(TAG, "Looking up facilities (program OUs)...")
+        Timber.d("Looking up facilities (program OUs)...")
 
         // TODO: If the list of programs returned is more than one, flag it
         return Single.defer {
             stockManagementProgram().map { program ->
-                Log.d(TAG, "Base program = ${program.uid()}")
+                Timber.d("Base program = ${program.uid()}")
                 d2.organisationUnitModule()
                     .organisationUnits()
                     .byOrganisationUnitScope(
@@ -122,7 +118,7 @@ class MetadataManagerImpl(
 
     override fun destinations(): Single<List<Option>> {
         return Single.defer {
-            Log.d(TAG, "Fetching optionsets...")
+            Timber.d("Fetching optionsets...")
             d2.programModule()
                 .programStageDataElements()
                     // TODO: Cleanup the implementation below with proper variable names and follow through
@@ -155,7 +151,7 @@ class MetadataManagerImpl(
                     }
 
                     val optionSetUids = nonEmptyOptionSets.map { de -> de.optionSetUid() }
-                    Log.d(TAG, "Optionset uids: ${optionSetUids}")
+                    Timber.d("Optionset uids: $optionSetUids")
 
                     // TODO: Removing the flatten() call if you wouldn't be looping
                     //  through all the DEs. Final decision will be taken when you hear from David
@@ -199,8 +195,6 @@ class MetadataManagerImpl(
 //                .eq("x9sqD4dYb9F")
 //                .get()
 //        }
-
-        Log.d(TAG, "About to query TEIs")
 
         var teiRepository = d2.trackedEntityModule()
             .trackedEntityInstanceQuery()
