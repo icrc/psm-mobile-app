@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,6 +17,8 @@ import com.baosystems.icrc.psm.data.models.UserIntent;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.service.MetadataManager;
 import com.baosystems.icrc.psm.service.MetadataManagerImpl;
+import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
+import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
@@ -23,8 +26,6 @@ import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
 import com.baosystems.icrc.psm.views.adapters.ManageStockAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -74,7 +75,17 @@ public class ManageStockActivity extends BaseActivity {
         adapter = new ManageStockAdapter();
         recyclerView.setAdapter(adapter);
 
-        searchStock("");
+        viewModel.getStockItems().observe(this, pagedListLiveData -> {
+            Timber.d("Updating recyclerview pagedlist");
+            adapter.submitList(pagedListLiveData);
+            // TODO: Scroll back to the top of the recyclerview if a new pagedlist is added
+
+            // TODO: Handle empty results state
+
+            // TODO: Handle error states
+        });
+
+//        searchStock("");
     }
 
     private void setupSearchInput() {
@@ -94,7 +105,8 @@ public class ManageStockActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                searchStock(editable.toString());
+//                searchStock(editable.toString());
+                viewModel.onSearchQueryChanged(editable.toString());
             }
         });
 
@@ -116,30 +128,16 @@ public class ManageStockActivity extends BaseActivity {
 //        });
     }
 
-    private void searchStock(String query) {
-        // Clear the existing list
-        adapter.submitList(null);
-
-        // Invalidate existing observers
-        viewModel.getStockItems().removeObservers(this);
-        viewModel.getSearch().setValue(query);
-
-        // Observe the new PagedList returned
-        viewModel.getStockItems().observe(this, list -> {
-            if (list != null)
-                Timber.d("Stock items: list size: %d, , loaded count: %d",
-                        list.size(), list.getLoadedCount());
-
-            adapter.submitList(list);
-        });
-    }
-
     private void showClearSearchIconStatus(TextInputLayout textInputLayout, boolean show) {
         textInputLayout.setEndIconVisible(show);
     }
 
+    @NonNull
     @Override
-    public ViewModel createViewModel(@NotNull CompositeDisposable disposable) {
+    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
         // TODO: Inject MetadataManager
         // TODO: Inject D2
         MetadataManager metadataManager = new MetadataManagerImpl(
@@ -151,6 +149,8 @@ public class ManageStockActivity extends BaseActivity {
         ManageStockViewModel viewModel = new ViewModelProvider(
                 this,
                 new ManageStockViewModelFactory(
+                        disposable,
+                        schedulerProvider,
                         metadataManager,
                         intentExtra.getTransactionType(),
                         intentExtra.getFacility(),
