@@ -48,7 +48,7 @@ class ManageStockViewModel(
     private fun configureSearchRelay() {
         disposable.add(
             searchRelay
-                .debounce(300, TimeUnit.MILLISECONDS)
+                .debounce(QUERY_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
@@ -73,4 +73,8 @@ class ManageStockViewModel(
     }
 
     fun getItemQuantity(item: TrackedEntityInstance) = entries[item]
+
+    companion object {
+        private const val QUERY_DEBOUNCE = 300L
+    }
 }
