@@ -8,11 +8,14 @@ import com.baosystems.icrc.psm.data.FacilityFactory
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.service.MetadataManager
+import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.service.scheduler.TrampolineSchedulerProvider
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel
+import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.attribute.AttributeValue
+import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.junit.Assert.*
-
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,8 +24,6 @@ import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.verify
-import java.lang.UnsupportedOperationException
 
 @RunWith(MockitoJUnitRunner::class)
 class ManageStockViewModelTest {
@@ -31,7 +32,10 @@ class ManageStockViewModelTest {
 
     private lateinit var facility: IdentifiableModel
     private lateinit var distributedTo: IdentifiableModel
-    lateinit var transactionDate: String
+    private lateinit var transactionDate: String
+
+    private val disposable = CompositeDisposable()
+    private lateinit var schedulerProvider: BaseSchedulerProvider
 
     @Mock
     private lateinit var metadataManager: MetadataManager
@@ -43,10 +47,16 @@ class ManageStockViewModelTest {
     private fun getModel(type: TransactionType,
                          distributedTo: IdentifiableModel?) =
         ManageStockViewModel(
-            type, facility,
+            disposable,
+            schedulerProvider,
+            metadataManager,
+            type,
+            facility,
             transactionDate,
             distributedTo
         )
+
+    private fun createTEI(uid: String) = TrackedEntityInstance.builder().uid(uid).build()
 
     @Before
     fun setUp() {
@@ -55,6 +65,8 @@ class ManageStockViewModelTest {
         distributedTo = ParcelUtils.distributedTo_ToIdentifiableModelParcel(
             DestinationFactory.create(23L))
         transactionDate = "2021-08-05"
+
+        schedulerProvider = TrampolineSchedulerProvider()
     }
 
     @Test
@@ -102,17 +114,44 @@ class ManageStockViewModelTest {
         assertEquals(viewModel.transactionDate, transactionDate)
     }
 
-    // TODO: init_shouldFetchAllStockItems
-    @Test
-    fun init_shouldFetchAllStockItems() {
-        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
-        viewModel.stockItems.observeForever(stockItemsObserver)
+//    @Test
+//    fun init_shouldHaveNoQuantitiesAlreadySet() {
+//
+//    }
 
-        val search = ""
-        viewModel.setSearchTerm(search)
-        verify(metadataManager).queryStock(search)
-        verify(stockItemsObserver).onChanged(stockItemsCaptor.capture())
+    @Test
+    fun canSetAndGetItemQuantityForSelectedItem() {
+        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+
+        val item = createTEI("someUid")
+        val qty = 319
+
+        viewModel.setItemQuantity(item, qty)
+        assertEquals(viewModel.getItemQuantity(item), qty)
     }
+
+    @Test
+    fun canUpdateExistingItemQuantityForSelectedItem() {
+        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+        val qty2 = 95
+        val item = createTEI("someUid")
+
+        viewModel.setItemQuantity(item, 49)
+        viewModel.setItemQuantity(item, qty2)
+        assertEquals(viewModel.getItemQuantity(item), qty2)
+    }
+
+    // TODO: init_shouldFetchAllStockItems
+//    @Test
+//    fun init_shouldFetchAllStockItems() {
+//        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+//        viewModel.getStockItems().observeForever(stockItemsObserver)
+//
+//        val search = ""
+//        viewModel.setSearchTerm(search)
+//        verify(metadataManager).queryStock(search)
+//        verify(stockItemsObserver).onChanged(stockItemsCaptor.capture())
+//    }
 
     // TODO: Implement shouldSearchStockItems_onSearchQueryChange()
     @Test

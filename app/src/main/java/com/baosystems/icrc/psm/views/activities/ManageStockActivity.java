@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,6 +27,8 @@ import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
 import com.baosystems.icrc.psm.views.adapters.ManageStockAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance;
 
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -52,10 +55,6 @@ public class ManageStockActivity extends BaseActivity {
 
         viewModel = (ManageStockViewModel) getViewModel();
 
-//        ManageStockViewModel viewModel =
-//                new ViewModelProvider(this).get(ManageStockViewModel.class);
-//        updateViewModel(getIntent().getParcelableExtra(INTENT_DATA));
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
@@ -72,7 +71,21 @@ public class ManageStockActivity extends BaseActivity {
 
         // configure the recyclerview
         RecyclerView recyclerView = binding.stockItemsList;
-        adapter = new ManageStockAdapter();
+        recyclerView.setHasFixedSize(true);
+        adapter = new ManageStockAdapter(new ManageStockAdapter.OnItemQuantityChangedListener() {
+            @Override
+            public void quantityChanged(@Nullable TrackedEntityInstance item, int value) {
+                if (item != null) {
+                    viewModel.setItemQuantity(item, value);
+                }
+            }
+
+            @Nullable
+            @Override
+            public Integer itemValue(@NonNull TrackedEntityInstance item) {
+                return viewModel.getItemQuantity(item);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         viewModel.getStockItems().observe(this, pagedListLiveData -> {

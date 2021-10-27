@@ -1,16 +1,13 @@
 package com.baosystems.icrc.psm.viewmodels.stock
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.service.MetadataManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import timber.log.Timber
@@ -27,7 +24,8 @@ class ManageStockViewModel(
 ): PSMViewModel() {
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
-    private val _stockItems = Transformations.switchMap(search, metadataManager::queryStock)
+    private val stockItems = Transformations.switchMap(search, metadataManager::queryStock)
+    private val entries = hashMapOf<TrackedEntityInstance, Int>()
 
     init {
         if (transactionType != TransactionType.DISTRIBUTION && distributedTo != null)
@@ -38,20 +36,16 @@ class ManageStockViewModel(
             throw UnsupportedOperationException("'distributedTo' is mandatory for model creation")
 
         configureSearchRelay()
-        initStockItems()
+        loadStockItems()
     }
 
-    private fun initStockItems() {
-        Timber.d("initStockItems(): search value = ${search.value}")
-        searchRelay.accept(search.value ?: "")
+    private fun loadStockItems() {
+        search.value = ""
     }
 
-    fun getStockItems(): LiveData<PagedList<TrackedEntityInstance>> {
-        return _stockItems
-    }
+    fun getStockItems() = stockItems
 
     private fun configureSearchRelay() {
-        // TODO: Fix the issue with the disposable not being run sometimes on first run
         disposable.add(
             searchRelay
                 .debounce(300, TimeUnit.MILLISECONDS)
@@ -73,4 +67,10 @@ class ManageStockViewModel(
     fun onSearchQueryChanged(query: String) {
         searchRelay.accept(query)
     }
+
+    fun setItemQuantity(item: TrackedEntityInstance, qty: Int) {
+        entries[item] = qty
+    }
+
+    fun getItemQuantity(item: TrackedEntityInstance) = entries[item]
 }
