@@ -1,11 +1,11 @@
 package com.baosystems.icrc.psm.viewmodels.login
 
 import android.app.Application
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.baosystems.icrc.psm.service.*
+import com.baosystems.icrc.psm.service.PreferenceProvider
+import com.baosystems.icrc.psm.service.UserManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.Constants
 import io.reactivex.Completable
@@ -13,6 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.maintenance.D2Error
 import org.hisp.dhis.android.core.maintenance.D2ErrorCode
 import org.hisp.dhis.android.core.user.User
+import timber.log.Timber
 
 // TODO: Extend 'ViewModel' if it doesn't eventually require the application context
 class LoginViewModel(
@@ -21,8 +22,6 @@ class LoginViewModel(
     private val preferenceProvider: PreferenceProvider,
     private val userManager: UserManager
 ) : AndroidViewModel(application) {
-    private val TAG = "LoginModel"
-
     // TODO: Remove the temporary values added for testing
     val username: MutableLiveData<String> = MutableLiveData()
     val password: MutableLiveData<String> = MutableLiveData()
@@ -106,8 +105,8 @@ class LoginViewModel(
                 if (throwable.errorCode() == D2ErrorCode.ALREADY_AUTHENTICATED) {
                     disposable.add(
                         userManager.userName().subscribe(
-                            {name -> Log.d(TAG, "The already logged in user is : $name")},
-                            {err -> err.message?.let { Log.e(TAG, it) } }
+                            { name -> Timber.d("The already logged in user is : $name") },
+                            {err -> err.message?.let { Timber.e(it) } }
                         )
                     )
 
@@ -123,15 +122,14 @@ class LoginViewModel(
 
     private fun handleLoginResponse(user: User?) {
         if (user != null) {
-            Log.d(TAG, "${user.name()} is logged in")
+            Timber.d(user.name() + " is logged in")
             loginResult.postValue(Result(user))
         } else {
-            Log.d(TAG, "user is logged in but empty")
+            Timber.d("user is logged in but empty")
             loginResult.postValue(Result("Login error: no user"))
         }
     }
 
-    //    fun loginDataChanged(serverUrl: String, username: String, password: String) {
     fun loginDataChanged() {
         updateLoginStatus()
     }

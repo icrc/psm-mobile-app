@@ -73,31 +73,6 @@ class HomeViewModel(
         loadDestinations()
     }
 
-    fun loadTestStockItems(q: String?): LiveData<PagedList<TrackedEntityInstance>> {
-        return metadataManager.queryStock(q)
-//        disposable.add(
-//            metadataManager.queryStock("")
-//                .subscribeOn(schedulerProvider.io())
-//                .observeOn(schedulerProvider.ui())
-//                .doOnSuccess {
-//                    Log.d(TAG, "Successfully fetched TEIs!")
-//                }
-//                .doOnError {
-//                    Log.e(TAG, "Unable to fetch the available TEIs: ${it.localizedMessage}")
-//                }
-//                .subscribe({ results ->
-//                    Log.d(TAG, "TEI count: ${results.size}")
-//                    results.forEach { tei ->
-//                        Log.d(TAG, tei.toString())
-//                        Log.d(TAG, tei.)
-//                    }
-//                }, { e ->
-//                    Log.e(TAG, e.localizedMessage)
-//                    e.printStackTrace()
-//                })
-//        )
-    }
-
     private fun loadDestinations() {
         // TODO: Handle situations where the list of destinations cannot be loaded
         disposable.add(
@@ -118,6 +93,7 @@ class HomeViewModel(
     }
 
     private fun loadFacilities() {
+        // TODO: Handle situations where the list of facilities cannot be loaded
         disposable.add(
             metadataManager.facilities()
                 .subscribeOn(schedulerProvider.io())
@@ -177,12 +153,6 @@ class HomeViewModel(
                     .subscribe()
             )
         }
-    }
-
-
-    // TODO: Navigate to manage stock
-    fun navigateToManageStock() {
-
     }
 
     fun readyManageStock(): Boolean {

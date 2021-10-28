@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.viewmodels.splash
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.service.PreferenceProvider
@@ -12,6 +11,7 @@ import com.baosystems.icrc.psm.utils.Sdk
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.D2Manager
+import timber.log.Timber
 
 
 class SplashViewModel(
@@ -20,10 +20,6 @@ class SplashViewModel(
     private val schedulerProvider: BaseSchedulerProvider,
     private val preferenceProvider: PreferenceProvider
 ) : AndroidViewModel(application) {
-
-    companion object {
-        const val TAG = "SplashViewModel"
-    }
 
     private val loggedIn: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().also {
@@ -40,7 +36,7 @@ class SplashViewModel(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doOnSuccess() {
-                    Log.d(TAG, "Login check completed: Status = $it")
+                    Timber.d("Login check completed: Status = $it")
                 }
                 .subscribe(
                     {isLogged ->
@@ -53,7 +49,7 @@ class SplashViewModel(
                         //  See if you can send the issue/error to a remote service
                         //  (e.g. crash reporting)
                         e.printStackTrace()
-                        Log.e(TAG, "Unable to initialize session with previously logged in user")
+                        Timber.e("Unable to initialize session with previously logged in user")
 
                         loggedIn.postValue(false)
                         // TODO: To prevent D2ErrorCode.ALREADY_AUTHENTICATED errors,

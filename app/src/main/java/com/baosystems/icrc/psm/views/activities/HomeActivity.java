@@ -87,13 +87,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void attachObservers() {
-        // TODO: remove later. temporarily used for testing
-        viewModel.loadTestStockItems("").observe(this, teis -> {
-            teis.forEach(tei -> {
-                Timber.d(tei.trackedEntityAttributeValues().toString());
-            });
-        });
-
         // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
         // TODO: Inject FacilityListAdapter with DI
         viewModel.getFacilities().observe(this, facilitiesList -> {

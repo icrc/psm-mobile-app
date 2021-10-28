@@ -42,23 +42,23 @@ class MetadataManagerImpl(
 //            .subscribe()
 //
         // TODO: Remove later, temporarily used to test functionality
-        Timber.i("Downloading TEI data...")
-        d2.trackedEntityModule()
-            .trackedEntityInstanceDownloader()
-            .byProgramUid("F5ijs28K4s8")
-            .limitByOrgunit(true)
-            .limitByProgram(true)
-            .download()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete {
-                Timber.i("Finished downloading TEI data!")
-            }
-            .doOnError{
-                Timber.e("Error downloading TEI data: ${it.localizedMessage}")
-                it.printStackTrace()
-            }
-            .subscribe()
+//        Timber.i("Downloading TEI data...")
+//        d2.trackedEntityModule()
+//            .trackedEntityInstanceDownloader()
+//            .byProgramUid("F5ijs28K4s8")
+//            .limitByOrgunit(true)
+//            .limitByProgram(true)
+//            .download()
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnComplete {
+//                Timber.i("Finished downloading TEI data!")
+//            }
+//            .doOnError{
+//                Timber.e("Error downloading TEI data: ${it.localizedMessage}")
+//                it.printStackTrace()
+//            }
+//            .subscribe()
     }
 
     override fun stockManagementProgram(): Single<Program?> {
