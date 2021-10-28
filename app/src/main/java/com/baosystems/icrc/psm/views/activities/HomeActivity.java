@@ -32,11 +32,14 @@ import com.baosystems.icrc.psm.viewmodels.home.HomeViewModelFactory;
 import com.baosystems.icrc.psm.views.adapters.GenericListAdapter;
 import com.baosystems.icrc.psm.views.adapters.RecentActivityAdapter;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.hisp.dhis.android.core.D2;
 import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,21 +54,21 @@ public class HomeActivity extends BaseActivity {
     private AutoCompleteTextView distributedToTextView;
     private AutoCompleteTextView transactionDateTextView;
     private RecyclerView recentActivitiesRecyclerView;
-    private HomeViewModel homeViewModel;
+    private HomeViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        homeViewModel = (HomeViewModel) getViewModel();
+        viewModel = (HomeViewModel) getViewModel();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         binding.setLifecycleOwner(this);
-        binding.setViewModel(homeViewModel);
+        binding.setViewModel(viewModel);
 
-        facilityTextView = binding.selectedFacilityTextView;
-        transactionDateTextView = binding.transactionDateTextView;
-        distributedToTextView = binding.distributedToTextView;
+        facilityTextView = (AutoCompleteTextView) binding.selectedFacilityTextView.getEditText();
+        transactionDateTextView = (AutoCompleteTextView) binding.transactionDateTextView.getEditText();
+        distributedToTextView = (AutoCompleteTextView) binding.distributedToTextView.getEditText();
         recentActivitiesRecyclerView = binding.recentActivityList;
 
         attachObservers();
@@ -85,7 +88,7 @@ public class HomeActivity extends BaseActivity {
 
     private void attachObservers() {
         // TODO: remove later. temporarily used for testing
-        homeViewModel.loadTestStockItems("").observe(this, teis -> {
+        viewModel.loadTestStockItems("").observe(this, teis -> {
             teis.forEach(tei -> {
                 Timber.d(tei.trackedEntityAttributeValues().toString());
             });
@@ -93,16 +96,16 @@ public class HomeActivity extends BaseActivity {
 
         // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
         // TODO: Inject FacilityListAdapter with DI
-        homeViewModel.getFacilities().observe(this, facilitiesList -> {
+        viewModel.getFacilities().observe(this, facilitiesList -> {
             facilityTextView.setAdapter(new GenericListAdapter<>(
                     this, R.layout.list_item, facilitiesList));
         });
 
-        homeViewModel.getDestinationsList().observe(this, destinations -> distributedToTextView.setAdapter(new GenericListAdapter<>(
+        viewModel.getDestinationsList().observe(this, destinations -> distributedToTextView.setAdapter(new GenericListAdapter<>(
                 this, R.layout.list_item, destinations
         )));
 
-        homeViewModel.getTransactionType().observe(this, transactionType -> {
+        viewModel.getTransactionType().observe(this, transactionType -> {
             Timber.d( "New transaction selected: " + transactionType.name());
 
             // TODO: Add a border around the selected button, and reset the
@@ -112,11 +115,11 @@ public class HomeActivity extends BaseActivity {
 //            Paris.style(buttonsMap.get(transactionType)).apply(R.style.SelectedButtonStyle);
         });
 
-        homeViewModel.getRecentActivityList().observe(this, recentActivities -> {
+        viewModel.getRecentActivityList().observe(this, recentActivities -> {
             recentActivityAdapter.submitList(recentActivities);
         });
 
-        homeViewModel.getError().observe(this, message -> {
+        viewModel.getError().observe(this, message -> {
             Timber.d("Error: " + message);
             if (message != null) {
                 ActivityManager.showErrorMessage(binding.getRoot(), message);
@@ -146,14 +149,14 @@ public class HomeActivity extends BaseActivity {
 
         facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
                 {
-                    homeViewModel.setFacility(
+                    viewModel.setFacility(
                             (OrganisationUnit) facilityTextView.getAdapter().getItem(position));
 //                    facilityTextView.setText(homeViewModel.getFacility().getValue().displayName());
                 }
         );
 
         distributedToTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
-                homeViewModel.setDestination(
+                viewModel.setDestination(
                         (Option) distributedToTextView.getAdapter().getItem(position))
         );
 
@@ -181,20 +184,32 @@ public class HomeActivity extends BaseActivity {
             TransactionType type = entry.getKey();
             MaterialButton button = entry.getValue();
 
-            button.setOnClickListener(view -> selectTransaction(
-                    ((MaterialButton)view), type));
+            button.setOnClickListener(view -> selectTransaction(view, type));
         });
     }
 
     private void selectTransaction(View button, TransactionType buttonTransaction) {
-        homeViewModel.selectTransaction(buttonTransaction);
+        viewModel.selectTransaction(buttonTransaction);
     }
 
     private void setupTransactionDateField() {
-        // Add a listener to the calendar icon
-        binding.transactionDateTextInputLayout.setEndIconOnClickListener(view -> {
-            // TODO: Show the datepicker when the calendar icon is clicked
-            Timber.d("Show the datepicker");
+        // TODO: Theme datepicker, if necessary
+        // TODO: Set the initial date to show in the pciker, which should be equal to the model date
+        MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker().build();
+        picker.addOnPositiveButtonClickListener(
+                epoch -> {
+                    viewModel.getTransactionDate().setValue(
+                            Instant.ofEpochMilli(epoch).atZone(
+                                    ZoneId.systemDefault()).toLocalDateTime()
+                    );
+                });
+
+        // Show the date picker when the calendar icon is clicked
+        binding.transactionDateTextView.setEndIconOnClickListener(view -> {
+            picker.show(
+                    getSupportFragmentManager(),
+                    MaterialDatePicker.class.getCanonicalName()
+            );
         });
     }
 
@@ -219,7 +234,7 @@ public class HomeActivity extends BaseActivity {
 
 
     private void navigateToManageStock() {
-        if (!homeViewModel.readyManageStock()) {
+        if (!viewModel.readyManageStock()) {
             Toast.makeText(this,
                     this.getString(R.string.cannot_proceed_from_home_warning),
                     Toast.LENGTH_SHORT).show();
@@ -232,7 +247,7 @@ public class HomeActivity extends BaseActivity {
 //        );
         startActivity(
                 ManageStockActivity.getManageStockActivityIntent(this,
-                        homeViewModel.getData())
+                        viewModel.getData())
         );
     }
 

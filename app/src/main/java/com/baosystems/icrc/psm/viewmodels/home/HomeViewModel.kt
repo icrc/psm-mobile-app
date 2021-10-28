@@ -43,15 +43,15 @@ class HomeViewModel(
         get() = _isDistribution
 
     private val _facility: MutableLiveData<OrganisationUnit> = MutableLiveData()
-    val facility: LiveData<OrganisationUnit>
+    private val facility: LiveData<OrganisationUnit>
         get() = _facility
 
-    private val _transactionDate: MutableLiveData<LocalDateTime> = MutableLiveData(null)
-    val transactionDate: LiveData<LocalDateTime>
-        get() = _transactionDate
+    val transactionDate: MutableLiveData<LocalDateTime> = MutableLiveData(
+        LocalDateTime.now()
+    )
 
     private val _destination: MutableLiveData<Option> = MutableLiveData(null)
-    val destination: LiveData<Option>
+    private val destination: LiveData<Option>
         get() = _destination
 
     private val _facilities = MutableLiveData<List<OrganisationUnit>>()
@@ -69,8 +69,6 @@ class HomeViewModel(
     val recentActivityList = fetchSampleRecentActivities()
 
     init {
-        _transactionDate.value = LocalDateTime.now()
-
         loadFacilities()
         loadDestinations()
     }
@@ -167,13 +165,6 @@ class HomeViewModel(
         _destination.value = destination
     }
 
-    fun setTransactionDate(dateTime: LocalDateTime) {
-        _transactionDate.value = dateTime
-    }
-
-    fun getFriendlyTransactionDate() = _transactionDate.value?.format(
-        DateTimeFormatter.ofPattern(Constants.TRANSACTION_DATE_FORMAT)) ?: ""
-
     // TODO: Remove later. Temporarily used to logout
     fun logout() {
         userManager.logout()?.let {
@@ -205,10 +196,10 @@ class HomeViewModel(
         if (isDistribution.value == true) {
             return !(_destination.value == null
                     || _facility.value == null
-                    || _transactionDate.value == null)
+                    || transactionDate.value == null)
         }
 
-        return _facility.value != null && _transactionDate.value != null
+        return _facility.value != null && transactionDate.value != null
     }
 
     fun getData(): UserIntent {

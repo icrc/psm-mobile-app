@@ -7,9 +7,6 @@
     <string name="discard">Discard</string>
     <string name="correction">Correction</string>
     <string name="transaction_date">Date of Transaction</string>
-    <string name="transaction_date_content_desc">
-        Show datepicker to select transaction date
-    </string>
     <string name="recent_activity">Recent Activity</string>
     <string name="recent_activity_icon_content_description">Directional arrow</string>
     <string name="last_synced">Last synced:</string>
@@ -117,4 +114,5 @@
     <string name="content_description_sync_info">Sync information</string>
     <string name="content_description_search">Search</string>
     <string name="content_description_clear_text">Clear text</string>
+    <string name="content_desc_transaction_date">Show date picker</string>
 </resources>
