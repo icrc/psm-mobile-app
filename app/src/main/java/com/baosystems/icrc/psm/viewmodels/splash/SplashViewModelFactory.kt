@@ -14,11 +14,15 @@ class SplashViewModelFactory(
     private val preferenceProvider: PreferenceProvider
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return SplashViewModel(
-            application,
-            disposable,
-            schedulerProvider,
-            preferenceProvider
-        ) as T
+        @Suppress("UNCHECKED_CAST")
+        if (modelClass.isAssignableFrom(SplashViewModel::class.java))
+            return SplashViewModel(
+                application,
+                disposable,
+                schedulerProvider,
+                preferenceProvider
+            ) as T
+
+        throw IllegalAccessException("Unknown ViewModel class")
     }
 }

@@ -16,11 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.models.UserIntent;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
-import com.baosystems.icrc.psm.service.MetadataManager;
-import com.baosystems.icrc.psm.service.MetadataManagerImpl;
+import com.baosystems.icrc.psm.service.StockManager;
+import com.baosystems.icrc.psm.service.StockManagerImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
-import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
@@ -151,12 +150,9 @@ public class ManageStockActivity extends BaseActivity {
         // TODO: Inject SchedulerProvider using DI
         BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
 
-        // TODO: Inject MetadataManager
+        // TODO: Inject StockManager
         // TODO: Inject D2
-        MetadataManager metadataManager = new MetadataManagerImpl(
-                Sdk.d2(this),
-                ConfigUtils.loadConfigFile(getResources())
-        );
+        StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
 
         UserIntent intentExtra = getIntent().getParcelableExtra(INTENT_DATA);
         ManageStockViewModel viewModel = new ViewModelProvider(
@@ -164,7 +160,7 @@ public class ManageStockActivity extends BaseActivity {
                 new ManageStockViewModelFactory(
                         disposable,
                         schedulerProvider,
-                        metadataManager,
+                        stockManager,
                         intentExtra.getTransactionType(),
                         intentExtra.getFacility(),
                         intentExtra.getTransactionDate(),

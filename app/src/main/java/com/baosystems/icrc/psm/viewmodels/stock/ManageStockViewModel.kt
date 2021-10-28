@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
-import com.baosystems.icrc.psm.service.MetadataManager
+import com.baosystems.icrc.psm.service.StockManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import com.jakewharton.rxrelay2.PublishRelay
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 class ManageStockViewModel(
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
-    val metadataManager: MetadataManager,
+    val stockManager: StockManager,
     var transactionType: TransactionType,
     var facility: IdentifiableModel,
     var transactionDate: String,
@@ -24,13 +24,8 @@ class ManageStockViewModel(
 ): PSMViewModel() {
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
-    private val stockItems = Transformations.switchMap(search) { query ->
-        metadataManager.queryStock(
-            query,
-            "x9sqD4dYb9F",
-            "F5ijs28K4s8",
-            "MBczRWvfM46"
-        )
+    private val stockItems = Transformations.switchMap(search) { q ->
+        stockManager.search(q, "x9sqD4dYb9F", "F5ijs28K4s8", "MBczRWvfM46")
     }
     private val entries = hashMapOf<TrackedEntityInstance, Int>()
 

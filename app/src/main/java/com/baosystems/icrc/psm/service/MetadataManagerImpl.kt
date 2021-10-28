@@ -1,18 +1,13 @@
 package com.baosystems.icrc.psm.service
 
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM_KEY
-import com.baosystems.icrc.psm.utils.Constants.ITEM_PAGE_SIZE
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
-import org.hisp.dhis.android.core.organisationunit.OrganisationUnitMode
 import org.hisp.dhis.android.core.program.Program
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import timber.log.Timber
 import java.util.*
 
@@ -163,41 +158,5 @@ class MetadataManagerImpl(
                     }.flatten()
                 }
         }
-    }
-
-    override fun queryStock(
-        search: String?,
-        ou: String?,
-        program: String?,
-        attribute: String?
-    ): LiveData<PagedList<TrackedEntityInstance>> {
-        var teiRepository = d2.trackedEntityModule().trackedEntityInstanceQuery()
-
-        if (!ou.isNullOrEmpty())
-            teiRepository.byOrgUnits()
-                .eq(ou)
-                .byOrgUnitMode()
-                .eq(OrganisationUnitMode.SELECTED)
-                .also { teiRepository = it }
-
-        if (!program.isNullOrEmpty())
-            teiRepository.byProgram()
-                .eq(program)
-                .also { teiRepository = it }
-
-        if (!search.isNullOrEmpty()) {
-            teiRepository
-                .byQuery()
-                .like(search).also { teiRepository = it }
-        }
-
-        if (!attribute.isNullOrEmpty()) {
-            teiRepository.orderByAttribute(attribute)
-                .eq(RepositoryScope.OrderByDirection.ASC)
-                .also { teiRepository = it }
-        }
-
-        // TODO: Make the pageSize dynamic once you're able to determine
-        return teiRepository.getPaged(ITEM_PAGE_SIZE)
     }
 }
