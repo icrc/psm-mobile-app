@@ -6,8 +6,6 @@ import com.baosystems.icrc.psm.exceptions.InitializationException
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM_KEY
 import com.baosystems.icrc.psm.utils.Constants.ITEM_PAGE_SIZE
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.option.Option
@@ -167,57 +165,39 @@ class MetadataManagerImpl(
         }
     }
 
-//    override fun stockItems(program: Program, ou: OrganisationUnit):
-    override fun queryStock(search: String?):
-            LiveData<PagedList<TrackedEntityInstance>> {
-//        return Single.defer {
-//            Log.d(TAG, "Fetching TEIs...")
-//
-//            //        val program = d2.programModule().programs()
-////            .byUid()
-////            // TODO: Inject program uid from config
-////            .eq("F5ijs28K4s8")
-////            .one()
-////            .get()
-////            .map { program ->
-////                program
-////            }
-////
-//            d2.trackedEntityModule()
-//                .trackedEntityInstanceQuery()
-////                .byProgramUids(
-//////                listOf(program.uid())
-////                    listOf("F5ijs28K4s8")
-////                )
-////                .byOrganisationUnitUid()
-////            .eq(ou.uid())
-//                .byOrgUnits()
-//                .eq("x9sqD4dYb9F")
-//                .get()
-//        }
+    override fun queryStock(
+        search: String?,
+        ou: String?,
+        program: String?,
+        attribute: String?
+    ): LiveData<PagedList<TrackedEntityInstance>> {
+        var teiRepository = d2.trackedEntityModule().trackedEntityInstanceQuery()
 
-        var teiRepository = d2.trackedEntityModule()
-            .trackedEntityInstanceQuery()
-            .byProgram()
-            .eq("F5ijs28K4s8")
-            .byOrgUnits()
-            .eq("x9sqD4dYb9F")
-            .byOrgUnitMode()
-            .eq(OrganisationUnitMode.SELECTED)
+        if (!ou.isNullOrEmpty())
+            teiRepository.byOrgUnits()
+                .eq(ou)
+                .byOrgUnitMode()
+                .eq(OrganisationUnitMode.SELECTED)
+                .also { teiRepository = it }
+
+        if (!program.isNullOrEmpty())
+            teiRepository.byProgram()
+                .eq(program)
+                .also { teiRepository = it }
 
         if (!search.isNullOrEmpty()) {
-            teiRepository = teiRepository
+            teiRepository
                 .byQuery()
-                .like(search)
+                .like(search).also { teiRepository = it }
         }
 
-        // Option 2
-        return teiRepository
-                // TODO: If indices are being used to determine item name/code,
-            //  we wouldn't have an attribute uid to order with
-            .orderByAttribute("MBczRWvfM46")
-            .eq(RepositoryScope.OrderByDirection.ASC)
-            // TODO: Make the pageSize dynamic once you're able to determine
-            .getPaged(ITEM_PAGE_SIZE)
+        if (!attribute.isNullOrEmpty()) {
+            teiRepository.orderByAttribute(attribute)
+                .eq(RepositoryScope.OrderByDirection.ASC)
+                .also { teiRepository = it }
+        }
+
+        // TODO: Make the pageSize dynamic once you're able to determine
+        return teiRepository.getPaged(ITEM_PAGE_SIZE)
     }
 }

@@ -24,7 +24,14 @@ class ManageStockViewModel(
 ): PSMViewModel() {
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
-    private val stockItems = Transformations.switchMap(search, metadataManager::queryStock)
+    private val stockItems = Transformations.switchMap(search) { query ->
+        metadataManager.queryStock(
+            query,
+            "x9sqD4dYb9F",
+            "F5ijs28K4s8",
+            "MBczRWvfM46"
+        )
+    }
     private val entries = hashMapOf<TrackedEntityInstance, Int>()
 
     init {
