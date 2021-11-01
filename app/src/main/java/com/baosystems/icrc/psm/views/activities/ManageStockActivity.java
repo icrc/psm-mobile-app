@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.models.UserIntent;
+import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.service.StockManager;
 import com.baosystems.icrc.psm.service.StockManagerImpl;
@@ -33,7 +33,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class ManageStockActivity extends BaseActivity {
-    private static final String INTENT_DATA = "STOCK_CHOICES";
+    private static final String INTENT_DATA = "STOCK_ITEMS";
 
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
@@ -42,7 +42,7 @@ public class ManageStockActivity extends BaseActivity {
     private TextInputEditText searchInputField;
     private TextInputLayout searchInputContainer;
 
-    public static Intent getManageStockActivityIntent(Context context, UserIntent bundle) {
+    public static Intent getManageStockActivityIntent(Context context, Transaction bundle) {
         Intent intent = new Intent(context, ManageStockActivity.class);
         intent.putExtra(INTENT_DATA, bundle);
         return intent;
@@ -57,6 +57,7 @@ public class ManageStockActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
+        binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
         setSupportActionBar(binding.toolbarContainer.toolbar);
 
@@ -65,10 +66,22 @@ public class ManageStockActivity extends BaseActivity {
         else
             Timber.w("Support action bar is null");
 
-        // configure the search input
         setupSearchInput();
+        setupRecyclerView();
 
-        // configure the recyclerview
+
+        viewModel.getStockItems().observe(this, pagedListLiveData -> {
+            Timber.d("Updating recyclerview pagedlist");
+            adapter.submitList(pagedListLiveData);
+            // TODO: Scroll back to the top of the recyclerview if a new pagedlist is added
+
+            // TODO: Handle empty results state
+
+            // TODO: Handle error states
+        });
+    }
+
+    private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
         recyclerView.setHasFixedSize(true);
         adapter = new ManageStockAdapter(new ManageStockAdapter.OnItemQuantityChangedListener() {
@@ -86,18 +99,6 @@ public class ManageStockActivity extends BaseActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-
-        viewModel.getStockItems().observe(this, pagedListLiveData -> {
-            Timber.d("Updating recyclerview pagedlist");
-            adapter.submitList(pagedListLiveData);
-            // TODO: Scroll back to the top of the recyclerview if a new pagedlist is added
-
-            // TODO: Handle empty results state
-
-            // TODO: Handle error states
-        });
-
-//        searchStock("");
     }
 
     private void setupSearchInput() {
@@ -154,23 +155,28 @@ public class ManageStockActivity extends BaseActivity {
         // TODO: Inject D2
         StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
 
-        UserIntent intentExtra = getIntent().getParcelableExtra(INTENT_DATA);
+        Timber.d("Parcelable extra = %s", getIntent().getParcelableExtra(INTENT_DATA));
+        Transaction transaction = getIntent().getParcelableExtra(INTENT_DATA);
         ManageStockViewModel viewModel = new ViewModelProvider(
                 this,
                 new ManageStockViewModelFactory(
                         disposable,
                         schedulerProvider,
                         stockManager,
-                        intentExtra.getTransactionType(),
-                        intentExtra.getFacility(),
-                        intentExtra.getTransactionDate(),
-                        intentExtra.getDistributedTo()
+                        transaction
                 )
         ).get(ManageStockViewModel.class);
 
-        Timber.d(intentExtra.toString());
+        Timber.d(getIntent().getParcelableExtra(INTENT_DATA).toString());
 
         return viewModel;
+    }
+
+    private void navigateToReviewStock() {
+        Timber.d("About to start review activity with payload: %s", viewModel.getData());
+        startActivity(
+                ReviewStockActivity.getReviewStockActivityIntent(this, viewModel.getData())
+        );
     }
 
     //    private void updateViewModel(UserIntent data) {

@@ -21,7 +21,7 @@ class ManageStockAdapter(val listener: OnItemQuantityChangedListener): PagedList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.stock_item_entry, parent, false)
+            .inflate(R.layout.manage_stock_item_entry, parent, false)
         return StockItemHolder(itemView)
     }
 
@@ -84,7 +84,7 @@ class ManageStockAdapter(val listener: OnItemQuantityChangedListener): PagedList
 //        tvItemName?.text = "Item $pos"
 
 //        tvItemName?.text = AttributeHelper.teiItemCode(item)
-            tvItemName.text = AttributeHelper.teiItemValueByAttributeUid(item, "MBczRWvfM46")
+            tvItemName.text = AttributeHelper.teiAttributeValueByAttributeUid(item, "MBczRWvfM46")
             etQty.editText?.setText(listener.itemValue(item).let { value ->
                 value?.toString() ?: ""
             })

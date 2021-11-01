@@ -3,9 +3,12 @@ package com.baosystems.icrc.psm.viewmodels.stock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.IdentifiableModel
+import com.baosystems.icrc.psm.data.models.ReviewStockData
+import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.service.StockManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.utils.AttributeHelper
 import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.disposables.CompositeDisposable
@@ -16,25 +19,28 @@ import java.util.concurrent.TimeUnit
 class ManageStockViewModel(
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
-    val stockManager: StockManager,
-    var transactionType: TransactionType,
-    var facility: IdentifiableModel,
-    var transactionDate: String,
-    var distributedTo: IdentifiableModel?
+    stockManager: StockManager,
+    val transaction: Transaction
 ): PSMViewModel() {
+    companion object {
+        private const val QUERY_DEBOUNCE = 300L
+    }
+
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
     private val stockItems = Transformations.switchMap(search) { q ->
         stockManager.search(q, "x9sqD4dYb9F", "F5ijs28K4s8", "MBczRWvfM46")
     }
-    private val entries = hashMapOf<TrackedEntityInstance, Int>()
+    private val entries = linkedMapOf<TrackedEntityInstance, Int>()
 
     init {
-        if (transactionType != TransactionType.DISTRIBUTION && distributedTo != null)
+        if (transaction.transactionType != TransactionType.DISTRIBUTION &&
+            transaction.distributedTo != null)
             throw UnsupportedOperationException(
                 "Cannot set 'distributedTo' for non-distribution transactions")
 
-        if (transactionType == TransactionType.DISTRIBUTION && distributedTo == null)
+        if (transaction.transactionType == TransactionType.DISTRIBUTION &&
+            transaction.distributedTo == null)
             throw UnsupportedOperationException("'distributedTo' is mandatory for model creation")
 
         configureSearchRelay()
@@ -60,6 +66,7 @@ class ManageStockViewModel(
                         search.postValue(result)
                     },
                     {
+                        // TODO: Report the error to the user
                         it.printStackTrace()
                         Timber.w(it, "Unable to fetch search results")
                     })
@@ -76,7 +83,14 @@ class ManageStockViewModel(
 
     fun getItemQuantity(item: TrackedEntityInstance) = entries[item]
 
-    companion object {
-        private const val QUERY_DEBOUNCE = 300L
+    private fun getPopulatedEntries(): List<StockEntry> = entries.map {
+        val tei = it.key
+        StockEntry(
+            tei.uid(),
+            AttributeHelper.teiAttributeValueByAttributeUid(tei, "MBczRWvfM46") ?: "",
+            it.value
+        )
     }
+
+    fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 }

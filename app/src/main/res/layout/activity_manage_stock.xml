@@ -54,7 +54,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@{viewModel.facility.displayName}"
+                    android:text="@{viewModel.transaction.facility.displayName}"
                     tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
 
                 <TextView
@@ -67,7 +67,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/facilityTextView"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@{viewModel.transactionDate}"
+                    android:text="@{viewModel.transaction.transactionDate}"
                     tools:text="2021-08-09" />
 
                 <TextView
@@ -81,7 +81,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/facilityTextView"
-                    android:text="@{viewModel.distributedTo.displayName}"
+                    android:text="@{viewModel.transaction.distributedTo.displayName}"
                     tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,7 +138,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
-                tools:listitem="@layout/stock_item_entry" />
+                tools:listitem="@layout/manage_stock_item_entry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->
@@ -149,14 +149,17 @@
 
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/extended_next_fab"
+            android:id="@+id/fabManageStock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
+            android:paddingStart="@dimen/fab_lr_padding"
+            android:paddingEnd="@dimen/fab_lr_padding"
+            app:cornerRadius="@dimen/fab_corner_radius"
             android:text="@string/review"
-            app:icon="@drawable/arrow_forward"
-            app:iconGravity="textEnd"
+            app:icon="@drawable/ic_review"
+            app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
