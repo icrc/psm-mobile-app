@@ -101,7 +101,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/facilityTextView"
-                    android:text="@{viewModel.transaction.distributedTo.displayName}"
+                    app:distributedTo="@{viewModel.transaction.distributedTo.displayName}"
                     tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
