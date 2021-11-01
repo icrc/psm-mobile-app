@@ -1,7 +1,10 @@
 <resources>
     <dimen name="splash_screen_text_size">24sp</dimen>
     <dimen name="splash_screen_text_top_margin">32dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_corner_radius">24dp</dimen>
+    <dimen name="fab_lr_padding">24dp</dimen>
 
     <!-- Sign in -->
     <dimen name="server_url_lr_margin">200dp</dimen>

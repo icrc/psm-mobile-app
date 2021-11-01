@@ -20,4 +20,6 @@ interface StockManager {
             LiveData<PagedList<TrackedEntityInstance>>
 
     fun loadItems(uids: Collection<String>): Single<MutableList<TrackedEntityInstance>>
+
+    fun lookup(uid: String): TrackedEntityInstance?
 }

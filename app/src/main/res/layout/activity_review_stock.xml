@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.baosystems.icrc.psm.viewmodels.review.ReviewStockViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.baosystems.icrc.psm.views.activities.ManageStockActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/app_name"
+                android:textAllCaps="true"
+                android:textAppearance="?attr/titleTextAppearance"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="@dimen/toolbar_text_size" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- Content Area -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_area_margin"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="@dimen/content_area_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/choices_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/choices_top_margin"
+                android:background="@color/light_grey"
+                android:paddingStart="@dimen/choices_padding_left"
+                android:paddingTop="@dimen/choices_padding_top"
+                android:paddingEnd="@dimen/choices_padding_right"
+                android:paddingBottom="@dimen/choices_padding_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/facilityTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableLeftCompat="@drawable/home"
+                    app:layout_constraintEnd_toStartOf="@+id/transactionDateTextView"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@{viewModel.transaction.facility.displayName}"
+                    tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
+
+                <TextView
+                    android:id="@+id/transactionDateTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableLeftCompat="@drawable/calendar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/facilityTextView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@{viewModel.transaction.transactionDate}"
+                    tools:text="2021-08-09" />
+
+                <TextView
+                    android:id="@+id/distributedToTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:drawablePadding="14dp"
+                    android:gravity="center"
+                    app:drawableLeftCompat="@drawable/destination"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/facilityTextView"
+                    android:text="@{viewModel.transaction.distributedTo.displayName}"
+                    tools:text="Diagnostic imaging (X-Ray)" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchFieldLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_16"
+                app:startIconDrawable="@drawable/ic_search_24"
+                app:startIconTint="@color/input_field_icon_color_tint"
+                app:startIconContentDescription="@string/content_description_search"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toStartOf="@+id/scan_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/choices_container"
+                app:placeholderText="@string/search"
+                app:layout_constraintHorizontal_weight="7">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/scan_button"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/scan_barcode"
+                app:icon="@drawable/barcode"
+                app:iconGravity="end"
+                app:cornerRadius="@dimen/scan_button_corner_radius"
+                app:layout_constraintStart_toEndOf="@id/searchFieldLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/choices_container"
+                app:layout_constraintHorizontal_weight="3" />
+
+            <!-- Table header -->
+            <include layout="@layout/stock_table_header"
+                android:id="@+id/stockEntriesTableHeader" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stock_items_list"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginBottom="@dimen/margin_32"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
+                tools:listitem="@layout/manage_stock_item_entry" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Footer -->
+        <include
+            android:id="@+id/stock_items_footer"
+            layout="@layout/footer"
+            app:lastSyncDate="@{viewModel.lastSyncDate}" />
+
+        <!-- Floating Button -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fabCommitStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:paddingStart="@dimen/fab_lr_padding"
+            android:paddingEnd="@dimen/fab_lr_padding"
+            app:cornerRadius="@dimen/fab_corner_radius"
+            android:text="@string/transaction_label"
+            app:icon="@drawable/ic_commit"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

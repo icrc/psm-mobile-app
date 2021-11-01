@@ -51,4 +51,8 @@ class StockManagerImpl(
 
     override fun loadItems(uids: Collection<String>): Single<MutableList<TrackedEntityInstance>> =
         d2.trackedEntityModule().trackedEntityInstances().byUid().`in`(uids).get()
+
+    override fun lookup(uid: String): TrackedEntityInstance? {
+        TODO("Not yet implemented")
+    }
 }

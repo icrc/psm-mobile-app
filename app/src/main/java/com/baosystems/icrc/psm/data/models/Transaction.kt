@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.baosystems.icrc.psm.data.TransactionType
 import kotlin.text.StringBuilder
 
-class UserIntent(
+class Transaction(
     val transactionType: TransactionType,
     val facility: IdentifiableModel,
     val transactionDate: String,
@@ -32,25 +32,22 @@ class UserIntent(
 
     override fun describeContents() = 0
 
-    companion object CREATOR : Parcelable.Creator<UserIntent> {
-        override fun createFromParcel(parcel: Parcel): UserIntent =
-            UserIntent(parcel)
+    companion object CREATOR : Parcelable.Creator<Transaction> {
+        override fun createFromParcel(parcel: Parcel): Transaction =
+            Transaction(parcel)
 
-        override fun newArray(size: Int): Array<UserIntent?> =
+        override fun newArray(size: Int): Array<Transaction?> =
             arrayOfNulls(size)
     }
 
     override fun toString(): String {
-        val strBuffer = StringBuilder()
-        strBuffer.append("[Transaction: ${transactionType.name}\n")
-        strBuffer.append("Facility: ${facility.displayName}\n")
-        strBuffer.append("Transaction Date: ${transactionDate}\n")
-
-        if (transactionType == TransactionType.DISTRIBUTION && distributedTo != null)
-            strBuffer.append("Distributed to: ${distributedTo.displayName}]")
-        else
-            strBuffer.append("]")
-
-        return strBuffer.toString()
+        return if (transactionType == TransactionType.DISTRIBUTION && distributedTo != null) {
+            "Transaction[Type: %s, Facility: %s, Date: %s, Distributed to: %s]".format(
+                transactionType.name, facility.displayName, transactionDate,
+                distributedTo.displayName)
+        } else {
+            "Transaction[Type: %s, Facility: %s, Date: %s]".format(
+                transactionType.name, facility.displayName, transactionDate)
+        }
     }
 }

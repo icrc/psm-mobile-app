@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+
+    <FrameLayout
+        android:id="@+id/colReviewItemName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="16">
+
+        <TextView
+            android:id="@+id/tvReviewStockItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="@dimen/stock_item_margin"
+            tools:text="DORAPARA5T - PARACETAMOL (acetaminophen), 500 mg, tab." />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/colStockOnHand"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/tvReviewStockOnHandValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/stock_item_margin"
+            tools:ignore="RtlCompat"
+            tools:text="537" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/colReviewItemQty"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiReviewItemQty"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/stock_item_margin"
+            android:layout_marginBottom="@dimen/stock_item_margin"
+            app:boxCornerRadiusBottomEnd="4dp"
+            app:boxCornerRadiusBottomStart="4dp"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="4dp"
+            tools:text="20">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="20" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/qtyValueTextView"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="@dimen/stock_item_margin"-->
+        <!--            android:layout_gravity="center_horizontal"-->
+        <!--            android:ems="10"-->
+        <!--            android:inputType="number"-->
+        <!--            android:minHeight="48dp"-->
+        <!--            android:textAlignment="textEnd"-->
+        <!--            tools:text="20"-->
+        <!--            tools:ignore="RtlCompat" />-->
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <ImageButton
+            android:id="@+id/ibRemoveStockItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_clear_24"
+            android:background="?android:selectableItemBackground" />
+    </FrameLayout>
+</LinearLayout>
