@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.views.adapters
 
 import android.annotation.SuppressLint
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,15 @@ import com.google.android.material.textfield.TextInputLayout
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import timber.log.Timber
 
-class ManageStockAdapter(val listener: OnItemQuantityChangedListener): PagedListAdapter<
+class ManageStockAdapter(
+    private val itemWatcher: ItemWatcher<TrackedEntityInstance, Int>
+): PagedListAdapter<
         TrackedEntityInstance, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.manage_stock_item_entry, parent, false)
-        return StockItemHolder(itemView)
+        return StockItemHolder(itemView, itemWatcher)
     }
 
     override fun onBindViewHolder(holder: StockItemHolder, position: Int) {
@@ -50,7 +53,9 @@ class ManageStockAdapter(val listener: OnItemQuantityChangedListener): PagedList
         }
     }
 
-    inner class StockItemHolder(itemView: View):
+    inner class StockItemHolder(
+        itemView: View,
+        private val qtyWatcher: ItemWatcher<TrackedEntityInstance, Int>):
         RecyclerView.ViewHolder(itemView) {
 
         private val tvItemName: TextView = itemView.findViewById(R.id.itemNameTextView)
@@ -58,18 +63,19 @@ class ManageStockAdapter(val listener: OnItemQuantityChangedListener): PagedList
         private val etQty: TextInputLayout = itemView.findViewById(R.id.itemQtyTextField)
 
         init {
-            Timber.d("Created new StockItemHolder")
+            Timber.d("Created new StockItemHolder. Attaching listeners...")
             etQty.editText?.addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 // TODO: Also update the stock on hand value of the TEI accordingly
                 // TODO: Optimize to update stock on hand after a debounce,
                 //  rather than on every keystroke
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (adapterPosition != RecyclerView.NO_POSITION && s.toString().isNotEmpty()) {
-                        listener.quantityChanged(
-                            getItem(adapterPosition), s.toString().toInt())
-                    }
+                    if (s == null || TextUtils.isEmpty(s.toString()) ||
+                        adapterPosition == RecyclerView.NO_POSITION) return
+
+                    qtyWatcher.quantityChanged(getItem(adapterPosition), s.toString().toInt())
                 }
 
                 override fun afterTextChanged(s: Editable?) {}
@@ -85,14 +91,10 @@ class ManageStockAdapter(val listener: OnItemQuantityChangedListener): PagedList
 
 //        tvItemName?.text = AttributeHelper.teiItemCode(item)
             tvItemName.text = AttributeHelper.teiAttributeValueByAttributeUid(item, "MBczRWvfM46")
-            etQty.editText?.setText(listener.itemValue(item).let { value ->
+
+            etQty.editText?.setText(qtyWatcher.getValue(item).let { value ->
                 value?.toString() ?: ""
             })
         }
-    }
-
-    interface OnItemQuantityChangedListener {
-        fun quantityChanged(item: TrackedEntityInstance?, value: Int)
-        fun itemValue(item: TrackedEntityInstance): Int?
     }
 }

@@ -23,6 +23,7 @@ import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
+import com.baosystems.icrc.psm.views.adapters.ItemWatcher;
 import com.baosystems.icrc.psm.views.adapters.ManageStockAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -84,20 +85,21 @@ public class ManageStockActivity extends BaseActivity {
     private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
         recyclerView.setHasFixedSize(true);
-        adapter = new ManageStockAdapter(new ManageStockAdapter.OnItemQuantityChangedListener() {
+
+        ItemWatcher<TrackedEntityInstance, Integer> qtyChangeListener =
+                new ItemWatcher<TrackedEntityInstance, Integer>() {
             @Override
-            public void quantityChanged(@Nullable TrackedEntityInstance item, int value) {
-                if (item != null) {
-                    viewModel.setItemQuantity(item, value);
-                }
+            public void quantityChanged(@Nullable TrackedEntityInstance item, Integer value) {
+                viewModel.setItemQuantity(item, value);
             }
 
             @Nullable
             @Override
-            public Integer itemValue(@NonNull TrackedEntityInstance item) {
+            public Integer getValue(TrackedEntityInstance item) {
                 return viewModel.getItemQuantity(item);
             }
-        });
+        };
+        adapter = new ManageStockAdapter(qtyChangeListener);
         recyclerView.setAdapter(adapter);
     }
 
