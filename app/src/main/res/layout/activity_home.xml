@@ -243,11 +243,14 @@
 
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/extended_next_fab"
+            android:id="@+id/fabManageStock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
+            android:paddingStart="@dimen/fab_lr_padding"
+            android:paddingEnd="@dimen/fab_lr_padding"
+            app:cornerRadius="@dimen/fab_corner_radius"
             android:text="@string/next"
             app:icon="@drawable/arrow_forward"
             app:iconGravity="textEnd"

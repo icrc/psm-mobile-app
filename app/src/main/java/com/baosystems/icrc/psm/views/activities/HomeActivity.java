@@ -52,7 +52,6 @@ public class HomeActivity extends BaseActivity {
 
     private AutoCompleteTextView facilityTextView;
     private AutoCompleteTextView distributedToTextView;
-    private AutoCompleteTextView transactionDateTextView;
     private RecyclerView recentActivitiesRecyclerView;
     private HomeViewModel viewModel;
 
@@ -67,7 +66,6 @@ public class HomeActivity extends BaseActivity {
         binding.setViewModel(viewModel);
 
         facilityTextView = (AutoCompleteTextView) binding.selectedFacilityTextView.getEditText();
-        transactionDateTextView = (AutoCompleteTextView) binding.transactionDateTextView.getEditText();
         distributedToTextView = (AutoCompleteTextView) binding.distributedToTextView.getEditText();
         recentActivitiesRecyclerView = binding.recentActivityList;
 
@@ -155,7 +153,7 @@ public class HomeActivity extends BaseActivity {
 
         setupTransactionDateField();
 
-        binding.extendedNextFab.setOnClickListener(view -> {
+        binding.fabManageStock.setOnClickListener(view -> {
             navigateToManageStock();
         });
 
@@ -189,13 +187,7 @@ public class HomeActivity extends BaseActivity {
         // TODO: Theme datepicker, if necessary
         // TODO: Set the initial date to show in the pciker, which should be equal to the model date
         MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker().build();
-        picker.addOnPositiveButtonClickListener(
-                epoch -> {
-                    viewModel.getTransactionDate().setValue(
-                            Instant.ofEpochMilli(epoch).atZone(
-                                    ZoneId.systemDefault()).toLocalDateTime()
-                    );
-                });
+        picker.addOnPositiveButtonClickListener(viewModel::setTransactionDate);
 
         // Show the date picker when the calendar icon is clicked
         binding.transactionDateTextView.setEndIconOnClickListener(view -> {

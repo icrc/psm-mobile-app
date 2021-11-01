@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.UserActivity
-import com.baosystems.icrc.psm.data.models.UserIntent
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.repositories.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.service.MetadataManager
@@ -18,7 +18,9 @@ import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
 import timber.log.Timber
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 class HomeViewModel(
@@ -42,9 +44,10 @@ class HomeViewModel(
     private val facility: LiveData<OrganisationUnit>
         get() = _facility
 
-    val transactionDate: MutableLiveData<LocalDateTime> = MutableLiveData(
-        LocalDateTime.now()
-    )
+    private val _transactionDate: MutableLiveData<LocalDateTime> =
+        MutableLiveData(LocalDateTime.now())
+    val transactionDate: LiveData<LocalDateTime>
+        get() = _transactionDate
 
     private val _destination: MutableLiveData<Option> = MutableLiveData(null)
     private val destination: LiveData<Option>
@@ -168,7 +171,7 @@ class HomeViewModel(
         return _facility.value != null && transactionDate.value != null
     }
 
-    fun getData(): UserIntent {
+    fun getData(): Transaction {
         if (transactionType.value == null)
             throw UserIntentParcelCreationException(
                 "Unable to create parcel with empty transaction type")
@@ -181,11 +184,18 @@ class HomeViewModel(
             throw UserIntentParcelCreationException(
                 "Unable to create parcel with empty transaction date")
 
-        return UserIntent(
+        return Transaction(
             transactionType.value!!,
             ParcelUtils.facilityToIdentifiableModelParcel(facility.value!!),
             transactionDate.value!!.humanReadableDate(),
             destination.value?.let { ParcelUtils.distributedTo_ToIdentifiableModelParcel(it) }
         )
+    }
+
+    fun setTransactionDate(epoch: Long) {
+        _transactionDate.value = Instant.ofEpochMilli(epoch)
+            .atZone(ZoneId.systemDefault()
+            )
+            .toLocalDateTime()
     }
 }
