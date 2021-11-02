@@ -3,7 +3,9 @@ package com.baosystems.icrc.psm.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,8 +31,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivitySplashBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_splash);
+        ActivitySplashBinding binding = (ActivitySplashBinding) getViewBinding();
 
         binding.setLifecycleOwner(this);
     }
@@ -70,5 +71,11 @@ public class SplashActivity extends BaseActivity {
         });
 
         return viewModel;
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_splash);
     }
 }

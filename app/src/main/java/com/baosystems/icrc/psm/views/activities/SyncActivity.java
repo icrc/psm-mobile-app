@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -41,8 +42,7 @@ public class SyncActivity extends BaseActivity {
 
         viewModel = (SyncViewModel) getViewModel();
 
-        ActivitySyncBinding binding = DataBindingUtil.setContentView(
-                this, R.layout.activity_sync);
+        ActivitySyncBinding binding = (ActivitySyncBinding) getViewBinding();
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
@@ -114,5 +114,11 @@ public class SyncActivity extends BaseActivity {
                         syncManager
                 )
         ).get(SyncViewModel.class);
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_sync);
     }
 }

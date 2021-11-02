@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,7 +60,7 @@ public class HomeActivity extends BaseActivity {
 
         viewModel = (HomeViewModel) getViewModel();
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        binding = (ActivityHomeBinding) getViewBinding();
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
@@ -268,5 +269,11 @@ public class HomeActivity extends BaseActivity {
                         metadataManager,
                         userManager
                 )).get(HomeViewModel.class);
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_home);
     }
 }

@@ -8,7 +8,9 @@ import android.text.TextWatcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,21 +57,14 @@ public class ManageStockActivity extends BaseActivity {
 
         viewModel = (ManageStockViewModel) getViewModel();
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
+        binding = (ActivityManageStockBinding) getViewBinding();
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
         binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
-        setSupportActionBar(binding.toolbarContainer.toolbar);
-
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        else
-            Timber.w("Support action bar is null");
-
+        setupToolbar();
         setupSearchInput();
         setupRecyclerView();
-
 
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             Timber.d("Updating recyclerview pagedlist");
@@ -80,6 +75,19 @@ public class ManageStockActivity extends BaseActivity {
 
             // TODO: Handle error states
         });
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = binding.toolbarContainer.toolbar;
+        setSupportActionBar(toolbar);
+        binding.toolbarContainer.tvToolbar.setText(
+                viewModel.getTransaction().getTransactionType().name());
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        } else
+            Timber.w("Support action bar is null");
     }
 
     private void setupRecyclerView() {
@@ -172,6 +180,12 @@ public class ManageStockActivity extends BaseActivity {
         Timber.d(getIntent().getParcelableExtra(INTENT_DATA).toString());
 
         return viewModel;
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
     }
 
     private void navigateToReviewStock() {

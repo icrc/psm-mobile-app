@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.views.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -12,6 +13,7 @@ import timber.log.Timber
  */
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
+    private lateinit var binding: ViewDataBinding
 
     // TODO: Inject via DI if possible/necessary
     private val disposable = CompositeDisposable()
@@ -19,23 +21,20 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-
-        // TODO: Figure out a way to not do this.
-        //  Removing the line without fixing the issue adds the activity name
-        //  to the left of the toolbar
-//        toolbar.title = ""
-//        setSupportActionBar(toolbar)
-
         viewModel = createViewModel(disposable)
+        binding = createViewBinding()
     }
 
-    fun getViewModel(): ViewModel = viewModel
+    abstract fun createViewBinding(): ViewDataBinding
 
     /**
      * Initialize the ViewModel for this Activity
      */
     abstract fun createViewModel(disposable: CompositeDisposable): ViewModel
+
+    fun getViewModel(): ViewModel = viewModel
+
+    fun getViewBinding(): ViewDataBinding = binding
 
     override fun onDestroy() {
         Timber.d("About to clear existing 'disposables'")

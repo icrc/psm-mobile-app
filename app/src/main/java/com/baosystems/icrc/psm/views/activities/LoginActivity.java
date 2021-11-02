@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -56,7 +57,7 @@ public class LoginActivity extends BaseActivity {
 
         loginViewModel = (LoginViewModel) getViewModel();
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding = (ActivityLoginBinding) getViewBinding();
         binding.setViewModel(loginViewModel);
         binding.setLifecycleOwner(this);
 
@@ -133,5 +134,11 @@ public class LoginActivity extends BaseActivity {
                 preferenceProvider,
                 userManager
         )).get(LoginViewModel.class);
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_login);
     }
 }

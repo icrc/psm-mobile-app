@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,7 @@ public class ReviewStockActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         viewModel = (ReviewStockViewModel) getViewModel();
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_review_stock);
+        binding = (ActivityReviewStockBinding) getViewBinding();
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -130,5 +131,11 @@ public class ReviewStockActivity extends BaseActivity {
 
 
         return viewModel;
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_review_stock);
     }
 }
