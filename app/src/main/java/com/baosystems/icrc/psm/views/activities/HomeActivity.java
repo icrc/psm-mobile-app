@@ -38,8 +38,6 @@ import org.hisp.dhis.android.core.D2;
 import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,8 +95,6 @@ public class HomeActivity extends BaseActivity {
         )));
 
         viewModel.getTransactionType().observe(this, transactionType -> {
-            Timber.d( "New transaction selected: " + transactionType.name());
-
             // TODO: Add a border around the selected button, and reset the
             //  other buttons to the default
 //            ColorStateList backgroundTintList = ContextCompat.getColorStateList(
@@ -181,6 +177,7 @@ public class HomeActivity extends BaseActivity {
 
     private void selectTransaction(View button, TransactionType buttonTransaction) {
         viewModel.selectTransaction(buttonTransaction);
+
     }
 
     private void setupTransactionDateField() {

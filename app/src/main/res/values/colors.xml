@@ -9,9 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
 
-    <color name="distribution">#FFAF2D3B</color>
-    <color name="discard">#FF5F8D79</color>
-    <color name="correction">#FF969191</color>
+    <color name="distribution_color">#FFAF2D3B</color>
+    <color name="discard_color">#FF5F8D79</color>
+    <color name="correction_color">#FF969191</color>
     <!-- Change to actual red color for errors -->
     <color name="error">#FFAF2D3B</color>
 
@@ -21,6 +21,7 @@
     <color name="grey_border">#FFC7C7C7</color>
 
     <!-- New -->
+    <color name="gray_200">#EDEDED</color>
     <color name="gray_400">#BDBDBD</color>
     <color name="gray_600">#757575</color>
     <color name="gray_700">#616161</color>
@@ -38,4 +39,6 @@
     <color name="secondaryTextColor">#ffffff</color>
 
     <color name="input_field_icon_color_tint">#656565</color>
+    <color name="table_text_color">#2E384D</color>
+    <color name="button_highlight_color">#D685CDE8</color>
 </resources>

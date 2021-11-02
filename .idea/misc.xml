@@ -27,11 +27,11 @@
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1503623188405797" />
         <entry key="app/src/main/res/layout/list_item.xml" value="0.105859375" />
         <entry key="app/src/main/res/layout/list_item_recent_activity.xml" value="0.55" />
-        <entry key="app/src/main/res/layout/manage_stock_item_entry.xml" value="0.16379310344827586" />
+        <entry key="app/src/main/res/layout/manage_stock_item_entry.xml" value="0.5" />
         <entry key="app/src/main/res/layout/review_item_entry.xml" value="0.375" />
         <entry key="app/src/main/res/layout/review_stock_item_entry.xml" value="0.625" />
         <entry key="app/src/main/res/layout/stock_item_entry.xml" value="0.45" />
-        <entry key="app/src/main/res/layout/stock_table_header.xml" value="0.10190886699507389" />
+        <entry key="app/src/main/res/layout/stock_table_header.xml" value="0.5" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.10190886699507389" />
         <entry key="app/src/main/res/menu/menu_options.xml" value="0.105859375" />
         <entry key="app/src/main/res/menu/more_options.xml" value="0.105859375" />

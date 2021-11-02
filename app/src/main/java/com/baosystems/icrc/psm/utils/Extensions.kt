@@ -4,8 +4,10 @@ import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.utils.Constants.LAST_SYNCED_DATETIME_FORMAT
 import com.baosystems.icrc.psm.utils.Constants.TRANSACTION_DATE_FORMAT
+import com.google.android.material.button.MaterialButton
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,5 +29,16 @@ fun setDistributedTo(view: TextView, s: String?) {
     } else {
         view.text = s
         view.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("app:selected")
+fun transactionButtonSelected(button: MaterialButton, selected: Boolean) {
+    if (selected) {
+        button.setStrokeColorResource(R.color.button_highlight_color)
+        button.setStrokeWidthResource(R.dimen.transaction_button_highlight_width)
+    } else {
+        button.setStrokeColorResource(R.color.null_)
+        button.setStrokeWidthResource(R.dimen.transaction_button_no_highlight_width)
     }
 }

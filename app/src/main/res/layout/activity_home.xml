@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="com.baosystems.icrc.psm.data.TransactionType" />
         <variable
             name="viewModel"
             type="com.baosystems.icrc.psm.viewmodels.home.HomeViewModel" />
@@ -55,12 +56,13 @@
                 android:id="@+id/distribution_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:backgroundTint="@color/distribution"
+                app:backgroundTint="@color/distribution_color"
                 android:padding="@dimen/transaction_button_min_padding"
                 android:text="@string/distribution"
                 android:textAllCaps="false"
                 android:textSize="@dimen/transaction_button_text_size"
                 app:cornerRadius="@dimen/transaction_button_corner_radius"
+                app:selected="@{viewModel.transactionType == TransactionType.DISTRIBUTION}"
                 app:layout_constraintEnd_toStartOf="@+id/discard_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -78,8 +80,9 @@
                 android:text="@string/discard"
                 android:textAllCaps="false"
                 android:textSize="@dimen/transaction_button_text_size"
-                app:backgroundTint="@color/discard"
+                app:backgroundTint="@color/discard_color"
                 app:cornerRadius="@dimen/transaction_button_corner_radius"
+                app:selected="@{viewModel.transactionType == TransactionType.DISCARD}"
                 app:layout_constraintEnd_toStartOf="@+id/correction_button"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/distribution_button"
@@ -94,8 +97,9 @@
                 android:text="@string/correction"
                 android:textAllCaps="false"
                 android:textSize="@dimen/transaction_button_text_size"
-                app:backgroundTint="@color/correction"
+                app:backgroundTint="@color/correction_color"
                 app:cornerRadius="@dimen/transaction_button_corner_radius"
+                app:selected="@{viewModel.transactionType == TransactionType.CORRECTION}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/discard_button"

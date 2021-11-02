@@ -11,7 +11,8 @@
         android:id="@+id/itemNameColumn"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="7">
+        android:layout_weight="7"
+        android:background="@color/light_grey">
 
         <TextView
             android:id="@+id/itemNameTextView"
@@ -19,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/stock_item_margin"
+            android:textColor="@color/table_text_color"
             tools:text="DORAPARA5T - PARACETAMOL (acetaminophen), 500 mg, tab." />
     </FrameLayout>
 
@@ -26,7 +28,8 @@
         android:id="@+id/stockOnHandColumn"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.5">
+        android:layout_weight="1.5"
+        android:background="@color/gray_200">
 
         <TextView
             android:id="@+id/stockOnHandValueTextView"
@@ -35,7 +38,8 @@
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="@dimen/stock_item_margin"
             tools:ignore="RtlCompat"
-            tools:text="537" />
+            tools:text="537"
+            android:textColor="@color/table_text_color"/>
     </FrameLayout>
 
     <FrameLayout
@@ -60,7 +64,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/table_text_color" />
         </com.google.android.material.textfield.TextInputLayout>
 
 <!--        <EditText-->
