@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.viewmodels.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.UserActivity
 import com.baosystems.icrc.psm.data.models.Transaction
@@ -35,6 +36,10 @@ class HomeViewModel(
     private val _transactionType =  MutableLiveData<TransactionType>()
     val transactionType: LiveData<TransactionType>
         get() = _transactionType
+
+    private val _themeColorId = MutableLiveData<Int>()
+    val themeColorId: LiveData<Int>
+        get() = _themeColorId
 
     private val _isDistribution: MutableLiveData<Boolean> = MutableLiveData(false)
     val isDistribution: LiveData<Boolean>
@@ -125,6 +130,16 @@ class HomeViewModel(
         // so ensure you clear it for others if it has been set
         if (type != TransactionType.DISTRIBUTION) {
             _destination.value = null
+        }
+
+        _themeColorId.value = if (type == TransactionType.DISTRIBUTION) {
+            R.color.distribution_color
+        } else if (type == TransactionType.CORRECTION) {
+            R.color.correction_color
+        } else if (type == TransactionType.DISCARD) {
+            R.color.discard_color
+        } else {
+            R.color.null_
         }
     }
 

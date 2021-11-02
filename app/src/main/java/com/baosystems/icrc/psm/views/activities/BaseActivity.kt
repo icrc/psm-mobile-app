@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.views.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +24,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
         viewModel = createViewModel(disposable)
         binding = createViewBinding()
+
+        getToolBar()?.let {
+            setupToolbar(it)
+        }
     }
 
     abstract fun createViewBinding(): ViewDataBinding
@@ -42,6 +47,20 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun setupToolbar(toolbar: Toolbar) {
+        setSupportActionBar(toolbar)
+
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+        } else Timber.w("Support action bar is null")
+    }
+
+    /**
+     * Get the Activity's toolbar.
+     * No toolbar is created by default. Subclasses should override this as necessary
+     */
+    open fun getToolBar(): Toolbar? = null
 
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {

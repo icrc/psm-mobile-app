@@ -10,6 +10,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
@@ -132,7 +134,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupComponents() {
-        setupToolbar();
+//        setupToolbar();
         setupButtons();
 
         facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
@@ -194,15 +196,6 @@ public class HomeActivity extends BaseActivity {
                     MaterialDatePicker.class.getCanonicalName()
             );
         });
-    }
-
-    private void setupToolbar() {
-        // TODO: Figure out a way to fix the toolbar title that shows the activity name on the left
-
-        //  Removing the line without fixing the issue adds the activity name
-        //  to the left of the toolbar
-        binding.toolbar.setTitle("");
-        setSupportActionBar(binding.toolbar);
     }
 
     private void setupRecentActivities() {
@@ -275,5 +268,11 @@ public class HomeActivity extends BaseActivity {
     @Override
     public ViewDataBinding createViewBinding() {
         return DataBindingUtil.setContentView(this, R.layout.activity_home);
+    }
+
+    @Nullable
+    @Override
+    public Toolbar getToolBar() {
+        return ((ActivityHomeBinding) getViewBinding()).toolbar;
     }
 }

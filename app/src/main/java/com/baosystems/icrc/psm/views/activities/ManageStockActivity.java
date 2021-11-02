@@ -62,7 +62,10 @@ public class ManageStockActivity extends BaseActivity {
         binding.setLifecycleOwner(this);
         binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
-        setupToolbar();
+        // Set the toolbar title to the active transaction name
+        binding.toolbarContainer.tvToolbar.setText(
+                viewModel.getTransaction().getTransactionType().name());
+
         setupSearchInput();
         setupRecyclerView();
 
@@ -75,19 +78,6 @@ public class ManageStockActivity extends BaseActivity {
 
             // TODO: Handle error states
         });
-    }
-
-    private void setupToolbar() {
-        Toolbar toolbar = binding.toolbarContainer.toolbar;
-        setSupportActionBar(toolbar);
-        binding.toolbarContainer.tvToolbar.setText(
-                viewModel.getTransaction().getTransactionType().name());
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        } else
-            Timber.w("Support action bar is null");
     }
 
     private void setupRecyclerView() {
@@ -193,6 +183,12 @@ public class ManageStockActivity extends BaseActivity {
         startActivity(
                 ReviewStockActivity.getReviewStockActivityIntent(this, viewModel.getData())
         );
+    }
+
+    @Nullable
+    @Override
+    public Toolbar getToolBar() {
+        return ((ActivityManageStockBinding) getViewBinding()).toolbarContainer.toolbar;
     }
 
     //    private void updateViewModel(UserIntent data) {

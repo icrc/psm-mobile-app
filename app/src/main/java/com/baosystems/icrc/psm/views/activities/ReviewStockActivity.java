@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
@@ -46,12 +47,8 @@ public class ReviewStockActivity extends BaseActivity {
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
-        setSupportActionBar(binding.toolbar);
-
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        else
-            Timber.w("Support action bar is null");
+        // Set the toolbar title
+        binding.tvToolbar.setText(viewModel.getTransaction().getTransactionType().name());
 
         setupSearchInput();
         setupRecyclerView();
@@ -137,5 +134,11 @@ public class ReviewStockActivity extends BaseActivity {
     @Override
     public ViewDataBinding createViewBinding() {
         return DataBindingUtil.setContentView(this, R.layout.activity_review_stock);
+    }
+
+    @Nullable
+    @Override
+    public Toolbar getToolBar() {
+        return ((ActivityReviewStockBinding) getViewBinding()).toolbar;
     }
 }
