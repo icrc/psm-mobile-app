@@ -31,7 +31,7 @@ class ManageStockViewModel(
     private val stockItems = Transformations.switchMap(search) { q ->
         stockManager.search(q, "x9sqD4dYb9F", "F5ijs28K4s8", "MBczRWvfM46")
     }
-    private val entries = linkedMapOf<TrackedEntityInstance, Int>()
+    private val entries = linkedMapOf<TrackedEntityInstance, Long>()
 
     init {
         if (transaction.transactionType != TransactionType.DISTRIBUTION &&
@@ -77,7 +77,7 @@ class ManageStockViewModel(
         searchRelay.accept(query)
     }
 
-    fun setItemQuantity(item: TrackedEntityInstance, qty: Int) {
+    fun setItemQuantity(item: TrackedEntityInstance, qty: Long) {
         entries[item] = qty
     }
 

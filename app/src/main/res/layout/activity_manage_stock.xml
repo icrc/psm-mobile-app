@@ -125,13 +125,68 @@
                 app:layout_constraintHorizontal_weight="3" />
 
             <!-- Table header -->
-            <include layout="@layout/stock_table_header"
-                android:id="@+id/stockEntriesTableHeader" />
+<!--            <include layout="@layout/stock_table_header"-->
+<!--                android:id="@+id/stockEntriesTableHeader" />-->
+            <LinearLayout
+                android:id="@+id/stockEntriesTableHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/stock_table_top_margin"
+                android:background="@color/black"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/searchFieldLayout">
 
+                <TextView
+                    android:id="@+id/itemHeaderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/stock_item_margin"
+                    android:layout_marginTop="@dimen/stock_item_margin"
+                    android:layout_weight="7"
+                    android:text="@string/item"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/stockOnHandHeaderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/stock_item_margin"
+                    android:layout_weight="1.5"
+                    android:text="@string/stock_on_hand"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5">
+
+                    <TextView
+                        android:id="@+id/qtyHeaderTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/stock_item_margin"
+                        android:layout_weight="1.5"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white"
+                        tools:text="@string/quantity" />
+
+                    <ImageView
+                        android:id="@+id/qtyInfoIconImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/info_white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Stock entries list -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stock_items_list"
                 android:layout_width="0dp"
-                android:layout_height="300dp"
+                android:layout_height="500dp"
                 android:layout_marginBottom="@dimen/margin_32"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -13,6 +13,7 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/gray_900</item>
+        <item name="android:colorControlNormal">@color/white</item>
 
         <!-- Customize your theme here. -->
     </style>

@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter
 
 open class PSMViewModel: ViewModel() {
     val lastSyncDate: MutableLiveData<String> = MutableLiveData()
+//    val colorTheme: MutableLiveData<Int> =
 
     init {
         // TODO: Replace the last sync date below with the actual value fetched
@@ -19,6 +20,7 @@ open class PSMViewModel: ViewModel() {
         // Update the last sync date based on the last stored data read
         updateLastSyncDate(dateTime)
     }
+
     fun updateLastSyncDate(syncDate: LocalDateTime) {
         lastSyncDate.value = syncDate.humanReadableDateTime()
     }

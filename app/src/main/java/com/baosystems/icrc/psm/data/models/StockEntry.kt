@@ -6,19 +6,19 @@ import android.os.Parcelable
 data class StockEntry(
     val id: String,
     val name: String,
-    val qty: Int
+    val qty: Long
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readInt()
+        parcel.readLong()
     )
 
     override fun toString() = name
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(name)
-        parcel.writeInt(qty)
+        parcel.writeLong(qty)
     }
 
     override fun describeContents(): Int {

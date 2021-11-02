@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
@@ -55,6 +56,8 @@ public class ManageStockActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        getTheme().applyStyle(R.style.Theme_PharmacyStockManagement_Distribution, true);
+
         viewModel = (ManageStockViewModel) getViewModel();
 
         binding = (ActivityManageStockBinding) getViewBinding();
@@ -68,6 +71,7 @@ public class ManageStockActivity extends BaseActivity {
 
         setupSearchInput();
         setupRecyclerView();
+        updateColorTheme();
 
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             Timber.d("Updating recyclerview pagedlist");
@@ -80,25 +84,54 @@ public class ManageStockActivity extends BaseActivity {
         });
     }
 
+    private void updateColorTheme() {
+        Integer resId;
+
+        switch (viewModel.getTransaction().getTransactionType()) {
+            case DISTRIBUTION:
+                resId = R.color.distribution_color;
+                break;
+            case DISCARD:
+                resId = R.color.discard_color;
+                break;
+            case CORRECTION:
+                resId = R.color.correction_color;
+                break;
+            default:
+                resId = null;
+                break;
+        }
+
+        if (resId != null) {
+            binding.toolbarContainer.toolbar.setBackgroundResource(resId);
+//            Paris.styleBuilder(binding.fabManageStock).backgroundRes()
+//            Paris.style().apply()
+        }
+
+    }
+
     private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
 
-        ItemWatcher<TrackedEntityInstance, Integer> qtyChangeListener =
-                new ItemWatcher<TrackedEntityInstance, Integer>() {
+        ItemWatcher<TrackedEntityInstance, Long> qtyChangeListener =
+                new ItemWatcher<TrackedEntityInstance, Long>() {
             @Override
-            public void quantityChanged(@Nullable TrackedEntityInstance item, Integer value) {
+            public void quantityChanged(@Nullable TrackedEntityInstance item, Long value) {
                 viewModel.setItemQuantity(item, value);
             }
 
             @Nullable
             @Override
-            public Integer getValue(TrackedEntityInstance item) {
+            public Long getValue(TrackedEntityInstance item) {
                 return viewModel.getItemQuantity(item);
             }
         };
         adapter = new ManageStockAdapter(qtyChangeListener);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        );
     }
 
     private void setupSearchInput() {

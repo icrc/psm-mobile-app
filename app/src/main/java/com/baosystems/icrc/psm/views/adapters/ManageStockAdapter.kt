@@ -18,7 +18,7 @@ import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import timber.log.Timber
 
 class ManageStockAdapter(
-    private val itemWatcher: ItemWatcher<TrackedEntityInstance, Int>
+    private val itemWatcher: ItemWatcher<TrackedEntityInstance, Long>
 ): PagedListAdapter<
         TrackedEntityInstance, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
 
@@ -55,7 +55,7 @@ class ManageStockAdapter(
 
     inner class StockItemHolder(
         itemView: View,
-        private val qtyWatcher: ItemWatcher<TrackedEntityInstance, Int>):
+        private val qtyWatcher: ItemWatcher<TrackedEntityInstance, Long>):
         RecyclerView.ViewHolder(itemView) {
 
         private val tvItemName: TextView = itemView.findViewById(R.id.itemNameTextView)
@@ -75,7 +75,7 @@ class ManageStockAdapter(
                     if (s == null || TextUtils.isEmpty(s.toString()) ||
                         adapterPosition == RecyclerView.NO_POSITION) return
 
-                    qtyWatcher.quantityChanged(getItem(adapterPosition), s.toString().toInt())
+                    qtyWatcher.quantityChanged(getItem(adapterPosition), s.toString().toLong())
                 }
 
                 override fun afterTextChanged(s: Editable?) {}

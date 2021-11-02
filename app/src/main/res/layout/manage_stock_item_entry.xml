@@ -19,7 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="@dimen/stock_item_margin"
+            android:layout_marginStart="@dimen/stock_item_entry_left_margin"
+            android:layout_marginEnd="@dimen/stock_item_entry_left_margin"
             android:textColor="@color/table_text_color"
             tools:text="DORAPARA5T - PARACETAMOL (acetaminophen), 500 mg, tab." />
     </FrameLayout>
@@ -54,31 +55,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/stock_item_margin"
             android:layout_marginBottom="@dimen/stock_item_margin"
-            app:boxCornerRadiusTopStart="4dp"
-            app:boxCornerRadiusTopEnd="4dp"
-            app:boxCornerRadiusBottomStart="4dp"
-            app:boxCornerRadiusBottomEnd="4dp"
+            app:boxCornerRadiusTopStart="@dimen/text_input_corner_radius"
+            app:boxCornerRadiusTopEnd="@dimen/text_input_corner_radius"
+            app:boxCornerRadiusBottomStart="@dimen/text_input_corner_radius"
+            app:boxCornerRadiusBottomEnd="@dimen/text_input_corner_radius"
+            android:minWidth="@dimen/text_input_width"
+            android:maxWidth="@dimen/text_input_width"
             android:layout_gravity="center"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             tools:text="20">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="19"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/table_text_color" />
         </com.google.android.material.textfield.TextInputLayout>
-
-<!--        <EditText-->
-<!--            android:id="@+id/qtyValueTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_margin="@dimen/stock_item_margin"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:ems="10"-->
-<!--            android:inputType="number"-->
-<!--            android:minHeight="48dp"-->
-<!--            android:textAlignment="textEnd"-->
-<!--            tools:text="20"-->
-<!--            tools:ignore="RtlCompat" />-->
     </FrameLayout>
 </LinearLayout>
