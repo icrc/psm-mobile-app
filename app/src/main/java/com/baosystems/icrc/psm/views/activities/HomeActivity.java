@@ -2,16 +2,19 @@ package com.baosystems.icrc.psm.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.BlendMode;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
@@ -71,27 +74,17 @@ public class HomeActivity extends BaseActivity {
         recentActivitiesRecyclerView = binding.recentActivityList;
 
         attachObservers();
-
-//        try {
-//            initViewModel(d2);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//
-//            ActivityManager.showErrorMessage(binding.getRoot(),
-//                    getResources().getString(R.string.config_file_error));
-//        }
-
         setupComponents();
     }
 
     private void attachObservers() {
         // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
         // TODO: Inject FacilityListAdapter with DI
-        viewModel.getFacilities().observe(this, facilitiesList -> {
-            facilityTextView.setAdapter(new GenericListAdapter<>(
-                    this, R.layout.list_item, facilitiesList));
-        });
+        viewModel.getFacilities().observe(this, facilitiesList ->
+                facilityTextView.setAdapter(
+                        new GenericListAdapter<>(this, R.layout.list_item, facilitiesList)
+                )
+        );
 
         viewModel.getDestinationsList().observe(this, destinations -> distributedToTextView.setAdapter(new GenericListAdapter<>(
                 this, R.layout.list_item, destinations
@@ -100,18 +93,15 @@ public class HomeActivity extends BaseActivity {
         viewModel.getTransactionType().observe(this, transactionType -> {
             // TODO: Add a border around the selected button, and reset the
             //  other buttons to the default
-//            ColorStateList backgroundTintList = ContextCompat.getColorStateList(
-//                    this, R.color.selector_distribution_button_background);
-//            Paris.style(buttonsMap.get(transactionType)).apply(R.style.SelectedButtonStyle);
+            Timber.d("Transaction type: %s", transactionType);
         });
 
-        viewModel.getRecentActivityList().observe(this, recentActivities -> {
-            recentActivityAdapter.submitList(recentActivities);
-        });
+        viewModel.getRecentActivityList().observe(this, recentActivities ->
+                recentActivityAdapter.submitList(recentActivities));
 
         viewModel.getError().observe(this, message -> {
-            Timber.d("Error: " + message);
             if (message != null) {
+                Timber.d("Error: %s", message);
                 ActivityManager.showErrorMessage(binding.getRoot(), message);
             }
         });
@@ -150,12 +140,8 @@ public class HomeActivity extends BaseActivity {
                         (Option) distributedToTextView.getAdapter().getItem(position))
         );
 
+        binding.fabNext.setOnClickListener(view -> navigateToManageStock());
         setupTransactionDateField();
-
-        binding.fabManageStock.setOnClickListener(view -> {
-            navigateToManageStock();
-        });
-
         setupRecentActivities();
     }
 
@@ -174,13 +160,42 @@ public class HomeActivity extends BaseActivity {
             TransactionType type = entry.getKey();
             MaterialButton button = entry.getValue();
 
-            button.setOnClickListener(view -> selectTransaction(view, type));
+            button.setOnClickListener(view -> selectTransaction(type));
         });
     }
 
-    private void selectTransaction(View button, TransactionType buttonTransaction) {
+    private void selectTransaction(TransactionType buttonTransaction) {
         viewModel.selectTransaction(buttonTransaction);
 
+        updateTheme(buttonTransaction);
+    }
+
+    private void updateTheme(TransactionType type) {
+        int color;
+
+        switch (type) {
+            case DISTRIBUTION:
+                color = R.color.distribution_color;
+                break;
+            case DISCARD:
+                color = R.color.discard_color;
+                break;
+            case CORRECTION:
+                color = R.color.correction_color;
+                break;
+            default:
+                color = -1;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && color != -1) {
+            ColorStateList colorStateList = ColorStateList.valueOf(
+                    ContextCompat.getColor(this, color)
+            );
+            binding.fabNext.setBackgroundTintBlendMode(BlendMode.SRC_OVER);
+            binding.toolbar.setBackgroundTintBlendMode(BlendMode.SRC_OVER);
+            binding.fabNext.setBackgroundTintList(colorStateList);
+            binding.toolbar.setBackgroundTintList(colorStateList);
+        }
     }
 
     private void setupTransactionDateField() {
@@ -190,12 +205,9 @@ public class HomeActivity extends BaseActivity {
         picker.addOnPositiveButtonClickListener(viewModel::setTransactionDate);
 
         // Show the date picker when the calendar icon is clicked
-        binding.transactionDateTextView.setEndIconOnClickListener(view -> {
-            picker.show(
-                    getSupportFragmentManager(),
-                    MaterialDatePicker.class.getCanonicalName()
-            );
-        });
+        binding.transactionDateTextView.setEndIconOnClickListener(view ->
+                picker.show(getSupportFragmentManager(), MaterialDatePicker.class.getCanonicalName())
+        );
     }
 
     private void setupRecentActivities() {
@@ -217,13 +229,8 @@ public class HomeActivity extends BaseActivity {
             return;
         }
 
-//        UserIntent data = new UserIntent(
-//                homeViewModel.getTransactionType().getValue(),
-//                homeViewModel.get
-//        );
         startActivity(
-                ManageStockActivity.getManageStockActivityIntent(this,
-                        viewModel.getData())
+                ManageStockActivity.getManageStockActivityIntent(this, viewModel.getData())
         );
     }
 

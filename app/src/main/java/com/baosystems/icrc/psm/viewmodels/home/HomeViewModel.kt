@@ -37,10 +37,6 @@ class HomeViewModel(
     val transactionType: LiveData<TransactionType>
         get() = _transactionType
 
-    private val _themeColorId = MutableLiveData<Int>()
-    val themeColorId: LiveData<Int>
-        get() = _themeColorId
-
     private val _isDistribution: MutableLiveData<Boolean> = MutableLiveData(false)
     val isDistribution: LiveData<Boolean>
         get() = _isDistribution
@@ -130,16 +126,6 @@ class HomeViewModel(
         // so ensure you clear it for others if it has been set
         if (type != TransactionType.DISTRIBUTION) {
             _destination.value = null
-        }
-
-        _themeColorId.value = if (type == TransactionType.DISTRIBUTION) {
-            R.color.distribution_color
-        } else if (type == TransactionType.CORRECTION) {
-            R.color.correction_color
-        } else if (type == TransactionType.DISCARD) {
-            R.color.discard_color
-        } else {
-            R.color.null_
         }
     }
 
