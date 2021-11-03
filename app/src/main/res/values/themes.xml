@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PharmacyStockManagement" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.App" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
@@ -18,33 +18,137 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.PharmacyStockManagement.NoActionBar">
+    <style name="Theme.App.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.PharmacyStockManagement.Distribution" parent="Theme.PharmacyStockManagement">
-        <item name="android:statusBarColor" tools:targetApi="l">@color/distribution_color</item>
+    <style name="ThemeOverlay.App.Distribution" parent="">
+        <item name="colorSecondary">@color/distribution_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
-    <style name="Theme.PharmacyStockManagement.Discard" parent="Theme.PharmacyStockManagement">
-        <item name="android:statusBarColor" tools:targetApi="l">@color/discard_color</item>
+    <style name="ThemeOverlay.App.Discard" parent="">
+        <item name="colorSecondary">@color/discard_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
-    <style name="Theme.PharmacyStockManagement.Correction" parent="Theme.PharmacyStockManagement">
-        <item name="android:statusBarColor" tools:targetApi="l">@color/correction_color</item>
+    <style name="ThemeOverlay.App.Correction" parent="">
+        <item name="colorSecondary">@color/correction_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
-    <style name="Theme.PharmacyStockManagement.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.PharmacyStockManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="Theme.PharmacyStockManagement.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-
+    <style name="Theme.App.Distribution" parent="Theme.App">
+        <item name="extendedFloatingActionButtonStyle">
+            @style/Widget.App.Distribution.ExtendedFloatingActionButton
+        </item>
+<!--        <item name="floatingActionButtonStyle">-->
+<!--            @style/Widget.App.Distribution.FloatingActionButton-->
+<!--        </item>-->
+        <item name="toolbarStyle">@style/Widget.App.Distribution.Toolbar</item>
     </style>
 
-    <!--    <style name="SelectedButtonStyle" parent="Widget.MaterialComponents.Button">-->
-    <!--        <item name="strokeColor">@color/mtrl_btn_stroke_color_selector</item>-->
-    <!--        <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>-->
-    <!--    </style>-->
+    <style name="Theme.App.Discard" parent="Theme.App">
+        <item name="extendedFloatingActionButtonStyle">
+            @style/Widget.App.Discard.ExtendedFloatingActionButton
+        </item>
+        <item name="toolbarStyle">@style/Widget.App.Discard.Toolbar</item>
+    </style>
+
+    <style name="Theme.App.Correction" parent="Theme.App">
+        <item name="extendedFloatingActionButtonStyle">
+            @style/Widget.App.Correction.ExtendedFloatingActionButton
+        </item>
+        <item name="toolbarStyle">@style/Widget.App.Correction.Toolbar</item>
+    </style>
+
+    <style name="Widget.App.Distribution.ExtendedFloatingActionButton"
+        parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Distribution
+        </item>
+    </style>
+
+    <style name="Widget.App.Discard.ExtendedFloatingActionButton"
+        parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Discard
+        </item>
+    </style>
+    <style name="Widget.App.Correction.ExtendedFloatingActionButton"
+        parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Correction
+        </item>
+    </style>
+
+
+    <style name="Widget.App.Distribution.FloatingActionButton"
+        parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Distribution
+        </item>
+    </style>
+
+    <style name="Widget.App.Discard.FloatingActionButton"
+        parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Discard
+        </item>
+    </style>
+
+    <style name="Widget.App.Correction.FloatingActionButton"
+        parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Correction
+        </item>
+    </style>
+
+    <style name="Widget.App.Distribution.Toolbar"
+        parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Distribution.Toolbar
+        </item>
+    </style>
+
+    <style name="Widget.App.Discard.Toolbar"
+        parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Discard.Toolbar
+        </item>
+    </style>
+
+    <style name="Widget.App.Correction.Toolbar"
+        parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Correction.Toolbar
+        </item>
+    </style>
+
+    <style name="ThemeOverlay.App.Distribution.Toolbar" parent="">
+        <item name="colorPrimary">@color/distribution_color</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Discard.Toolbar" parent="">
+        <item name="colorPrimary">@color/discard_color</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Correction.Toolbar" parent="">
+        <item name="colorPrimary">@color/correction_color</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.App.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.App.TextButton" parent="Widget.MaterialComponents.Button.TextButton" />
 </resources>

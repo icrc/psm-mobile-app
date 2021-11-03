@@ -32,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance;
+import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -56,8 +57,6 @@ public class ManageStockActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        getTheme().applyStyle(R.style.Theme_PharmacyStockManagement_Distribution, true);
-
         viewModel = (ManageStockViewModel) getViewModel();
 
         binding = (ActivityManageStockBinding) getViewBinding();
@@ -71,7 +70,6 @@ public class ManageStockActivity extends BaseActivity {
 
         setupSearchInput();
         setupRecyclerView();
-        updateColorTheme();
 
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             Timber.d("Updating recyclerview pagedlist");
@@ -84,30 +82,19 @@ public class ManageStockActivity extends BaseActivity {
         });
     }
 
-    private void updateColorTheme() {
-        Integer resId;
-
-        switch (viewModel.getTransaction().getTransactionType()) {
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public Integer getCustomTheme(@NotNull ViewModel viewModel) {
+        switch (((ManageStockViewModel)viewModel).getTransaction().getTransactionType()) {
             case DISTRIBUTION:
-                resId = R.color.distribution_color;
-                break;
+                return R.style.Theme_App_Distribution;
             case DISCARD:
-                resId = R.color.discard_color;
-                break;
+                return R.style.Theme_App_Discard;
             case CORRECTION:
-                resId = R.color.correction_color;
-                break;
+                return R.style.Theme_App_Correction;
             default:
-                resId = null;
-                break;
+                return null;
         }
-
-        if (resId != null) {
-            binding.toolbarContainer.toolbar.setBackgroundResource(resId);
-//            Paris.styleBuilder(binding.fabManageStock).backgroundRes()
-//            Paris.style().apply()
-        }
-
     }
 
     private void setupRecyclerView() {
@@ -187,10 +174,9 @@ public class ManageStockActivity extends BaseActivity {
         // TODO: Inject StockManager
         // TODO: Inject D2
         StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
-
-        Timber.d("Parcelable extra = %s", getIntent().getParcelableExtra(INTENT_DATA));
         Transaction transaction = getIntent().getParcelableExtra(INTENT_DATA);
-        ManageStockViewModel viewModel = new ViewModelProvider(
+
+        return new ViewModelProvider(
                 this,
                 new ManageStockViewModelFactory(
                         disposable,
@@ -199,10 +185,6 @@ public class ManageStockActivity extends BaseActivity {
                         transaction
                 )
         ).get(ManageStockViewModel.class);
-
-        Timber.d(getIntent().getParcelableExtra(INTENT_DATA).toString());
-
-        return viewModel;
     }
 
     @NonNull

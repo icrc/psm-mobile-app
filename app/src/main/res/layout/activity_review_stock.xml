@@ -14,13 +14,12 @@
         android:layout_height="match_parent"
         tools:context="com.baosystems.icrc.psm.views.activities.ManageStockActivity">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +36,7 @@
                 android:textAppearance="?attr/titleTextAppearance"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="@dimen/toolbar_text_size" />
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <!-- Content Area -->
         <androidx.constraintlayout.widget.ConstraintLayout

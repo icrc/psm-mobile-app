@@ -23,6 +23,13 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel = createViewModel(disposable)
+
+        // Set the custom theme, if any,
+        // before calling setContentView (which happens in ViewBinding)
+        getCustomTheme(viewModel)?.let {
+            theme.applyStyle(it, true)
+        }
+
         binding = createViewBinding()
 
         getToolBar()?.let {
@@ -36,6 +43,11 @@ abstract class BaseActivity : AppCompatActivity() {
      * Initialize the ViewModel for this Activity
      */
     abstract fun createViewModel(disposable: CompositeDisposable): ViewModel
+
+    /**
+     * Subclasses should override this to use a custom theme
+     */
+    open fun getCustomTheme(viewModel: ViewModel): Int? = null
 
     fun getViewModel(): ViewModel = viewModel
 
