@@ -80,7 +80,8 @@ public class ReviewStockActivity extends BaseActivity {
                 viewModel.updateQuantity(item, value);
             }
         };
-        adapter = new ReviewStockAdapter(viewModel.getStockItems(), itemWatcher);
+        adapter = new ReviewStockAdapter(itemWatcher);
+        adapter.submitList(viewModel.getStockItems());
         recyclerView.setAdapter(adapter);
     }
 

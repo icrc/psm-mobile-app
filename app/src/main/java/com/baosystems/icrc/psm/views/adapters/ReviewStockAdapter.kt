@@ -17,15 +17,8 @@ import com.google.android.material.textfield.TextInputLayout
 import timber.log.Timber
 
 class ReviewStockAdapter(
-    entries: List<StockEntry>,
     private val itemWatcher: ItemWatcher<StockEntry, Long>
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
-
-    init {
-        Timber.i("Entries: ", entries)
-        submitList(entries)
-    }
-
     companion object {
         // TODO: Find a way to use a type-aware DIFF_CALLBACK for different adapters for reusability
         private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<StockEntry> () {
