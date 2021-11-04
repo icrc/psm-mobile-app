@@ -55,7 +55,7 @@ class ManageStockAdapter(
 
     inner class StockItemHolder(
         itemView: View,
-        private val qtyWatcher: ItemWatcher<TrackedEntityInstance, Long>):
+        private val watcher: ItemWatcher<TrackedEntityInstance, Long>):
         RecyclerView.ViewHolder(itemView) {
 
         private val tvItemName: TextView = itemView.findViewById(R.id.itemNameTextView)
@@ -75,7 +75,9 @@ class ManageStockAdapter(
                     if (s == null || TextUtils.isEmpty(s.toString()) ||
                         adapterPosition == RecyclerView.NO_POSITION) return
 
-                    qtyWatcher.quantityChanged(getItem(adapterPosition), s.toString().toLong())
+                    getItem(adapterPosition)?.let {
+                        watcher.quantityChanged(it, s.toString().toLong())
+                    }
                 }
 
                 override fun afterTextChanged(s: Editable?) {}
@@ -92,7 +94,7 @@ class ManageStockAdapter(
 //        tvItemName?.text = AttributeHelper.teiItemCode(item)
             tvItemName.text = AttributeHelper.teiAttributeValueByAttributeUid(item, "MBczRWvfM46")
 
-            etQty.editText?.setText(qtyWatcher.getValue(item).let { value ->
+            etQty.editText?.setText(watcher.getValue(item).let { value ->
                 value?.toString() ?: ""
             })
         }

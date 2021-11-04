@@ -1,10 +1,12 @@
 package com.baosystems.icrc.psm.viewmodels.review
 
 import com.baosystems.icrc.psm.data.models.ReviewStockData
+import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.service.StockManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 
 class ReviewStockViewModel(
     private val disposable: CompositeDisposable,
@@ -37,4 +39,15 @@ class ReviewStockViewModel(
 //                )
 //        )
     }
+
+    fun removeItem(item: StockEntry) {
+        stockItems.remove(item)
+        Timber.d("Stock list after deletion: %s", stockItems)
+    }
+
+    fun updateQuantity(item: StockEntry, value: Long) {
+//        stockItems.re
+    }
+
+    fun getItemQuantity(item: StockEntry) = item.qty
 }

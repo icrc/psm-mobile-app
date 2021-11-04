@@ -1,5 +1,7 @@
 package com.baosystems.icrc.psm.views.adapters
 
+import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +18,7 @@ import timber.log.Timber
 
 class ReviewStockAdapter(
     entries: List<StockEntry>,
-    private val removeItemListener: View.OnClickListener,
-    private val quantityChangeListener: TextWatcher
+    private val itemWatcher: ItemWatcher<StockEntry, Long>
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
 
     init {
@@ -36,19 +37,36 @@ class ReviewStockAdapter(
         }
     }
 
-    inner class StockItemHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class StockItemHolder(
+        itemView: View,
+        private val watcher: ItemWatcher<StockEntry, Long>
+    ): RecyclerView.ViewHolder(itemView) {
         private val tvItemName: TextView = itemView.findViewById(R.id.tvReviewStockItemName)
         private val tvStockOnHand: TextView = itemView.findViewById(R.id.tvReviewStockOnHandValue)
         private val tvItemQtyLayout: TextInputLayout = itemView.findViewById(R.id.tiReviewItemQty)
         private val btnRemoveItem: ImageButton = itemView.findViewById(R.id.ibRemoveStockItem)
 
         init {
-//            btnRemoveItem.setOnClickListener(removeItemListener)
             btnRemoveItem.setOnClickListener {
-                Timber.d("Tried deleting %s", getItem(adapterPosition))
+                watcher.removeItem(getItem(adapterPosition))
+                notifyItemRemoved(adapterPosition)
             }
 
-            tvItemQtyLayout.editText?.addTextChangedListener(quantityChangeListener)
+            tvItemQtyLayout.editText?.addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s == null || TextUtils.isEmpty(s.toString()) ||
+                        adapterPosition == RecyclerView.NO_POSITION) return
+
+                    getItem(adapterPosition)?.let {
+                        watcher.quantityChanged(it, s.toString().toLong())
+                    }
+                }
+
+                override fun afterTextChanged(p0: Editable?) {}
+            })
 
             Timber.d("Initialized new StockItemHolder with listeners")
         }
@@ -65,7 +83,7 @@ class ReviewStockAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.review_stock_item_entry, parent, false)
-        return StockItemHolder(itemView)
+        return StockItemHolder(itemView, itemWatcher)
     }
 
     override fun onBindViewHolder(holder: StockItemHolder, position: Int) {

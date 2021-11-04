@@ -83,14 +83,14 @@ class ManageStockViewModel(
 
     fun getItemQuantity(item: TrackedEntityInstance) = entries[item]
 
-    private fun getPopulatedEntries(): List<StockEntry> = entries.map {
+    private fun getPopulatedEntries(): MutableList<StockEntry> = entries.map {
         val tei = it.key
         StockEntry(
             tei.uid(),
             AttributeHelper.teiAttributeValueByAttributeUid(tei, "MBczRWvfM46") ?: "",
             it.value
         )
-    }
+    }.toMutableList()
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 }

@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.databinding.ActivityReviewStockBinding;
 import com.baosystems.icrc.psm.service.StockManager;
 import com.baosystems.icrc.psm.service.StockManagerImpl;
@@ -26,6 +27,8 @@ import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.review.ReviewStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.review.ReviewStockViewModelFactory;
+import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
+import com.baosystems.icrc.psm.views.adapters.ItemWatcher;
 import com.baosystems.icrc.psm.views.adapters.ReviewStockAdapter;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -60,43 +63,44 @@ public class ReviewStockActivity extends BaseActivity {
 
         Timber.d("Stock item entries: %s", viewModel.getStockItems());
 
-        View.OnClickListener removeItemListener = new View.OnClickListener() {
+        ItemWatcher<StockEntry, Long> itemWatcher = new ItemWatcher<StockEntry, Long>() {
             @Override
-            public void onClick(View view) {
-//                adapter.
+            public void removeItem(StockEntry item) {
+                viewModel.removeItem(item);
+            }
+
+            @Nullable
+            @Override
+            public Long getValue(StockEntry item) {
+                return viewModel.getItemQuantity(item);
+            }
+
+            @Override
+            public void quantityChanged(StockEntry item, Long value) {
+                viewModel.updateQuantity(item, value);
             }
         };
-
-        // TODO: See if the same TextWather used for ManageStockActivity can be reused here
-        TextWatcher qtyChangeListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start,
-                                          int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start,
-                                      int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        };
-
-        adapter = new ReviewStockAdapter(
-                viewModel.getStockItems(),
-                removeItemListener,
-                qtyChangeListener
-        );
+        adapter = new ReviewStockAdapter(viewModel.getStockItems(), itemWatcher);
         recyclerView.setAdapter(adapter);
     }
 
     private void setupSearchInput() {
 
+    }
+
+    @Nullable
+    @Override
+    public Integer getCustomTheme(@NonNull ViewModel viewModel) {
+        switch (((ReviewStockViewModel)viewModel).getTransaction().getTransactionType()) {
+            case DISTRIBUTION:
+                return R.style.Theme_App_Distribution;
+            case DISCARD:
+                return R.style.Theme_App_Discard;
+            case CORRECTION:
+                return R.style.Theme_App_Correction;
+            default:
+                return null;
+        }
     }
 
     public static Intent getReviewStockActivityIntent(Context context, Parcelable bundle) {

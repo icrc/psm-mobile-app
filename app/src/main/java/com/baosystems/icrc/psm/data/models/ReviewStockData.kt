@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 class ReviewStockData(
     val transaction: Transaction,
-    val entries: List<StockEntry>
+    val entries: MutableList<StockEntry>
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(Transaction::class.java.classLoader)!!,

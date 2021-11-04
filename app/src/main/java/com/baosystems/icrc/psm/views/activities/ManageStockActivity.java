@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
@@ -76,6 +77,15 @@ public class ManageStockActivity extends BaseActivity {
             adapter.submitList(pagedListLiveData);
             // TODO: Scroll back to the top of the recyclerview if a new pagedlist is added
 
+            LinearLayoutManager layoutManager =
+                    (LinearLayoutManager) binding.stockItemsList.getLayoutManager();
+            if (layoutManager != null) {
+                int position = layoutManager.findFirstCompletelyVisibleItemPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    binding.stockItemsList.scrollToPosition(position);
+                }
+            }
+
             // TODO: Handle empty results state
 
             // TODO: Handle error states
@@ -101,10 +111,15 @@ public class ManageStockActivity extends BaseActivity {
         RecyclerView recyclerView = binding.stockItemsList;
 //        recyclerView.setHasFixedSize(true);
 
-        ItemWatcher<TrackedEntityInstance, Long> qtyChangeListener =
+        ItemWatcher<TrackedEntityInstance, Long> itemWatcher =
                 new ItemWatcher<TrackedEntityInstance, Long>() {
             @Override
-            public void quantityChanged(@Nullable TrackedEntityInstance item, Long value) {
+            public void removeItem(TrackedEntityInstance item) {
+
+            }
+
+            @Override
+            public void quantityChanged(TrackedEntityInstance item, Long value) {
                 viewModel.setItemQuantity(item, value);
             }
 
@@ -114,7 +129,7 @@ public class ManageStockActivity extends BaseActivity {
                 return viewModel.getItemQuantity(item);
             }
         };
-        adapter = new ManageStockAdapter(qtyChangeListener);
+        adapter = new ManageStockAdapter(itemWatcher);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
