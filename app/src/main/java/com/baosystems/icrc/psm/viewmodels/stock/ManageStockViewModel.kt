@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.service.StockManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.AttributeHelper
+import com.baosystems.icrc.psm.utils.Constants.SEARCH_QUERY_DEBOUNCE
 import com.baosystems.icrc.psm.viewmodels.PSMViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.disposables.CompositeDisposable
@@ -22,10 +23,6 @@ class ManageStockViewModel(
     stockManager: StockManager,
     val transaction: Transaction
 ): PSMViewModel() {
-    companion object {
-        private const val QUERY_DEBOUNCE = 300L
-    }
-
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
     private val stockItems = Transformations.switchMap(search) { q ->
@@ -56,7 +53,7 @@ class ManageStockViewModel(
     private fun configureSearchRelay() {
         disposable.add(
             searchRelay
-                .debounce(QUERY_DEBOUNCE, TimeUnit.MILLISECONDS)
+                .debounce(SEARCH_QUERY_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())

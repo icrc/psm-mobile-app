@@ -18,4 +18,6 @@ object Constants {
     const val CONFIG_PROGRAM_KEY = "program"
     const val CONFIG_ITEM_CODE_KEY = "item_code"
     const val CONFIG_ITEM_DESCRIPTION_KEY = "item_description"
+
+    const val SEARCH_QUERY_DEBOUNCE = 300L
 }
