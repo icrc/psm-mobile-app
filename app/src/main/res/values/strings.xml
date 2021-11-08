@@ -117,4 +117,7 @@
     <string name="content_description_clear_text">Clear text</string>
     <string name="content_desc_transaction_date">Show date picker</string>
     <string name="transaction_label">Transaction</string>
+    <string name="missing_configuration">
+        One or more required fields are missing in the configuration file
+    </string>
 </resources>

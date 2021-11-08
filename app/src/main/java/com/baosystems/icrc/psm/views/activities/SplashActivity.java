@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
@@ -25,35 +26,27 @@ import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class SplashActivity extends BaseActivity {
-    private SplashViewModel viewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ActivitySplashBinding binding = (ActivitySplashBinding) getViewBinding();
-
         binding.setLifecycleOwner(this);
-    }
 
-    public ViewModel createViewModel(@NotNull CompositeDisposable disposable) {
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+        SplashViewModel viewModel = ((SplashViewModel)getViewModel());
+        // Ensure the required configuration parameters have been set
+        if (!viewModel.getConfigurationIsValid()) {
+            // Inform the user about the error and do nothing else
+            binding.splashIcon.setImageDrawable(
+                    ContextCompat.getDrawable(this, R.drawable.ic_missing)
+            );
+            binding.label.setText(getString(R.string.missing_configuration));
+            binding.label.setTextColor(getColorStateList(R.color.error));
+            return;
+        }
 
-        // TODO: Inject PreferenceProvider using DI
-        PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
-
-        viewModel = new ViewModelProvider(
-                this,
-                new SplashViewModelFactory(
-                        getApplication(),
-                        disposable,
-                        schedulerProvider,
-                        preferenceProvider
-                )
-        ).get(SplashViewModel.class);
-
-        viewModel.isLoggedIn().observe(this, loggedIn -> {
+        viewModel.getLoggedIn().observe(this, loggedIn -> {
+            Timber.d("Login check -> viewModel.getLoggedIn(): %s", loggedIn);
             Intent intent;
             if (loggedIn) {
                 Timber.d("User is logged in. Has metadata being synced? %s",
@@ -69,8 +62,25 @@ public class SplashActivity extends BaseActivity {
 
             ActivityManager.startActivity(this, intent, true);
         });
+    }
 
-        return viewModel;
+    @NonNull
+    public ViewModel createViewModel(@NotNull CompositeDisposable disposable) {
+        // TODO: Inject SchedulerProvider using DI
+        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
+
+        // TODO: Inject PreferenceProvider using DI
+        PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
+
+        return new ViewModelProvider(
+                this,
+                new SplashViewModelFactory(
+                        getApplication(),
+                        disposable,
+                        schedulerProvider,
+                        preferenceProvider
+                )
+        ).get(SplashViewModel.class);
     }
 
     @NonNull

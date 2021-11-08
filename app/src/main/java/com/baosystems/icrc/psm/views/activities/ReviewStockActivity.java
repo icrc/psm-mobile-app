@@ -61,8 +61,6 @@ public class ReviewStockActivity extends BaseActivity {
         RecyclerView recyclerView = binding.stockItemsList;
         recyclerView.setHasFixedSize(true);
 
-        Timber.d("Stock item entries: %s", viewModel.getStockItems());
-
         ItemWatcher<StockEntry, Long> itemWatcher = new ItemWatcher<StockEntry, Long>() {
             @Override
             public void removeItem(StockEntry item) {
@@ -81,8 +79,12 @@ public class ReviewStockActivity extends BaseActivity {
             }
         };
         adapter = new ReviewStockAdapter(itemWatcher);
-        adapter.submitList(viewModel.getStockItems());
         recyclerView.setAdapter(adapter);
+
+        viewModel.getStockItems().observe(this, stockItems -> {
+            Timber.d("Stock item entries: %s", stockItems);
+            adapter.submitList(stockItems);
+        });
     }
 
     private void setupSearchInput() {
