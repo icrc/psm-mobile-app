@@ -116,6 +116,7 @@
                 app:startIconTint="@color/input_field_icon_color_tint"
                 app:startIconContentDescription="@string/content_description_search"
                 app:endIconMode="clear_text"
+                app:endIconDrawable="@drawable/ic_clear_24"
                 app:layout_constraintEnd_toStartOf="@+id/scan_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/choices_container"
@@ -159,6 +160,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
                 android:clickable="true"
+                android:focusable="true"
                 tools:listitem="@layout/manage_stock_item_entry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

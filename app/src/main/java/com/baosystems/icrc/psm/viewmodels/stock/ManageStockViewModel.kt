@@ -84,9 +84,11 @@ class ManageStockViewModel(
 
     private fun getPopulatedEntries(): MutableList<StockEntry> = entries.map {
         val tei = it.key
+        Timber.d("Populated entries key: %s = %s", tei.uid(),
+            AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemValue))
         StockEntry(
             tei.uid(),
-            AttributeHelper.teiAttributeValueByAttributeUid(tei, "MBczRWvfM46") ?: "",
+            AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemValue) ?: "",
             it.value
         )
     }.toMutableList()

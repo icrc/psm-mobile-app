@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,9 +26,9 @@ import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.review.ReviewStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.review.ReviewStockViewModelFactory;
-import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
 import com.baosystems.icrc.psm.views.adapters.ItemWatcher;
 import com.baosystems.icrc.psm.views.adapters.ReviewStockAdapter;
+import com.google.android.material.textfield.TextInputEditText;
 
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -67,7 +66,6 @@ public class ReviewStockActivity extends BaseActivity {
                 viewModel.removeItem(item);
             }
 
-            @Nullable
             @Override
             public Long getValue(StockEntry item) {
                 return viewModel.getItemQuantity(item);
@@ -81,14 +79,27 @@ public class ReviewStockActivity extends BaseActivity {
         adapter = new ReviewStockAdapter(itemWatcher);
         recyclerView.setAdapter(adapter);
 
-        viewModel.getStockItems().observe(this, stockItems -> {
-            Timber.d("Stock item entries: %s", stockItems);
+        viewModel.getReviewedItems().observe(this, stockItems -> {
             adapter.submitList(stockItems);
         });
     }
 
     private void setupSearchInput() {
+        TextInputEditText searchField = binding.searchInputField;
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(
+                    CharSequence charSequence, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(
+                    CharSequence charSequence, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                viewModel.onSearchQueryChanged(editable.toString());
+            }
+        });
     }
 
     @Nullable
@@ -122,7 +133,7 @@ public class ReviewStockActivity extends BaseActivity {
         // TODO: Inject D2
         StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
 
-        ReviewStockViewModel viewModel = new ViewModelProvider(
+        return new ViewModelProvider(
                 this,
                 new ReviewStockViewModelFactory(
                         disposable,
@@ -131,10 +142,6 @@ public class ReviewStockActivity extends BaseActivity {
                         getIntent().getParcelableExtra(INTENT_DATA)
                 )
         ).get(ReviewStockViewModel.class);
-
-
-
-        return viewModel;
     }
 
     @NonNull

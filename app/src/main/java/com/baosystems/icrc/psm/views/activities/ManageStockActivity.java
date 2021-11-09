@@ -32,7 +32,6 @@ import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
 import com.baosystems.icrc.psm.views.adapters.ItemWatcher;
 import com.baosystems.icrc.psm.views.adapters.ManageStockAdapter;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance;
 import org.jetbrains.annotations.NotNull;
@@ -46,9 +45,6 @@ public class ManageStockActivity extends BaseActivity {
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
-
-    private TextInputEditText searchInputField;
-    private TextInputLayout searchInputContainer;
 
     public static Intent getManageStockActivityIntent(Context context, Transaction bundle) {
         Intent intent = new Intent(context, ManageStockActivity.class);
@@ -139,47 +135,20 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private void setupSearchInput() {
-        searchInputField = binding.searchInputField;
+        TextInputEditText searchInputField = binding.searchInputField;
         searchInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
                     CharSequence charSequence, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if (searchInputField.getText() != null) {
-                    showClearSearchIconStatus(searchInputContainer,
-                            searchInputField.getText().length() > 0);
-                }
-            }
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
-//                searchStock(editable.toString());
                 viewModel.onSearchQueryChanged(editable.toString());
             }
         });
-
-        // Clear the search field when the clear text icon is clicked
-        searchInputContainer = binding.searchFieldLayout;
-        // TODO: Clicking of the end icon does not currently work,
-        //  it seems the listener is not being invoked. Fix it
-//        searchInputContainer.setEndIconOnClickListener(view -> {
-//            Log.d(TAG, "Clear search field icon was clicked");
-//
-//            if (searchInputField.getText() != null)
-//                searchInputField.getText().clear();
-//        });
-
-//        searchInputContainer.addOnEditTextAttachedListener(textInputLayout -> {
-//            EditText textInput = textInputLayout.getEditText();
-//            boolean show = textInput != null && !textInput.getText().toString().isEmpty();
-//            showClearSearchIconStatus(textInputLayout, show);
-//        });
-    }
-
-    private void showClearSearchIconStatus(TextInputLayout textInputLayout, boolean show) {
-        textInputLayout.setEndIconVisible(show);
     }
 
     @NonNull
@@ -224,15 +193,4 @@ public class ManageStockActivity extends BaseActivity {
     public Toolbar getToolBar() {
         return ((ActivityManageStockBinding) getViewBinding()).toolbarContainer.toolbar;
     }
-
-    //    private void updateViewModel(UserIntent data) {
-//        if (data != null) {
-//            manageStockViewModel.setTransactionType(data.getTransactionType());
-//            manageStockViewModel.setFacility(data.getFacility());
-//            manageStockViewModel.setTransactionDate(data.getTransactionDate());
-//
-//            if (data.getDistributedTo() != null)
-//                manageStockViewModel.setDistributedTo(data.getDistributedTo());
-//        }
-//    }
 }

@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.viewmodels.review
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.models.ReviewStockData
@@ -23,32 +24,20 @@ class ReviewStockViewModel(
 
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
-    private val stockItems = Transformations.switchMap(search) { q ->
-        MutableLiveData(data.entries.toList())
-    }
+
+    private val populatedItems = data.entries
+
+    private val _reviewedItems = Transformations.switchMap(search, this::performSearch)
+    val reviewedItems: LiveData<List<StockEntry>>
+        get() = _reviewedItems
 
     init {
-        // TODO: Load the stock items in question using the uids passed
-//        disposable.add(
-//            stockManager.loadItems(data.entries)
-//                .subscribeOn(schedulerProvider.io())
-//                .observeOn(schedulerProvider.ui())
-//                .subscribe(
-//                    { teis ->
-//                        val items = listOf<StockEntry>()
-//                        // TODO: Add the actual value later
-////                        teis.forEach { tei ->
-////                            items.
-////                        }
-//                    },
-//                    {
-//                        // TODO: Report the error to the user
-//                        Timber.w(it, "Unable to load stock items")
-//                        it.printStackTrace()
-//                    }
-//                )
-//        )
         configureSearchRelay()
+        loadPopulatedItems()
+    }
+
+    private fun loadPopulatedItems() {
+        search.value = ""
     }
 
     // TODO: Find a way to reuse this function, as the same is being used by ManageStockMModel
@@ -72,12 +61,10 @@ class ReviewStockViewModel(
         )
     }
 
-    fun getStockItems() = stockItems
-
     fun removeItem(item: StockEntry) {
 //        stockItems.
 //        stockItems..remove(item)
-        Timber.d("Stock list after deletion: %s", stockItems)
+        Timber.d("Stock list after deletion: %s", reviewedItems)
     }
 
     fun updateQuantity(item: StockEntry, value: Long) {
@@ -85,4 +72,17 @@ class ReviewStockViewModel(
     }
 
     fun getItemQuantity(item: StockEntry) = item.qty
+
+    fun onSearchQueryChanged(query: String) {
+        searchRelay.accept(query)
+    }
+
+    private fun performSearch(q: String?): LiveData<List<StockEntry>> {
+        val result = if (q == null || q.isEmpty())
+            populatedItems.toList()
+        else
+            populatedItems.filter { it.name.contains(q, true) }
+
+        return MutableLiveData(result)
+    }
 }

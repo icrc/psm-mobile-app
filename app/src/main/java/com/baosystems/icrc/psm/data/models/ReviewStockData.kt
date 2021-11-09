@@ -32,4 +32,8 @@ class ReviewStockData(
             return arrayOfNulls(size)
         }
     }
+
+    override fun toString(): String {
+        return "$entries"
+    }
 }
