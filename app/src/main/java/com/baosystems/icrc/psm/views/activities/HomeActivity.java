@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.TransactionType;
+import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
 import com.baosystems.icrc.psm.service.MetadataManager;
 import com.baosystems.icrc.psm.service.MetadataManagerImpl;
@@ -51,6 +52,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class HomeActivity extends BaseActivity {
+    private static final String INTENT_DATA = "APP-CONFIG";
+
     private ActivityHomeBinding binding;
     private RecentActivityAdapter recentActivityAdapter;
 
@@ -234,8 +237,10 @@ public class HomeActivity extends BaseActivity {
         );
     }
 
-    public static Intent getHomeActivityIntent(Context context) {
-        return new Intent(context, HomeActivity.class);
+    public static Intent getHomeActivityIntent(Context context, AppConfig config) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        intent.putExtra(INTENT_DATA, config);
+        return intent;
     }
 
     @NonNull
@@ -247,8 +252,7 @@ public class HomeActivity extends BaseActivity {
 
         // TODO: Inject MetadataManager
         MetadataManager metadataManager = new MetadataManagerImpl(
-                d2,
-                ConfigUtils.loadConfigFile(getResources())
+                d2, getIntent().getParcelableExtra(INTENT_DATA)
         );
 
         // TODO: Inject UserManager using DI

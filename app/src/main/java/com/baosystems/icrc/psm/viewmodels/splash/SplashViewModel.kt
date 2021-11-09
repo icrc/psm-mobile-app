@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.viewmodels.splash
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Resources
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,19 +9,25 @@ import com.baosystems.icrc.psm.service.PreferenceProvider
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.ConfigUtils
 import com.baosystems.icrc.psm.utils.Constants
+import com.baosystems.icrc.psm.utils.Constants.CONFIG_ITEM_CODE
+import com.baosystems.icrc.psm.utils.Constants.CONFIG_ITEM_VALUE
+import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM
+import com.baosystems.icrc.psm.utils.Constants.CONFIG_STOCK_ON_HAND
 import com.baosystems.icrc.psm.utils.Sdk
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.D2Manager
 import timber.log.Timber
 import java.io.IOException
+import java.util.*
 
 
 class SplashViewModel(
     application: Application,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
-    private val preferenceProvider: PreferenceProvider
+    private val preferenceProvider: PreferenceProvider,
+    configProps: Properties
 ) : AndroidViewModel(application) {
 
     private val _loggedIn: MutableLiveData<Boolean> by lazy {
@@ -37,7 +42,7 @@ class SplashViewModel(
         get() = _configurationIsValid
 
     init {
-        _configurationIsValid = isConfigurationInPlace(application.resources)
+        _configurationIsValid = isConfigurationInPlace(configProps)
     }
 
     private fun checkIfUserIsLoggedIn(context: Context) {
@@ -85,14 +90,18 @@ class SplashViewModel(
      * Verify if the parameters the application requires to function is in place.
      * The required properties are program id, item code id, item value id, and stock on hand id
      */
-    private fun isConfigurationInPlace(res: Resources): Boolean {
+    private fun isConfigurationInPlace(props: Properties): Boolean {
         var conditionsMet = false
-        val configurationKeys = listOf("program", "item_code", "item_value", "stock_on_hand")
+        val configurationKeys = listOf(
+            CONFIG_PROGRAM,
+            CONFIG_ITEM_CODE,
+            CONFIG_ITEM_VALUE,
+            CONFIG_STOCK_ON_HAND
+        )
 
         try {
-            val props = ConfigUtils.loadConfigFile(res)
             conditionsMet = configurationKeys.all {
-                val found = !ConfigUtils.getConfigValue(props, it).isNullOrEmpty()
+                val found = ConfigUtils.getConfigValue(props, it).isNotEmpty()
                 if (!found)
                     Timber.w("The configuration for '$it' is missing")
 

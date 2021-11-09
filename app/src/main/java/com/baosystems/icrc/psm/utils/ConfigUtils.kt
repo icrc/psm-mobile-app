@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.utils
 
 import android.content.res.Resources
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import java.io.IOException
 import java.util.*
@@ -9,7 +10,19 @@ import java.util.*
 object ConfigUtils {
     private const val CONFIG_RESOURCE = R.raw.config
 
-    fun getConfigValue(configProps: Properties,  key: String): String? {
+    @JvmStatic
+    fun getAppConfig(res: Resources): AppConfig {
+        val configProps = loadConfigFile(res)
+
+        return AppConfig(
+            getConfigValue(configProps, Constants.CONFIG_PROGRAM),
+            getConfigValue(configProps, Constants.CONFIG_ITEM_CODE),
+            getConfigValue(configProps, Constants.CONFIG_ITEM_VALUE),
+            getConfigValue(configProps, Constants.CONFIG_STOCK_ON_HAND),
+        )
+    }
+
+    fun getConfigValue(configProps: Properties,  key: String): String {
         if (key.isEmpty()) throw InitializationException("Configuration key '$key' cannot be empty")
 
         return configProps.getProperty(key)

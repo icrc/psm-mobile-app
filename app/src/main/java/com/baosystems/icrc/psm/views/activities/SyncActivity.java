@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivitySyncBinding;
 import com.baosystems.icrc.psm.service.PreferenceProvider;
 import com.baosystems.icrc.psm.service.SecurePreferenceProviderImpl;
@@ -24,6 +25,7 @@ import com.baosystems.icrc.psm.service.SyncManagerImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
+import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.sync.SyncViewModel;
 import com.baosystems.icrc.psm.viewmodels.sync.SyncViewModelFactory;
@@ -84,8 +86,10 @@ public class SyncActivity extends BaseActivity {
     }
 
     private void navigateToHomeScreen() {
+        AppConfig config = ConfigUtils.getAppConfig(getResources());
         ActivityManager.startActivity(this,
-                HomeActivity.getHomeActivityIntent(this), true);
+                HomeActivity.getHomeActivityIntent(this, config), true
+        );
     }
 
     public static Intent getSyncActivityIntent(Context context) {

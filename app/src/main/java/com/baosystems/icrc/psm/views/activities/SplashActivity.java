@@ -11,16 +11,20 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivitySplashBinding;
 import com.baosystems.icrc.psm.service.PreferenceProvider;
 import com.baosystems.icrc.psm.service.SecurePreferenceProviderImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.utils.ActivityManager;
+import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.baosystems.icrc.psm.viewmodels.splash.SplashViewModel;
 import com.baosystems.icrc.psm.viewmodels.splash.SplashViewModelFactory;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Properties;
 
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -52,9 +56,10 @@ public class SplashActivity extends BaseActivity {
                 Timber.d("User is logged in. Has metadata being synced? %s",
                         viewModel.hasSyncedMetadata());
 
-                if (viewModel.hasSyncedMetadata())
-                    intent = HomeActivity.getHomeActivityIntent(this);
-                else
+                if (viewModel.hasSyncedMetadata()) {
+                    AppConfig config = ConfigUtils.getAppConfig(getResources());
+                    intent = HomeActivity.getHomeActivityIntent(this, config);
+                } else
                     intent = SyncActivity.getSyncActivityIntent(this);
             } else {
                 intent = LoginActivity.getLoginActivityIntent(this);
@@ -72,13 +77,15 @@ public class SplashActivity extends BaseActivity {
         // TODO: Inject PreferenceProvider using DI
         PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
 
+        Properties props = ConfigUtils.loadConfigFile(getResources());
         return new ViewModelProvider(
                 this,
                 new SplashViewModelFactory(
                         getApplication(),
                         disposable,
                         schedulerProvider,
-                        preferenceProvider
+                        preferenceProvider,
+                        props
                 )
         ).get(SplashViewModel.class);
     }

@@ -18,12 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.service.StockManager;
 import com.baosystems.icrc.psm.service.StockManagerImpl;
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider;
 import com.baosystems.icrc.psm.service.scheduler.SchedulerProviderImpl;
+import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel;
 import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModelFactory;
@@ -190,6 +192,7 @@ public class ManageStockActivity extends BaseActivity {
         // TODO: Inject D2
         StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
         Transaction transaction = getIntent().getParcelableExtra(INTENT_DATA);
+        AppConfig config = ConfigUtils.getAppConfig(getResources());
 
         return new ViewModelProvider(
                 this,
@@ -197,6 +200,7 @@ public class ManageStockActivity extends BaseActivity {
                         disposable,
                         schedulerProvider,
                         stockManager,
+                        config,
                         transaction
                 )
         ).get(ManageStockViewModel.class);

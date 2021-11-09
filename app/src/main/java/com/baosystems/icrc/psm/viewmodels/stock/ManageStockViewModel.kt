@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.viewmodels.stock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.data.models.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
@@ -21,12 +22,13 @@ class ManageStockViewModel(
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     stockManager: StockManager,
+    private val config: AppConfig,
     val transaction: Transaction
 ): PSMViewModel() {
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
     private val stockItems = Transformations.switchMap(search) { q ->
-        stockManager.search(q, "x9sqD4dYb9F", "F5ijs28K4s8", "MBczRWvfM46")
+        stockManager.search(q, transaction.facility.uid, config.program, config.itemValue)
     }
     private val entries = linkedMapOf<TrackedEntityInstance, Long>()
 

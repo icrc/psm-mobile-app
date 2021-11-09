@@ -1,7 +1,7 @@
 package com.baosystems.icrc.psm.service
 
+import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
-import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM_KEY
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
@@ -9,11 +9,10 @@ import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
 import timber.log.Timber
-import java.util.*
 
 class MetadataManagerImpl(
     private val d2: D2,
-    private val configProps: Properties
+    private val config: AppConfig
 ): MetadataManager {
     init {
 //        Log.d(TAG, "Downloading metadata...")
@@ -55,10 +54,10 @@ class MetadataManagerImpl(
     }
 
     override fun stockManagementProgram(): Single<Program?> {
-        return Single.just(configProps.getProperty(CONFIG_PROGRAM_KEY)).map { programUid ->
+        return Single.just(config.program).map { programUid ->
             if (programUid.isBlank())
                 throw InitializationException(
-                    "The '$CONFIG_PROGRAM_KEY' config has not been set in the configuration file")
+                    "The program config has not been set in the configuration file")
 
             d2.programModule()
                 .programs()
@@ -76,9 +75,6 @@ class MetadataManagerImpl(
      * the user data capture OUs (with DESCENDANTS)
      */
     override fun facilities(): Single<MutableList<OrganisationUnit>> {
-        Timber.d("Looking up facilities (program OUs)...")
-
-        // TODO: If the list of programs returned is more than one, flag it
         return Single.defer {
             stockManagementProgram().map { program ->
                 Timber.d("Base program = ${program.uid()}")

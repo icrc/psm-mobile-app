@@ -38,7 +38,7 @@ fun transactionButtonSelected(button: MaterialButton, selected: Boolean) {
         button.setStrokeColorResource(R.color.button_highlight_color)
         button.setStrokeWidthResource(R.dimen.transaction_button_highlight_width)
     } else {
-        button.setStrokeColorResource(R.color.null_)
+        button.setStrokeColorResource(R.color.transparent)
         button.setStrokeWidthResource(R.dimen.transaction_button_no_highlight_width)
     }
 }

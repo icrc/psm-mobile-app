@@ -15,9 +15,10 @@ object Constants {
     const val ITEM_PAGE_SIZE = 10
 
     // Configuration file keys
-    const val CONFIG_PROGRAM_KEY = "program"
-    const val CONFIG_ITEM_CODE_KEY = "item_code"
-    const val CONFIG_ITEM_DESCRIPTION_KEY = "item_description"
+    const val CONFIG_PROGRAM = "program"
+    const val CONFIG_ITEM_CODE = "item_code"
+    const val CONFIG_ITEM_VALUE = "item_value"
+    const val CONFIG_STOCK_ON_HAND = "stock_on_hand"
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
 }

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -68,10 +69,6 @@ dependencies {
 
     // For App Authentication APIs
     implementation "androidx.security:security-app-authenticator:1.0.0-alpha02"
-
-    // Dynamic styles
-    // TODO: Remove dynamic style library if not needed
-    implementation 'com.airbnb.android:paris:1.7.3'
 
     // Logging
     implementation 'com.jakewharton.timber:timber:5.0.1'
