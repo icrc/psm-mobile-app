@@ -19,9 +19,7 @@ class ReviewStockData(
         parcel.writeTypedList(entries)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents() = 0
 
     companion object CREATOR : Parcelable.Creator<ReviewStockData> {
         override fun createFromParcel(parcel: Parcel): ReviewStockData {
