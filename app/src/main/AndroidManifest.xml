@@ -14,33 +14,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity
-            android:name=".views.activities.SyncActivity"
-            android:exported="true" />
-        <activity
-            android:name=".views.activities.LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".views.activities.SplashActivity"
-            android:exported="true">
+
+        <activity android:name=".views.settings.SettingsActivity" />
+        <activity android:name=".views.sync.SyncActivity" />
+        <activity android:name=".views.login.LoginActivity" />
+        <activity android:name=".views.splashscreen.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".views.managestock.ManageStockActivity" />
+        <activity android:name=".views.home.HomeActivity" android:label="@string/title_activity_home" />
         <activity
-            android:name=".views.activities.ManageStockActivity"
-            android:exported="true" />
-        <activity
-            android:name=".views.activities.HomeActivity"
-            android:exported="true"
-            android:label="@string/title_activity_home" />
-        <activity android:name=".views.activities.ReviewStockActivity"
-            android:exported="true"
-            android:parentActivityName=".views.activities.ManageStockActivity" />
-        <activity
-            android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity"
-            android:exported="true" />
+            android:name=".views.reviewstock.ReviewStockActivity"
+            android:parentActivityName=".views.managestock.ManageStockActivity" />
+        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity" />
     </application>
 
 </manifest>

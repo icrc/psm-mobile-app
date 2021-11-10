@@ -8,13 +8,13 @@
 
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.psm.viewmodels.sync.SyncViewModel" />
+            type="com.baosystems.icrc.psm.views.sync.SyncViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.activities.SyncActivity">
+        tools:context=".views.sync.SyncActivity">
 
         <ProgressBar
             android:id="@+id/progressBar"
