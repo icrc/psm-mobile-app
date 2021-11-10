@@ -18,7 +18,7 @@ import timber.log.Timber
 
 class ReviewStockAdapter(
     private val itemWatcher: ItemWatcher<StockEntry, Long>
-): ListAdapter<StockEntry, ReviewStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
+): ListAdapter<StockEntry, ReviewStockAdapter.StockItemViewHolder>(DIFF_CALLBACK) {
     companion object {
         // TODO: Find a way to use a type-aware DIFF_CALLBACK for different adapters for reusability
         private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<StockEntry> () {
@@ -30,7 +30,7 @@ class ReviewStockAdapter(
         }
     }
 
-    inner class StockItemHolder(
+    inner class StockItemViewHolder(
         itemView: View,
         private val watcher: ItemWatcher<StockEntry, Long>
     ): RecyclerView.ViewHolder(itemView) {
@@ -73,13 +73,13 @@ class ReviewStockAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.review_stock_item_entry, parent, false)
-        return StockItemHolder(itemView, itemWatcher)
+        return StockItemViewHolder(itemView, itemWatcher)
     }
 
-    override fun onBindViewHolder(holder: StockItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: StockItemViewHolder, position: Int) {
         holder.bindTo(getItem(position))
     }
 }

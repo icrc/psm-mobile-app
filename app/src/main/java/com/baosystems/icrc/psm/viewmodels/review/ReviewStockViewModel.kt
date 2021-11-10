@@ -49,10 +49,7 @@ class ReviewStockViewModel(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { result ->
-                        Timber.d("Distinct: $result")
-                        search.postValue(result)
-                    },
+                    { result -> search.postValue(result) },
                     {
                         // TODO: Report the error to the user
                         it.printStackTrace()
@@ -61,10 +58,15 @@ class ReviewStockViewModel(
         )
     }
 
+    // TODO: Implement actual item deletion from the memory store
     fun removeItem(item: StockEntry) {
-//        stockItems.
-//        stockItems..remove(item)
-        Timber.d("Stock list after deletion: %s", reviewedItems)
+//        populatedItems.remove(item)
+
+//        if (_reviewedItems.value != null) {
+//            _reviewedItems.value = _reviewedItems.value.filterNot { it == item }
+//        }
+
+        Timber.d("Stock list after deletion: %d", populatedItems.size)
     }
 
     fun updateQuantity(item: StockEntry, value: Long) {
