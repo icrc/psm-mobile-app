@@ -53,6 +53,11 @@ public class ReviewStockActivity extends BaseActivity {
         setupRecyclerView();
     }
 
+    @Override
+    public boolean showMoreOptions() {
+        return true;
+    }
+
     private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
         recyclerView.setHasFixedSize(true);
@@ -76,9 +81,9 @@ public class ReviewStockActivity extends BaseActivity {
         adapter = new ReviewStockAdapter(itemWatcher);
         recyclerView.setAdapter(adapter);
 
-        viewModel.getReviewedItems().observe(this, stockItems -> {
-            adapter.submitList(stockItems);
-        });
+        viewModel.getReviewedItems().observe(
+                this, stockItems -> adapter.submitList(stockItems)
+        );
     }
 
     private void setupSearchInput() {

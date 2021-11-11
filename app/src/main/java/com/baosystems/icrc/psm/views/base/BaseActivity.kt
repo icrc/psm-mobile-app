@@ -1,10 +1,14 @@
 package com.baosystems.icrc.psm.views.base
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
+import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.views.settings.SettingsActivity
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -74,21 +78,25 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     open fun getToolBar(): Toolbar? = null
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (showMoreOptions()) {
+            menuInflater.inflate(R.menu.more_options, menu)
+            return true
+        }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        val inflater: MenuInflater = menuInflater
-//        inflater.inflate(R.menu.more_options, menu)
-//        Log.d("BaseActivity", "About creating settings menu")
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
-//        R.id.action_settings -> {
-//            // TODO: Show the app settings UI
-//            Log.d("BaseActivity", "Settings clicked")
-//            true
-//        }
-//
-//        else -> super.onOptionsItemSelected(item)
-//    }
+        return false
+    }
+
+    /**
+     * Indicates if the more options menu should be shown
+     */
+    open fun showMoreOptions(): Boolean = false
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_settings) {
+            startActivity(SettingsActivity.getSettingsActivityIntent(this))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

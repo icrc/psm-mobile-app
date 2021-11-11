@@ -6,8 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.BlendMode;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
@@ -37,7 +35,6 @@ import com.baosystems.icrc.psm.views.adapters.RecentActivityAdapter;
 import com.baosystems.icrc.psm.views.base.BaseActivity;
 import com.baosystems.icrc.psm.views.base.GenericListAdapter;
 import com.baosystems.icrc.psm.views.managestock.ManageStockActivity;
-import com.baosystems.icrc.psm.views.settings.SettingsActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -80,6 +77,11 @@ public class HomeActivity extends BaseActivity {
         setupComponents();
     }
 
+    @Override
+    public boolean showMoreOptions() {
+        return true;
+    }
+
     private void attachObservers() {
         // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
         // TODO: Inject FacilityListAdapter with DI
@@ -108,21 +110,6 @@ public class HomeActivity extends BaseActivity {
                 ActivityManager.showErrorMessage(binding.getRoot(), message);
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.more_options, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            startActivity(SettingsActivity.getSettingsActivityIntent(this));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void setupComponents() {

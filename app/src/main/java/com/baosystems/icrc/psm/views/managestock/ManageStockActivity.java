@@ -45,12 +45,6 @@ public class ManageStockActivity extends BaseActivity {
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
 
-    public static Intent getManageStockActivityIntent(Context context, Transaction bundle) {
-        Intent intent = new Intent(context, ManageStockActivity.class);
-        intent.putExtra(INTENT_DATA, bundle);
-        return intent;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +81,11 @@ public class ManageStockActivity extends BaseActivity {
 
             // TODO: Handle error states
         });
+    }
+
+    @Override
+    public boolean showMoreOptions() {
+        return true;
     }
 
     @org.jetbrains.annotations.Nullable
@@ -191,5 +190,11 @@ public class ManageStockActivity extends BaseActivity {
     @Override
     public Toolbar getToolBar() {
         return ((ActivityManageStockBinding) getViewBinding()).toolbarContainer.toolbar;
+    }
+
+    public static Intent getManageStockActivityIntent(Context context, Transaction bundle) {
+        Intent intent = new Intent(context, ManageStockActivity.class);
+        intent.putExtra(INTENT_DATA, bundle);
+        return intent;
     }
 }
