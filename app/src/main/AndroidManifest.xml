@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
 
-        <activity android:name=".views.settings.SettingsActivity" />
+        <activity
+            android:name=".views.settings.SettingsActivity"
+            android:theme="@style/Theme.App" />
         <activity android:name=".views.sync.SyncActivity" />
         <activity android:name=".views.login.LoginActivity" />
         <activity android:name=".views.splashscreen.SplashActivity">

@@ -113,15 +113,10 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupComponents() {
-//        setupToolbar();
         setupButtons();
 
         facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
-                {
-                    viewModel.setFacility(
-                            (OrganisationUnit) facilityTextView.getAdapter().getItem(position));
-//                    facilityTextView.setText(homeViewModel.getFacility().getValue().displayName());
-                }
+                viewModel.setFacility((OrganisationUnit) facilityTextView.getAdapter().getItem(position))
         );
 
         distributedToTextView.setOnItemClickListener((adapterView, view, position, row_id) ->

@@ -81,9 +81,7 @@ public class ReviewStockActivity extends BaseActivity {
         adapter = new ReviewStockAdapter(itemWatcher);
         recyclerView.setAdapter(adapter);
 
-        viewModel.getReviewedItems().observe(
-                this, stockItems -> adapter.submitList(stockItems)
-        );
+        viewModel.getReviewedItems().observe(this, adapter::submitList);
     }
 
     private void setupSearchInput() {
