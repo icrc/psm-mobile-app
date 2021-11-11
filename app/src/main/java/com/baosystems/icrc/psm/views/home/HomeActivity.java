@@ -37,6 +37,7 @@ import com.baosystems.icrc.psm.views.adapters.RecentActivityAdapter;
 import com.baosystems.icrc.psm.views.base.BaseActivity;
 import com.baosystems.icrc.psm.views.base.GenericListAdapter;
 import com.baosystems.icrc.psm.views.managestock.ManageStockActivity;
+import com.baosystems.icrc.psm.views.settings.SettingsActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -118,8 +119,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            // TODO: Show the app settings UI
-            Timber.d("Settings clicked");
+            startActivity(SettingsActivity.getSettingsActivityIntent(this));
             return true;
         }
         return super.onOptionsItemSelected(item);

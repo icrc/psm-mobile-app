@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:key="microphonePreference"
+        app:title="@string/use_microphone_for_data_entry" />
+
+    <Preference
+        app:title="@string/language"
+        app:fragment="com.baosystems.icrc.psm.views.settings.SettingsActivity$LanguagePreferencesFragment"/>
+
+    <Preference
+        app:title="@string/force_sync"
+        app:persistent="false" />
+
+    <Preference
+        app:title="@string/logout"
+        app:persistent="false" />
+</PreferenceScreen>

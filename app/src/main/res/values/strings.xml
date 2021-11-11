@@ -120,4 +120,5 @@
     <string name="missing_configuration">
         One or more required fields are missing in the configuration file
     </string>
+    <string name="select_language">Select your desired language</string>
 </resources>
