@@ -75,6 +75,11 @@ public class HomeActivity extends BaseActivity {
 
         attachObservers();
         setupComponents();
+
+        // Cannot go up the stack
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 
     @Override
@@ -227,7 +232,6 @@ public class HomeActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-//        assert d2 != null; // TODO: Remove once d2 has been injected
         // TODO: Inject D2
         D2 d2 = Sdk.d2(this);
 
