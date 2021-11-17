@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class AppConfig(
     val program: String,
     val itemCode: String,
-    val itemValue: String,
+    val itemName: String,
     val stockOnHand: String
 ) : Parcelable

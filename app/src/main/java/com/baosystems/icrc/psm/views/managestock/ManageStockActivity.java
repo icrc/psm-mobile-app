@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.models.AppConfig;
+import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.service.StockManager;
@@ -32,7 +33,6 @@ import com.baosystems.icrc.psm.views.base.ItemWatcher;
 import com.baosystems.icrc.psm.views.reviewstock.ReviewStockActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance;
 import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -62,11 +62,14 @@ public class ManageStockActivity extends BaseActivity {
 
         setupSearchInput();
         setupRecyclerView();
+        setupObservers();
 
         // TODO: Temporarily set to a particular code pending when actual scan is implemented
         binding.scanButton.setOnClickListener(
                 view -> viewModel.onScanCompleted("AFORMEDFPF2"));
+    }
 
+    private void setupObservers() {
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             Timber.d("Updating recyclerview pagedlist");
             adapter.submitList(pagedListLiveData);
@@ -111,25 +114,25 @@ public class ManageStockActivity extends BaseActivity {
         RecyclerView recyclerView = binding.stockItemsList;
 //        recyclerView.setHasFixedSize(true);
 
-        ItemWatcher<TrackedEntityInstance, Long> itemWatcher =
-                new ItemWatcher<TrackedEntityInstance, Long>() {
+        ItemWatcher<StockEntry, Long> itemWatcher =
+                new ItemWatcher<StockEntry, Long>() {
             @Override
-            public void removeItem(TrackedEntityInstance item) {
+            public void removeItem(StockEntry item) {
 
             }
 
             @Override
-            public void quantityChanged(TrackedEntityInstance item, Long value) {
+            public void quantityChanged(StockEntry item, Long value) {
                 viewModel.setItemQuantity(item, value);
             }
 
             @Nullable
             @Override
-            public Long getValue(TrackedEntityInstance item) {
+            public Long getValue(StockEntry item) {
                 return viewModel.getItemQuantity(item);
             }
         };
-        adapter = new ManageStockAdapter(itemWatcher);
+        adapter = new ManageStockAdapter(itemWatcher, viewModel.getConfig());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)

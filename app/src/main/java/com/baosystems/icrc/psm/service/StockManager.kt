@@ -2,26 +2,21 @@ package com.baosystems.icrc.psm.service
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
-import io.reactivex.Single
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
+import com.baosystems.icrc.psm.data.models.StockEntry
 
 interface StockManager {
     /**
      * Get the list of stock items
      *
-     * @param query The query object
+     * @param query The query object which comprises the search query, OU and other parameters
+     * @param config The application configuration
      * @param ou The organisation unit under consideration (optional)
-     * @param program The program (optional)
-     * @param attribute The attribute to be used to order the results in ascending order (optional)
      *
      * @return LiveData containing a paged list of the matching stock items
      */
 
-    fun search(query: SearchParametersModel, ou: String?, program: String?, attribute: String?):
-            LiveData<PagedList<TrackedEntityInstance>>
-
-    fun loadItems(uids: Collection<String>): Single<MutableList<TrackedEntityInstance>>
-
-    fun lookup(uid: String): TrackedEntityInstance?
+    fun search(query: SearchParametersModel, config: AppConfig, ou: String?):
+            LiveData<PagedList<StockEntry>>
 }

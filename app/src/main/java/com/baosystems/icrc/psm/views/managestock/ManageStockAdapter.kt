@@ -12,16 +12,17 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
-import com.baosystems.icrc.psm.utils.AttributeHelper
+import com.baosystems.icrc.psm.data.models.AppConfig
+import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.views.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import timber.log.Timber
 
 class ManageStockAdapter(
-    private val itemWatcher: ItemWatcher<TrackedEntityInstance, Long>
+    private val itemWatcher: ItemWatcher<StockEntry, Long>,
+    val appConfig: AppConfig
 ): PagedListAdapter<
-        TrackedEntityInstance, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
+        StockEntry, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -31,32 +32,27 @@ class ManageStockAdapter(
 
     override fun onBindViewHolder(holder: StockItemHolder, position: Int) {
         // Note that the item is a placeholder if it is null
-        getItem(position)?.let { item ->
-            item.trackedEntityAttributeValues()?.forEach {
-                Timber.d("Bound ViewHolder: %s - %s", it.trackedEntityAttribute(), it.value())
-            }
-            holder.bindTo(item)
-        }
+        getItem(position)?.let { item -> holder.bindTo(item) }
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TrackedEntityInstance>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StockEntry>() {
             override fun areItemsTheSame(
-                oldItem: TrackedEntityInstance,
-                newItem: TrackedEntityInstance
-            ) = oldItem.uid() == newItem.uid()
+                oldItem: StockEntry,
+                newItem: StockEntry
+            ) = oldItem.id == newItem.id
 
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
-                oldItem: TrackedEntityInstance,
-                newItem: TrackedEntityInstance
+                oldItem: StockEntry,
+                newItem: StockEntry
             ) = oldItem == newItem
         }
     }
 
     inner class StockItemHolder(
         itemView: View,
-        private val watcher: ItemWatcher<TrackedEntityInstance, Long>
+        private val watcher: ItemWatcher<StockEntry, Long>
     ):
         RecyclerView.ViewHolder(itemView) {
 
@@ -86,16 +82,10 @@ class ManageStockAdapter(
             })
         }
 
-        fun bindTo(item: TrackedEntityInstance) {
-            // TODO: Determine if using the indices to get the item name is the best option,
-            //  or comparing a preconfigured attribute uid to be compared against is better
+        fun bindTo(item: StockEntry) {
             Timber.d("About to bind: $item")
-//        tvItemName?.text = item.trackedEntityAttributeValues().
-//        tvItemName?.text = "Item $pos"
-
-//        tvItemName?.text = AttributeHelper.teiItemCode(item)
-            tvItemName.text = AttributeHelper.teiAttributeValueByAttributeUid(item, "MBczRWvfM46")
-
+            tvItemName.text = item.name
+            tvStockOnHand.text = item.stockOnHand
             etQty.editText?.setText(watcher.getValue(item).let { value ->
                 value?.toString() ?: ""
             })

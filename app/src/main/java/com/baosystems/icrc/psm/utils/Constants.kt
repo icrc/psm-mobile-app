@@ -21,4 +21,5 @@ object Constants {
     const val CONFIG_STOCK_ON_HAND = "stock_on_hand"
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
+    const val NULL_NUMBER_PLACEHOLDER = -112L
 }

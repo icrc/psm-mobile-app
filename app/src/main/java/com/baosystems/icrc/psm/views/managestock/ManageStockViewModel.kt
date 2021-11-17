@@ -6,12 +6,10 @@ import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.*
 import com.baosystems.icrc.psm.service.StockManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
-import com.baosystems.icrc.psm.utils.AttributeHelper
 import com.baosystems.icrc.psm.utils.Constants.SEARCH_QUERY_DEBOUNCE
 import com.baosystems.icrc.psm.views.base.BaseViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.disposables.CompositeDisposable
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -19,15 +17,15 @@ class ManageStockViewModel(
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     stockManager: StockManager,
-    private val config: AppConfig,
+    val config: AppConfig,
     val transaction: Transaction
 ): BaseViewModel() {
     private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
+    private val itemsCache = linkedMapOf<StockEntry, Long>()
     private val stockItems = Transformations.switchMap(search) { q ->
-        stockManager.search(q, transaction.facility.uid, config.program, config.itemValue)
+        stockManager.search(q, config, transaction.facility.uid)
     }
-    private val entries = linkedMapOf<TrackedEntityInstance, Long>()
 
     init {
         if (transaction.transactionType != TransactionType.DISTRIBUTION &&
@@ -44,7 +42,7 @@ class ManageStockViewModel(
     }
 
     private fun loadStockItems() {
-        search.value = SearchParametersModel(null, null)
+        search.value = SearchParametersModel(null, null, transaction.facility.uid)
     }
 
     fun getStockItems() = stockItems
@@ -59,7 +57,9 @@ class ManageStockViewModel(
                 .subscribe(
                     { result ->
                         Timber.d("Distinct: $result")
-                        search.postValue(SearchParametersModel(result))
+                        search.postValue(
+                            SearchParametersModel(result, null, transaction.facility.uid)
+                        )
                     },
                     {
                         // TODO: Report the error to the user
@@ -74,25 +74,22 @@ class ManageStockViewModel(
     }
 
     fun onScanCompleted(itemCode: String) {
-        search.postValue(SearchParametersModel(null, itemCode))
+        search.postValue(SearchParametersModel(null, itemCode, transaction.facility.uid))
     }
 
-    fun setItemQuantity(item: TrackedEntityInstance, qty: Long) {
-        entries[item] = qty
+    fun setItemQuantity(item: StockEntry, qty: Long) {
+        itemsCache[item] = qty
     }
 
-    fun getItemQuantity(item: TrackedEntityInstance) = entries[item]
+    fun getItemQuantity(item: StockEntry) = itemsCache[item]
 
-    private fun getPopulatedEntries(): MutableList<StockEntry> = entries.map {
-        val tei = it.key
-        Timber.d("Populated entries key: %s = %s", tei.uid(),
-            AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemValue))
-        StockEntry(
-            tei.uid(),
-            AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemValue) ?: "",
-            it.value
-        )
-    }.toMutableList()
+    private fun getPopulatedEntries(): MutableList<StockEntry> {
+        itemsCache.entries.forEach {
+            it.key.qty = it.value
+        }
+
+        return itemsCache.keys.toMutableList()
+    }
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 }
