@@ -63,6 +63,10 @@ public class ManageStockActivity extends BaseActivity {
         setupSearchInput();
         setupRecyclerView();
 
+        // TODO: Temporarily set to a particular code pending when actual scan is implemented
+        binding.scanButton.setOnClickListener(
+                view -> viewModel.onScanCompleted("AFORMEDFPF2"));
+
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             Timber.d("Updating recyclerview pagedlist");
             adapter.submitList(pagedListLiveData);

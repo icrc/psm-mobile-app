@@ -3,10 +3,7 @@ package com.baosystems.icrc.psm.views.managestock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.AppConfig
-import com.baosystems.icrc.psm.data.models.ReviewStockData
-import com.baosystems.icrc.psm.data.models.StockEntry
-import com.baosystems.icrc.psm.data.models.Transaction
+import com.baosystems.icrc.psm.data.models.*
 import com.baosystems.icrc.psm.service.StockManager
 import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.AttributeHelper
@@ -25,7 +22,7 @@ class ManageStockViewModel(
     private val config: AppConfig,
     val transaction: Transaction
 ): BaseViewModel() {
-    private var search = MutableLiveData<String>()
+    private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
     private val stockItems = Transformations.switchMap(search) { q ->
         stockManager.search(q, transaction.facility.uid, config.program, config.itemValue)
@@ -47,7 +44,7 @@ class ManageStockViewModel(
     }
 
     private fun loadStockItems() {
-        search.value = ""
+        search.value = SearchParametersModel(null, null)
     }
 
     fun getStockItems() = stockItems
@@ -62,7 +59,7 @@ class ManageStockViewModel(
                 .subscribe(
                     { result ->
                         Timber.d("Distinct: $result")
-                        search.postValue(result)
+                        search.postValue(SearchParametersModel(result))
                     },
                     {
                         // TODO: Report the error to the user
@@ -74,6 +71,10 @@ class ManageStockViewModel(
 
     fun onSearchQueryChanged(query: String) {
         searchRelay.accept(query)
+    }
+
+    fun onScanCompleted(itemCode: String) {
+        search.postValue(SearchParametersModel(null, itemCode))
     }
 
     fun setItemQuantity(item: TrackedEntityInstance, qty: Long) {

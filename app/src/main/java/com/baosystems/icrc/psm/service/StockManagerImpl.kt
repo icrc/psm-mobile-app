@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.service
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.utils.Constants
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
@@ -14,7 +15,7 @@ class StockManagerImpl(
 ): StockManager {
 
     override fun search(
-        query: String?,
+        query: SearchParametersModel,
         ou: String?,
         program: String?,
         attribute: String?
@@ -33,10 +34,17 @@ class StockManagerImpl(
                 .eq(program)
                 .also { teiRepository = it }
 
-        if (!query.isNullOrEmpty()) {
+        if (!query.name.isNullOrEmpty()) {
             teiRepository
                 .byQuery()
-                .like(query).also { teiRepository = it }
+                .like(query.name).also { teiRepository = it }
+        }
+
+        if (!query.code.isNullOrEmpty()) {
+            teiRepository
+                .byQuery()
+                .eq(query.code)
+                .also { teiRepository = it }
         }
 
         if (!attribute.isNullOrEmpty()) {
