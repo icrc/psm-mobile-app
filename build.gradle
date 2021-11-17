@@ -67,9 +67,7 @@ ext {
             espresso_core: '3.4.0',
 
             // debugging
-            flipper: '0.112.0',
-            soloader: '0.10.1',
-            flipper_network_plugin: '0.105.0',
-            flipper_noop: '0.112.0',
+            flipper: '0.119.0',
+            soloader: '0.10.1'
     ]
 }

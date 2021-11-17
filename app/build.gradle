@@ -80,11 +80,11 @@ dependencies {
 
     debugImplementation "com.facebook.flipper:flipper:${libraries.flipper}"
     debugImplementation "com.facebook.soloader:soloader:${libraries.soloader}"
-    debugImplementation ("com.facebook.flipper:flipper-network-plugin:${libraries.flipper_network_plugin}") {
+    debugImplementation ("com.facebook.flipper:flipper-network-plugin:${libraries.flipper}") {
         exclude group: 'com.squareup.okhttp3'
     }
 
-    releaseImplementation "com.facebook.flipper:flipper-noop:${libraries.flipper_noop}"
+    releaseImplementation "com.facebook.flipper:flipper-noop:${libraries.flipper}"
 
     testImplementation "junit:junit:${libraries.junit}"
     testImplementation "org.mockito.kotlin:mockito-kotlin:${libraries.mockito_kotlin}"
