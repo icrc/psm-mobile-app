@@ -1,12 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext.gradlePluginVersion = "7.0.3"
+    ext.kotlinPluginVersion = "1.6.0"
+    ext.hiltPluginVersion = "2.38.1"
+
     repositories {
         google()
         mavenCentral()
     }
+
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.3"
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31'
+        classpath "com.android.tools.build:gradle:${gradlePluginVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinPluginVersion}"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:${hiltPluginVersion}"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,7 +27,7 @@ task clean(type: Delete) {
 ext {
     // SDK and Tools
     configuration = [
-            buildToolsVersion: "29.0.3",
+            gradlePluginVersion: "1.5.31",
             minSdkVersion    : 24,
             targetSdkVersion : 30,
             compileSdkVersion : 31,

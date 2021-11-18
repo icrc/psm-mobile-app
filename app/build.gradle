@@ -71,8 +71,10 @@ dependencies {
     implementation "androidx.security:security-identity-credential:${libraries.security_identity}"
     implementation "androidx.security:security-app-authenticator:${libraries.security_authenticator}"
 
-    // Preference
+    // Preferences
     implementation "androidx.preference:preference-ktx:${libraries.preference_ktx}"
+
+
 
     // Logging
     implementation "com.jakewharton.timber:timber:${libraries.timber}"
