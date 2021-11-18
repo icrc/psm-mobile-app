@@ -12,22 +12,13 @@
 
 ### Todo
 
-- Switch out LinearLayout in Home Activity for Group constraints
-- Store the lastSync date in Shared Preferences to facilitate reuse across all activities
-- See if [Bufferapp](https://github.com/bufferapp/android-components/blob/main/app/src/main/java/org/buffer/android/components/RoundedButton.kt)'s 
-  RoundedButton concept will work for the transaction buttons styling
 - Add beautiful looking view when recent activity list is empty
-- Figure out to to export the `directional_arrow` in _Recent Activity_ list with the 
-  proper dimensions (**24x24**)
-- Apply the appropriate theme to the footer text (might use attributes) and recent activity items
-- Use custom dividers and spacers for the recyclerview items 
-  (https://stackoverflow.com/questions/24618829/how-to-add-dividers-and-spaces-between-items-in-recyclerview)
+- Use custom dividers and spacers for the recyclerview items
 - See if you can use ViewModel's SavedState to save state across process death or share data between
   different activities
 - Handle cases where a valid server URL is not specified and non-XML or JSON responses are obtained
 while communicating with the invalid server. This currently isn't handled appropriately
-- Clear all the user data on logout: metadata, Preferences, recent activity etc
-- SharedPreferences (both implementations are not writing to disk). Fix them
+- Clear all the user data on logout: metadata, preferences, recent activity etc
 - Go through all the possible return values from `usermodel().login()` and handle them accordingly. 
   There are cases where `ALREADY_AUTHENTICATED` is returned from the call. SUch return values should be
   handled appropriately
