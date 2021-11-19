@@ -3,27 +3,25 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
 }
 
-def libraries = rootProject.ext.libraries
-def config = rootProject.ext.configuration
+apply from: "$rootDir/dependencies.gradle"
 
 android {
-    compileSdk config.compileSdkVersion
-
+    compileSdkVersion versions.compileSdk
     defaultConfig {
         applicationId "com.baosystems.icrc.pharmacystockmanagement"
 
         // Changed from 19 to 24 to support 'androidx.security.identity.credential'
-        minSdk config.minSdkVersion
-        targetSdk config.targetSdkversion
-        versionCode config.versionCode
-        versionName config.versionName
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -47,55 +45,57 @@ android {
 dependencies {
     // DHIS2 Android SDK
     // remove the no-op version of Flipper added by DHIS2 Android SDK  to avoid duplicates
-    implementation ("org.hisp.dhis:android-core:${libraries.dhis_core}") {
+    implementation ("org.hisp.dhis:android-core:$versions.dhis_core") {
         exclude group: 'com.facebook.flipper'
     }
 
-    implementation "org.hisp.dhis.rules:rule-engine:${libraries.dhis_rules_engine}"
+    implementation "org.hisp.dhis.rules:rule-engine:$versions.dhis_rules_engine"
 
-    implementation "androidx.annotation:annotation:${libraries.annotation}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${libraries.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libraries.lifecycle}"
-    implementation "androidx.legacy:legacy-support-v4:${libraries.legacy_support_v4}"
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${libraries.desugar_jdk_libs}"
+    implementation "androidx.annotation:annotation:$versions.annotation"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
+    implementation "androidx.legacy:legacy-support-v4:$versions.legacy_support_v4"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.desugar_jdk_libs"
 
-    implementation "androidx.appcompat:appcompat:${libraries.appcompat}"
-    implementation "com.google.android.material:material:${libraries.material}"
-    implementation "androidx.constraintlayout:constraintlayout:${libraries.constraintlayout}"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
 
-    implementation "io.reactivex.rxjava2:rxjava:${libraries.rxjava}"
-    implementation "com.jakewharton.rxrelay2:rxrelay:${libraries.rxrelay}"
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$versions.rxrelay"
 
     // Security
-    implementation "androidx.security:security-crypto:${libraries.security_crypto}"
-    implementation "androidx.security:security-identity-credential:${libraries.security_identity}"
-    implementation "androidx.security:security-app-authenticator:${libraries.security_authenticator}"
+    implementation "androidx.security:security-crypto:$versions.security_crypto"
+    implementation "androidx.security:security-identity-credential:$versions.security_identity"
+    implementation "androidx.security:security-app-authenticator:$versions.security_authenticator"
 
     // Preferences
-    implementation "androidx.preference:preference-ktx:${libraries.preference_ktx}"
+    implementation "androidx.preference:preference-ktx:$versions.preference_ktx"
 
-
+    // DI
+    implementation "com.google.dagger:hilt-android:$versions.hilt"
+    kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
     // Logging
-    implementation "com.jakewharton.timber:timber:${libraries.timber}"
-    implementation "cat.ereza:customactivityoncrash:${libraries.customactivityoncrash}"
+    implementation "com.jakewharton.timber:timber:$versions.timber"
+    implementation "cat.ereza:customactivityoncrash:$versions.customactivityoncrash"
 
-    debugImplementation "com.facebook.flipper:flipper:${libraries.flipper}"
-    debugImplementation "com.facebook.soloader:soloader:${libraries.soloader}"
-    debugImplementation ("com.facebook.flipper:flipper-network-plugin:${libraries.flipper}") {
+    debugImplementation "com.facebook.flipper:flipper:$versions.flipper"
+    debugImplementation "com.facebook.soloader:soloader:$versions.soloader"
+    debugImplementation ("com.facebook.flipper:flipper-network-plugin:$versions.flipper") {
         exclude group: 'com.squareup.okhttp3'
     }
 
-    releaseImplementation "com.facebook.flipper:flipper-noop:${libraries.flipper}"
+    releaseImplementation "com.facebook.flipper:flipper-noop:$versions.flipper"
 
-    testImplementation "junit:junit:${libraries.junit}"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:${libraries.mockito_kotlin}"
-    testImplementation "androidx.arch.core:core-testing:${libraries.android_core_testing}"
-    testImplementation "com.github.javafaker:javafaker:${libraries.javafaker}"
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$versions.mockito_kotlin"
+    testImplementation "androidx.arch.core:core-testing:$versions.android_core_testing"
+    testImplementation "com.github.javafaker:javafaker:$versions.javafaker"
 
-    androidTestImplementation "androidx.test.ext:junit:${libraries.junit_ext}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${libraries.espresso_core}"
+    androidTestImplementation "androidx.test.ext:junit:$versions.junit_ext"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"
 
     // For App Authentication API testing
-    androidTestImplementation "androidx.security:security-app-authenticator:${libraries.security_authenticator}"
+    androidTestImplementation "androidx.security:security-app-authenticator:$versions.security_authenticator"
 }

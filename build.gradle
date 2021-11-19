@@ -1,18 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.gradlePluginVersion = "7.0.3"
-    ext.kotlinPluginVersion = "1.6.0"
-    ext.hiltPluginVersion = "2.38.1"
-
+    apply from: "$rootDir/dependencies.gradle"
     repositories {
         google()
         mavenCentral()
     }
-
     dependencies {
-        classpath "com.android.tools.build:gradle:${gradlePluginVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinPluginVersion}"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:${hiltPluginVersion}"
+        classpath "com.android.tools.build:gradle:$versions.gradle_plugin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin_gradle_plugin"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt_gradle_plugin"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,59 +17,4 @@ buildscript {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-// Define versions
-ext {
-    // SDK and Tools
-    configuration = [
-            gradlePluginVersion: "1.5.31",
-            minSdkVersion    : 24,
-            targetSdkVersion : 30,
-            compileSdkVersion : 31,
-            versionCode      : 1,
-            versionName      : "0.0.1"
-    ]
-
-    // App dependencies
-    libraries = [
-            // android
-            lifecycle: '2.3.1', // 2.4.0 now available, but seems to have some breaking changes
-            annotation: '1.3.0',
-            legacy_support_v4: '1.0.0',
-            desugar_jdk_libs: '1.1.5',
-
-            appcompat: '1.3.1',
-            material: '1.4.0',
-            constraintlayout: '2.1.2',
-            security_crypto: '1.0.0',
-            security_identity: '1.0.0-alpha02',
-            security_authenticator: '1.0.0-alpha02',
-
-            // DHIS2
-            dhis_core: '1.4.3',
-            dhis_rules_engine: '2.0.16',
-
-            rxjava: '2.2.12',
-            rxrelay: '2.1.1',
-
-            // kotlin
-            preference_ktx: '1.1.1',
-
-            // logging
-            timber: '5.0.1',
-            customactivityoncrash: '2.3.0',
-
-            // testing
-            android_core_testing: '2.1.0',
-            junit: '4.13.2',
-            mockito_kotlin: '3.2.0',
-            javafaker: '1.0.2',
-            junit_ext: '1.1.3',
-            espresso_core: '3.4.0',
-
-            // debugging
-            flipper: '0.119.0',
-            soloader: '0.10.1'
-    ]
 }
