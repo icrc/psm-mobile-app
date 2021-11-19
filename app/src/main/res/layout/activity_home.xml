@@ -8,13 +8,13 @@
         <import type="com.baosystems.icrc.psm.data.TransactionType" />
         <variable
             name="viewModel"
-            type="com.baosystems.icrc.psm.views.home.HomeViewModel" />
+            type="com.baosystems.icrc.psm.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.baosystems.icrc.psm.views.home.HomeActivity">
+        tools:context="com.baosystems.icrc.psm.ui.home.HomeActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/toolbarLayout"

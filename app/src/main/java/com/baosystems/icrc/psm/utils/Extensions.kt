@@ -32,7 +32,7 @@ fun setDistributedTo(view: TextView, s: String?) {
     }
 }
 
-@BindingAdapter("app:selected")
+@BindingAdapter("selected")
 fun transactionButtonSelected(button: MaterialButton, selected: Boolean) {
     if (selected) {
         button.setStrokeColorResource(R.color.button_highlight_color)
