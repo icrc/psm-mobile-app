@@ -1,6 +1,5 @@
 package com.baosystems.icrc.psm.services
 
-import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
@@ -9,52 +8,11 @@ import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
 import timber.log.Timber
+import javax.inject.Inject
 
-class MetadataManagerImpl(
-    private val d2: D2,
-    private val config: AppConfig
-): MetadataManager {
-    init {
-//        Log.d(TAG, "Downloading metadata...")
-
-        // TODO: Remove later. Add to a dedicated Activity (currently being used for testing)
-        // TODO: Metadata error can occur, ensure you handle such situations
-//        d2.metadataModule()
-//            .download()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnComplete {
-//                Log.i(TAG, "Finished downloading metadata!")
-//            }
-////            .doOnError(Throwable::getStackTrace)
-//            .doOnError{
-//                Log.e(TAG, "Error downloading metadata: ${it.localizedMessage}")
-//                it.printStackTrace()
-//            }
-//            .subscribe()
-//
-        // TODO: Remove later, temporarily used to test functionality
-//        Timber.i("Downloading TEI data...")
-//        d2.trackedEntityModule()
-//            .trackedEntityInstanceDownloader()
-//            .byProgramUid("F5ijs28K4s8")
-//            .limitByOrgunit(true)
-//            .limitByProgram(true)
-//            .download()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnComplete {
-//                Timber.i("Finished downloading TEI data!")
-//            }
-//            .doOnError{
-//                Timber.e("Error downloading TEI data: ${it.localizedMessage}")
-//                it.printStackTrace()
-//            }
-//            .subscribe()
-    }
-
-    override fun stockManagementProgram(): Single<Program?> {
-        return Single.just(config.program).map { programUid ->
+class MetadataManagerImpl @Inject constructor(val d2: D2): MetadataManager {
+    override fun stockManagementProgram(programUid: String): Single<Program?> {
+        return Single.just(programUid).map { programUid ->
             if (programUid.isBlank())
                 throw InitializationException(
                     "The program config has not been set in the configuration file")
@@ -74,10 +32,11 @@ class MetadataManagerImpl(
      * intersection of the program OUs (without DESCENDANTS) and
      * the user data capture OUs (with DESCENDANTS)
      */
-    override fun facilities(): Single<MutableList<OrganisationUnit>> {
+    override fun facilities(programUid: String): Single<MutableList<OrganisationUnit>> {
         return Single.defer {
-            stockManagementProgram().map { program ->
+            stockManagementProgram(programUid).map { program ->
                 Timber.d("Base program = ${program.uid()}")
+                // TODO Flag situations where the intersection is nil (i.e. no facility obtained)
                 d2.organisationUnitModule()
                     .organisationUnits()
                     .byOrganisationUnitScope(
@@ -85,23 +44,6 @@ class MetadataManagerImpl(
                     .byProgramUids(listOf(program.uid()))
                     .blockingGet()
             }
-
-//            d2.programModule()
-//                .programs()
-//                .get()
-//                .map{ program ->
-//                    val programIds = program.map { prg -> prg.uid() }
-//                    Log.d(TAG, "Program id: $programIds")
-//
-//                    // TODO Flag situations where the intersection is nil
-//
-//                    d2.organisationUnitModule()
-//                        .organisationUnits()
-//                        .byOrganisationUnitScope(
-//                            OrganisationUnit.Scope.SCOPE_DATA_CAPTURE)
-//                        .byProgramUids(programIds)
-//                        .blockingGet()
-//                }
         }
     }
 

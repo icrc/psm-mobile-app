@@ -18,20 +18,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivitySyncBinding;
-import com.baosystems.icrc.psm.services.PreferenceProvider;
-import com.baosystems.icrc.psm.services.SecurePreferenceProviderImpl;
-import com.baosystems.icrc.psm.services.SyncManager;
-import com.baosystems.icrc.psm.services.SyncManagerImpl;
-import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider;
-import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.home.HomeActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.ConfigUtils;
-import com.baosystems.icrc.psm.utils.Sdk;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 
+@AndroidEntryPoint
 public class SyncActivity extends BaseActivity {
     private SyncViewModel viewModel;
     private ProgressBar progressBar;
@@ -99,25 +94,7 @@ public class SyncActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-        // TODO: Inject D2
-        // TODO: Inject SyncManager using DI
-        SyncManager syncManager = new SyncManagerImpl(Sdk.d2(this));
-
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-        // TODO: Inject PreferenceProvider with DI
-        PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
-
-        return new ViewModelProvider(
-                this,
-                new SyncViewModelFactory(
-                        disposable,
-                        schedulerProvider,
-                        preferenceProvider,
-                        syncManager
-                )
-        ).get(SyncViewModel.class);
+        return new ViewModelProvider(this).get(SyncViewModel.class);
     }
 
     @NonNull

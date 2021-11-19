@@ -8,19 +8,23 @@ import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.maintenance.D2Error
 import org.hisp.dhis.android.core.maintenance.D2ErrorCode
 import org.hisp.dhis.android.core.user.User
 import timber.log.Timber
+import javax.inject.Inject
 
 // TODO: Extend 'ViewModel' if it doesn't eventually require the application context
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     application: Application,
-    private val schedulerProvider: BaseSchedulerProvider,
-    private val preferenceProvider: PreferenceProvider,
-    private val userManager: UserManager
+    val disposable: CompositeDisposable,
+    val schedulerProvider: BaseSchedulerProvider,
+    val preferenceProvider: PreferenceProvider,
+    val userManager: UserManager
 ) : AndroidViewModel(application) {
     // TODO: Remove the temporary values added for testing
     val username: MutableLiveData<String> = MutableLiveData()
@@ -33,17 +37,7 @@ class LoginViewModel(
 
     private val loginResult: MutableLiveData<Result> = MutableLiveData()
 
-    private val disposable = CompositeDisposable()
-
-
     init {
-//        schedulerProvider = SchedulerProviderImpl()
-//
-//        // TODO: Inject D2
-//        val d2 = Sdk.d2()
-//        userManager = d2?.let { UserManagerImpl(it) }!!
-//
-//        preferenceProvider = SecurePreferenceProviderImpl(getApplication())
         disposable.add(
             loadUserCredentials().subscribe()
         )

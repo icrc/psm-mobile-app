@@ -8,26 +8,28 @@ import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.ConfigUtils
+import com.baosystems.icrc.psm.utils.ConfigUtils.loadConfigFile
 import com.baosystems.icrc.psm.utils.Constants
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_ITEM_CODE
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_ITEM_VALUE
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM
 import com.baosystems.icrc.psm.utils.Constants.CONFIG_STOCK_ON_HAND
 import com.baosystems.icrc.psm.utils.Sdk
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.D2Manager
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 
-
-class SplashViewModel(
+@HiltViewModel
+class SplashViewModel @Inject constructor(
     application: Application,
-    private val disposable: CompositeDisposable,
-    private val schedulerProvider: BaseSchedulerProvider,
-    private val preferenceProvider: PreferenceProvider,
-    configProps: Properties
+    val disposable: CompositeDisposable,
+    val schedulerProvider: BaseSchedulerProvider,
+    val preferenceProvider: PreferenceProvider
 ) : AndroidViewModel(application) {
 
     private val _loggedIn: MutableLiveData<Boolean> by lazy {
@@ -42,6 +44,7 @@ class SplashViewModel(
         get() = _configurationIsValid
 
     init {
+        val configProps = loadConfigFile(application.resources)
         _configurationIsValid = isConfigurationInPlace(configProps)
     }
 

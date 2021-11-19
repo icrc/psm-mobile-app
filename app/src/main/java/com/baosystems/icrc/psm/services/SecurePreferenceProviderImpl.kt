@@ -5,8 +5,15 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.baosystems.icrc.psm.utils.Constants
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SecurePreferenceProviderImpl(val context: Context): PreferenceProvider {
+@Singleton
+class SecurePreferenceProviderImpl @Inject constructor(
+    @ApplicationContext val context: Context
+): PreferenceProvider {
+
     private val sharedPreferences: SharedPreferences
 
     init {

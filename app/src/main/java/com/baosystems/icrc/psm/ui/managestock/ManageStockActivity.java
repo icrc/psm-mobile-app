@@ -1,5 +1,7 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
+import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_TRANSACTION;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,29 +20,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
-import com.baosystems.icrc.psm.services.StockManager;
-import com.baosystems.icrc.psm.services.StockManagerImpl;
-import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider;
-import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
 import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
-import com.baosystems.icrc.psm.utils.ConfigUtils;
-import com.baosystems.icrc.psm.utils.Sdk;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+@AndroidEntryPoint
 public class ManageStockActivity extends BaseActivity {
-    private static final String INTENT_DATA = "STOCK_ITEMS";
-
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
@@ -159,25 +154,7 @@ public class ManageStockActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-        // TODO: Inject StockManager
-        // TODO: Inject D2
-        StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
-        Transaction transaction = getIntent().getParcelableExtra(INTENT_DATA);
-        AppConfig config = ConfigUtils.getAppConfig(getResources());
-
-        return new ViewModelProvider(
-                this,
-                new ManageStockViewModelFactory(
-                        disposable,
-                        schedulerProvider,
-                        stockManager,
-                        config,
-                        transaction
-                )
-        ).get(ManageStockViewModel.class);
+        return new ViewModelProvider(this).get(ManageStockViewModel.class);
     }
 
     @NonNull
@@ -201,7 +178,7 @@ public class ManageStockActivity extends BaseActivity {
 
     public static Intent getManageStockActivityIntent(Context context, Transaction bundle) {
         Intent intent = new Intent(context, ManageStockActivity.class);
-        intent.putExtra(INTENT_DATA, bundle);
+        intent.putExtra(INTENT_EXTRA_TRANSACTION, bundle);
         return intent;
     }
 }

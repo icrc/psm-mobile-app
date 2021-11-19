@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.services
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
 
@@ -17,6 +16,6 @@ interface StockManager {
      * @return LiveData containing a paged list of the matching stock items
      */
 
-    fun search(query: SearchParametersModel, config: AppConfig, ou: String?):
+    fun search(query: SearchParametersModel, ou: String?):
             LiveData<PagedList<StockEntry>>
 }

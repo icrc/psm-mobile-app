@@ -6,7 +6,7 @@ import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
 
 interface MetadataManager {
-    fun stockManagementProgram(): Single<Program?>
-    fun facilities(): Single<MutableList<OrganisationUnit>>
+    fun stockManagementProgram(programUid: String): Single<Program?>
+    fun facilities(programUid: String): Single<MutableList<OrganisationUnit>>
     fun destinations(): Single<List<Option>>
 }

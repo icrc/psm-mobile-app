@@ -13,10 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivitySplashBinding;
-import com.baosystems.icrc.psm.services.PreferenceProvider;
-import com.baosystems.icrc.psm.services.SecurePreferenceProviderImpl;
-import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider;
-import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.home.HomeActivity;
 import com.baosystems.icrc.psm.ui.login.LoginActivity;
@@ -26,11 +22,11 @@ import com.baosystems.icrc.psm.utils.ConfigUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Properties;
-
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+@AndroidEntryPoint
 public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,23 +69,7 @@ public class SplashActivity extends BaseActivity {
 
     @NonNull
     public ViewModel createViewModel(@NotNull CompositeDisposable disposable) {
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-        // TODO: Inject PreferenceProvider using DI
-        PreferenceProvider preferenceProvider = new SecurePreferenceProviderImpl(this);
-
-        Properties props = ConfigUtils.loadConfigFile(getResources());
-        return new ViewModelProvider(
-                this,
-                new SplashViewModelFactory(
-                        getApplication(),
-                        disposable,
-                        schedulerProvider,
-                        preferenceProvider,
-                        props
-                )
-        ).get(SplashViewModel.class);
+        return new ViewModelProvider(this).get(SplashViewModel.class);
     }
 
     @NonNull

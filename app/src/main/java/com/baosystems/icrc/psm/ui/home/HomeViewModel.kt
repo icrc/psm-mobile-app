@@ -2,7 +2,9 @@ package com.baosystems.icrc.psm.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.models.UserActivity
 import com.baosystems.icrc.psm.data.repositories.UserActivityRepository
@@ -13,6 +15,7 @@ import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
@@ -22,12 +25,16 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
+import javax.inject.Inject
 
-class HomeViewModel(
-    private val disposable: CompositeDisposable,
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val savedState: SavedStateHandle,
+    val disposable: CompositeDisposable,
+    val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
     private val metadataManager: MetadataManager,
-    private val userManager: UserManager
+    private val userManager: UserManager,
 ): BaseViewModel() {
     // TODO: Move all the properties below into a singular object
     var program: Program? = null
@@ -93,8 +100,11 @@ class HomeViewModel(
 
     private fun loadFacilities() {
         // TODO: Handle situations where the list of facilities cannot be loaded
+        Timber.d("AppConfig in HomeViewModel: %s", config)
+
+        // TODO: If config is null, flag error, or handle it appropriately (remove config!!)
         disposable.add(
-            metadataManager.facilities()
+            metadataManager.facilities(config!!.program)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(

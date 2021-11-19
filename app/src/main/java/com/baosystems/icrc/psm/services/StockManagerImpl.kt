@@ -14,14 +14,11 @@ import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnitMode
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import java.util.*
+import javax.inject.Inject
 
-class StockManagerImpl(
-    private val d2: D2
-): StockManager {
-
+class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): StockManager {
     override fun search(
         query: SearchParametersModel,
-        config: AppConfig,
         ou: String?
     ): LiveData<PagedList<StockEntry>> {
         var teiRepository = d2.trackedEntityModule().trackedEntityInstanceQuery()

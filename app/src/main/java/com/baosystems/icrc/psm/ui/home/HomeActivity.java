@@ -23,31 +23,25 @@ import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.TransactionType;
 import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
-import com.baosystems.icrc.psm.services.MetadataManager;
-import com.baosystems.icrc.psm.services.MetadataManagerImpl;
-import com.baosystems.icrc.psm.services.UserManager;
-import com.baosystems.icrc.psm.services.UserManagerImpl;
-import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider;
-import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.ui.adapters.RecentActivityAdapter;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.GenericListAdapter;
 import com.baosystems.icrc.psm.ui.managestock.ManageStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
-import com.baosystems.icrc.psm.utils.Sdk;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
-import org.hisp.dhis.android.core.D2;
 import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+@AndroidEntryPoint
 public class HomeActivity extends BaseActivity {
     private static final String INTENT_DATA = "APP-CONFIG";
 
@@ -232,32 +226,12 @@ public class HomeActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-        // TODO: Inject D2
-        D2 d2 = Sdk.d2(this);
-
-        // TODO: Inject MetadataManager
-        MetadataManager metadataManager = new MetadataManagerImpl(
-                d2, getIntent().getParcelableExtra(INTENT_DATA)
-        );
-
-        // TODO: Inject UserManager using DI
-        UserManager userManager = new UserManagerImpl(d2);
-
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
         // TODO: Handle situations where d2 is probably null
 
         // TODO: Handle errors that can occur if expected configuration properties
         //  (e.g. program id, item code id etc) weren't found.
         //  The application cannot proceed without them
-        return new ViewModelProvider(this,
-                new HomeViewModelFactory(
-                        disposable,
-                        schedulerProvider,
-                        metadataManager,
-                        userManager
-                )).get(HomeViewModel.class);
+        return new ViewModelProvider(this).get(HomeViewModel.class);
     }
 
     @NonNull

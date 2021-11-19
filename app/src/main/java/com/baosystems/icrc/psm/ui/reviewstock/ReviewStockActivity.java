@@ -1,5 +1,7 @@
 package com.baosystems.icrc.psm.ui.reviewstock;
 
+import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_STOCK_ENTRIES;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,20 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.databinding.ActivityReviewStockBinding;
-import com.baosystems.icrc.psm.services.StockManager;
-import com.baosystems.icrc.psm.services.StockManagerImpl;
-import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider;
-import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
-import com.baosystems.icrc.psm.utils.Sdk;
 import com.google.android.material.textfield.TextInputEditText;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 
+@AndroidEntryPoint
 public class ReviewStockActivity extends BaseActivity {
-    private static final String INTENT_DATA = "REVIEW_STOCK_ITEMS";
-
     private ReviewStockViewModel viewModel;
     private ActivityReviewStockBinding binding;
     private ReviewStockAdapter adapter;
@@ -119,29 +116,14 @@ public class ReviewStockActivity extends BaseActivity {
 
     public static Intent getReviewStockActivityIntent(Context context, Parcelable bundle) {
         Intent intent = new Intent(context, ReviewStockActivity.class);
-        intent.putExtra(INTENT_DATA, bundle);
+        intent.putExtra(INTENT_EXTRA_STOCK_ENTRIES, bundle);
         return intent;
     }
 
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
-        // TODO: Inject StockManager
-        // TODO: Inject D2
-        StockManager stockManager = new StockManagerImpl(Sdk.d2(this));
-
-        return new ViewModelProvider(
-                this,
-                new ReviewStockViewModelFactory(
-                        disposable,
-                        schedulerProvider,
-                        stockManager,
-                        getIntent().getParcelableExtra(INTENT_DATA)
-                )
-        ).get(ReviewStockViewModel.class);
+        return new ViewModelProvider(this).get(ReviewStockViewModel.class);
     }
 
     @NonNull

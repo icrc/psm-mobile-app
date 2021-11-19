@@ -8,8 +8,9 @@ import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.user.User
 import org.hisp.dhis.android.core.user.openid.IntentWithRequestCode
 import org.hisp.dhis.android.core.user.openid.OpenIDConnectConfig
+import javax.inject.Inject
 
-class UserManagerImpl(private val d2: D2) : UserManager {
+class UserManagerImpl @Inject constructor(val d2: D2) : UserManager {
 
     override fun login(username: String, password: String, serverUrl: String): Observable<User?> {
         return Observable.defer {

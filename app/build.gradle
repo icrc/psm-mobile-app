@@ -13,7 +13,6 @@ android {
     defaultConfig {
         applicationId "com.baosystems.icrc.pharmacystockmanagement"
 
-        // Changed from 19 to 24 to support 'androidx.security.identity.credential'
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.versionCode

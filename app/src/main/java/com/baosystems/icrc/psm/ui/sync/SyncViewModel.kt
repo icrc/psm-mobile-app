@@ -18,31 +18,17 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 class SyncViewModel(
-    private val disposable: CompositeDisposable,
-    private val schedulerProvider: BaseSchedulerProvider,
-    private val preferenceProvider: PreferenceProvider,
-    private val syncManager: SyncManager
+    val disposable: CompositeDisposable,
+    val schedulerProvider: BaseSchedulerProvider,
+    val preferenceProvider: PreferenceProvider,
+    val syncManager: SyncManager
 ) : ViewModel() {
-    private val TAG = "SyncViewModel"
-    private val SYNC_COMPLETED_DELAY = 1L
 
-//    private val disposable = CompositeDisposable()
+    private val SYNC_COMPLETED_DELAY = 1L
 
     val syncResult: MutableLiveData<Result> = MutableLiveData()
     val description: MutableLiveData<String> = MutableLiveData()
     val syncCompleted: MutableLiveData<Boolean> = MutableLiveData(false)
-
-    // TODO: Inject SyncManager with DI
-
-    init {
-//        syncManager = d2?.let { SyncManagerImpl(it) }!!
-
-        // TODO: Inject SchedulerProvider with DI
-//        schedulerProvider = SchedulerProviderImpl()
-
-        // TODO: Inject PreferenceProvider with DI
-//        preferenceProvider = PreferenceProviderImpl(getApplication())
-    }
 
     class Result {
         var completed: Boolean = false
@@ -73,6 +59,7 @@ class SyncViewModel(
         description.value = "Syncing metadata..."
 
         Timber.i("Downloading metadata and data...")
+        // TODO: Metadata/Data sync error can occur, ensure you handle such situations
         disposable.add(
             Observable.zip(
                 syncManager.metadataSync(),

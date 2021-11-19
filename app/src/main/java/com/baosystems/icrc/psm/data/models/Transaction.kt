@@ -3,7 +3,6 @@ package com.baosystems.icrc.psm.data.models
 import android.os.Parcel
 import android.os.Parcelable
 import com.baosystems.icrc.psm.data.TransactionType
-import kotlin.text.StringBuilder
 
 class Transaction(
     val transactionType: TransactionType,

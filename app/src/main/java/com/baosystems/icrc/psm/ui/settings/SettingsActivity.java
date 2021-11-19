@@ -15,6 +15,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivitySettingsBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SettingsActivity extends AppCompatActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 

@@ -4,7 +4,7 @@ object Constants {
     const val LAST_SYNCED_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val TRANSACTION_DATE_FORMAT = "yyyy-MM-dd"
 
-    //PREFERENCES
+    //Preferences
     const val SHARED_PREFS = "icrc_psm_shared_prefs"
 
     const val SERVER_URL = "SERVER_URL"
@@ -22,4 +22,8 @@ object Constants {
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
     const val NULL_NUMBER_PLACEHOLDER = -112L
+
+    // Intent Extras
+    const val INTENT_EXTRA_TRANSACTION = "TRANSACTION_CHOICES";
+    const val INTENT_EXTRA_STOCK_ENTRIES = "STOCK_ENTRIES";
 }

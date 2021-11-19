@@ -19,18 +19,19 @@ import com.baosystems.icrc.psm.services.PreferenceProvider;
 import com.baosystems.icrc.psm.services.SecurePreferenceProviderImpl;
 import com.baosystems.icrc.psm.services.UserManager;
 import com.baosystems.icrc.psm.services.UserManagerImpl;
-import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider;
-import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.sync.SyncActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.KeyboardUtils;
 import com.baosystems.icrc.psm.utils.Sdk;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+@AndroidEntryPoint
 public class LoginActivity extends BaseActivity {
+
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 
@@ -121,19 +122,11 @@ public class LoginActivity extends BaseActivity {
         // TODO: Inject UserManager using DI
         UserManager userManager = new UserManagerImpl(Sdk.d2(this));
 
-        // TODO: Inject SchedulerProvider using DI
-        BaseSchedulerProvider schedulerProvider = new SchedulerProviderImpl();
-
         // TODO: Inject PreferenceProvider using DI
         PreferenceProvider preferenceProvider =
                 new SecurePreferenceProviderImpl(getApplication());
 
-        return new ViewModelProvider(this, new LoginViewModelFactory(
-                getApplication(),
-                schedulerProvider,
-                preferenceProvider,
-                userManager
-        )).get(LoginViewModel.class);
+        return new ViewModelProvider(this).get(LoginViewModel.class);
     }
 
     @NonNull

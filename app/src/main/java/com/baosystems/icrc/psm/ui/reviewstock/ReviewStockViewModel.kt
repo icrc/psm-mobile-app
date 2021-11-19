@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.ui.reviewstock
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.models.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
@@ -9,17 +10,23 @@ import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
 import com.baosystems.icrc.psm.utils.Constants
+import com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_STOCK_ENTRIES
 import com.jakewharton.rxrelay2.PublishRelay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class ReviewStockViewModel(
-    private val disposable: CompositeDisposable,
-    private val schedulerProvider: BaseSchedulerProvider,
-    private val stockManager: StockManager,
-    private val data: ReviewStockData,
+@HiltViewModel
+class ReviewStockViewModel @Inject constructor(
+    savedState: SavedStateHandle,
+    val disposable: CompositeDisposable,
+    val schedulerProvider: BaseSchedulerProvider,
+    val stockManager: StockManager
 ): BaseViewModel() {
+    // TODO: Figure out a better way than using !!
+    val data = savedState.get<ReviewStockData>(INTENT_EXTRA_STOCK_ENTRIES)!!
     val transaction = data.transaction
 
     private var search = MutableLiveData<String>()

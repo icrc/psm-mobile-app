@@ -1,30 +1,38 @@
 package com.baosystems.icrc.psm.ui.managestock
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.*
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
+import com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.utils.Constants.SEARCH_QUERY_DEBOUNCE
 import com.jakewharton.rxrelay2.PublishRelay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class ManageStockViewModel(
-    private val disposable: CompositeDisposable,
-    private val schedulerProvider: BaseSchedulerProvider,
-    stockManager: StockManager,
+@HiltViewModel
+class ManageStockViewModel @Inject constructor(
+    savedState: SavedStateHandle,
+    val disposable: CompositeDisposable,
     val config: AppConfig,
-    val transaction: Transaction
+    val schedulerProvider: BaseSchedulerProvider,
+    stockManager: StockManager,
 ): BaseViewModel() {
+    // TODO: Handle cases where transaction is null. (remove transaction!!)
+    val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!
+
     private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
     private val itemsCache = linkedMapOf<StockEntry, Long>()
     private val stockItems = Transformations.switchMap(search) { q ->
-        stockManager.search(q, config, transaction.facility.uid)
+        stockManager.search(q, transaction.facility.uid)
     }
 
     init {
