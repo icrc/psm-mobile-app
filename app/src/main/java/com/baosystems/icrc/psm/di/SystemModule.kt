@@ -24,7 +24,7 @@ object SystemModule {
 
     @Provides
     fun providesD2(@ApplicationContext appContext: Context): D2 {
-        return Sdk.d2(appContext);
+        return Sdk.d2(appContext)
     }
 
     @Provides

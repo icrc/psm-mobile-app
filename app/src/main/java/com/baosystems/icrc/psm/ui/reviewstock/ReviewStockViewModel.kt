@@ -3,7 +3,6 @@ package com.baosystems.icrc.psm.ui.reviewstock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.data.models.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.services.StockManager
@@ -33,10 +32,13 @@ class ReviewStockViewModel @Inject constructor(
     private val searchRelay = PublishRelay.create<String>()
 
     private val populatedItems = data.entries
-
-    private val _reviewedItems = Transformations.switchMap(search, this::performSearch)
+    private val _reviewedItems: MutableLiveData<List<StockEntry>> = MutableLiveData(populatedItems)
     val reviewedItems: LiveData<List<StockEntry>>
         get() = _reviewedItems
+
+    private val _commitStatus = MutableLiveData<Boolean>(false)
+    val commitStatus: LiveData<Boolean>
+        get() = _commitStatus
 
     init {
         configureSearchRelay()
@@ -47,7 +49,7 @@ class ReviewStockViewModel @Inject constructor(
         search.value = ""
     }
 
-    // TODO: Find a way to reuse this function, as the same is being used by ManageStockMModel
+    // TODO: Find a way to reuse this function, as the same is being used by ManageStockModel
     private fun configureSearchRelay() {
         disposable.add(
             searchRelay
@@ -56,7 +58,7 @@ class ReviewStockViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { result -> search.postValue(result) },
+                    {  query -> _reviewedItems.postValue(performSearch(query)) },
                     {
                         // TODO: Report the error to the user
                         it.printStackTrace()
@@ -65,22 +67,11 @@ class ReviewStockViewModel @Inject constructor(
         )
     }
 
-    // TODO: Implement actual item deletion from the memory store
-    fun removeItem(item: StockEntry) {
-//        populatedItems.remove(item)
+    fun removeItem(item: StockEntry) = populatedItems.remove(item)
 
-//        if (_reviewedItems.value != null) {
-//            _reviewedItems.value = _reviewedItems.value.filterNot { it == item }
-//        }
-//        data.removeItem(item)
-//        populatedItems.remove(item)
-//        _reviewedItems.value = populatedItems
-
-        Timber.d("Stock list after deletion: %d", populatedItems.size)
-    }
-
+    // TODO: Currently not working
     fun updateQuantity(item: StockEntry, value: Long) {
-//        stockItems.re
+        item.qty = value
     }
 
     fun getItemQuantity(item: StockEntry) = item.qty
@@ -89,12 +80,32 @@ class ReviewStockViewModel @Inject constructor(
         searchRelay.accept(query)
     }
 
-    private fun performSearch(q: String?): LiveData<List<StockEntry>> {
-        val result = if (q == null || q.isEmpty())
+    private fun performSearch(q: String?): List<StockEntry> {
+        return if (q == null || q.isEmpty())
             populatedItems.toList()
         else
             populatedItems.filter { it.name.contains(q, true) }
+    }
 
-        return MutableLiveData(result)
+    fun commitTransaction() {
+        if (reviewedItems.value == null || reviewedItems.value?.isEmpty() == true) {
+            // TODO: Report error/warning to user that there are currently no reviewed items
+            Timber.d(" No items to commit")
+            return
+        }
+
+        // TODO: Notify observer on completion
+        disposable.add(
+            stockManager.saveTransaction(reviewedItems.value!!, transaction)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe({
+                    Timber.d("Successfully committed transaction!")
+                    _commitStatus.postValue(true)
+                }, {
+                    // TODO: Report error to observer
+                    it.printStackTrace()
+                })
+        )
     }
 }

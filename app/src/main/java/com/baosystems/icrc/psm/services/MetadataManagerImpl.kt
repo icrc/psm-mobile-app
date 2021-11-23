@@ -53,7 +53,8 @@ class MetadataManagerImpl @Inject constructor(val d2: D2): MetadataManager {
             d2.programModule()
                 .programStageDataElements()
                     // TODO: Cleanup the implementation below with proper variable names and follow through
-                .get().map { psdes ->
+                .get()
+                .map { psdes ->
                     println("PSDEs: ${psdes.size}")
                     println("==================================")
                     psdes.forEach {

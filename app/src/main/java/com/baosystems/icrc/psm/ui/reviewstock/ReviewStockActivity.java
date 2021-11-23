@@ -23,6 +23,9 @@ import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.databinding.ActivityReviewStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
+import com.baosystems.icrc.psm.ui.home.HomeActivity;
+import com.baosystems.icrc.psm.utils.ActivityManager;
+import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -32,7 +35,6 @@ import io.reactivex.disposables.CompositeDisposable;
 public class ReviewStockActivity extends BaseActivity {
     private ReviewStockViewModel viewModel;
     private ActivityReviewStockBinding binding;
-    private ReviewStockAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,21 @@ public class ReviewStockActivity extends BaseActivity {
 
         setupSearchInput();
         setupRecyclerView();
+
+        binding.fabCommitStock.setOnClickListener(view -> viewModel.commitTransaction());
+        viewModel.getCommitStatus().observe(this, status -> {
+            if (status)
+                navigateToHome();
+        });
+    }
+
+    private void navigateToHome() {
+        Intent intent = HomeActivity.getHomeActivityIntent(
+                this,
+                ConfigUtils.getAppConfig(getResources())
+        );
+
+        ActivityManager.startActivity(this, intent, true);
     }
 
     @Override
@@ -75,7 +92,7 @@ public class ReviewStockActivity extends BaseActivity {
                 viewModel.updateQuantity(item, value);
             }
         };
-        adapter = new ReviewStockAdapter(itemWatcher);
+        ReviewStockAdapter adapter = new ReviewStockAdapter(itemWatcher);
         recyclerView.setAdapter(adapter);
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);

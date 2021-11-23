@@ -14,11 +14,16 @@ object ConfigUtils {
     fun getAppConfig(res: Resources): AppConfig {
         val configProps = loadConfigFile(res)
 
+        // TODO: Refactor AppConfig to use Map instead, to avoid repetition
         return AppConfig(
             getConfigValue(configProps, Constants.CONFIG_PROGRAM),
             getConfigValue(configProps, Constants.CONFIG_ITEM_CODE),
             getConfigValue(configProps, Constants.CONFIG_ITEM_VALUE),
             getConfigValue(configProps, Constants.CONFIG_STOCK_ON_HAND),
+            getConfigValue(configProps, Constants.CONFIG_DE_DELIVER_TO),
+            getConfigValue(configProps, Constants.CONFIG_DE_STOCK_DISTRIBUTION),
+            getConfigValue(configProps, Constants.CONFIG_DE_STOCK_CORRECTION),
+            getConfigValue(configProps, Constants.CONFIG_DE_STOCK_DISCARD)
         )
     }
 

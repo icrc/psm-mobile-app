@@ -85,13 +85,15 @@ public class HomeActivity extends BaseActivity {
         // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
         // TODO: Inject FacilityListAdapter with DI
         viewModel.getFacilities().observe(this, facilitiesList ->
-                facilityTextView.setAdapter(
-                        new GenericListAdapter<>(this, R.layout.list_item, facilitiesList)
-                )
+                    facilityTextView.setAdapter(
+                            new GenericListAdapter<>(this, R.layout.list_item, facilitiesList)
+                    )
         );
 
-        viewModel.getDestinationsList().observe(this, destinations -> distributedToTextView.setAdapter(new GenericListAdapter<>(
-                this, R.layout.list_item, destinations
+        viewModel.getDestinationsList().observe(this, destinations ->
+                distributedToTextView.setAdapter(
+                        new GenericListAdapter<>(
+                                this, R.layout.list_item, destinations
         )));
 
         viewModel.getTransactionType().observe(this, transactionType -> {
@@ -183,7 +185,7 @@ public class HomeActivity extends BaseActivity {
 
     private void setupTransactionDateField() {
         // TODO: Theme datepicker, if necessary
-        // TODO: Set the initial date to show in the pciker, which should be equal to the model date
+        // TODO: Set the initial date to show in the picker, which should be equal to the model date
         MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker().build();
         picker.addOnPositiveButtonClickListener(viewModel::setTransactionDate);
 
@@ -226,8 +228,6 @@ public class HomeActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-        // TODO: Handle situations where d2 is probably null
-
         // TODO: Handle errors that can occur if expected configuration properties
         //  (e.g. program id, item code id etc) weren't found.
         //  The application cannot proceed without them

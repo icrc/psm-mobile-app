@@ -23,7 +23,7 @@ class SyncManagerImpl @Inject constructor(val d2: D2): SyncManager {
         }
     }
 
-    override fun upload() {
-        TODO("Not yet implemented")
+    override fun upload(): Observable<D2Progress>? {
+        return d2.eventModule().events().upload()
     }
 }

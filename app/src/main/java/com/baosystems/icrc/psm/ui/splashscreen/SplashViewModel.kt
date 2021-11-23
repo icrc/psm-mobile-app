@@ -89,6 +89,7 @@ class SplashViewModel @Inject constructor(
 
     fun hasSyncedMetadata(): Boolean = preferenceProvider.contains(Constants.LAST_SYNC_DATE)
 
+    // TODO: Check for the actual existence of the configured values in their respective models
     /**
      * Verify if the parameters the application requires to function is in place.
      * The required properties are program id, item code id, item value id, and stock on hand id

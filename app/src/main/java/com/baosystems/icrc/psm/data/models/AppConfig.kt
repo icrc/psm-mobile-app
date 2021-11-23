@@ -8,5 +8,9 @@ data class AppConfig(
     val program: String,
     val itemCode: String,
     val itemName: String,
-    val stockOnHand: String
+    val stockOnHand: String,
+    val distributedTo: String,
+    val stockDistribution: String,
+    val stockCorrection: String,
+    val stockDiscarded: String,
 ) : Parcelable

@@ -16,9 +16,14 @@ object Constants {
 
     // Configuration file keys
     const val CONFIG_PROGRAM = "program"
+    const val CONFIG_PROGRAM_STAGE = "program_stage"
     const val CONFIG_ITEM_CODE = "item_code"
     const val CONFIG_ITEM_VALUE = "item_value"
     const val CONFIG_STOCK_ON_HAND = "stock_on_hand"
+    const val CONFIG_DE_DELIVER_TO = "stock_on_hand"
+    const val CONFIG_DE_STOCK_DISTRIBUTION = "stock_on_hand"
+    const val CONFIG_DE_STOCK_CORRECTION = "stock_on_hand"
+    const val CONFIG_DE_STOCK_DISCARD = "stock_on_hand"
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
     const val NULL_NUMBER_PLACEHOLDER = -112L
