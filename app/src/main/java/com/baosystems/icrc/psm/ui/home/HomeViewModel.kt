@@ -102,9 +102,8 @@ class HomeViewModel @Inject constructor(
         // TODO: Handle situations where the list of facilities cannot be loaded
         Timber.d("AppConfig in HomeViewModel: %s", config)
 
-        // TODO: If config is null, flag error, or handle it appropriately (remove config!!)
         disposable.add(
-            metadataManager.facilities(config!!.program)
+            metadataManager.facilities(config.program)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(

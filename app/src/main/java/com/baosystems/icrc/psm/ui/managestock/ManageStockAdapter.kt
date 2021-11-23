@@ -66,7 +66,6 @@ class ManageStockAdapter(
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-                // TODO: Also update the stock on hand value of the TEI accordingly
                 // TODO: Optimize to update stock on hand after a debounce,
                 //  rather than on every keystroke
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

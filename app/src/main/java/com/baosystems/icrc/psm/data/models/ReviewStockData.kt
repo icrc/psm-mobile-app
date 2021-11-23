@@ -19,6 +19,8 @@ class ReviewStockData(
         parcel.writeTypedList(entries)
     }
 
+    fun removeItem(entry: StockEntry) = entries.remove(entry)
+
     override fun describeContents() = 0
 
     companion object CREATOR : Parcelable.Creator<ReviewStockData> {

@@ -15,15 +15,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivityLoginBinding;
-import com.baosystems.icrc.psm.services.PreferenceProvider;
-import com.baosystems.icrc.psm.services.SecurePreferenceProviderImpl;
-import com.baosystems.icrc.psm.services.UserManager;
-import com.baosystems.icrc.psm.services.UserManagerImpl;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.sync.SyncActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.KeyboardUtils;
-import com.baosystems.icrc.psm.utils.Sdk;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
@@ -118,14 +113,6 @@ public class LoginActivity extends BaseActivity {
     @NonNull
     @Override
     public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
-        // TODO: Inject D2
-        // TODO: Inject UserManager using DI
-        UserManager userManager = new UserManagerImpl(Sdk.d2(this));
-
-        // TODO: Inject PreferenceProvider using DI
-        PreferenceProvider preferenceProvider =
-                new SecurePreferenceProviderImpl(getApplication());
-
         return new ViewModelProvider(this).get(LoginViewModel.class);
     }
 

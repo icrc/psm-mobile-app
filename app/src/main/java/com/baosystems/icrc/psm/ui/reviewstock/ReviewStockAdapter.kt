@@ -44,6 +44,7 @@ class ReviewStockAdapter(
             btnRemoveItem.setOnClickListener {
                 watcher.removeItem(getItem(adapterPosition))
                 notifyItemRemoved(adapterPosition)
+                notifyItemRangeChanged(adapterPosition, 1)
             }
 
             tvItemQtyLayout.editText?.addTextChangedListener(object: TextWatcher {
@@ -66,10 +67,9 @@ class ReviewStockAdapter(
         }
 
         fun bindTo(stockEntry: StockEntry) {
-            Timber.d("StockEntry: %s, Qty: %d", stockEntry, stockEntry.qty)
+            Timber.d("Bind -> StockEntry: %s, Qty: %d", stockEntry, stockEntry.qty)
             tvItemName.text = stockEntry.name
-            // TODO: Bind the stock on hand value
-            tvStockOnHand.text = ""
+            tvStockOnHand.text = stockEntry.stockOnHand
             tvItemQtyLayout.editText?.setText(stockEntry.qty.toString())
         }
     }
