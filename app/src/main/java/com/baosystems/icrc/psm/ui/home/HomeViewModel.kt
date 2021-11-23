@@ -3,8 +3,8 @@ package com.baosystems.icrc.psm.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.AppConfig
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.models.UserActivity
 import com.baosystems.icrc.psm.data.repositories.UserActivityRepository

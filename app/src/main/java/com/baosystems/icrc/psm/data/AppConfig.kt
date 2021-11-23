@@ -1,4 +1,4 @@
-package com.baosystems.icrc.psm.data.models
+package com.baosystems.icrc.psm.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

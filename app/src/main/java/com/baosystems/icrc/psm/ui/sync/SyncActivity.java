@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.models.AppConfig;
+import com.baosystems.icrc.psm.data.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivitySyncBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.home.HomeActivity;

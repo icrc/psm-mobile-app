@@ -3,7 +3,7 @@ package com.baosystems.icrc.psm.ui.reviewstock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.baosystems.icrc.psm.data.models.ReviewStockData
+import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider

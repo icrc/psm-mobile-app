@@ -12,7 +12,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
-import com.baosystems.icrc.psm.data.models.AppConfig
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout

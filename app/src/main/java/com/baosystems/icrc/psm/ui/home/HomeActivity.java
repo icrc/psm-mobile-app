@@ -20,8 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.AppConfig;
 import com.baosystems.icrc.psm.data.TransactionType;
-import com.baosystems.icrc.psm.data.models.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
 import com.baosystems.icrc.psm.ui.adapters.RecentActivityAdapter;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;

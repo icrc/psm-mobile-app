@@ -1,7 +1,7 @@
 package com.baosystems.icrc.psm.di
 
 import android.content.Context
-import com.baosystems.icrc.psm.data.models.AppConfig
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SecurePreferenceProviderImpl
 import com.baosystems.icrc.psm.utils.ConfigUtils

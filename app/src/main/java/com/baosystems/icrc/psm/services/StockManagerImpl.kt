@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.*
+import com.baosystems.icrc.psm.data.models.IdentifiableModel
+import com.baosystems.icrc.psm.data.models.SearchParametersModel
+import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.utils.AttributeHelper
 import com.baosystems.icrc.psm.utils.Constants
 import io.reactivex.Single
@@ -136,18 +140,21 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
 
     override fun saveTransaction(entries: List<StockEntry>, transaction: Transaction):
             Single<Unit> {
-        return d2.programModule()
-            .programStages()
-            .byProgramUid()
-            .eq(config.program)
-            .one()
-            .get()
-            .map { programStage ->
-                entries.forEach {
-                    val enrollment = getEnrollment(it.id)
-                    addEvent(it, programStage, enrollment, transaction)
+
+        return Single.defer{
+            d2.programModule()
+                .programStages()
+                .byProgramUid()
+                .eq(config.program)
+                .one()
+                .get()
+                .map { programStage ->
+                    entries.forEach {
+                        val enrollment = getEnrollment(it.id)
+                        addEvent(it, programStage, enrollment, transaction)
+                    }
                 }
-            }
+        }
     }
 
     private fun addEvent(
@@ -162,13 +169,16 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
             getTransactionTypeDE(transaction.transactionType)
         ).blockingSet(entry.qty.toString())
 
-        // For distributions, ensure 'distributed to' is also set
-        transaction.distributedTo?.let {
-            d2.trackedEntityModule().trackedEntityDataValues().value(
-                eventUid,
-                config.distributedTo
-            ).blockingSet(it.uid)
-        }
+        // TODO: Save the Event date if required
+
+        // TODO: Commit the 'distributed to' value as well
+//        // For distributions, ensure 'distributed to' is also set ONCE
+//        transaction.distributedTo?.let {
+//            d2.trackedEntityModule().trackedEntityDataValues().value(
+//                eventUid,
+//                config.distributedTo
+//            ).blockingSet(it.uid)
+//        }
     }
 
     private fun getEnrollment(teiUid: String): Enrollment {

@@ -1,7 +1,9 @@
-package com.baosystems.icrc.psm.data.models
+package com.baosystems.icrc.psm.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.Transaction
 
 class ReviewStockData(
     val transaction: Transaction,
@@ -11,7 +13,7 @@ class ReviewStockData(
         parcel.readParcelable(Transaction::class.java.classLoader)!!,
         mutableListOf<StockEntry>()
     ) {
-        parcel.readTypedList(entries, StockEntry.CREATOR)
+        parcel.readTypedList(entries, StockEntry)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
