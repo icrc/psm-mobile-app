@@ -14,7 +14,7 @@ object ConfigUtils {
     fun getAppConfig(res: Resources): AppConfig {
         val configProps = loadConfigFile(res)
 
-        // TODO: Refactor AppConfig to use Map instead, to avoid repetition
+        // TODO: Refactor AppConfig to use a Map instead, to avoid repetition
         return AppConfig(
             getConfigValue(configProps, Constants.CONFIG_PROGRAM),
             getConfigValue(configProps, Constants.CONFIG_ITEM_CODE),

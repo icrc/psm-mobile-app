@@ -85,16 +85,14 @@ class HomeViewModel @Inject constructor(
             metadataManager.destinations()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .doOnSuccess {
-                    _destinations.postValue(it)
-                    Timber.d("Successfully fetched the available optionsets")
-                }.doOnError {
-                    Timber.e("Unable to fetch the available optionsets: ${it.localizedMessage}")
-                }.subscribe({
-                    it.forEach { option -> println("Option: ${option.uid()} - ${option.name()}") }
-                }, {
-                    Timber.e("Unable to load destinations: ${it.localizedMessage}")
-                })
+                .subscribe(
+                    {
+                        _destinations.postValue(it)
+                    },
+                    {
+                        // TODO: Display error to the user
+                        Timber.e("Unable to load destinations: ${it.localizedMessage}")
+                    })
         )
     }
 
