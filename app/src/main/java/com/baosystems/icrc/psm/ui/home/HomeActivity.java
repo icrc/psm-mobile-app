@@ -1,5 +1,7 @@
 package com.baosystems.icrc.psm.ui.home;
 
+import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_APP_CONFIG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -42,8 +44,6 @@ import timber.log.Timber;
 
 @AndroidEntryPoint
 public class HomeActivity extends BaseActivity {
-    private static final String INTENT_DATA = "APP-CONFIG";
-
     private ActivityHomeBinding binding;
     private RecentActivityAdapter recentActivityAdapter;
 
@@ -223,7 +223,7 @@ public class HomeActivity extends BaseActivity {
 
     public static Intent getHomeActivityIntent(Context context, AppConfig config) {
         Intent intent = new Intent(context, HomeActivity.class);
-        intent.putExtra(INTENT_DATA, config);
+        intent.putExtra(INTENT_EXTRA_APP_CONFIG, config);
         return intent;
     }
 

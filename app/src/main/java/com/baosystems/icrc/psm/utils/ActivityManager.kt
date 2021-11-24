@@ -13,20 +13,35 @@ class ActivityManager {
         @JvmStatic
         fun startActivity(activity: AppCompatActivity, intent: Intent,
                           closeCurrentActivity: Boolean) {
-            activity.startActivity(intent);
+            activity.startActivity(intent)
 
             if (closeCurrentActivity)
                 activity.finish()
         }
 
-        @JvmStatic
-        fun showErrorMessage(view: View, message: String) {
+        fun showMessage(view: View, message: String, isError: Boolean) {
+            val color = if (isError) {
+                R.color.error
+            } else {
+                R.color.secondaryDarkColor
+            }
+
             // TODO: Style the backgroundTint of an snackbar in case of errors
             if (message.isNotEmpty())
-                // TODO: Move the error and success Snackbar styling to the theme or styles (whichever is appropriate)
+            // TODO: Move the error and success Snackbar styling to the theme or styles (whichever is appropriate)
                 Snackbar.make(view, message, LENGTH_LONG).setBackgroundTint(
-                    ContextCompat.getColor(view.context, R.color.error)
+                    ContextCompat.getColor(view.context, color)
                 ).show()
+        }
+
+        @JvmStatic
+        fun showErrorMessage(view: View, message: String) {
+            showMessage(view, message, true)
+        }
+
+        @JvmStatic
+        fun showInfoMessage(view: View, message: String) {
+            showMessage(view, message, false)
         }
     }
 }
