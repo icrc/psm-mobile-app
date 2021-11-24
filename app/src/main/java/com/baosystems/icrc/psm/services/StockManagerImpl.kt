@@ -12,6 +12,7 @@ import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.utils.AttributeHelper
 import com.baosystems.icrc.psm.utils.Constants
+import com.baosystems.icrc.psm.utils.toDate
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
@@ -164,21 +165,28 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
         transaction: Transaction
     ) {
         val eventUid = addEventProjection(transaction.facility, programStage, enrollment)
+
+        // Set the event date
+        transaction.transactionDate.toDate()?.let {
+            d2.eventModule().events().uid(eventUid).setEventDate(it)
+        }
+
         d2.trackedEntityModule().trackedEntityDataValues().value(
             eventUid,
             getTransactionTypeDE(transaction.transactionType)
         ).blockingSet(entry.qty.toString())
 
-        // TODO: Save the Event date if required
+        transaction.distributedTo?.let {
+            val destination = d2.optionModule()
+                .options()
+                .uid(it.uid)
+                .blockingGet()
 
-        // TODO: Commit the 'distributed to' value as well
-//        // For distributions, ensure 'distributed to' is also set ONCE
-//        transaction.distributedTo?.let {
-//            d2.trackedEntityModule().trackedEntityDataValues().value(
-//                eventUid,
-//                config.distributedTo
-//            ).blockingSet(it.uid)
-//        }
+            d2.trackedEntityModule().trackedEntityDataValues().value(
+                eventUid,
+                config.distributedTo
+            ).blockingSet(destination.code())
+        }
     }
 
     private fun getEnrollment(teiUid: String): Enrollment {

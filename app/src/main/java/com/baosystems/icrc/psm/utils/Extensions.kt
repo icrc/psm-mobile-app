@@ -8,15 +8,21 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.utils.Constants.LAST_SYNCED_DATETIME_FORMAT
 import com.baosystems.icrc.psm.utils.Constants.TRANSACTION_DATE_FORMAT
 import com.google.android.material.button.MaterialButton
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
-// TODO: Currently not working in the layout files. Fix the issue
 fun LocalDateTime.humanReadableDateTime(): String =
     this.format(DateTimeFormatter.ofPattern(LAST_SYNCED_DATETIME_FORMAT))
 
 fun LocalDateTime.humanReadableDate(): String =
     this.format(DateTimeFormatter.ofPattern(TRANSACTION_DATE_FORMAT))
+
+fun String.toDate(): Date? {
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+    return formatter.parse(this)
+}
 
 @BindingAdapter("date")
 fun setDate(view: AutoCompleteTextView, date: LocalDateTime) =
