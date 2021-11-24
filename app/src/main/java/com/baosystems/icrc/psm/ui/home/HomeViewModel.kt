@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(
         get() = _isDistribution
 
     private val _facility: MutableLiveData<OrganisationUnit> = MutableLiveData()
-    private val facility: LiveData<OrganisationUnit>
+    val facility: LiveData<OrganisationUnit>
         get() = _facility
 
     private val _transactionDate: MutableLiveData<LocalDateTime> =
@@ -98,8 +98,6 @@ class HomeViewModel @Inject constructor(
 
     private fun loadFacilities() {
         // TODO: Handle situations where the list of facilities cannot be loaded
-        Timber.d("AppConfig in HomeViewModel: %s", config)
-
         disposable.add(
             metadataManager.facilities(config.program)
                 .subscribeOn(schedulerProvider.io())

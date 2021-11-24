@@ -7,7 +7,6 @@ import android.graphics.BlendMode;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -116,6 +115,8 @@ public class HomeActivity extends BaseActivity {
     private void setupComponents() {
         setupButtons();
 
+        viewModel.getFacility().observe(this, ou -> facilityTextView.setText(ou.displayName()));
+
         facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
                 viewModel.setFacility((OrganisationUnit) facilityTextView.getAdapter().getItem(position))
         );
@@ -208,9 +209,10 @@ public class HomeActivity extends BaseActivity {
 
     private void navigateToManageStock() {
         if (!viewModel.readyManageStock()) {
-            Toast.makeText(this,
-                    this.getString(R.string.cannot_proceed_from_home_warning),
-                    Toast.LENGTH_SHORT).show();
+            ActivityManager.showErrorMessage(
+                    binding.getRoot(),
+                    this.getString(R.string.cannot_proceed_from_home_warning)
+            );
             return;
         }
 
