@@ -172,7 +172,7 @@ class SyncViewModel(
         description.postValue("Syncing completed!")
 
         val syncDate = LocalDateTime.now().format(
-            DateTimeFormatter.ofPattern(Constants.LAST_SYNCED_DATETIME_FORMAT)
+            DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT)
         )
         preferenceProvider.setValue(Constants.LAST_SYNC_DATE, syncDate)
         syncResult.postValue(Result(true, R.drawable.ic_outline_check_circle_36))

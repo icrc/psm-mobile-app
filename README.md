@@ -7,8 +7,9 @@
 ### Todo
 
 - Add beautiful looking view when recent activity list is empty
+- Configure activity to display on crash
 - Use custom dividers and spacers for the recyclerview items
-- See if you can use ViewModel's SavedState to save state across process death or share data between
+- Use ViewModel's SavedState to save state across process death or share data between
   different activities
 - Handle cases where a valid server URL is not specified and non-XML or JSON responses are obtained
 while communicating with the invalid server. This currently isn't handled appropriately
@@ -21,4 +22,10 @@ while communicating with the invalid server. This currently isn't handled approp
 - On logout, delete preferences relating to metadata sync so that a new sync can happen
   when next the user logs in
 - Add localization
-- Handle Crash Reporting
+- Handle Crash Reporting (_optional_)
+- Use fragments and adaptable UI where possible
+- Use `CoordinatorLayout` to replace `ConstraintLayout` where necessary
+
+### DHIS2 Android SDK feature requests
+
+- Ability to create multiple events at once

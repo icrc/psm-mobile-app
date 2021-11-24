@@ -1,13 +1,13 @@
 package com.baosystems.icrc.psm.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.UserActivity
+import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.databinding.ListItemRecentActivityBinding
 import java.time.format.DateTimeFormatter
 
@@ -20,7 +20,17 @@ class ViewHolder private constructor(val binding: ListItemRecentActivityBinding)
         )
 
         if(item.type == TransactionType.DISTRIBUTION) {
-            binding.distributedToTextview.text = item.distributedTo?.name ?: ""
+            binding.distributedToTextview.text = item.distributedTo ?: ""
+            binding.directionalArrowImageview.visibility = View.VISIBLE
+        }
+
+        when (item.type) {
+            TransactionType.DISTRIBUTION -> {
+                binding.distributedToTextview.text = item.distributedTo ?: ""
+                binding.directionalArrowImageview.visibility = View.VISIBLE
+            } else -> {
+                binding.directionalArrowImageview.visibility = View.GONE
+            }
         }
     }
 
@@ -37,11 +47,7 @@ class ViewHolder private constructor(val binding: ListItemRecentActivityBinding)
     }
 }
 
-class RecentActivityAdapter:
-    ListAdapter<UserActivity, ViewHolder> (DIFF_CALLBACK) {
-
-    private val TAG = "RecentActivityAdapter"
-
+class RecentActivityAdapter: ListAdapter<UserActivity, ViewHolder> (DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserActivity>() {
             override fun areItemsTheSame(oldItem: UserActivity, newItem: UserActivity) = oldItem == newItem
@@ -58,8 +64,6 @@ class RecentActivityAdapter:
         val item = getItem(position)
 
         // TODO: add listeners on the properties as required
-
         viewHolder.bindTo(item)
-        Log.d(TAG, "Bind item: " + item.distributedTo)
     }
 }

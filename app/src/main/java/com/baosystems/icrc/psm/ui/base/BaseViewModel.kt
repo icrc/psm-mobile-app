@@ -13,8 +13,8 @@ open class BaseViewModel: ViewModel() {
 
     init {
         // TODO: Replace the last sync date below with the actual value fetched
-        //  from the repository
-        val formatter = DateTimeFormatter.ofPattern(Constants.LAST_SYNCED_DATETIME_FORMAT)
+        //  from the preference provider
+        val formatter = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT)
         val dateTime = LocalDateTime.parse("2021-09-28 14:32:33", formatter)
 
         // Update the last sync date based on the last stored data read

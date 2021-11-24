@@ -15,8 +15,8 @@ class MetadataManagerImpl @Inject constructor(
     val config: AppConfig
 ): MetadataManager {
     override fun stockManagementProgram(programUid: String): Single<Program?> {
-        return Single.just(programUid).map { programUid ->
-            if (programUid.isBlank())
+        return Single.just(programUid).map {
+            if (it.isBlank())
                 throw InitializationException(
                     "The program config has not been set in the configuration file")
 

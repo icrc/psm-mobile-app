@@ -6,13 +6,14 @@ import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.Transaction
-import com.baosystems.icrc.psm.data.models.UserActivity
-import com.baosystems.icrc.psm.data.repositories.UserActivityRepository
+import com.baosystems.icrc.psm.data.persistence.UserActivity
+import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
+import com.baosystems.icrc.psm.utils.Constants.USER_ACTIVITY_COUNT
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +25,6 @@ import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private val schedulerProvider: BaseSchedulerProvider,
     private val metadataManager: MetadataManager,
     private val userManager: UserManager,
+    private val userActivityRepository: UserActivityRepository
 ): BaseViewModel() {
     // TODO: Move all the properties below into a singular object
     var program: Program? = null
@@ -72,11 +73,14 @@ class HomeViewModel @Inject constructor(
     val error: LiveData<String>
         get() = _error
 
-    val recentActivityList = fetchSampleRecentActivities()
+    private val _recentActivities: MutableLiveData<List<UserActivity>> = MutableLiveData()
+    val recentActivities: LiveData<List<UserActivity>>
+        get() = _recentActivities
 
     init {
         loadFacilities()
         loadDestinations()
+        loadRecentActivities()
     }
 
     private fun loadDestinations() {
@@ -115,9 +119,19 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun fetchSampleRecentActivities(): MutableLiveData<ArrayList<UserActivity>> {
-        val repository = UserActivityRepository()
-        return MutableLiveData(repository.activities)
+    private fun loadRecentActivities() {
+        disposable.add(
+            userActivityRepository.getRecentActivities(USER_ACTIVITY_COUNT)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                    { _recentActivities.postValue(it) },
+                    {
+                        // TODO: Display any errors to the user
+                        it.printStackTrace()
+                    }
+                )
+        )
     }
 
     fun selectTransaction(type: TransactionType) {

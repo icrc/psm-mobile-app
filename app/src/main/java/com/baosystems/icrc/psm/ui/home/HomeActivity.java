@@ -45,7 +45,6 @@ import timber.log.Timber;
 @AndroidEntryPoint
 public class HomeActivity extends BaseActivity {
     private ActivityHomeBinding binding;
-    private RecentActivityAdapter recentActivityAdapter;
 
     private AutoCompleteTextView facilityTextView;
     private AutoCompleteTextView distributedToTextView;
@@ -81,8 +80,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void attachObservers() {
-        // TODO: Optimize facilityListAdapter (It also crashes when the list item is selected)
-        // TODO: Inject FacilityListAdapter with DI
         viewModel.getFacilities().observe(this, facilitiesList ->
                     facilityTextView.setAdapter(
                             new GenericListAdapter<>(this, R.layout.list_item, facilitiesList)
@@ -94,15 +91,6 @@ public class HomeActivity extends BaseActivity {
                         new GenericListAdapter<>(
                                 this, R.layout.list_item, destinations
         )));
-
-        viewModel.getTransactionType().observe(this, transactionType -> {
-            // TODO: Add a border around the selected button, and reset the
-            //  other buttons to the default
-            Timber.d("Transaction type: %s", transactionType);
-        });
-
-        viewModel.getRecentActivityList().observe(this, recentActivities ->
-                recentActivityAdapter.submitList(recentActivities));
 
         viewModel.getError().observe(this, message -> {
             if (message != null) {
@@ -197,8 +185,9 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupRecentActivities() {
-        recentActivityAdapter = new RecentActivityAdapter();
+        RecentActivityAdapter recentActivityAdapter = new RecentActivityAdapter();
         recentActivitiesRecyclerView.setAdapter(recentActivityAdapter);
+        viewModel.getRecentActivities().observe(this, recentActivityAdapter::submitList);
 
         // TODO: Use a custom divider decoration
 //        DividerItemDecoration decoration =

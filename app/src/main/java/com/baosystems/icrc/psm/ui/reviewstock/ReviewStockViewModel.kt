@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.Transaction
+import com.baosystems.icrc.psm.data.persistence.UserActivity
+import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
@@ -14,15 +17,17 @@ import com.jakewharton.rxrelay2.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
+import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class ReviewStockViewModel @Inject constructor(
-    savedState: SavedStateHandle,
-    val disposable: CompositeDisposable,
-    val schedulerProvider: BaseSchedulerProvider,
-    val stockManager: StockManager
+    private val savedState: SavedStateHandle,
+    private val disposable: CompositeDisposable,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val stockManager: StockManager,
+    private val userActivityRepository: UserActivityRepository
 ): BaseViewModel() {
     // TODO: Figure out a better way than using !!
     val data = savedState.get<ReviewStockData>(INTENT_EXTRA_STOCK_ENTRIES)!!
@@ -99,10 +104,25 @@ class ReviewStockViewModel @Inject constructor(
                 .subscribe({
                     Timber.d("Successfully committed transaction!")
                     _commitStatus.postValue(true)
+                    logAudit(transaction)
                 }, {
                     // TODO: Report error to observer
                     it.printStackTrace()
                 })
+        )
+    }
+
+    private fun logAudit(transaction: Transaction) {
+        disposable.add(
+            userActivityRepository.addActivity(
+                UserActivity(
+                    transaction.transactionType,
+                    LocalDateTime.now(),
+                    transaction.distributedTo?.displayName
+                )
+            ).subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe()
         )
     }
 }

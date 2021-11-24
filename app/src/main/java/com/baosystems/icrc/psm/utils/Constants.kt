@@ -1,8 +1,8 @@
 package com.baosystems.icrc.psm.utils
 
 object Constants {
-    const val LAST_SYNCED_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
-    const val TRANSACTION_DATE_FORMAT = "yyyy-MM-dd"
+    const val DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const val DATE_FORMAT = "yyyy-MM-dd"
 
     //Preferences
     const val SHARED_PREFS = "icrc_psm_shared_prefs"
@@ -13,6 +13,7 @@ object Constants {
 
     const val LAST_SYNC_DATE = "LAST_SYNC_DATE"
     const val ITEM_PAGE_SIZE = 10
+    const val USER_ACTIVITY_COUNT = 15
 
     // Configuration file keys
     const val CONFIG_PROGRAM = "program"
