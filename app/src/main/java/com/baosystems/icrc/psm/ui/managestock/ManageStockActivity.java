@@ -66,10 +66,9 @@ public class ManageStockActivity extends BaseActivity {
 
     private void setupObservers() {
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
-            Timber.d("Updating recyclerview pagedlist");
             adapter.submitList(pagedListLiveData);
-            // TODO: Scroll back to the top of the recyclerview if a new pagedlist is added
 
+            // Scroll back to the top of the recyclerview if a new pagedlist is added
             LinearLayoutManager layoutManager =
                     (LinearLayoutManager) binding.stockItemsList.getLayoutManager();
             if (layoutManager != null) {

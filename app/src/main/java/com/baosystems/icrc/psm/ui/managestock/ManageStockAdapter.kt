@@ -82,7 +82,6 @@ class ManageStockAdapter(
         }
 
         fun bindTo(item: StockEntry) {
-            Timber.d("About to bind: $item")
             tvItemName.text = item.name
             tvStockOnHand.text = item.stockOnHand
             etQty.editText?.setText(watcher.getValue(item).let { value ->

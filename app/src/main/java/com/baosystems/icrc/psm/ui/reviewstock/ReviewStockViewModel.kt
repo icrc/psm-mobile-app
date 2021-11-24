@@ -69,16 +69,13 @@ class ReviewStockViewModel @Inject constructor(
 
     fun removeItem(item: StockEntry) = populatedItems.remove(item)
 
-    // TODO: Currently not working
     fun updateQuantity(item: StockEntry, value: Long) {
         item.qty = value
     }
 
     fun getItemQuantity(item: StockEntry) = item.qty
 
-    fun onSearchQueryChanged(query: String) {
-        searchRelay.accept(query)
-    }
+    fun onSearchQueryChanged(query: String) = searchRelay.accept(query)
 
     private fun performSearch(q: String?): List<StockEntry> {
         return if (q == null || q.isEmpty())
@@ -90,7 +87,7 @@ class ReviewStockViewModel @Inject constructor(
     fun commitTransaction() {
         if (reviewedItems.value == null || reviewedItems.value?.isEmpty() == true) {
             // TODO: Report error/warning to user that there are currently no reviewed items
-            Timber.d(" No items to commit")
+            Timber.d("No items to commit")
             return
         }
 
