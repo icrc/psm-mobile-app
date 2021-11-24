@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.reviewstock;
 
+import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_MESSAGE;
 import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_STOCK_ENTRIES;
 
 import android.content.Context;
@@ -64,6 +65,7 @@ public class ReviewStockActivity extends BaseActivity {
                 ConfigUtils.getAppConfig(getResources())
         );
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(INTENT_EXTRA_MESSAGE, getString(R.string.transaction_completed));
         ActivityManager.startActivity(this, intent, true);
     }
 

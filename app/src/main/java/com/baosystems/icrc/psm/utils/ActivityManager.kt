@@ -19,11 +19,11 @@ class ActivityManager {
                 activity.finish()
         }
 
-        fun showMessage(view: View, message: String, isError: Boolean) {
+        private fun showMessage(view: View, message: String, isError: Boolean) {
             val color = if (isError) {
                 R.color.error
             } else {
-                R.color.secondaryDarkColor
+                R.color.primaryColor
             }
 
             // TODO: Style the backgroundTint of an snackbar in case of errors
