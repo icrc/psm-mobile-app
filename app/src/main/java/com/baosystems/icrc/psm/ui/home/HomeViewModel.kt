@@ -105,8 +105,6 @@ class HomeViewModel @Inject constructor(
                 .subscribe(
                     {
                         _facilities.postValue(it)
-                        it.forEach { ou -> Timber.d(
-                            "Facility: Uid: ${ou.uid()}, Name: ${ou.name()}") }
 
                         if (it.size == 1) _facility.postValue(it[0])
                     }, {
@@ -145,26 +143,7 @@ class HomeViewModel @Inject constructor(
         _destination.value = destination
     }
 
-    // TODO: Remove later. Temporarily used to logout
-    fun logout() {
-        userManager.logout()?.let {
-            disposable.add(
-                it.subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .doOnComplete {
-                        Timber.d("Logged out successfully")
-                    }
-                    .subscribe()
-            )
-        }
-    }
-
     fun readyManageStock(): Boolean {
-        Timber.d("Selected transaction: ${transactionType.value}")
-        Timber.d("Selected facility: ${facility.value}")
-        Timber.d("Selected date: ${transactionDate.value}")
-        Timber.d("Selected distributed to: ${destination.value}")
-
         if (transactionType.value == null) return false
 
         if (isDistribution.value == true) {
