@@ -63,7 +63,7 @@ public class ReviewStockActivity extends BaseActivity {
                 this,
                 ConfigUtils.getAppConfig(getResources())
         );
-
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         ActivityManager.startActivity(this, intent, true);
     }
 
