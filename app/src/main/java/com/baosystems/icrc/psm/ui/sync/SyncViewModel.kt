@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.maintenance.D2Error
@@ -16,8 +17,10 @@ import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class SyncViewModel(
+@HiltViewModel
+class SyncViewModel @Inject constructor(
     val disposable: CompositeDisposable,
     val schedulerProvider: BaseSchedulerProvider,
     val preferenceProvider: PreferenceProvider,

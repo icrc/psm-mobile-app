@@ -25,7 +25,7 @@ class SettingsViewModel @Inject constructor(
                     .observeOn(schedulerProvider.ui())
                     .subscribe(
                         { navigateToLogin() },
-                        { it -> it.printStackTrace() }
+                        { error -> error.printStackTrace() }
                     )
             )
         }
