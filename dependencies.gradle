@@ -20,7 +20,7 @@ ext.versions = [
     preference_ktx              : '1.1.1',
     legacy_support_v4           : '1.0.0',
     desugar_jdk_libs            : '1.1.5',
-    room                        : '2.3.0',
+    room                        : '2.4.0-beta02',
 
     // security
     security_crypto             : '1.0.0',
