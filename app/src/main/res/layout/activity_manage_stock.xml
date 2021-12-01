@@ -213,32 +213,27 @@
                         android:textColor="@color/white" />
                 </FrameLayout>
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5">
+                <LinearLayout
+                    android:weightSum="1.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/qtyHeaderTextView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/stock_item_margin"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white"
+                        tools:text="@string/quantity" />
 
-                        <TextView
-                            android:id="@+id/qtyHeaderTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/stock_item_margin"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/white"
-                            tools:text="@string/quantity" />
-
-                        <ImageView
-                            android:id="@+id/qtyInfoIconImageView"
-                            android:contentDescription="@string/content_desc_quantity_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/info_white" />
-                    </LinearLayout>
-                </FrameLayout>
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/qtyInfoIconButton"
+                        android:src="@drawable/info_white"
+                        android:backgroundTint="@color/transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
             </LinearLayout>
 
 
