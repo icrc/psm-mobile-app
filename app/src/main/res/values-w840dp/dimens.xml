@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="choices_top_margin">24dp</dimen>
+
     <!-- Transaction buttons -->
     <dimen name="transaction_button_text_size">24sp</dimen>
     <dimen name="transaction_button_lr_padding">40dp</dimen>
