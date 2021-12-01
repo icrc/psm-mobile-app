@@ -42,10 +42,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/content_area"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="@dimen/content_area_lr_margin"
-            android:layout_marginTop="32dp"
             android:layout_marginRight="@dimen/content_area_lr_margin"
+            android:layout_marginTop="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/stock_items_footer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -68,7 +69,7 @@
                     android:id="@+id/facilityTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="@dimen/facility_icon_padding"
                     app:drawableLeftCompat="@drawable/home"
                     app:layout_constraintEnd_toStartOf="@+id/transactionDateTextView"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -81,7 +82,7 @@
                     android:id="@+id/transactionDateTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="@dimen/trans_date_icon_padding"
                     app:drawableLeftCompat="@drawable/calendar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -95,7 +96,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="@dimen/distribution_icon_padding"
                     android:gravity="center"
                     app:drawableLeftCompat="@drawable/destination"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -152,16 +153,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stock_items_list"
                 android:layout_width="0dp"
-                android:layout_height="500dp"
-                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
-                android:clickable="true"
-                android:focusable="true"
-                tools:listitem="@layout/manage_stock_item_entry" />
+                tools:listitem="@layout/review_stock_item_entry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->

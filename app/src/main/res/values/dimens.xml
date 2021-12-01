@@ -70,4 +70,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="qty_field_padding">8dp</dimen>
+    <dimen name="facility_icon_padding">8dp</dimen>
+    <dimen name="trans_date_icon_padding">8dp</dimen>
+    <dimen name="distribution_icon_padding">14dp</dimen>
 </resources>

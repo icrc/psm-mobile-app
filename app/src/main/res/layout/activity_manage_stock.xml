@@ -22,9 +22,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/content_area"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="@dimen/content_area_lr_margin"
             android:layout_marginRight="@dimen/content_area_lr_margin"
+            app:layout_constraintBottom_toTopOf="@+id/stock_items_footer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbarContainer">
@@ -47,26 +48,26 @@
                     android:id="@+id/facilityTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="@dimen/facility_icon_padding"
+                    android:text="@{viewModel.transaction.facility.displayName}"
                     app:drawableLeftCompat="@drawable/home"
                     app:layout_constraintEnd_toStartOf="@+id/transactionDateTextView"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@{viewModel.transaction.facility.displayName}"
                     tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
 
                 <TextView
                     android:id="@+id/transactionDateTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="@dimen/trans_date_icon_padding"
+                    android:text="@{viewModel.transaction.transactionDate}"
                     app:drawableLeftCompat="@drawable/calendar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/facilityTextView"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@{viewModel.transaction.transactionDate}"
                     tools:text="2021-08-09" />
 
                 <TextView
@@ -74,13 +75,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
-                    android:drawablePadding="14dp"
+                    android:drawablePadding="@dimen/distribution_icon_padding"
                     android:gravity="center"
+                    app:distributedTo="@{viewModel.transaction.distributedTo.displayName}"
                     app:drawableLeftCompat="@drawable/destination"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/facilityTextView"
-                    app:distributedTo="@{viewModel.transaction.distributedTo.displayName}"
                     tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,17 +92,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:layout_marginEnd="@dimen/margin_16"
-                app:startIconDrawable="@drawable/ic_search_24"
-                app:startIconTint="@color/input_field_icon_color_tint"
-                app:startIconContentDescription="@string/content_description_search"
-                app:endIconMode="clear_text"
-                app:endIconDrawable="@drawable/ic_clear_24"
                 app:endIconContentDescription="@string/content_description_clear_text"
+                app:endIconDrawable="@drawable/ic_clear_24"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toStartOf="@+id/scan_button"
+                app:layout_constraintHorizontal_weight="7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/choices_container"
                 app:placeholderText="@string/search"
-                app:layout_constraintHorizontal_weight="7">
+                app:startIconContentDescription="@string/content_description_search"
+                app:startIconDrawable="@drawable/ic_search_24"
+                app:startIconTint="@color/input_field_icon_color_tint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/searchInputField"
@@ -117,142 +118,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
                 android:text="@string/scan_barcode"
+                app:cornerRadius="@dimen/scan_button_corner_radius"
                 app:icon="@drawable/barcode"
                 app:iconGravity="end"
-                app:cornerRadius="@dimen/scan_button_corner_radius"
-                app:layout_constraintStart_toEndOf="@id/searchFieldLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/choices_container"
-                app:layout_constraintHorizontal_weight="3" />
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintStart_toEndOf="@id/searchFieldLayout"
+                app:layout_constraintTop_toBottomOf="@id/choices_container" />
 
             <!-- Table header -->
-<!--            <include layout="@layout/stock_table_header"-->
-<!--                android:id="@+id/stockEntriesTableHeader" />-->
-            <LinearLayout
+            <include
                 android:id="@+id/stockEntriesTableHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/stock_table_top_margin"
-                android:background="@color/black"
-                android:orientation="horizontal"
-                android:baselineAligned="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searchFieldLayout">
-
-<!--                <TextView-->
-<!--                    android:id="@+id/itemHeaderTextView"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="@dimen/stock_item_margin"-->
-<!--                    android:layout_marginTop="@dimen/stock_item_margin"-->
-<!--                    android:layout_weight="7"-->
-<!--                    android:text="@string/item"-->
-<!--                    android:textAlignment="textStart"-->
-<!--                    android:textColor="@color/white" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/stockOnHandHeaderTextView"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="@dimen/stock_item_margin"-->
-<!--                    android:layout_weight="1.5"-->
-<!--                    android:text="@string/stock_on_hand"-->
-<!--                    android:textAlignment="textStart"-->
-<!--                    android:textColor="@color/white" />-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1.5">-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/qtyHeaderTextView"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/stock_item_margin"-->
-<!--                        android:textAlignment="textStart"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        tools:text="@string/quantity" />-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/qtyInfoIconImageView"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:srcCompat="@drawable/info_white" />-->
-<!--                </LinearLayout>-->
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7">
-
-                    <TextView
-                        android:id="@+id/itemHeaderTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/stock_item_margin"
-                        android:layout_marginTop="@dimen/stock_item_margin"
-                        android:text="@string/item"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5">
-
-                    <TextView
-                        android:id="@+id/stockOnHandHeaderTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/stock_item_margin"
-                        android:text="@string/stock_on_hand"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white" />
-                </FrameLayout>
-
-                <LinearLayout
-                    android:weightSum="1.5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/qtyHeaderTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/stock_item_margin"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        tools:text="@string/quantity" />
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/qtyInfoIconButton"
-                        android:src="@drawable/info_white"
-                        android:backgroundTint="@color/transparent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
-
-
+                layout="@layout/stock_table_header" />
 
             <!-- Stock entries list -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stock_items_list"
                 android:layout_width="0dp"
-                android:layout_height="500dp"
-                android:layout_marginBottom="@dimen/margin_32"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
-                android:clickable="true"
-                android:focusable="true"
-                tools:listitem="@layout/manage_stock_item_entry"
-                 />
+                tools:listitem="@layout/manage_stock_item_entry" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->

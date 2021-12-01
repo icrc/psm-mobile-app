@@ -65,6 +65,7 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:maxLength="19"
+                android:padding="@dimen/qty_field_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="20" />
@@ -75,12 +76,14 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
+
         <ImageButton
             android:id="@+id/ibRemoveStockItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_clear_24"
+            android:contentDescription="@string/content_desc_remove_icon"
             android:background="?android:selectableItemBackground" />
     </FrameLayout>
 </LinearLayout>
