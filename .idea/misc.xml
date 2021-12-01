@@ -16,10 +16,13 @@
         <entry key="app/src/main/res/drawable/transaction_button_highlight.xml" value="0.105078125" />
         <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout-w1240dp/toolbar1.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-w600dp/activity_home.xml" value="0.5" />
+        <entry key="app/src/main/res/layout-w600dp/list_item_recent_activity.xml" value="0.1543311403508772" />
+        <entry key="app/src/main/res/layout-w840dp/activity_home.xml" value="0.45" />
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_review_stock.xml" value="0.36860795454545453" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.13454433497536947" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />

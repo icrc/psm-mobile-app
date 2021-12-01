@@ -121,7 +121,7 @@
                 android:id="@+id/choices_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/choices_top_margin"
+                android:layout_marginTop="@dimen/content_area_top_margin"
                 android:background="@color/light_grey"
                 android:paddingStart="@dimen/choices_padding_left"
                 android:paddingTop="@dimen/choices_padding_top"

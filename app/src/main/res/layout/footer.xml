@@ -18,9 +18,10 @@
 
         <ImageView
             android:id="@+id/lastSyncIconImageview"
+            android:contentDescription="@string/content_desc_last_sync"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_area_margin"
+            android:layout_marginStart="@dimen/content_area_lr_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

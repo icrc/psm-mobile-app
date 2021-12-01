@@ -2,8 +2,8 @@
     <dimen name="splash_screen_text_size">24sp</dimen>
     <dimen name="splash_screen_text_top_margin">32dp</dimen>
 
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="fab_corner_radius">24dp</dimen>
+    <dimen name="fab_margin">8dp</dimen>
+    <dimen name="fab_corner_radius">16dp</dimen>
     <dimen name="fab_lr_padding">24dp</dimen>
 
     <!-- Sign in -->
@@ -16,28 +16,31 @@
     <dimen name="toolbar_text_size">20sp</dimen>
 
     <!-- Transaction buttons -->
-    <dimen name="transaction_button_text_size">24sp</dimen>
-    <dimen name="transaction_button_min_padding">40dp</dimen>
-    <dimen name="content_area_margin">24dp</dimen>
+    <dimen name="transaction_button_text_size">12sp</dimen>
+    <dimen name="transaction_button_lr_padding">16dp</dimen>
+    <dimen name="transaction_button_tb_padding">24dp</dimen>
+    <dimen name="transaction_center_button_margin">8dp</dimen>
+    <dimen name="content_area_lr_margin">8dp</dimen>
+    <dimen name="content_area_top_margin">16dp</dimen>
     <dimen name="transaction_button_divider">16dp</dimen>
-    <dimen name="transaction_button_corner_radius">8dp</dimen>
+    <dimen name="transaction_button_corner_radius">4dp</dimen>
     <dimen name="transaction_button_highlight_width">4dp</dimen>
     <dimen name="transaction_button_no_highlight_width">0dp</dimen>
 
     <!-- Misc -->
     <dimen name="list_item_padding">16dp</dimen>
-    <dimen name="input_to_label_top_margin">8dp</dimen>
+    <dimen name="input_to_label_top_margin">4dp</dimen>
 
     <!-- Container -->
     <dimen name="choices_top_margin">32dp</dimen>
     <dimen name="choices_padding_top">16dp</dimen>
     <dimen name="choices_padding_left">16dp</dimen>
-    <dimen name="choices_padding_bottom">24dp</dimen>
+    <dimen name="choices_padding_bottom">16dp</dimen>
     <dimen name="choices_padding_right">16dp</dimen>
-    <dimen name="recent_activity_top_margin">48dp</dimen>
-    <dimen name="recent_activity_label_bottom_margin">48dp</dimen>
+    <dimen name="recent_activity_top_margin">16dp</dimen>
+    <dimen name="recent_activity_list_top_margin">8dp</dimen>
 
-    <dimen name="select_facility_bottom_margin">32dp</dimen>
+    <dimen name="select_facility_bottom_margin">16dp</dimen>
     <dimen name="border_radius">4dp</dimen>
 
     <!-- Stock entry table -->
@@ -47,6 +50,9 @@
     <dimen name="stock_table_top_margin">32dp</dimen>
     <dimen name="text_input_width">90dp</dimen>
     <dimen name="text_input_corner_radius">4dp</dimen>
+
+    <dimen name="recent_activity_margin">8dp</dimen>
+    <dimen name="recent_activity_list_margin_bottom">96dp</dimen>
 
 
     <dimen name="margin_8">8dp</dimen>
@@ -60,7 +66,7 @@
     <dimen name="last_sync_label_top_margin">8dp</dimen>
     <dimen name="last_sync_label_bottom_margin">8dp</dimen>
     <dimen name="last_sync_label_left_margin">16dp</dimen>
-    <dimen name="recent_activity_list_margin_bottom">96</dimen>
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>

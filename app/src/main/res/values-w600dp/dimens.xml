@@ -1,4 +1,14 @@
 <resources>
-    <dimen name="fab_margin">48dp</dimen>
-    <dimen name="activity_horizontal_margin">48dp</dimen>
+    <!-- Transaction buttons -->
+    <dimen name="transaction_button_text_size">16sp</dimen>
+    <dimen name="transaction_button_lr_padding">32dp</dimen>
+    <dimen name="transaction_button_tb_padding">40dp</dimen>
+    <dimen name="transaction_center_button_margin">16dp</dimen>
+
+    <dimen name="content_area_lr_margin">16dp</dimen>
+    <dimen name="content_area_top_margin">24dp</dimen>
+
+    <dimen name="recent_activity_top_margin">32dp</dimen>
+    <dimen name="recent_activity_margin">16dp</dimen>
+    <dimen name="recent_activity_list_top_margin">16dp</dimen>
 </resources>
