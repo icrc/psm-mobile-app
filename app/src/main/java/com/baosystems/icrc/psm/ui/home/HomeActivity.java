@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.ui.home;
 
 import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_APP_CONFIG;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -198,9 +199,11 @@ public class HomeActivity extends BaseActivity {
         picker.addOnPositiveButtonClickListener(viewModel::setTransactionDate);
 
         // Show the date picker when the calendar icon is clicked
-        binding.transactionDateTextView.setEndIconOnClickListener(view ->
-                picker.show(getSupportFragmentManager(), MaterialDatePicker.class.getCanonicalName())
-        );
+        binding.transactionDateTextView.setEndIconOnClickListener(view -> {
+            Dialog pickerDialog = picker.getDialog();
+            if (!(pickerDialog != null && pickerDialog.isShowing()))
+                picker.show(getSupportFragmentManager(), MaterialDatePicker.class.getCanonicalName());
+        });
     }
 
     private void setupRecentActivities() {
