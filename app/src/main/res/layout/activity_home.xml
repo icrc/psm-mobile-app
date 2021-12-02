@@ -151,7 +151,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/select_facility_label"
-                    app:placeholderText="@string/select_one">
+                    app:placeholderText="@string/select_one"
+                    android:background="@color/white">
 
                     <AutoCompleteTextView
                         android:id="@+id/actvSelectedFacility"
@@ -188,7 +189,8 @@
                         app:placeholderText="@string/select_one"
                         app:endIconContentDescription="@string/content_desc_transaction_date"
                         app:endIconDrawable="@drawable/calendar_icon"
-                        app:endIconMode="custom">
+                        app:endIconMode="custom"
+                        android:background="@color/white">
 
                         <AutoCompleteTextView
                             android:id="@+id/actvTransactionDate"
@@ -225,7 +227,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/input_to_label_top_margin"
-                        app:placeholderText="@string/select_one">
+                        app:placeholderText="@string/select_one"
+                        android:background="@color/white">
 
                         <AutoCompleteTextView
                             android:id="@+id/actvDistributedTo"
