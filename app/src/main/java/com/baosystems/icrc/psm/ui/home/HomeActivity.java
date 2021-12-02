@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -223,9 +224,9 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void resetRecentActivitiesState() {
-        binding.recentActivityInfoHolder.setVisibility(View.INVISIBLE);
         binding.recentActivityList.setVisibility(View.INVISIBLE);
-
+        binding.recentActivityMessageTextview.setCompoundDrawablesWithIntrinsicBounds(
+                null, null, null, null);
         binding.recentActivityMessageTextview.setText("");
         binding.recentActivityMessageTextview.setTextAppearance(R.style.ListNormal);
     }
@@ -233,9 +234,11 @@ public class HomeActivity extends BaseActivity {
     private void showRecentActivitiesError(NetworkState<List<UserActivity>> networkState) {
         resetRecentActivitiesState();
 
-        binding.recentActivityInfoHolder.setVisibility(View.VISIBLE);
-        binding.recentActivityInfoImageview.setImageDrawable(
-                ContextCompat.getDrawable(this, R.drawable.ic_error)
+        binding.recentActivityMessageTextview.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                AppCompatResources.getDrawable(this, R.drawable.ic_error),
+                null,
+                null
         );
 
         int errorRes = ((NetworkState.Error) networkState).getErrorStringRes();
@@ -253,10 +256,12 @@ public class HomeActivity extends BaseActivity {
             binding.recentActivityList.setVisibility(View.VISIBLE);
             recentActivityAdapter.submitList(activities);
         } else {
-            binding.recentActivityInfoHolder.setVisibility(View.VISIBLE);
             binding.recentActivityMessageTextview.setText(R.string.recent_activities_empty_message);
-            binding.recentActivityInfoImageview.setImageDrawable(
-                    ContextCompat.getDrawable(this, R.drawable.ic_empty_list)
+            binding.recentActivityMessageTextview.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    AppCompatResources.getDrawable(this, R.drawable.ic_empty_list),
+                    null,
+                    null
             );
         }
     }
@@ -264,10 +269,13 @@ public class HomeActivity extends BaseActivity {
     private void showLoadingRecentActivities() {
         resetRecentActivitiesState();
 
-        binding.recentActivityInfoHolder.setVisibility(View.VISIBLE);
-        binding.recentActivityInfoImageview.setImageDrawable(
-                ContextCompat.getDrawable(this, R.drawable.ic_loading_activity)
+        binding.recentActivityMessageTextview.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                AppCompatResources.getDrawable(this, R.drawable.ic_loading_activity),
+                null,
+                null
         );
+        binding.recentActivityMessageTextview.setCompoundDrawablePadding(32);
         binding.recentActivityMessageTextview.setText(R.string.recent_activities_loading_message);
     }
 

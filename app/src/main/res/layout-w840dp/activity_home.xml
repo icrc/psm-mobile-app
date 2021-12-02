@@ -259,35 +259,19 @@
                 tools:itemCount="18"
                 tools:listitem="@layout/list_item_recent_activity" />
 
-            <LinearLayout
-                android:id="@+id/recent_activity_info_holder"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/recent_activity_message_textview"
+                style="?attr/textAppearanceCaption"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recent_activity_label"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-                <ImageView
-                    android:id="@+id/recent_activity_info_imageview"
-                    android:contentDescription="@string/content_desc_recent_activity_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_64"
-                    tools:srcCompat="@drawable/ic_empty_list" />
-
-                <TextView
-                    android:id="@+id/recent_activity_message_textview"
-                    style="?attr/textAppearanceCaption"
-                    android:textColor="@color/gray_400"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/margin_16"
-                    tools:text="@string/recent_activities_loading_message" />
-            </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:drawableTop="@drawable/ic_empty_list"
+                tools:text="@string/recent_activities_loading_message" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->

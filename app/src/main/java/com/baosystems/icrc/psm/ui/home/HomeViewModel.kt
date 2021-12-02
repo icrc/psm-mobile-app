@@ -129,9 +129,7 @@ class HomeViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    {
-                        _recentActivities.postValue(NetworkState.Success(it))
-                    },
+                    { _recentActivities.postValue(NetworkState.Success(it)) },
                     {
                         it.printStackTrace()
                         _recentActivities.postValue(
