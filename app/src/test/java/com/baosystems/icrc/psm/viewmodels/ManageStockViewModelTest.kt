@@ -2,19 +2,24 @@ package com.baosystems.icrc.psm.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.DestinationFactory
 import com.baosystems.icrc.psm.data.FacilityFactory
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
-import com.baosystems.icrc.psm.service.MetadataManager
-import com.baosystems.icrc.psm.service.scheduler.BaseSchedulerProvider
-import com.baosystems.icrc.psm.service.scheduler.TrampolineSchedulerProvider
+import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.services.MetadataManager
+import com.baosystems.icrc.psm.services.PreferenceProvider
+import com.baosystems.icrc.psm.services.StockManager
+import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.services.scheduler.TrampolineSchedulerProvider
+import com.baosystems.icrc.psm.ui.managestock.ManageStockViewModel
 import com.baosystems.icrc.psm.utils.ParcelUtils
-import com.baosystems.icrc.psm.viewmodels.stock.ManageStockViewModel
+import com.github.javafaker.Faker
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.attribute.AttributeValue
-import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -35,10 +40,17 @@ class ManageStockViewModelTest {
     private lateinit var transactionDate: String
 
     private val disposable = CompositeDisposable()
+    private val faker = Faker()
+
     private lateinit var schedulerProvider: BaseSchedulerProvider
+    private lateinit var appConfig: AppConfig
 
     @Mock
     private lateinit var metadataManager: MetadataManager
+    @Mock
+    private lateinit var preferenceProvider: PreferenceProvider
+    @Mock
+    private lateinit var stockManager: StockManager
     @Mock
     private lateinit var stockItemsObserver: Observer<PagedList<AttributeValue>>
     @Captor
@@ -47,19 +59,25 @@ class ManageStockViewModelTest {
     private fun getModel(type: TransactionType,
                          distributedTo: IdentifiableModel?) =
         ManageStockViewModel(
+            SavedStateHandle(),
             disposable,
+            appConfig,
             schedulerProvider,
-            metadataManager,
-            type,
-            facility,
-            transactionDate,
-            distributedTo
+            preferenceProvider,
+            stockManager
         )
 
-    private fun createTEI(uid: String) = TrackedEntityInstance.builder().uid(uid).build()
+    private fun createStockEntry(uid: String) = StockEntry(
+        uid, faker.name().name(), faker.number().numberBetween(1, 800).toString())
 
     @Before
     fun setUp() {
+        appConfig = AppConfig(
+            "programUid", "itemCodeUid", "itemNameUid",
+            "stockOnHandUid", "distributedToUid",
+            "stockDistributionUid", "stockCorrectionUid",
+            "stockDiscardedUid")
+
         facility = ParcelUtils.facilityToIdentifiableModelParcel(
             FacilityFactory.create(57L))
         distributedTo = ParcelUtils.distributedTo_ToIdentifiableModelParcel(
@@ -73,10 +91,10 @@ class ManageStockViewModelTest {
     fun init_shouldSetFacilityDateAndDistributedToForDistribution() {
         val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
 
-        assertNotNull(viewModel.facility)
-        assertEquals(viewModel.facility.displayName, facility.displayName)
-        assertEquals(viewModel.distributedTo!!.displayName, distributedTo.displayName)
-        assertEquals(viewModel.transactionDate, transactionDate)
+        assertNotNull(viewModel.transaction.facility)
+        assertEquals(viewModel.transaction.facility.displayName, facility.displayName)
+        assertEquals(viewModel.transaction.distributedTo!!.displayName, distributedTo.displayName)
+        assertEquals(viewModel.transaction.transactionDate, transactionDate)
     }
 
     @Test(expected = UnsupportedOperationException::class)
@@ -98,20 +116,20 @@ class ManageStockViewModelTest {
     fun init_shouldSetFacilityAndDateForDiscard() {
         val viewModel = getModel(TransactionType.DISCARD, null)
 
-        assertNotNull(viewModel.facility)
-        assertNull(viewModel.distributedTo)
-        assertEquals(viewModel.facility.displayName, facility.displayName)
-        assertEquals(viewModel.transactionDate, transactionDate)
+        assertNotNull(viewModel.transaction.facility)
+        assertNull(viewModel.transaction.distributedTo)
+        assertEquals(viewModel.transaction.facility.displayName, facility.displayName)
+        assertEquals(viewModel.transaction.transactionDate, transactionDate)
     }
 
     @Test
     fun init_shouldSetFacilityAndDateForCorrection() {
         val viewModel = getModel(TransactionType.CORRECTION, null)
 
-        assertNotNull(viewModel.facility)
-        assertNull(viewModel.distributedTo)
-        assertEquals(viewModel.facility.displayName, facility.displayName)
-        assertEquals(viewModel.transactionDate, transactionDate)
+        assertNotNull(viewModel.transaction.facility)
+        assertNull(viewModel.transaction.distributedTo)
+        assertEquals(viewModel.transaction.facility.displayName, facility.displayName)
+        assertEquals(viewModel.transaction.transactionDate, transactionDate)
     }
 
 //    @Test
@@ -123,8 +141,8 @@ class ManageStockViewModelTest {
     fun canSetAndGetItemQuantityForSelectedItem() {
         val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
 
-        val item = createTEI("someUid")
-        val qty = 319
+        val item = createStockEntry("someUid")
+        val qty = 319L
 
         viewModel.setItemQuantity(item, qty)
         assertEquals(viewModel.getItemQuantity(item), qty)
@@ -133,8 +151,8 @@ class ManageStockViewModelTest {
     @Test
     fun canUpdateExistingItemQuantityForSelectedItem() {
         val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
-        val qty2 = 95
-        val item = createTEI("someUid")
+        val qty2 = 95L
+        val item = createStockEntry("someUid")
 
         viewModel.setItemQuantity(item, 49)
         viewModel.setItemQuantity(item, qty2)

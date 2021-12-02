@@ -3,13 +3,11 @@ package com.baosystems.icrc.psm.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
-import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.DestinationFactory
-import com.baosystems.icrc.psm.data.FacilityFactory
-import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.*
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
+import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.UserManagerImpl
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
@@ -62,16 +60,19 @@ class HomeViewModelUnitTest {
     private lateinit var d2: D2
 
     @Mock
-    private lateinit var facilitiesObserver: Observer<List<OrganisationUnit>>
+    private lateinit var facilitiesObserver: Observer<NetworkState<List<OrganisationUnit>>>
 
     @Mock
-    private lateinit var destinationsObserver: Observer<List<Option>>
+    private lateinit var destinationsObserver: Observer<NetworkState<List<Option>>>
+
+    @Mock
+    private lateinit var preferenceProvider: PreferenceProvider
 
     @Captor
-    private lateinit var facilitiesArgumentCaptor: ArgumentCaptor<List<OrganisationUnit>>
+    private lateinit var facilitiesArgumentCaptor: ArgumentCaptor<NetworkState<List<OrganisationUnit>>>
 
     @Captor
-    private lateinit var destinationsArgumentCaptor: ArgumentCaptor<List<Option>>
+    private lateinit var destinationsArgumentCaptor: ArgumentCaptor<NetworkState<List<Option>>>
 
     @Before
     fun setup() {
@@ -96,7 +97,7 @@ class HomeViewModelUnitTest {
         val savedState = SavedStateHandle()
 
         userManager = UserManagerImpl(d2)
-        viewModel = HomeViewModel(savedState, disposable, appConfig, schedulerProvider,
+        viewModel = HomeViewModel(savedState, disposable, appConfig, schedulerProvider, preferenceProvider,
             metadataManager, userManager, userActivityRepository)
 
         viewModel.facilities.observeForever(facilitiesObserver)
