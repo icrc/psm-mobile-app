@@ -232,10 +232,9 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        // TODO: Use a custom divider decoration
-//        DividerItemDecoration decoration =
-//                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-//        recentActivitiesRecyclerView.addItemDecoration(decoration);
+        recentActivitiesRecyclerView.addItemDecoration(
+                new RecentActivityItemDividerDecoration(
+                        getApplicationContext(), R.drawable.vertical_line_divider));
     }
 
     private void resetRecentActivitiesState() {
