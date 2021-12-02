@@ -27,7 +27,7 @@ class RecentActivityItemDividerDecoration(
                 parent.getChildAt(i).apply {
                     val params = this.layoutParams as RecyclerView.LayoutParams
                     val top = this.bottom + params.bottomMargin
-                    val bottom = top + mDivider.intrinsicHeight + 20
+                    val bottom = top + mDivider.intrinsicHeight + ITEM_SPACING
 
                     mDivider.setBounds(left, top, right, bottom)
                     mDivider.draw(c)
