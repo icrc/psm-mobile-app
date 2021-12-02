@@ -9,13 +9,13 @@ import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.Constants
+import com.baosystems.icrc.psm.utils.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.maintenance.D2Error
 import timber.log.Timber
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -174,9 +174,7 @@ class SyncViewModel @Inject constructor(
     private fun handleSyncCompleted() {
         description.postValue("Syncing completed!")
 
-        val syncDate = LocalDateTime.now().format(
-            DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT)
-        )
+        val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
         preferenceProvider.setValue(Constants.LAST_SYNC_DATE, syncDate)
         syncResult.postValue(Result(true, R.drawable.ic_outline_check_circle_36))
 

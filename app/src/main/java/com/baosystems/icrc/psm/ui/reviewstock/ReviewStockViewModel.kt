@@ -8,6 +8,7 @@ import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
+import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
@@ -23,12 +24,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReviewStockViewModel @Inject constructor(
-    private val savedState: SavedStateHandle,
+    savedState: SavedStateHandle,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
+    preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
     private val userActivityRepository: UserActivityRepository
-): BaseViewModel() {
+): BaseViewModel(preferenceProvider) {
     // TODO: Figure out a better way than using !!
     val data = savedState.get<ReviewStockData>(INTENT_EXTRA_STOCK_ENTRIES)!!
     val transaction = data.transaction

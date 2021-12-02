@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
+import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
@@ -27,8 +28,9 @@ class ManageStockViewModel @Inject constructor(
     val disposable: CompositeDisposable,
     val config: AppConfig,
     val schedulerProvider: BaseSchedulerProvider,
+    preferenceProvider: PreferenceProvider,
     stockManager: StockManager,
-): BaseViewModel() {
+): BaseViewModel(preferenceProvider) {
     // TODO: Handle cases where transaction is null. (remove transaction!!)
     val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!
 

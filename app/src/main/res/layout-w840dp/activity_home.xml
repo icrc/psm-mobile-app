@@ -274,13 +274,6 @@
                 tools:text="@string/recent_activities_loading_message" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Footer -->
-        <include
-            android:id="@+id/homeFooter"
-            layout="@layout/footer"
-            app:lastSyncDate="@{viewModel.lastSyncDate}" />
-
-
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fabNext"
@@ -294,7 +287,13 @@
             android:text="@string/next"
             app:icon="@drawable/arrow_forward"
             app:iconGravity="textEnd"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/homeFooter"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Footer -->
+        <include
+            android:id="@+id/homeFooter"
+            layout="@layout/footer"
+            app:lastSyncDate="@{viewModel.lastSyncDate}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
