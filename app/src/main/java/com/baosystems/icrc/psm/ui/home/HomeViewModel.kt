@@ -23,7 +23,6 @@ import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
-import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -63,17 +62,13 @@ class HomeViewModel @Inject constructor(
     private val destination: LiveData<Option>
         get() = _destination
 
-    private val _facilities = MutableLiveData<List<OrganisationUnit>>()
-    val facilities: LiveData<List<OrganisationUnit>>
+    private val _facilities = MutableLiveData<NetworkState<List<OrganisationUnit>>>()
+    val facilities: LiveData<NetworkState<List<OrganisationUnit>>>
         get() =  _facilities
 
-    private val _destinations = MutableLiveData<List<Option>>()
-    val destinationsList: LiveData<List<Option>>
+    private val _destinations = MutableLiveData<NetworkState<List<Option>>>()
+    val destinationsList: LiveData<NetworkState<List<Option>>>
         get() = _destinations
-
-    private val _error = MutableLiveData<String>(null)
-    val error: LiveData<String>
-        get() = _error
 
     private val _recentActivities: MutableLiveData<NetworkState<List<UserActivity>>> = MutableLiveData()
     val recentActivities: LiveData<NetworkState<List<UserActivity>>>
@@ -86,36 +81,36 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadDestinations() {
-        // TODO: Handle situations where the list of destinations cannot be loaded
+        _destinations.postValue(NetworkState.Loading)
+
         disposable.add(
             metadataManager.destinations()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
+                    { _destinations.postValue(NetworkState.Success<List<Option>>(it)) },
                     {
-                        _destinations.postValue(it)
-                    },
-                    {
-                        // TODO: Display error to the user
-                        Timber.e("Unable to load destinations: ${it.localizedMessage}")
+                        it.printStackTrace()
+                        _destinations.postValue(NetworkState.Error(R.string.destinations_load_error))
                     })
         )
     }
 
     private fun loadFacilities() {
-        // TODO: Handle situations where the list of facilities cannot be loaded
+        _facilities.postValue(NetworkState.Loading)
+
         disposable.add(
             metadataManager.facilities(config.program)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
                     {
-                        _facilities.postValue(it)
+                        _facilities.postValue(NetworkState.Success(it))
 
                         if (it.size == 1) _facility.postValue(it[0])
                     }, {
-                        // TODO: Use resource file for facilities loading error messages
-                        _error.postValue("Unable to load facilities - ${it.message}")
+                        it.printStackTrace()
+                        _facilities.postValue(NetworkState.Error(R.string.facilities_load_error))
                     }
                 )
         )

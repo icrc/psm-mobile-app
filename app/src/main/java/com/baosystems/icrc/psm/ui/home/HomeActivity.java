@@ -45,7 +45,6 @@ import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 @AndroidEntryPoint
 public class HomeActivity extends BaseActivity {
@@ -87,28 +86,37 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void attachObservers() {
-        viewModel.getFacilities().observe(this, facilitiesList ->
-                    facilityTextView.setAdapter(
-                            new GenericListAdapter<>(this, R.layout.list_item, facilitiesList)
-                    )
-        );
+        viewModel.getFacilities().observe(this, networkState -> {
+            if (reportNetworkError(networkState)) return;
 
-        viewModel.getDestinationsList().observe(this, destinations ->
+            if (networkState.getClass() == NetworkState.Success.class) {
+                List<OrganisationUnit> destinations =
+                        ((NetworkState.Success<List<OrganisationUnit>>) networkState).getResult();
                 distributedToTextView.setAdapter(
-                        new GenericListAdapter<>(
-                                this, R.layout.list_item, destinations
-        )));
-
-        viewModel.getError().observe(this, message -> {
-            if (message != null) {
-                Timber.d("Error: %s", message);
-                ActivityManager.showErrorMessage(binding.getRoot(), message);
+                        new GenericListAdapter<>(this, R.layout.list_item, destinations));
             }
         });
 
-//        viewModel.getRecentActivitiesStatus().observe(this, networkState -> {
-//            Timber.d("%s", networkState);
-//        });
+        viewModel.getDestinationsList().observe(this, networkState -> {
+            if (reportNetworkError(networkState)) return;
+
+            if (networkState.getClass() == NetworkState.Success.class) {
+                List<Option> destinations = ((NetworkState.Success<List<Option>>) networkState).getResult();
+                distributedToTextView.setAdapter(
+                        new GenericListAdapter<>(
+                                this, R.layout.list_item, destinations
+                        ));
+            }
+        });
+    }
+
+    private <T> boolean reportNetworkError(NetworkState<T> networkState) {
+        if (networkState.getClass() == NetworkState.Error.class) {
+            ActivityManager.showErrorMessage(binding.getRoot(),
+                    getString(((NetworkState.Error) networkState).getErrorStringRes()));
+            return true;
+        }
+        return false;
     }
 
     private void setupComponents() {
