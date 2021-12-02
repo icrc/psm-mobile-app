@@ -59,6 +59,7 @@
     <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_64">64dp</dimen>
 
     <dimen name="scan_button_corner_radius">24dp</dimen>
 

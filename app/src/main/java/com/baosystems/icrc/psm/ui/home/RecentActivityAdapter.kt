@@ -9,15 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.databinding.ListItemRecentActivityBinding
-import java.time.format.DateTimeFormatter
+import com.baosystems.icrc.psm.utils.DateUtils
 
 class ViewHolder private constructor(val binding: ListItemRecentActivityBinding):
     RecyclerView.ViewHolder(binding.root) {
     fun bindTo(item: UserActivity) {
         binding.transactionTypeTextview.text = item.type.name
-        binding.creationDateTextview.text = item.date.format(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        )
+        binding.creationDateTextview.text = item.date.format(DateUtils.getDateTimePattern())
 
         if(item.type == TransactionType.DISTRIBUTION) {
             binding.distributedToTextview.text = item.distributedTo ?: ""
@@ -62,8 +60,6 @@ class RecentActivityAdapter: ListAdapter<UserActivity, ViewHolder> (DIFF_CALLBAC
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val item = getItem(position)
-
-        // TODO: add listeners on the properties as required
         viewHolder.bindTo(item)
     }
 }

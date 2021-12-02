@@ -9,7 +9,6 @@
     <string name="correction">Correction</string>
     <string name="transaction_date">Date of Transaction</string>
     <string name="recent_activity">Recent Activity</string>
-    <string name="recent_activity_icon_content_description">Directional arrow</string>
     <string name="last_synced">Last synced:</string>
     <string name="select_facility">Select Facility</string>
     <string name="distributed_to">Distributed to</string>
@@ -25,6 +24,14 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot password\?</string>
+
+    <string name="recent_activities_loading_message">
+        Loading recent activities&#8230;
+    </string>
+
+    <string name="recent_activities_empty_message">
+        You are yet to perform any activity
+    </string>
 
     <!-- FloatingActionButtons -->
     <string name="next">Next</string>
@@ -110,6 +117,9 @@
     <string name="config_file_program_error">
         Stock program id has not been set in the configuration file
     </string>
+    <string name="recent_activities_load_error">
+        Unable to load your recent activities
+    </string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_sync_info">Sync information</string>
@@ -119,7 +129,9 @@
     <string name="content_desc_distributed_to">Distributed to</string>
     <string name="content_desc_last_sync">Last Synced</string>
     <string name="content_desc_quantity_info">More information on quantity</string>
-    <string name="content_desc_remove_icon">Remove item</string>
+    <string name="content_desc_remove">Remove item</string>
+    <string name="content_desc_recent_activity">Directional arrow</string>
+    <string name="content_desc_recent_activity_status">Recent activity status</string>
 
     <string name="transaction_label">Transaction</string>
     <string name="missing_configuration">

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ListError">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/error</item>
+    </style>
+
+    <style name="ListNormal">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/gray_400</item>
+    </style>
+</resources>

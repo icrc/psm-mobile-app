@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_clear_24"
-            android:contentDescription="@string/content_desc_remove_icon"
+            android:contentDescription="@string/content_desc_remove"
             android:background="?android:selectableItemBackground" />
     </FrameLayout>
 </LinearLayout>

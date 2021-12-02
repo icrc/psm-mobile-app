@@ -3,7 +3,9 @@ package com.baosystems.icrc.psm.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.NetworkState
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
@@ -73,8 +75,8 @@ class HomeViewModel @Inject constructor(
     val error: LiveData<String>
         get() = _error
 
-    private val _recentActivities: MutableLiveData<List<UserActivity>> = MutableLiveData()
-    val recentActivities: LiveData<List<UserActivity>>
+    private val _recentActivities: MutableLiveData<NetworkState<List<UserActivity>>> = MutableLiveData()
+    val recentActivities: LiveData<NetworkState<List<UserActivity>>>
         get() = _recentActivities
 
     init {
@@ -120,15 +122,20 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadRecentActivities() {
+        _recentActivities.postValue(NetworkState.Loading)
+
         disposable.add(
             userActivityRepository.getRecentActivities(USER_ACTIVITY_COUNT)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { _recentActivities.postValue(it) },
                     {
-                        // TODO: Display any errors to the user
+                        _recentActivities.postValue(NetworkState.Success(it))
+                    },
+                    {
                         it.printStackTrace()
+                        _recentActivities.postValue(
+                            NetworkState.Error(R.string.recent_activities_load_error))
                     }
                 )
         )

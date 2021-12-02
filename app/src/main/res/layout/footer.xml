@@ -8,7 +8,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/footer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/border"

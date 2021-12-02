@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.graphics.BlendMode;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.AppConfig;
+import com.baosystems.icrc.psm.data.NetworkState;
 import com.baosystems.icrc.psm.data.TransactionType;
+import com.baosystems.icrc.psm.data.persistence.UserActivity;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
 import com.baosystems.icrc.psm.ui.adapters.RecentActivityAdapter;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
@@ -36,6 +39,7 @@ import org.hisp.dhis.android.core.option.Option;
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -49,7 +53,9 @@ public class HomeActivity extends BaseActivity {
     private AutoCompleteTextView facilityTextView;
     private AutoCompleteTextView distributedToTextView;
     private RecyclerView recentActivitiesRecyclerView;
+
     private HomeViewModel viewModel;
+    private RecentActivityAdapter recentActivityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,10 @@ public class HomeActivity extends BaseActivity {
                 ActivityManager.showErrorMessage(binding.getRoot(), message);
             }
         });
+
+//        viewModel.getRecentActivitiesStatus().observe(this, networkState -> {
+//            Timber.d("%s", networkState);
+//        });
     }
 
     private void setupComponents() {
@@ -185,14 +195,80 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupRecentActivities() {
-        RecentActivityAdapter recentActivityAdapter = new RecentActivityAdapter();
+        recentActivityAdapter = new RecentActivityAdapter();
         recentActivitiesRecyclerView.setAdapter(recentActivityAdapter);
-        viewModel.getRecentActivities().observe(this, recentActivityAdapter::submitList);
+        viewModel.getRecentActivities().observe(this, networkState -> {
+            // Loading
+            if (networkState == NetworkState.Loading.INSTANCE) {
+                showLoadingRecentActivities();
+                return;
+            }
+
+            // Error
+            if (networkState.getClass() == NetworkState.Error.class) {
+                showRecentActivitiesError(networkState);
+                return;
+            }
+
+            // Success
+            if (networkState.getClass() == NetworkState.Success.class) {
+                showRecentActivities(networkState);
+            }
+        });
 
         // TODO: Use a custom divider decoration
 //        DividerItemDecoration decoration =
 //                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //        recentActivitiesRecyclerView.addItemDecoration(decoration);
+    }
+
+    private void resetRecentActivitiesState() {
+        binding.recentActivityInfoHolder.setVisibility(View.INVISIBLE);
+        binding.recentActivityList.setVisibility(View.INVISIBLE);
+
+        binding.recentActivityMessageTextview.setText("");
+        binding.recentActivityMessageTextview.setTextAppearance(R.style.ListNormal);
+    }
+
+    private void showRecentActivitiesError(NetworkState<List<UserActivity>> networkState) {
+        resetRecentActivitiesState();
+
+        binding.recentActivityInfoHolder.setVisibility(View.VISIBLE);
+        binding.recentActivityInfoImageview.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_error)
+        );
+
+        int errorRes = ((NetworkState.Error) networkState).getErrorStringRes();
+        binding.recentActivityMessageTextview.setText(errorRes);
+        binding.recentActivityMessageTextview.setTextAppearance(R.style.ListError);
+    }
+
+    private void showRecentActivities(NetworkState<List<UserActivity>> networkState) {
+        resetRecentActivitiesState();
+
+        List<UserActivity> activities =
+                ((NetworkState.Success<List<UserActivity>>) networkState).getResult();
+
+        if (!activities.isEmpty()) {
+            binding.recentActivityList.setVisibility(View.VISIBLE);
+            recentActivityAdapter.submitList(activities);
+        } else {
+            binding.recentActivityInfoHolder.setVisibility(View.VISIBLE);
+            binding.recentActivityMessageTextview.setText(R.string.recent_activities_empty_message);
+            binding.recentActivityInfoImageview.setImageDrawable(
+                    ContextCompat.getDrawable(this, R.drawable.ic_empty_list)
+            );
+        }
+    }
+
+    private void showLoadingRecentActivities() {
+        resetRecentActivitiesState();
+
+        binding.recentActivityInfoHolder.setVisibility(View.VISIBLE);
+        binding.recentActivityInfoImageview.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_loading_activity)
+        );
+        binding.recentActivityMessageTextview.setText(R.string.recent_activities_loading_message);
     }
 
 
