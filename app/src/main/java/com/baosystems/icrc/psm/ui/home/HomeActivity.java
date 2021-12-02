@@ -34,6 +34,7 @@ import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.GenericListAdapter;
 import com.baosystems.icrc.psm.ui.managestock.ManageStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
+import com.baosystems.icrc.psm.utils.DateUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -194,8 +195,11 @@ public class HomeActivity extends BaseActivity {
 
     private void setupTransactionDateField() {
         // TODO: Theme datepicker, if necessary
-        // TODO: Set the initial date to show in the picker, which should be equal to the model date
-        MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker().build();
+        MaterialDatePicker<Long> picker = MaterialDatePicker.Builder
+                .datePicker()
+                .setCalendarConstraints(DateUtils.getMonthStartToNowConstraint())
+                .build();
+
         picker.addOnPositiveButtonClickListener(viewModel::setTransactionDate);
 
         // Show the date picker when the calendar icon is clicked
