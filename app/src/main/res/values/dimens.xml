@@ -16,14 +16,12 @@
     <dimen name="toolbar_text_size">20sp</dimen>
 
     <!-- Transaction buttons -->
-    <dimen name="transaction_button_text_size">12sp</dimen>
+    <dimen name="transaction_button_text_size">14sp</dimen>
     <dimen name="transaction_button_lr_padding">16dp</dimen>
     <dimen name="transaction_button_tb_padding">24dp</dimen>
     <dimen name="transaction_center_button_margin">8dp</dimen>
-    <dimen name="content_area_lr_margin">8dp</dimen>
-    <dimen name="content_area_top_margin">16dp</dimen>
     <dimen name="transaction_button_divider">16dp</dimen>
-    <dimen name="transaction_button_corner_radius">4dp</dimen>
+    <dimen name="transaction_button_corner_radius">6dp</dimen>
     <dimen name="transaction_button_highlight_width">4dp</dimen>
     <dimen name="transaction_button_no_highlight_width">0dp</dimen>
 
@@ -32,6 +30,8 @@
     <dimen name="input_to_label_top_margin">4dp</dimen>
 
     <!-- Container -->
+    <dimen name="content_area_lr_margin">8dp</dimen>
+    <dimen name="content_area_top_margin">16dp</dimen>
     <dimen name="choices_top_margin">16dp</dimen>
     <dimen name="choices_padding_top">16dp</dimen>
     <dimen name="choices_padding_left">16dp</dimen>

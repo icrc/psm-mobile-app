@@ -9,6 +9,7 @@
     <dimen name="transaction_center_button_margin">16dp</dimen>
     <dimen name="content_area_lr_margin">24dp</dimen>
     <dimen name="content_area_top_margin">32dp</dimen>
+    <dimen name="transaction_button_corner_radius">12dp</dimen>
 
     <!-- Misc -->
     <dimen name="input_to_label_top_margin">4dp</dimen>
