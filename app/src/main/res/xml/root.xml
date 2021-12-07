@@ -7,7 +7,7 @@
 
     <Preference
         app:title="@string/language"
-        app:fragment="com.baosystems.icrc.psm.views.settings.SettingsActivity$LanguagePreferencesFragment"/>
+        app:fragment="com.baosystems.icrc.psm.ui.settings.SettingsActivity$LanguagePreferencesFragment"/>
 
     <Preference
         app:title="@string/force_sync"
