@@ -18,7 +18,6 @@ import com.baosystems.icrc.psm.utils.Constants.SEARCH_QUERY_DEBOUNCE
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -69,17 +68,11 @@ class ManageStockViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { result ->
-                        Timber.d("Distinct: $result")
-                        search.postValue(
-                            SearchParametersModel(result, null, transaction.facility.uid)
-                        )
+                    { result -> search.postValue(
+                        SearchParametersModel(result, null, transaction.facility.uid))
                     },
-                    {
-                        // TODO: Report the error to the user
-                        it.printStackTrace()
-                        Timber.w(it, "Unable to fetch search results")
-                    })
+                    { it.printStackTrace() }
+                )
         )
     }
 

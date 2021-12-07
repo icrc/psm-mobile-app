@@ -51,9 +51,8 @@ public class ManageStockActivity extends BaseActivity {
         binding.setLifecycleOwner(this);
         binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
-        // Set the toolbar title to the active transaction name
-        binding.toolbarContainer.tvToolbar.setText(
-                viewModel.getTransaction().getTransactionType().name());
+        // Set the activity title to the active transaction name
+        setTitle(viewModel.getTransaction().getTransactionType().name());
 
         setupSearchInput();
         setupRecyclerView();
@@ -106,7 +105,6 @@ public class ManageStockActivity extends BaseActivity {
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
-//        recyclerView.setHasFixedSize(true);
 
         ItemWatcher<StockEntry, Long> itemWatcher =
                 new ItemWatcher<StockEntry, Long>() {

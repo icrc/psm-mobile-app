@@ -107,6 +107,13 @@
         </item>
     </style>
 
+    <style name="Widget.App.Default.Toolbar"
+        parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.App.Default.Toolbar
+        </item>
+    </style>
+
     <style name="Widget.App.Distribution.Toolbar"
         parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="materialThemeOverlay">
@@ -128,22 +135,32 @@
         </item>
     </style>
 
+    <style name="ThemeOverlay.App.Default.Toolbar" parent="">
+        <item name="colorPrimary">@color/gray_900</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+<!--        <item name="textAllCaps">true</item>-->
+    </style>
+
     <style name="ThemeOverlay.App.Distribution.Toolbar" parent="">
         <item name="colorPrimary">@color/distribution_color</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
+<!--        <item name="textAllCaps">true</item>-->
     </style>
 
     <style name="ThemeOverlay.App.Discard.Toolbar" parent="">
         <item name="colorPrimary">@color/discard_color</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
+<!--        <item name="textAllCaps">true</item>-->
     </style>
 
     <style name="ThemeOverlay.App.Correction.Toolbar" parent="">
         <item name="colorPrimary">@color/correction_color</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
+<!--        <item name="textAllCaps">true</item>-->
     </style>
 
     <style name="Theme.App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

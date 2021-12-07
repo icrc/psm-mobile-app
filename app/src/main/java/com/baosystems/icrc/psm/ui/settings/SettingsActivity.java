@@ -49,12 +49,6 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     @Override
-    public void setTitle(CharSequence title) {
-        super.setTitle(title);
-        binding.tvToolbarTitle.setText(getTitle());
-    }
-
-    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 

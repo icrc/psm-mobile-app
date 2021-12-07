@@ -84,7 +84,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayShowTitleEnabled(true)
         } else Timber.w("Support action bar is null")
     }
 

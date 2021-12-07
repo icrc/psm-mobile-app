@@ -12,7 +12,7 @@ object Constants {
     const val PASSWORD = "PASSWORD"
 
     const val LAST_SYNC_DATE = "LAST_SYNC_DATE"
-    const val ITEM_PAGE_SIZE = 10
+    const val ITEM_PAGE_SIZE = 20
     const val USER_ACTIVITY_COUNT = 15
 
     // Configuration file keys

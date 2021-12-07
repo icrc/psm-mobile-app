@@ -46,8 +46,8 @@ public class ReviewStockActivity extends BaseActivity {
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
-        // Set the toolbar title
-        binding.tvToolbar.setText(viewModel.getTransaction().getTransactionType().name());
+        // Set the activity title
+        setTitle(viewModel.getTransaction().getTransactionType().name());
 
         setupSearchInput();
         setupRecyclerView();
@@ -154,6 +154,6 @@ public class ReviewStockActivity extends BaseActivity {
     @Nullable
     @Override
     public Toolbar getToolBar() {
-        return ((ActivityReviewStockBinding) getViewBinding()).toolbar;
+        return ((ActivityReviewStockBinding) getViewBinding()).toolbarContainer.toolbar;
     }
 }
