@@ -28,9 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.home.HomeActivity"
-            android:label="@string/title_activity_home" />
+        <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".ui.managestock.ManageStockActivity"
             android:parentActivityName=".ui.home.HomeActivity" />

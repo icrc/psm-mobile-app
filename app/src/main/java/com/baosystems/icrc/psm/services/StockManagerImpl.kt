@@ -63,13 +63,11 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
             .mapByPage(this::filterDeleted)
             .mapByPage { transform(it, config) }
 
-        // TODO: Make the pageSize dynamic once you're able to determine the best value
         return LivePagedListBuilder(object : DataSource.Factory<TrackedEntityInstance, StockEntry>() {
             override fun create(): DataSource<TrackedEntityInstance, StockEntry> {
                 return dataSource
             }
         }, Constants.ITEM_PAGE_SIZE).build()
-
     }
 
     private fun transform(teis: List<TrackedEntityInstance>, config: AppConfig): List<StockEntry> {

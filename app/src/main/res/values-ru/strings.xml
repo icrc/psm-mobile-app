@@ -1,0 +1,129 @@
+<resources>
+    <string name="app_name">Управление запасами аптек</string>
+    <string name="title_activity_home">Дом</string>
+    <string name="title_activity_review">Рассмотрение</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="distribution">Распределение</string>
+    <string name="discard">Отказаться</string>
+    <string name="correction">Исправление</string>
+    <string name="transaction_date">Дата транзакции</string>
+    <string name="recent_activity">Недавняя активность</string>
+    <string name="last_synced">Последняя синхронизация:</string>
+    <string name="select_facility">Выбрать объект</string>
+    <string name="distributed_to">Распространено в</string>
+    <string name="select_one">Выбери один</string>
+
+    <!-- Sign in -->
+    <string name="server_url">URL-адрес сервера</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_in_to_your_account">Войдите в свой аккаунт</string>
+    <string name="sign_in_to_with_oidc">Войти через Microsoft</string>
+    <string name="non_icrc_staff_members">Только для сотрудников, не являющихся сотрудниками МККК.</string>
+    <string name="icrc_staff_members">Только для сотрудников МККК</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_password">Забыл пароль\?</string>
+
+    <string name="recent_activities_loading_message">Загрузка недавних действий&#8230;</string>
+    <string name="recent_activities_empty_message">Вы еще не выполняли никаких действий</string>
+
+    <!-- FloatingActionButtons -->
+    <string name="next">Следующий</string>
+    <string name="review">Рассмотрение</string>
+    <string name="transaction">Сделка</string>
+
+    <string name="scan_barcode">Сканировать штрих-код</string>
+
+    <string name="scanning">Сканирование&#8230;</string>
+    <string name="search">Поиск</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+    <string name="confirmation">Подтверждение</string>
+
+    <!-- Languages -->
+    <string name="language_english">английский</string>
+    <string name="language_french">французкий язык</string>
+    <string name="language_spanish">испанский</string>
+    <string name="language_arabic">арабский</string>
+    <string name="language_russian">русский</string>
+
+    <!-- Settings -->
+    <string name="use_microphone_for_data_entry">Используйте микрофон для ввода данных</string>
+    <string name="language">Язык</string>
+    <string name="force_sync">Синхронизация силы</string>
+    <string name="logout">Выйти</string>
+
+
+    <!-- Stock table -->
+    <string name="item">Элемент</string>
+    <string name="stock_on_hand">Наличие на складе</string>
+    <string name="quantity">Количество</string>
+    <string name="items_available">доступные предметы</string>
+
+
+    <string name="positive_value">
+        <b>Положительное значение</b>  = \"недостающее количество\" (<i>физический запас меньше расчетного</i>)
+    </string>
+    <string name="negative_value">
+        <b><span style="color: #C81818">Отрицательное значение</span></b> = \"найдено в наличии\"     (<i>физический запас превышает расчетное значение</i>)
+    </string>
+
+    <!-- Messages -->
+    <string name="cannot_proceed_from_home_warning">Все поля должны быть заполнены, прежде чем вы сможете продолжить.</string>
+    <string name="previous_page_lose_data_warning">
+        Вы уверены, что хотите вернуться к предыдущему экрану?
+        Вы потеряете только что введенные данные, если решите продолжить.
+    </string>
+    <string name="transaction_completed">Сделка успешно завершена!</string>
+    <string name="transaction_cancelled">Транзакция успешно отменена!</string>
+    <string name="force_sync_confirmation_message">Вы уверены, что хотите принудительно синхронизировать \?</string>
+    <string name="logout_confirmation_message">Вы действительно хотите выйти\?</string>
+
+
+
+    <string name="remove_confirmation_message">
+        Вы уверены, что хотите навсегда сохранить %1$s для исправления \"%2$s\"?
+         Это действие не может быть отменено.
+    </string>
+
+    <plurals name="items_found">
+        <item quantity="one">%d предмет найден</item>
+        <item quantity="few">%d найденные предметы</item>
+        <item quantity="many">%d найденные предметы</item>
+        <item quantity="other">%d найденные предметы</item>
+    </plurals>
+    <string name="prompt_email">Эл. адрес</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войдите или зарегистрируйтесь</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="welcome">"Добро пожаловать !"</string>
+    <string name="invalid_username">Неверное имя пользователя</string>
+    <string name="invalid_password">Пароль должен содержать более 5 символов.</string>
+    <string name="login_failed">"Авторизация не удалась"</string>
+    <string name="resync">Повторная синхронизация</string>
+
+    <!-- Errors -->
+    <string name="login_error">Невозможно войти</string>
+    <string name="config_file_error">Невозможно загрузить файл конфигурации</string>
+    <string name="config_file_program_error">Идентификатор стоковой программы не указан в файле конфигурации</string>
+    <string name="recent_activities_load_error">Не удалось загрузить ваши недавние действия</string>
+    <string name="facilities_load_error">Невозможно загрузить список доступных объектов</string>
+    <string name="destinations_load_error">Невозможно загрузить список доступных направлений</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="content_description_sync_info">Информация о синхронизации</string>
+    <string name="content_description_search">Поиск</string>
+    <string name="content_description_clear_text">Очистить текст</string>
+    <string name="content_desc_transaction_date">Показать выбор даты</string>
+    <string name="content_desc_distributed_to">Распространено в</string>
+    <string name="content_desc_last_sync">Последняя синхронизация</string>
+    <string name="content_desc_quantity_info">Больше информации о количестве</string>
+    <string name="content_desc_remove">Убрать предмет</string>
+    <string name="content_desc_recent_activity">Направленная стрелка</string>
+    <string name="content_desc_recent_activity_status">Статус недавней активности</string>
+
+    <string name="transaction_label">Сделка</string>
+    <string name="missing_configuration">В файле конфигурации отсутствуют одно или несколько обязательных полей.</string>
+    <string name="select_language">Выберите желаемый язык</string>
+</resources>

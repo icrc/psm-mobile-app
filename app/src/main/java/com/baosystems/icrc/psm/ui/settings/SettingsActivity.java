@@ -14,6 +14,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivitySettingsBinding;
+import com.baosystems.icrc.psm.utils.LocaleManager;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -103,10 +104,32 @@ public class SettingsActivity extends AppCompatActivity
     /**
      * The languages fragment
      */
-    public static class LanguagePreferencesFragment extends PreferenceFragmentCompat {
+    public static class LanguagePreferencesFragment extends PreferenceFragmentCompat
+            implements Preference.OnPreferenceChangeListener {
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.languages, rootKey);
+            findPreference(getString(R.string.language_pref_key)).setOnPreferenceChangeListener(this);
         }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            // TODO: Find a way to refresh the resources at runtime (current options: restart activity)
+            reloadApp();
+            return true;
+        }
+
+        private void reloadApp() {
+            // TODO: This only reloads the SettingsActivity only. The back stack is unchanged
+            Intent intent = getSettingsActivityIntent(requireContext());
+            requireActivity().finish();
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleManager.setLocale(newBase));
     }
 }

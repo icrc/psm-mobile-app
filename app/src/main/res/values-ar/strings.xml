@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">إدارة مخزون الصيدلة</string>
+    <string name="title_activity_home">الصفحة الرئيسية</string>
+    <string name="title_activity_review">إعادة النظر</string>
+    <string name="action_settings">إعدادات</string>
+
+    <string name="distribution">توزيع</string>
+    <string name="discard">تجاهل</string>
+    <string name="correction">تصحيح</string>
+    <string name="transaction_date">تاريخ الصفقة</string>
+    <string name="recent_activity">النشاط الأخير</string>
+    <string name="last_synced">آخر مزامنة:</string>
+    <string name="select_facility">حدد منشأة</string>
+    <string name="distributed_to">وزعت على</string>
+    <string name="select_one">اختر واحدة</string>
+
+    <!-- Sign in -->
+    <string name="server_url">عنوان URL للخادم</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="sign_in_to_your_account">تسجيل الدخول إلى حسابك</string>
+    <string name="sign_in_to_with_oidc">قم بتسجيل الدخول باستخدام Microsoft</string>
+    <string name="non_icrc_staff_members">لغير موظفي اللجنة الدولية للصليب الأحمر فقط</string>
+    <string name="icrc_staff_members">لموظفي اللجنة الدولية فقط</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="password">كلمه السر</string>
+    <string name="forgot_password">هل نسيت كلمة السر؟</string>
+
+    <string name="recent_activities_loading_message">&#8230;تحميل الأنشطة الأخيرة</string>
+
+    <string name="recent_activities_empty_message">أنت لم تقم بأي نشاط بعد</string>
+
+    <!-- FloatingActionButtons -->
+    <string name="next">التالي</string>
+    <string name="review">إعادة النظر</string>
+    <string name="transaction">عملية تجارية</string>
+
+    <string name="scan_barcode">مسح الرمز الشريطى</string>
+    <string name="scanning">&#8230;يتم المسح</string>
+    <string name="search">بحث</string>
+    <string name="delete">حذف</string>
+    <string name="cancel">يلغي</string>
+    <string name="confirmation">تأكيد</string>
+
+    <!-- Languages -->
+    <string name="language_english">إنجليزي</string>
+    <string name="language_french">فرنسي</string>
+    <string name="language_spanish">الأسبانية</string>
+    <string name="language_arabic">عربي</string>
+    <string name="language_russian">الروسية</string>
+
+    <!-- Settings -->
+    <string name="use_microphone_for_data_entry">استخدم الميكروفون لإدخال البيانات</string>
+    <string name="language">لغة</string>
+    <string name="force_sync">قوة التزامن</string>
+    <string name="logout">تسجيل خروج</string>
+
+    <!-- Stock table -->
+    <string name="item">غرض</string>
+    <string name="stock_on_hand">مخزون على يد</string>
+    <string name="quantity">كمية</string>
+    <string name="items_available">العناصر المتاحة</string>
+    <string name="positive_value">
+        (<i>المخزون المادي أقل من القيمة المحسوبة</i>) \"الكمية المفقودة\" = <b>القيمة الموجبة</b>
+    </string>
+    <string name="negative_value">
+        (<i>المخزون المادي أكبر من القيمة المحسوبة</i>)    \"الموجود في المخزون\" = <b><span style="color: #C81818">القيمة السالبة</span></b>
+    </string>
+
+    <!-- Messages -->
+    <string name="cannot_proceed_from_home_warning">يجب ملء جميع الحقول قبل أن تتمكن من المتابعة.</string>
+
+    <string name="previous_page_lose_data_warning">هل أنت متأكد أنك تريد العودة إلى الشاشة السابقة؟ ستفقد البيانات التي تم إدخالها للتو إذا قررت المتابعة.</string>
+    <string name="transaction_completed">تمت المعاملة بنجاح!</string>
+    <string name="transaction_cancelled">تم إلغاء الصفقة بنجاح!</string>
+    <string name="force_sync_confirmation_message">هل أنت متأكد أنك تريد فرض التزامن ؟</string>
+    <string name="logout_confirmation_message">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+
+    <string name="remove_confirmation_message">
+        هل أنت متأكد من أنك تريد٪ s$1% بشكل دائم إدخال تصحيح \"%2$s\"؟
+        This action cannot be undone.
+    </string>
+
+    <plurals name="items_found">
+        <item quantity="zero">%d تم العثور على العنصر %d</item>
+        <item quantity="one">%d تم العثور على العنصر %d</item>
+        <item quantity="two">تم العثور على العناصر d%</item>
+        <item quantity="few">تم العثور على العناصر d%</item>
+        <item quantity="many"> %dتم العثور على العناصر %d</item>
+    </plurals>
+    <string name="prompt_email">بريد الالكتروني</string>
+    <string name="prompt_password">كلمه السر</string>
+    <string name="action_sign_in">تسجيل الدخول أو التسجيل</string>
+    <string name="action_sign_in_short">تسجيل الدخول</string>
+    <string name="welcome">"أهلا بك !"</string>
+    <string name="invalid_username">اسم مستخدم غير صالح</string>
+    <string name="invalid_password">يجب أن تكون كلمة المرور> 5 أحرف</string>
+    <string name="login_failed">"فشل عملية الدخول"</string>
+    <string name="resync">ريسينك</string>
+
+    <!-- Errors -->
+    <string name="login_error">غير قادر على تسجيل الدخول</string>
+    <string name="config_file_error">تعذر تحميل ملف التكوين</string>
+    <string name="config_file_program_error">لم يتم تعيين معرف برنامج المخزون في ملف التكوين</string>
+    <string name="recent_activities_load_error">غير قادر على تحميل أنشطتك الأخيرة</string>
+    <string name="facilities_load_error">تعذر تحميل قائمة المرافق المتاحة</string>
+    <string name="destinations_load_error">تعذر تحميل قائمة الوجهات المتاحة</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="content_description_sync_info">معلومات المزامنة</string>
+    <string name="content_description_search">بحث</string>
+    <string name="content_description_clear_text">نص واضح</string>
+    <string name="content_desc_transaction_date">إظهار منتقي التاريخ</string>
+    <string name="content_desc_distributed_to">وزعت على</string>
+    <string name="content_desc_last_sync">آخر مزامنة</string>
+    <string name="content_desc_quantity_info">مزيد من المعلومات حول الكمية</string>
+    <string name="content_desc_remove">إزالة بند</string>
+    <string name="content_desc_recent_activity">سهم اتجاهي</string>
+    <string name="content_desc_recent_activity_status">حالة النشاط الأخيرة</string>
+
+    <string name="transaction_label">عملية تجارية</string>
+    <string name="missing_configuration">واحد أو أكثر من الحقول المطلوبة مفقود في ملف التكوين</string>
+    <string name="select_language">حدد اللغة التي تريدها</string>
+</resources>

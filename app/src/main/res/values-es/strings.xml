@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gestión de stock de farmacia</string>
+    <string name="title_activity_home">Hogar</string>
+    <string name="title_activity_review">Revisar</string>
+    <string name="action_settings">Ajustes</string>
+
+    <string name="distribution">Distribución</string>
+    <string name="discard">Descarte</string>
+    <string name="correction">Corrección</string>
+    <string name="transaction_date">Fecha de la transacción</string>
+    <string name="recent_activity">Actividad reciente</string>
+    <string name="last_synced">Última sincronización:</string>
+    <string name="select_facility">Seleccionar instalación</string>
+    <string name="distributed_to">Distribuido a</string>
+    <string name="select_one">Seleccione uno</string>
+
+    <!-- Sign in -->
+    <string name="server_url">URL del servidor</string>
+    <string name="sign_in">Registrarse</string>
+    <string name="sign_in_to_your_account">Iniciar sesión en su cuenta</string>
+    <string name="sign_in_to_with_oidc">Iniciar sesión con Microsoft</string>
+    <string name="non_icrc_staff_members">Solo para miembros del personal que no pertenecen al CICR</string>
+    <string name="icrc_staff_members">Solo para miembros del personal del CICR</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="forgot_password">Se te olvidó tu contraseña\?</string>
+
+    <string name="recent_activities_loading_message">Cargando actividades recientes&#8230;</string>
+    <string name="recent_activities_empty_message">Aún no has realizado ninguna actividad.</string>
+
+    <!-- FloatingActionButtons -->
+    <string name="next">próximo</string>
+    <string name="review">Revisar</string>
+    <string name="transaction">Transacción</string>
+
+    <string name="scan_barcode">Escanear código de barras</string>
+    <string name="scanning">Exploración&#8230;</string>
+    <string name="search">Buscar</string>
+    <string name="delete">Borrar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirmation">Confirmación</string>
+
+    <!-- Languages -->
+    <string name="language_english">inglés</string>
+    <string name="language_french">francés</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_arabic">Arábica</string>
+    <string name="language_russian">ruso</string>
+
+    <!-- Settings -->
+    <string name="use_microphone_for_data_entry">Utilice el micrófono para la entrada de datos</string>
+    <string name="language">Idioma</string>
+    <string name="force_sync">Forzar sincronización</string>
+    <string name="logout">Cerrar sesión</string>
+
+
+    <!-- Stock table -->
+    <string name="item">Artículo</string>
+    <string name="stock_on_hand">Stock disponible</string>
+    <string name="quantity">Cantidad</string>
+    <string name="items_available">artículos disponibles</string>
+
+    <string name="positive_value">
+        <b>Valor positivo</b>  = \"cantidad faltante\" (<i>stock físico menor que el valor calculado</i>)
+    </string>
+    <string name="negative_value">
+        <b><span style="color: #C81818">Valor negativo</span></b> = \"encontrado en stock\"     (<i>el stock físico es más que el valor calculado</i>)
+    </string>
+
+    <!-- Messages -->
+    <string name="cannot_proceed_from_home_warning">Todos los campos deben completarse antes de poder continuar.</string>
+    <string name="previous_page_lose_data_warning">
+        ¿Está seguro de que desea volver a la pantalla anterior?
+        Perderá los datos que acaba de ingresar si decide continuar.
+    </string>
+    <string name="transaction_completed">¡La transacción se completó con éxito!</string>
+    <string name="transaction_cancelled">¡La transacción fue cancelada con éxito!</string>
+    <string name="force_sync_confirmation_message">¿Está seguro de que desea forzar la sincronización \?</string>
+    <string name="logout_confirmation_message">¿Está seguro de que desea cerrar la sesión\?</string>
+
+    <string name="remove_confirmation_message">
+        ¿Está seguro de que desea %1$s de forma permanente la entrada para la corrección de \"%2$s\"?
+         Esta acción no se puede deshacer.
+    </string>
+
+    <plurals name="items_found">
+        <item quantity="one">%d artículo encontrado</item>
+        <item quantity="other">%d artículos encontrados</item>
+    </plurals>
+    <string name="prompt_email">Correo electrónico</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Ingresa o Registro</string>
+    <string name="action_sign_in_short">Registrarse</string>
+    <string name="welcome">"Bienvenido !"</string>
+    <string name="invalid_username">No es un nombre de usuario válido</string>
+    <string name="invalid_password">La contraseña debe tener> 5 caracteres</string>
+    <string name="login_failed">"Error de inicio de sesion"</string>
+    <string name="resync">Resincronizar</string>
+
+    <!-- Errors -->
+    <string name="login_error">Incapaz de iniciar sesión</string>
+    <string name="config_file_error">No se pudo cargar el archivo de configuración</string>
+    <string name="config_file_program_error">El ID del programa de stock no se ha establecido en el archivo de configuración</string>
+    <string name="recent_activities_load_error">No se pueden cargar sus actividades recientes</string>
+    <string name="facilities_load_error">No se puede cargar la lista de instalaciones disponibles</string>
+    <string name="destinations_load_error">No se puede cargar la lista de destinos disponibles.</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="content_description_sync_info">Sincronizar información</string>
+    <string name="content_description_search">Buscar</string>
+    <string name="content_description_clear_text">Borrar texto</string>
+    <string name="content_desc_transaction_date">Mostrar selector de fecha</string>
+    <string name="content_desc_distributed_to">Distribuido a</string>
+    <string name="content_desc_last_sync">Última sincronización</string>
+    <string name="content_desc_quantity_info">Más información sobre cantidad</string>
+    <string name="content_desc_remove">Remover el artículo</string>
+    <string name="content_desc_recent_activity">Flecha direccional</string>
+    <string name="content_desc_recent_activity_status">Estado de actividad reciente</string>
+
+    <string name="transaction_label">Transacción</string>
+    <string name="missing_configuration">Faltan uno o más campos obligatorios en el archivo de configuración</string>
+    <string name="select_language">Seleccione su idioma deseado</string>
+</resources>

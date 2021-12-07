@@ -46,7 +46,8 @@ public class ReviewStockActivity extends BaseActivity {
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
-        // Set the activity title
+        // Set the activity title to the active transaction name
+        // TODO: use localized name for the title
         setTitle(viewModel.getTransaction().getTransactionType().name());
 
         setupSearchInput();

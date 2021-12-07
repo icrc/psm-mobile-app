@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.ui.settings.SettingsActivity
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
 import com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_MESSAGE
+import com.baosystems.icrc.psm.utils.LocaleManager
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -121,5 +123,9 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleManager.setLocale(newBase))
     }
 }

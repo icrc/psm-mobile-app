@@ -5,7 +5,7 @@
     <PreferenceCategory android:title="@string/language">
         <ListPreference
             app:title="@string/select_language"
-            app:key="languagePreference"
+            app:key="@string/language_pref_key"
             app:entries="@array/languages"
             app:entryValues="@array/languageValues"/>
     </PreferenceCategory>

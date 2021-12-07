@@ -72,6 +72,7 @@ dependencies {
 
     implementation "androidx.legacy:legacy-support-v4:$versions.legacy_support_v4"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.desugar_jdk_libs"
+//    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "com.google.android.material:material:$versions.material"
@@ -91,6 +92,9 @@ dependencies {
     // DI
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+
+    // Barcode scanner
+    implementation "com.journeyapps:zxing-android-embedded:$versions.zxing_android_embedded"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$versions.timber"

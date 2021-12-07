@@ -52,6 +52,7 @@ public class ManageStockActivity extends BaseActivity {
         binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
         // Set the activity title to the active transaction name
+        // TODO: use localized name for the title
         setTitle(viewModel.getTransaction().getTransactionType().name());
 
         setupSearchInput();
