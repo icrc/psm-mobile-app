@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Pharmacy Stock Management</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_review">Review</string>
@@ -25,13 +25,18 @@
     <string name="password">Password</string>
     <string name="forgot_password">Forgot password\?</string>
 
-    <string name="recent_activities_loading_message">
-        Loading recent activities&#8230;
-    </string>
+    <string name="recent_activities_loading_message">Loading recent activities&#8230;</string>
+    <string name="recent_activities_empty_message">You are yet to perform any activity</string>
 
-    <string name="recent_activities_empty_message">
-        You are yet to perform any activity
-    </string>
+    <!-- Sync -->
+    <string name="metadata_sync_in_progress">Syncing metadata&#8230;</string>
+    <string name="metadata_sync_progress">Syncing metadata <xliff:g id="progress_value" example="61%">
+        (%1$d)&#8230;</xliff:g></string>
+    <string name="data_sync_in_progress">Syncing data&#8230;</string>
+    <string name="data_sync_progress">Syncing data <xliff:g id="progress_value" example="61%">
+        (%1$d)&#8230;</xliff:g></string>
+    <string name="sync_error">Unable to complete sync</string>
+    <string name="sync_completed">Syncing completed!</string>
 
     <!-- FloatingActionButtons -->
     <string name="next">Next</string>
@@ -77,7 +82,7 @@
         All fields must be filled before you can proceed.
     </string>
     <string name="previous_page_lose_data_warning">
-        Are you sure you want to go back to the previous screen?
+        Are you sure you want to go back to the previous screen\?
         You will lose the data just entered if you decide to proceed.
     </string>
     <string name="transaction_completed">
@@ -89,12 +94,10 @@
     <string name="force_sync_confirmation_message">
         Are you sure you want to force synchronization\?
     </string>
-    <string name="logout_confirmation_message">
-        Are you sure you want to log out\?
-    </string>
+    <string name="logout_confirmation_message">Are you sure you want to log out\?</string>
 
     <string name="remove_confirmation_message">
-        Are you sure you want to permanently %1$s the entry for the correction of \"%2$s\"?
+        Are you sure you want to permanently %1$s the entry for the correction of \"%2$s\"\?
         This action cannot be undone.
     </string>
 
@@ -147,7 +150,8 @@
 
     <string name="restart_later">Restart Later</string>
     <string name="confirm_app_restart_message">
-        The application needs to be restarted for the changes to be effected, however, any unsaved changes will be lost.\n\nWill you like to proceed with the restart?
+        The application needs to be restarted for the changes to be effected, however,
+        any unsaved changes will be lost.\n\nWill you like to proceed with the restart\?
     </string>
     <string name="language_change_dialog_title">Confirm Restart</string>
     <string name="scan_canceled">Scan cancelled!</string>

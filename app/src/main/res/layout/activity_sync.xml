@@ -30,6 +30,7 @@
 
         <ImageView
             android:id="@+id/infoIcon"
+            android:contentDescription="@string/content_description_sync_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_24"
             tools:text="Loading..."
-            android:text="@{viewModel.description}"
             style="@style/TextAppearance.MaterialComponents.Caption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

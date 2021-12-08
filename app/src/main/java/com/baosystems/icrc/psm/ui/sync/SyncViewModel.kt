@@ -1,10 +1,13 @@
 package com.baosystems.icrc.psm.ui.sync
 
 import android.util.Pair
-import androidx.annotation.DrawableRes
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.NetworkState
+import com.baosystems.icrc.psm.data.SyncType
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
@@ -13,7 +16,6 @@ import com.baosystems.icrc.psm.utils.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import org.hisp.dhis.android.core.maintenance.D2Error
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
@@ -22,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SyncViewModel @Inject constructor(
     val disposable: CompositeDisposable,
+    val config: AppConfig,
     val schedulerProvider: BaseSchedulerProvider,
     val preferenceProvider: PreferenceProvider,
     val syncManager: SyncManager
@@ -29,45 +32,40 @@ class SyncViewModel @Inject constructor(
 
     private val SYNC_COMPLETED_DELAY = 1L
 
-    val syncResult: MutableLiveData<Result> = MutableLiveData()
-    val description: MutableLiveData<String> = MutableLiveData()
-    val syncCompleted: MutableLiveData<Boolean> = MutableLiveData(false)
-
-    class Result {
-        var completed: Boolean = false
-        var error: String? = null
-        var progress: Int = 0
-        @DrawableRes
-        var drawableRes: Int? = null
-
-        constructor(completed: Boolean, drawableRes: Int) {
-            this.completed = completed
-            this.drawableRes = drawableRes
-        }
-
-        constructor(error: String, drawableRes: Int) {
-            this.error = error
-            this.drawableRes = drawableRes
-        }
-
-        constructor(progress: Int) {
-            this.progress = progress
-        }
-    }
+    private val _syncStatus: MutableLiveData<NetworkState<Boolean>> = MutableLiveData()
+    val syncStatus: LiveData<NetworkState<Boolean>>
+        get() = _syncStatus
 
     fun startSync() {
-        syncResult.value = null // reset the value
-
-        // TODO: Change to localized error
-        description.value = "Syncing metadata..."
+        _syncStatus.value = NetworkState.Loading // reset the value
 
         Timber.i("Downloading metadata and data...")
-        // TODO: Metadata/Data sync error can occur, ensure you handle such situations
+//        disposable.add(
+//            sync(
+//                { syncManager.metadataSync() },
+//                {
+//                    _syncStatus.postValue(NetworkState.Progress(SyncType.Metadata,
+//                        (it.percentage()?.toInt() ?: 0).coerceAtMost(100)
+//                    ))
+//                },
+//                {
+//                    Timber.d("Sync completed 2! Is complete? " + it.isComplete +
+//                            " Percentage: " + it.percentage())
+//                    _syncStatus.postValue(NetworkState.Success<Int>(R.string.metadata_sync_progress))
+//                },
+//                {
+//                    _syncStatus.postValue(NetworkState.Error(R.string.metadata_sync_error))
+////                    syncStatus.postValue(Result(error, R.drawable.ic_outline_error_36))
+//                    it.printStackTrace()
+//                },
+//
+//            )
+//        )
+
         disposable.add(
             Observable.zip(
                 syncManager.metadataSync(),
-                // TODO: Change to program if from preference provider
-                syncManager.dataSync("F5ijs28K4s8"),
+                syncManager.dataSync(config.program),
                 { t1, t2 -> Pair(t1, t2) }
             )
                 .subscribeOn(schedulerProvider.io())
@@ -85,17 +83,18 @@ class SyncViewModel @Inject constructor(
 //                        // TODO: Change to localized error
 //                        description.postValue("Syncing metadata ($percent%)...")
 
-                    Timber.d("Progress 1: %d, Progress 2: %d",
-                        (it.first.percentage()?.toInt() ?: 0).coerceAtMost(100),
-                        (it.second.percentage()?.toInt() ?: 0).coerceAtMost(100)
-                    )
+                    val one = (it.first.percentage()?.toInt() ?: 0).coerceAtMost(100)
+                    val two = (it.second.percentage()?.toInt() ?: 0).coerceAtMost(100)
+                    Timber.d("Metadata: %s, Data: %s", one.toString(), two.toString())
 
-                }
-                .doOnError {
-                    // TODO: Notify the user of any sync errors
-
-                    Timber.e("Error downloading (meta)data: ${it.localizedMessage}")
-                    it.printStackTrace()
+//                    _syncStatus.postValue(NetworkState.Progress(SyncType.Metadata,
+////                        (it.first.percentage()?.toInt() ?: 0).coerceAtMost(100)
+//                        one
+//                    ))
+                    _syncStatus.postValue(NetworkState.Progress(SyncType.Data,
+//                        (it.second.percentage()?.toInt() ?: 0).coerceAtMost(100)
+                        two
+                    ))
                 }
                 .doOnComplete {
                     Timber.i("Finished downloading (meta)data!")
@@ -115,68 +114,70 @@ class SyncViewModel @Inject constructor(
                     }
                 )
         )
-
-//        syncMetadata()
     }
 
-    private fun syncMetadata() {
-        // TODO: Dispose the disposable during cleanup
-        disposable.add(
-            syncManager.metadataSync()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui()).doOnNext{
-                    // TODO: The progress currently seems to be buggy, and it occasionally
-                    //  returns a value more than 100%, so the workaround below was created.
-                    //  Can't also rely on d2Progress.isCompleted as it seems not to change
-                    //  to true after completion
-                    val percent = Math.min(it.percentage()?.toInt() ?: 0, 100)
-                    Timber.d("Progress: " + percent)
+//    private fun sync(
+//        observableFn: () -> Observable<D2Progress>,
+//        onNextFn: (progress: D2Progress) -> Unit,
+//        onSubscribeFn: (progress: D2Progress) -> Unit,
+//        onErrorFn: (t: Throwable) -> Unit,
+//        onCompleteFn: () -> Unit
+//    ): Disposable {
+//        return observableFn()
+//            .subscribeOn(schedulerProvider.io())
+//            .observeOn(schedulerProvider.ui())
+//            .doOnNext{ onNextFn(it) }
+//            .doOnComplete { onCompleteFn() }
+//            .subscribe({ onSubscribeFn(it) }, { onErrorFn(it) })
+//    }
 
-                    syncResult.postValue(Result(percent))
-
-                    // TODO: Change to localized error
-                    description.postValue("Syncing metadata ($percent%)...")
-                }
-                .doOnError {
-//                    Log.e(TAG, it.localizedMessage)
-                    // TODO: Notify the user of any sync errors
-
-                    it.printStackTrace()
-                }
-                .doOnComplete {
-                    this.handleSyncCompleted()
-                }
-                .subscribe({
-                    // TODO: Use the percentage returned on the progress indicator
-                    //  (N.B: It sometimes exceeds 100%, so account for that)
-
-                    Timber.d("Sync completed 2! Is complete? " + it.isComplete + " Percentage: " + it.percentage())
-//                           throw Exception("Temporarily thrown for testing")
-                }, {
-                    this.handleSyncError(it)
-                })
-        )
-    }
+//    private fun syncMetadata() {
+//        _syncStatus.postValue(NetworkState.Progress(SyncType.Metadata, 0))
+//
+//        disposable.add(
+//            syncManager.metadataSync()
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui()).doOnNext{
+//                    // TODO: The progress currently seems to be buggy, and it occasionally
+//                    //  returns a value more than 100%, so the workaround below was created.
+//                    //  Can't also rely on d2Progress.isCompleted as it seems not to change
+//                    //  to true after completion
+//                    val percent = Math.min(it.percentage()?.toInt() ?: 0, 100)
+//                    Timber.d("Progress: " + percent)
+//
+//                    // TODO: Change to localized error
+//                    description.postValue("Syncing metadata ($percent%)...")
+//                    _syncStatus.postValue(NetworkState.Progress(SyncType.Metadata, percent))
+//                }
+//                .doOnError {
+////                    Log.e(TAG, it.localizedMessage)
+//                    // TODO: Notify the user of any sync errors
+//
+//
+//                }
+//                .doOnComplete {
+//                    this.handleSyncCompleted()
+//                }
+//                .subscribe({
+//                    // TODO: Use the percentage returned on the progress indicator
+//                    //  (N.B: It sometimes exceeds 100%, so account for that)
+//
+//                    Timber.d("Sync completed 2! Is complete? " + it.isComplete + " Percentage: " + it.percentage())
+////                           throw Exception("Temporarily thrown for testing")
+//                    _syncStatus.postValue()
+//                }, { this.handleSyncError(it) })
+//        )
+//    }
 
     private fun handleSyncError(throwable: Throwable) {
-        val error = if (throwable is D2Error) {
-            // TODO: Change to localized error
-            "Sync error: " + throwable.errorCode()
-        } else {
-            // TODO: Change to localized error
-            "Sync Error!"
-        }
-
-        syncResult.postValue(Result(error, R.drawable.ic_outline_error_36))
+        _syncStatus.postValue(NetworkState.Error(R.string.sync_error))
         throwable.printStackTrace()
     }
 
     private fun handleSyncCompleted() {
-        description.postValue("Syncing completed!")
+        updateLastSync()
 
-        val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
-        preferenceProvider.setValue(Constants.LAST_SYNC_DATE, syncDate)
-        syncResult.postValue(Result(true, R.drawable.ic_outline_check_circle_36))
+        _syncStatus.postValue(NetworkState.Success<Boolean>(false))
 
         // Mark as completed
         disposable.add(
@@ -184,12 +185,13 @@ class SyncViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe {
-                    syncCompleted.postValue(true)
+                    _syncStatus.postValue(NetworkState.Success<Boolean>(true))
                 }
         )
     }
 
-    fun hasErrored(): Boolean {
-        return syncResult.value?.error != null
+    private fun updateLastSync() {
+        val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
+        preferenceProvider.setValue(Constants.LAST_SYNC_DATE, syncDate)
     }
 }

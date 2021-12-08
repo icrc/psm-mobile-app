@@ -22,7 +22,6 @@ import com.baosystems.icrc.psm.utils.KeyboardUtils;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 @AndroidEntryPoint
 public class LoginActivity extends BaseActivity {
@@ -41,10 +40,7 @@ public class LoginActivity extends BaseActivity {
         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {}
 
         @Override
-        public void afterTextChanged(Editable editable) {
-            Timber.d("Text changed");
-            loginViewModel.loginDataChanged();
-        }
+        public void afterTextChanged(Editable editable) { loginViewModel.loginDataChanged(); }
     };
 
     @Override

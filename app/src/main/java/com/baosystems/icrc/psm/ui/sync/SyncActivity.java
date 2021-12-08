@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -17,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.AppConfig;
+import com.baosystems.icrc.psm.data.NetworkState;
+import com.baosystems.icrc.psm.data.SyncType;
 import com.baosystems.icrc.psm.databinding.ActivitySyncBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.home.HomeActivity;
@@ -28,10 +27,8 @@ import io.reactivex.disposables.CompositeDisposable;
 
 @AndroidEntryPoint
 public class SyncActivity extends BaseActivity {
+    private ActivitySyncBinding binding;
     private SyncViewModel viewModel;
-    private ProgressBar progressBar;
-    private ImageView infoIcon;
-    private Button resyncButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,40 +36,62 @@ public class SyncActivity extends BaseActivity {
 
         viewModel = (SyncViewModel) getViewModel();
 
-        ActivitySyncBinding binding = (ActivitySyncBinding) getViewBinding();
+        binding = (ActivitySyncBinding) getViewBinding();
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
-        progressBar = binding.progressBar;
-        infoIcon = binding.infoIcon;
-        resyncButton = binding.resyncButton;
-
-        resyncButton.setOnClickListener(view -> sync());
+        binding.resyncButton.setOnClickListener(view -> sync());
 
         addObservers();
         sync();
     }
 
     private void addObservers() {
-        viewModel.getSyncResult().observe(this, result -> {
-            if (result != null) {
-                if (result.getDrawableRes() != null) {
-                    infoIcon.setImageDrawable(ContextCompat.getDrawable(
-                            this, result.getDrawableRes()));
-                    infoIcon.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                }
+        viewModel.getSyncStatus().observe(this, networkState -> {
+            if (networkState == NetworkState.Loading.INSTANCE) {
+                binding.infoTextView.setText(getString(R.string.metadata_sync_progress, 0));
+                return;
+            }
 
-                // TODO: Ensure you test for the failure and retry sync
-                if (result.getError() != null) {
-                    resyncButton.setVisibility(View.VISIBLE);
+            if (networkState.getClass() == NetworkState.Error.class) {
+                NetworkState.Error errorState = ((NetworkState.Error) networkState);
+
+                binding.infoTextView.setText(errorState.getErrorStringRes());
+                binding.infoIcon.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.GONE);
+                binding.infoIcon.setImageDrawable(
+                        ContextCompat.getDrawable(this, R.drawable.ic_outline_error_36));
+                binding.resyncButton.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            if(networkState .getClass() == NetworkState.Progress.class) {
+                NetworkState.Progress progressState = ((NetworkState.Progress) networkState);
+                SyncType syncType = progressState.getType();
+                String message;
+
+                if (syncType.equals(SyncType.Data)) {
+                    message = getString(R.string.data_sync_progress, progressState.getValue());
+                } else {
+                    message = getString(R.string.metadata_sync_progress, progressState.getValue());
+                }
+                binding.infoTextView.setText(message);
+                return;
+            }
+
+            if (networkState.getClass() == NetworkState.Success.class) {
+                NetworkState.Success<Boolean> successState = ((NetworkState.Success<Boolean>) networkState);
+
+                if (successState.getResult()) {
+                    navigateToHomeScreen();
+                } else {
+                    binding.infoIcon.setImageDrawable(ContextCompat.getDrawable(
+                            this, R.drawable.ic_outline_check_circle_36));
+                    binding.infoIcon.setVisibility(View.VISIBLE);
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.infoTextView.setText(R.string.sync_completed);
                 }
             }
-        });
-
-        viewModel.getSyncCompleted().observe(this, status -> {
-            if (status)
-                navigateToHomeScreen();
         });
     }
 
