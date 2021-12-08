@@ -128,4 +128,5 @@
     <string name="confirm_app_restart_message">L\'application doit être redémarrée pour que les modifications soient prises en compte, cependant, toutes les modifications non enregistrées seront perdues.\n\nVoulez-vous procéder au redémarrage?</string>
     <string name="scan_canceled">Scan annulé !</string>
     <string name="logout_error_message">Une erreur s\'est produite lors de la déconnexion. Veuillez réessayer plus tard.</string>
+    <string name="logout_success_message">Déconnecté avec succès</string>
 </resources>

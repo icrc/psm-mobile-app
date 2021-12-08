@@ -128,4 +128,5 @@
     <string name="confirm_app_restart_message">La aplicación debe reiniciarse para que se realicen los cambios; sin embargo, se perderán los cambios que no se hayan guardado.\n\n¿Quiere continuar con el reinicio?</string>
     <string name="scan_canceled">¡Escaneo cancelado!</string>
     <string name="logout_error_message">Ocurrió un error durante el cierre de sesión. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="logout_success_message">Cerrar sesión correctamente</string>
 </resources>

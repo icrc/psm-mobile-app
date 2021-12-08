@@ -106,10 +106,10 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">Welcome !</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="login_failed">Login failed</string>
     <string name="resync">Resync</string>
 
     <!-- Errors -->
@@ -152,4 +152,5 @@
     <string name="language_change_dialog_title">Confirm Restart</string>
     <string name="scan_canceled">Scan cancelled!</string>
     <string name="logout_error_message">An error occurred during logout. Please try again later.</string>
+    <string name="logout_success_message">Successfully logged out</string>
 </resources>

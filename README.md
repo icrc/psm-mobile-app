@@ -6,7 +6,6 @@
 
 ### Todo
 
-- Scan item
 - Voice input
 - Force & Scheduled sync
 - Use custom dividers and spacers for the recyclerview items
@@ -21,7 +20,6 @@ while communicating with the invalid server. This currently isn't handled approp
 - Handle session expired scenarios (See _ActivityGlobalAbstract.showSessionExpired_) for example
 - On logout, delete preferences relating to metadata sync so that a new sync can happen
   when next the user logs in
-- Add localization
 - Handle Crash Reporting (_optional_)
 - Use fragments and adaptable UI where possible
 - Use `CoordinatorLayout` to replace `ConstraintLayout` where necessary

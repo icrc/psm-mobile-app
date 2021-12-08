@@ -1,45 +1,57 @@
 package com.baosystems.icrc.psm.ui.settings;
 
+import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_MESSAGE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.NetworkState;
 import com.baosystems.icrc.psm.databinding.ActivitySettingsBinding;
+import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.login.LoginActivity;
 import com.baosystems.icrc.psm.ui.splashscreen.SplashActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
-import com.baosystems.icrc.psm.utils.LocaleManager;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.disposables.CompositeDisposable;
 
 @AndroidEntryPoint
-public class SettingsActivity extends AppCompatActivity
+public class SettingsActivity extends BaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private static final String TITLE_TAG = "settings-title";
+    private SettingsViewModel viewModel;
     private ActivitySettingsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
+        viewModel = (SettingsViewModel) getViewModel();
+        binding = (ActivitySettingsBinding) getViewBinding();
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.settings, new SettingsFragment())
+                    .replace(R.id.settings_container, new SettingsFragment())
                     .commit();
         } else {
             setTitle(savedInstanceState.getCharSequence(TITLE_TAG));
@@ -51,6 +63,18 @@ public class SettingsActivity extends AppCompatActivity
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @NonNull
+    @Override
+    public ViewDataBinding createViewBinding() {
+        return DataBindingUtil.setContentView(this, R.layout.activity_settings);
+    }
+
+    @NonNull
+    @Override
+    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+        return new ViewModelProvider(this).get(SettingsViewModel.class);
     }
 
     @Override
@@ -82,12 +106,12 @@ public class SettingsActivity extends AppCompatActivity
                 pref.getFragment()
         );
         fragment.setArguments(pref.getExtras());
-//        fragment.setTargetFragment(caller, 0);
+        fragment.setTargetFragment(caller, 0);
 
         // Replace the existing Fragment with the new Fragment
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.settings, fragment)
+                .replace(R.id.settings_container, fragment)
                 .addToBackStack(null)
                 .commit();
 
@@ -102,6 +126,29 @@ public class SettingsActivity extends AppCompatActivity
      * The root fragment
      */
     public static class SettingsFragment extends PreferenceFragmentCompat {
+        private SettingsViewModel sViewModel;
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+            sViewModel = new ViewModelProvider(requireActivity())
+                    .get(SettingsViewModel.class);
+
+            sViewModel.getLogoutStatus().observe(getViewLifecycleOwner(), networkState -> {
+                if (networkState.getClass() == NetworkState.Error.class) {
+                    ActivityManager.showErrorMessage(view,
+                            getString(((NetworkState.Error) networkState).getErrorStringRes()));
+
+                    return;
+                }
+
+                if (networkState.getClass() == NetworkState.Success.class) {
+                    navigateToLogin();
+                }
+            });
+        }
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root, rootKey);
@@ -120,12 +167,14 @@ public class SettingsActivity extends AppCompatActivity
         }
 
         private void logout() {
-            // TODO: Invoke logout
+            sViewModel.logout();
         }
 
         private void navigateToLogin() {
             Intent loginIntent = LoginActivity.getLoginActivityIntent(requireActivity());
             loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            loginIntent.putExtra(INTENT_EXTRA_MESSAGE, getString(R.string.logout_success_message));
+
             ActivityManager.startActivity(requireActivity(), loginIntent, true);
         }
     }
@@ -171,10 +220,5 @@ public class SettingsActivity extends AppCompatActivity
             Intent intent = SplashActivity.getSplashActivityIntent(requireContext());
             ActivityManager.startActivity(requireActivity(), intent, true);
         }
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(LocaleManager.setLocale(newBase));
     }
 }
