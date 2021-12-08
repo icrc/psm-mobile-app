@@ -106,7 +106,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordTextField"
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
                     android:text="@={viewModel.password}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
