@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +27,11 @@ import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
 import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
+import com.baosystems.icrc.psm.ui.scanner.ScannerActivity;
+import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.google.android.material.textfield.TextInputEditText;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -61,7 +66,27 @@ public class ManageStockActivity extends BaseActivity {
 
         // TODO: Temporarily set to a particular code pending when actual scan is implemented
         binding.scanButton.setOnClickListener(
-                view -> viewModel.onScanCompleted("AFORMEDFPF2"));
+                view -> {
+                    scanBarcode();
+                });
+    }
+
+    private final ActivityResultLauncher barcodeLauncher =
+            registerForActivityResult(new ScanContract(), result -> {
+                if (result.getContents() == null) {
+                    ActivityManager.showInfoMessage(binding.getRoot(),
+                            getString(R.string.scan_canceled));
+                } else {
+                    Timber.i("Result: %s", result.getContents());
+                    // viewModel.onScanCompleted("AFORMEDFPF2")
+                }
+            });
+
+    private void scanBarcode() {
+        ScanOptions scanOptions = new ScanOptions()
+                .setBeepEnabled(true)
+                .setCaptureActivity(ScannerActivity.class);
+        barcodeLauncher.launch(scanOptions);
     }
 
     private void setupObservers() {

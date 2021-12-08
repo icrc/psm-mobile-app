@@ -26,11 +26,7 @@
     <color name="gray_600">#757575</color>
     <color name="gray_700">#616161</color>
     <color name="gray_900">#212121</color>
-<!--    <color name="gray_800">#424242</color>-->
-<!--    <color name="gray_900">#212121</color>-->
 
-<!--    <color name="primaryColor">#424242</color>-->
-<!--    <color name="primaryColor">#212121</color>-->
     <color name="primaryColor">#FF62A3BB</color>
     <color name="primaryLightColor">#484848</color>
     <color name="primaryDarkColor">#000000</color>
@@ -43,4 +39,7 @@
     <color name="input_field_icon_color_tint">#656565</color>
     <color name="table_text_color">#2E384D</color>
     <color name="button_highlight_color">#D685CDE8</color>
+
+    <color name="amber">#FFBF00</color>
+    <color name="viewfinder_mask">#E0161616</color>
 </resources>
