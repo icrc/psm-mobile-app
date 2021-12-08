@@ -29,12 +29,7 @@
     <string name="recent_activities_empty_message">Вы еще не выполняли никаких действий</string>
 
     <!-- Sync -->
-    <string name="metadata_sync_in_progress">Синхронизация метаданных&#8230;</string>
-    <string name="metadata_sync_progress">Синхронизация метаданных <xliff:g id="progress_value" example="61%">
-        (%1$d)&#8230;</xliff:g></string>
-    <string name="data_sync_in_progress">Синхронизация данных&#8230;</string>
-    <string name="data_sync_progress">Синхронизация данных <xliff:g id="progress_value" example="61%">
-        (%1$d)&#8230;</xliff:g></string>
+    <string name="sync_in_progress">Синхронизация метаданных&#8230;</string>
     <string name="sync_error">Невозможно завершить синхронизацию</string>
     <string name="sync_completed">Синхронизация завершена!</string>
 

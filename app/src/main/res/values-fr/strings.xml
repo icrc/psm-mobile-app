@@ -29,14 +29,7 @@
     <string name="recent_activities_loading_message">Chargement des activités récentes&#8230;</string>
     <string name="recent_activities_empty_message">Vous n\'avez pas encore effectué d\'activité</string>
 
-    <string name="metadata_sync_in_progress">Synchroniser les métadonnées&#8230;</string>
-    <string name="metadata_sync_progress">
-        Synchroniser les métadonnées <xliff:g id="progress_value" example="61%">(%1$d)&#8230;</xliff:g>
-    </string>
-    <string name="data_sync_in_progress">Synchronisation des données&#8230;</string>
-    <string name="data_sync_progress">
-        Synchronisation des données <xliff:g id="progress_value" example="61%">(%1$d)&#8230;</xliff:g>
-    </string>
+    <string name="sync_in_progress">Synchroniser les métadonnées&#8230;</string>
     <string name="sync_completed">Synchronisation terminée!</string>
     <string name="sync_error">Impossible de terminer la synchronisation</string>
 

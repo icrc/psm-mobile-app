@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.AppConfig;
 import com.baosystems.icrc.psm.data.NetworkState;
-import com.baosystems.icrc.psm.data.SyncType;
 import com.baosystems.icrc.psm.databinding.ActivitySyncBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.home.HomeActivity;
@@ -49,33 +48,19 @@ public class SyncActivity extends BaseActivity {
     private void addObservers() {
         viewModel.getSyncStatus().observe(this, networkState -> {
             if (networkState == NetworkState.Loading.INSTANCE) {
-                binding.infoTextView.setText(getString(R.string.metadata_sync_progress, 0));
+                binding.infoTextView.setText(R.string.sync_in_progress);
                 return;
             }
 
             if (networkState.getClass() == NetworkState.Error.class) {
                 NetworkState.Error errorState = ((NetworkState.Error) networkState);
 
+                binding.progressBar.setVisibility(View.GONE);
                 binding.infoTextView.setText(errorState.getErrorStringRes());
                 binding.infoIcon.setVisibility(View.VISIBLE);
-                binding.progressBar.setVisibility(View.GONE);
                 binding.infoIcon.setImageDrawable(
                         ContextCompat.getDrawable(this, R.drawable.ic_outline_error_36));
                 binding.resyncButton.setVisibility(View.VISIBLE);
-                return;
-            }
-
-            if(networkState .getClass() == NetworkState.Progress.class) {
-                NetworkState.Progress progressState = ((NetworkState.Progress) networkState);
-                SyncType syncType = progressState.getType();
-                String message;
-
-                if (syncType.equals(SyncType.Data)) {
-                    message = getString(R.string.data_sync_progress, progressState.getValue());
-                } else {
-                    message = getString(R.string.metadata_sync_progress, progressState.getValue());
-                }
-                binding.infoTextView.setText(message);
                 return;
             }
 

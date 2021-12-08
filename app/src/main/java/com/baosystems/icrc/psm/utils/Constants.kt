@@ -14,6 +14,7 @@ object Constants {
     const val LAST_SYNC_DATE = "LAST_SYNC_DATE"
     const val ITEM_PAGE_SIZE = 20
     const val USER_ACTIVITY_COUNT = 15
+    const val SYNC_COMPLETED_DELAY = 1L
 
     // Configuration file keys
     const val CONFIG_PROGRAM = "program"

@@ -30,12 +30,7 @@
     <string name="recent_activities_empty_message">Aún no has realizado ninguna actividad.</string>
 
     <!-- Sync -->
-    <string name="metadata_sync_in_progress">Sincronizar metadatos&#8230;</string>
-    <string name="metadata_sync_progress">Sincronizar metadatos <xliff:g id="progress_value" example="61%">
-        (%1$d)&#8230;</xliff:g></string>
-    <string name="data_sync_in_progress">Sincronizando datos&#8230;</string>
-    <string name="data_sync_progress">Sincronizando datos <xliff:g id="progress_value" example="61%">
-        (%1$d)&#8230;</xliff:g></string>
+    <string name="sync_in_progress">Sincronizar metadatos&#8230;</string>
     <string name="sync_error">No se pudo completar la sincronización</string>
     <string name="sync_completed">¡Sincronización completada!</string>
 

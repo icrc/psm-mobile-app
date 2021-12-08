@@ -30,12 +30,7 @@
     <string name="recent_activities_empty_message">أنت لم تقم بأي نشاط بعد</string>
 
     <!-- Sync -->
-    <string name="metadata_sync_in_progress">&#8230;مزامنة البيانات الوصفية</string>
-    <string name="metadata_sync_progress"><xliff:g id="progress_value" example="61%">
-        (%1$d\٪)&#8230;</xliff:g> مزامنة البيانات الوصفية </string>
-    <string name="data_sync_in_progress">&#8230; مزامنة البيانات </string>
-    <string name="data_sync_progress"><xliff:g id="progress_value" example="61%">
-        (%1$d\٪)&#8230;</xliff:g> مزامنة البيانات </string>
+    <string name="sync_in_progress">&#8230;مزامنة البيانات الوصفية</string>
     <string name="sync_error">تعذر إكمال المزامنة</string>
     <string name="sync_completed">اكتملت المزامنة!</string>
 
