@@ -1,7 +1,9 @@
 package com.baosystems.icrc.psm.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.baosystems.icrc.psm.R
@@ -42,6 +44,12 @@ class ActivityManager {
         @JvmStatic
         fun showInfoMessage(view: View, message: String) {
             showMessage(view, message, false)
+        }
+
+        @JvmStatic
+        fun hasFlash(context: Context): Boolean {
+            return context.packageManager
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
         }
     }
 }
