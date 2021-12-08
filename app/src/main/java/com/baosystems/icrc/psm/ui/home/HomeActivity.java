@@ -92,10 +92,10 @@ public class HomeActivity extends BaseActivity {
             if (reportNetworkError(networkState)) return;
 
             if (networkState.getClass() == NetworkState.Success.class) {
-                List<OrganisationUnit> destinations =
+                List<OrganisationUnit> facilities =
                         ((NetworkState.Success<List<OrganisationUnit>>) networkState).getResult();
-                distributedToTextView.setAdapter(
-                        new GenericListAdapter<>(this, R.layout.list_item, destinations));
+                facilityTextView.setAdapter(
+                        new GenericListAdapter<>(this, R.layout.list_item, facilities));
             }
         });
 
