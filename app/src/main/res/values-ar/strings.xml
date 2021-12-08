@@ -126,4 +126,6 @@
     <string name="restart_later">إعادة التشغيل لاحقا</string>
     <string name="language_change_dialog_title">قم بتأكيد إعادة التشغيل</string>
     <string name="confirm_app_restart_message">يحتاج التطبيق إلى إعادة التشغيل حتى يتم تنفيذ التغييرات ، ومع ذلك ، سيتم فقد أي تغييرات غير محفوظة.هل ترغب في متابعة إعادة التشغيل؟</string>
+    <string name="scan_canceled">تم إلغاء المسح!</string>
+    <string name="logout_error_message">حدث خطأ أثناء تسجيل الخروج. الرجاء معاودة المحاولة في وقت لاحق.</string>
 </resources>

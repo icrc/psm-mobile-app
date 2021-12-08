@@ -15,5 +15,6 @@
 
     <Preference
         app:title="@string/logout"
+        app:key="@string/logout_pref_key"
         app:persistent="false" />
 </PreferenceScreen>

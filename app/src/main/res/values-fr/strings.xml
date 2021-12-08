@@ -126,4 +126,6 @@
     <string name="restart_later">Recommence plus tard</string>
     <string name="language_change_dialog_title">Confirmer le redémarrage</string>
     <string name="confirm_app_restart_message">L\'application doit être redémarrée pour que les modifications soient prises en compte, cependant, toutes les modifications non enregistrées seront perdues.\n\nVoulez-vous procéder au redémarrage?</string>
+    <string name="scan_canceled">Scan annulé !</string>
+    <string name="logout_error_message">Une erreur s\'est produite lors de la déconnexion. Veuillez réessayer plus tard.</string>
 </resources>

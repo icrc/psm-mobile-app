@@ -131,4 +131,6 @@
     <string name="restart_later">Перезагрузить позже</string>
     <string name="language_change_dialog_title">Подтвердите перезапуск</string>
     <string name="confirm_app_restart_message">Чтобы изменения вступили в силу, необходимо перезапустить приложение, однако все несохраненные изменения будут потеряны.\n\nХотите продолжить перезагрузку?</string>
+    <string name="scan_canceled">Сканирование отменено!</string>
+    <string name="logout_error_message">Произошла ошибка при выходе из системы. Пожалуйста, попробуйте позже.</string>
 </resources>

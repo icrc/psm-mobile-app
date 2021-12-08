@@ -15,6 +15,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivitySettingsBinding;
+import com.baosystems.icrc.psm.ui.login.LoginActivity;
 import com.baosystems.icrc.psm.ui.splashscreen.SplashActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.LocaleManager;
@@ -104,6 +105,28 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root, rootKey);
+            addListeners();
+        }
+
+        private void addListeners() {
+            // Add logout click listener
+            Preference logoutPref = findPreference(getString(R.string.logout_pref_key));
+            if (logoutPref != null) {
+                logoutPref.setOnPreferenceClickListener(preference -> {
+                    logout();
+                    return true;
+                });
+            }
+        }
+
+        private void logout() {
+            // TODO: Invoke logout
+        }
+
+        private void navigateToLogin() {
+            Intent loginIntent = LoginActivity.getLoginActivityIntent(requireActivity());
+            loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityManager.startActivity(requireActivity(), loginIntent, true);
         }
     }
 
