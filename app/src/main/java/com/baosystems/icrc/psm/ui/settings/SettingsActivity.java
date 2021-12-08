@@ -90,7 +90,10 @@ public class SettingsActivity extends AppCompatActivity
                 .addToBackStack(null)
                 .commit();
 
-        setTitle(pref.getTitle());
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(pref.getTitle());
+        }
+
         return true;
     }
 
