@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.splashscreen;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -65,6 +66,12 @@ public class SplashActivity extends BaseActivity {
 
             ActivityManager.startActivity(this, intent, true);
         });
+    }
+
+    public static Intent getSplashActivityIntent(Context context) {
+        Intent intent = new Intent(context, SplashActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
     }
 
     @NonNull

@@ -1,8 +1,8 @@
 package com.baosystems.icrc.psm.utils
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.baosystems.icrc.psm.R
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 class ActivityManager {
     companion object {
         @JvmStatic
-        fun startActivity(activity: AppCompatActivity, intent: Intent,
+        fun startActivity(activity: Activity, intent: Intent,
                           closeCurrentActivity: Boolean) {
             activity.startActivity(intent)
 

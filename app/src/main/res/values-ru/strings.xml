@@ -38,6 +38,7 @@
     <string name="scanning">Сканирование&#8230;</string>
     <string name="search">Поиск</string>
     <string name="delete">Удалить</string>
+    <string name="ok">Ok</string>
     <string name="cancel">Отмена</string>
     <string name="confirmation">Подтверждение</string>
 
@@ -126,4 +127,8 @@
     <string name="transaction_label">Сделка</string>
     <string name="missing_configuration">В файле конфигурации отсутствуют одно или несколько обязательных полей.</string>
     <string name="select_language">Выберите желаемый язык</string>
+
+    <string name="restart_later">Перезагрузить позже</string>
+    <string name="language_change_dialog_title">Подтвердите перезапуск</string>
+    <string name="confirm_app_restart_message">Чтобы изменения вступили в силу, необходимо перезапустить приложение, однако все несохраненные изменения будут потеряны.\n\nХотите продолжить перезагрузку?</string>
 </resources>

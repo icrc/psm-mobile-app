@@ -38,6 +38,7 @@
     <string name="scanning">Balayage&#8230;</string>
     <string name="search">Chercher</string>
     <string name="delete">Effacer</string>
+    <string name="ok">D\'accord</string>
     <string name="cancel">Annuler</string>
     <string name="confirmation">Confirmation</string>
 
@@ -121,4 +122,8 @@
     <string name="transaction_label">Transaction</string>
     <string name="missing_configuration">Un ou plusieurs champs obligatoires sont manquants dans le fichier de configuration</string>
     <string name="select_language">Sélectionnez la langue souhaitée</string>
+
+    <string name="restart_later">Recommence plus tard</string>
+    <string name="language_change_dialog_title">Confirmer le redémarrage</string>
+    <string name="confirm_app_restart_message">L\'application doit être redémarrée pour que les modifications soient prises en compte, cependant, toutes les modifications non enregistrées seront perdues.\n\nVoulez-vous procéder au redémarrage?</string>
 </resources>

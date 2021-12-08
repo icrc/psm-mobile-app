@@ -42,6 +42,7 @@
     <string name="scanning">Scanning&#8230;</string>
     <string name="search">Search</string>
     <string name="delete">Delete</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="confirmation">Confirmation</string>
 
@@ -142,4 +143,10 @@
     <!-- Preferences -->
     <string name="language_pref_key" translatable="false">LANGUAGE_PREFERENCE</string>
     <string name="language_pref_default" translatable="false">en</string>
+
+    <string name="restart_later">Restart Later</string>
+    <string name="confirm_app_restart_message">
+        The application needs to be restarted for the changes to be effected, however, any unsaved changes will be lost.\n\nWill you like to proceed with the restart?
+    </string>
+    <string name="language_change_dialog_title">Confirm Restart</string>
 </resources>

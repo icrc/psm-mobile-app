@@ -38,6 +38,7 @@
     <string name="scanning">Exploración&#8230;</string>
     <string name="search">Buscar</string>
     <string name="delete">Borrar</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="confirmation">Confirmación</string>
 
@@ -121,4 +122,8 @@
     <string name="transaction_label">Transacción</string>
     <string name="missing_configuration">Faltan uno o más campos obligatorios en el archivo de configuración</string>
     <string name="select_language">Seleccione su idioma deseado</string>
+
+    <string name="restart_later">Reiniciar más tarde</string>
+    <string name="language_change_dialog_title">Confirmar reinicio</string>
+    <string name="confirm_app_restart_message">La aplicación debe reiniciarse para que se realicen los cambios; sin embargo, se perderán los cambios que no se hayan guardado.\n\n¿Quiere continuar con el reinicio?</string>
 </resources>

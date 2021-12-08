@@ -39,6 +39,7 @@
     <string name="scanning">&#8230;يتم المسح</string>
     <string name="search">بحث</string>
     <string name="delete">حذف</string>
+    <string name="ok">نعم</string>
     <string name="cancel">يلغي</string>
     <string name="confirmation">تأكيد</string>
 
@@ -121,4 +122,8 @@
     <string name="transaction_label">عملية تجارية</string>
     <string name="missing_configuration">واحد أو أكثر من الحقول المطلوبة مفقود في ملف التكوين</string>
     <string name="select_language">حدد اللغة التي تريدها</string>
+
+    <string name="restart_later">إعادة التشغيل لاحقا</string>
+    <string name="language_change_dialog_title">قم بتأكيد إعادة التشغيل</string>
+    <string name="confirm_app_restart_message">يحتاج التطبيق إلى إعادة التشغيل حتى يتم تنفيذ التغييرات ، ومع ذلك ، سيتم فقد أي تغييرات غير محفوظة.هل ترغب في متابعة إعادة التشغيل؟</string>
 </resources>

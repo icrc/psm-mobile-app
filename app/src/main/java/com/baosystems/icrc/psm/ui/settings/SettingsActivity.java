@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.databinding.ActivitySettingsBinding;
+import com.baosystems.icrc.psm.ui.splashscreen.SplashActivity;
+import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.LocaleManager;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -44,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -110,21 +113,37 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.languages, rootKey);
-            findPreference(getString(R.string.language_pref_key)).setOnPreferenceChangeListener(this);
+            observeLanguagePreferenceChange();
+        }
+
+        private void observeLanguagePreferenceChange() {
+            String languagePrefKey = getString(R.string.language_pref_key);
+            Preference languagePreference = findPreference(languagePrefKey);
+            if (languagePreference != null) {
+                languagePreference.setOnPreferenceChangeListener(this);
+            }
         }
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            // TODO: Find a way to refresh the resources at runtime (current options: restart activity)
-            reloadApp();
+            confirmAppRestart(newValue);
             return true;
         }
 
-        private void reloadApp() {
-            // TODO: This only reloads the SettingsActivity only. The back stack is unchanged
-            Intent intent = getSettingsActivityIntent(requireContext());
-            requireActivity().finish();
-            startActivity(intent);
+        private void confirmAppRestart(Object newValue) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setMessage(R.string.confirm_app_restart_message)
+                    .setTitle(R.string.language_change_dialog_title)
+                    .setPositiveButton(R.string.ok, (dialog, which) -> restartApp())
+                    .setNegativeButton(R.string.restart_later, (dialog, which) -> dialog.cancel());
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+        private void restartApp() {
+            Intent intent = SplashActivity.getSplashActivityIntent(requireContext());
+            ActivityManager.startActivity(requireActivity(), intent, true);
         }
     }
 
