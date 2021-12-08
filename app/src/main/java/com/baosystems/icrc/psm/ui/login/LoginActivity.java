@@ -102,7 +102,6 @@ public class LoginActivity extends BaseActivity {
     private void login() {
         // TODO: Hide whatever component needs to be hidden,
         //  and show whichever one needs showing (e.g. progress bar)
-
         loginViewModel.login();
     }
 

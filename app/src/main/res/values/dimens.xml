@@ -7,8 +7,8 @@
     <dimen name="fab_lr_padding">24dp</dimen>
 
     <!-- Sign in -->
-    <dimen name="server_url_lr_margin">200dp</dimen>
-    <dimen name="sign_in_lr_margin">200dp</dimen>
+    <dimen name="server_url_lr_margin">40dp</dimen>
+    <dimen name="sign_in_lr_margin">40dp</dimen>
     <dimen name="server_url_bottom_margin">56dp</dimen>
 
 
@@ -26,6 +26,7 @@
     <dimen name="transaction_button_no_highlight_width">0dp</dimen>
 
     <!-- Misc -->
+    <dimen name="icon_min_size">48dp</dimen>
     <dimen name="list_item_padding">16dp</dimen>
     <dimen name="input_to_label_top_margin">4dp</dimen>
 
@@ -76,4 +77,13 @@
     <dimen name="facility_icon_padding">8dp</dimen>
     <dimen name="trans_date_icon_padding">8dp</dimen>
     <dimen name="distribution_icon_padding">14dp</dimen>
+
+    <!-- Scanner -->
+    <dimen name="flashlight_padding">16dp</dimen>
+    <dimen name="flashlight_left_margin">4dp</dimen>
+    <dimen name="flashlight_top_margin">0dp</dimen>
+    <dimen name="close_scanner_right_margin">4dp</dimen>
+    <dimen name="barcode_viewfinder_width">300dp</dimen>
+    <dimen name="barcode_viewfinder_height">300dp</dimen>
+    <dimen name="barcode_viewfinder_message_offset">350dp</dimen>
 </resources>
