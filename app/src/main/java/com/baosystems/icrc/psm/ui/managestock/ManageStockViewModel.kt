@@ -24,11 +24,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ManageStockViewModel @Inject constructor(
     savedState: SavedStateHandle,
-    val disposable: CompositeDisposable,
+    private val disposable: CompositeDisposable,
     val config: AppConfig,
-    val schedulerProvider: BaseSchedulerProvider,
+    private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
-    stockManager: StockManager,
+    private val stockManager: StockManager,
 ): BaseViewModel(preferenceProvider) {
     // TODO: Handle cases where transaction is null. (remove transaction!!)
     val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!

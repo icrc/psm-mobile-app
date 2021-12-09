@@ -15,9 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     application: Application,
-    val disposable: CompositeDisposable,
-    val schedulerProvider: BaseSchedulerProvider,
-    val userManager: UserManager
+    private val disposable: CompositeDisposable,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val userManager: UserManager
 ): AndroidViewModel(application) {
     private val _logoutStatus: MutableLiveData<NetworkState<Boolean>> = MutableLiveData()
     val logoutStatus: LiveData<NetworkState<Boolean>>

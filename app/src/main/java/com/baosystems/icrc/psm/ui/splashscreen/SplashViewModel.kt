@@ -27,9 +27,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     application: Application,
-    val disposable: CompositeDisposable,
-    val schedulerProvider: BaseSchedulerProvider,
-    val preferenceProvider: PreferenceProvider
+    private val disposable: CompositeDisposable,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val preferenceProvider: PreferenceProvider
 ) : AndroidViewModel(application) {
 
     private val _loggedIn: MutableLiveData<Boolean> by lazy {

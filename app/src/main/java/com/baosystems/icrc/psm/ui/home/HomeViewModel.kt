@@ -13,7 +13,6 @@ import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
 import com.baosystems.icrc.psm.services.PreferenceProvider
-import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
 import com.baosystems.icrc.psm.utils.Constants.USER_ACTIVITY_COUNT
@@ -37,7 +36,6 @@ class HomeViewModel @Inject constructor(
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val metadataManager: MetadataManager,
-    private val userManager: UserManager,
     private val userActivityRepository: UserActivityRepository
 ): BaseViewModel(preferenceProvider) {
     // TODO: Move all the properties below into a singular object

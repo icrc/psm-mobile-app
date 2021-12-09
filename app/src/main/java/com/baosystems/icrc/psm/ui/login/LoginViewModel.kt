@@ -21,16 +21,14 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     application: Application,
-    val disposable: CompositeDisposable,
-    val schedulerProvider: BaseSchedulerProvider,
-    val preferenceProvider: PreferenceProvider,
-    val userManager: UserManager
+    private val disposable: CompositeDisposable,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val preferenceProvider: PreferenceProvider,
+    private val userManager: UserManager
 ) : AndroidViewModel(application) {
-    // TODO: Remove the temporary values added for testing
     val username: MutableLiveData<String> = MutableLiveData()
     val password: MutableLiveData<String> = MutableLiveData()
 
-    // TODO: Remove later, temporarily used to fill up the password field for testing
     val serverUrl: MutableLiveData<String> = MutableLiveData()
     val loginInProgress: MutableLiveData<Boolean> = MutableLiveData(false)
     val canLogin: MutableLiveData<Boolean> = MutableLiveData(false)
