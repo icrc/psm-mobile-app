@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.utils.DateUtils
+import com.baosystems.icrc.psm.utils.NotificationHelper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
@@ -26,6 +28,12 @@ class SyncDataWorker @AssistedInject constructor(
     override fun doWork(): Result {
         var teiSynced = false
 
+        triggerNotification(
+            R.string.app_name,
+            R.string.data_sync_in_progress,
+            R.drawable.ic_start_sync_notification
+        )
+
         try {
             syncManager.syncTEIs(appConfig.program)
             teiSynced = true
@@ -41,6 +49,24 @@ class SyncDataWorker @AssistedInject constructor(
         val syncStatus = syncManager.checkSyncStatus()
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_RESULT, syncStatus.name)
 
+        triggerNotification(
+            R.string.app_name,
+            R.string.sync_completed,
+            R.drawable.ic_end_sync_notification
+        )
+
         return Result.success()
+    }
+
+    private fun triggerNotification(title: Int, message: Int, icon: Int?) {
+        NotificationHelper.triggerNotification(
+            applicationContext,
+            Constants.SYNC_DATA_NOTIFICATION_ID,
+            Constants.SYNC_DATA_NOTIFICATION_CHANNEL,
+            Constants.SYNC_DATA_CHANNEL_NAME,
+            applicationContext.getString(title),
+            applicationContext.getString(message),
+            icon
+        )
     }
 }

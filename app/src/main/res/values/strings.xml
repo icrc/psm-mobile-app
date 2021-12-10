@@ -144,6 +144,7 @@
     <!-- Preferences -->
     <string name="language_pref_key" translatable="false">language_preference</string>
     <string name="logout_pref_key" translatable="false">logout</string>
+    <string name="force_sync_pref_key" translatable="false">force_sync</string>
     <string name="language_pref_default" translatable="false">en</string>
 
     <string name="restart_later">Restart Later</string>

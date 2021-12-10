@@ -7,6 +7,7 @@ import org.hisp.dhis.android.core.settings.SynchronizationSettings
 
 interface SyncManager {
     fun sync()
+    fun dataSync()
     fun metadataSync()
     fun checkSyncStatus(): SyncResult
     fun syncTEIs(program: String)

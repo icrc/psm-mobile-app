@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.NetworkState
+import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ class SettingsViewModel @Inject constructor(
     application: Application,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
-    private val userManager: UserManager
+    private val userManager: UserManager,
+    private val syncManager: SyncManager
 ): AndroidViewModel(application) {
     private val _logoutStatus: MutableLiveData<NetworkState<Boolean>> = MutableLiveData()
     val logoutStatus: LiveData<NetworkState<Boolean>>
@@ -39,5 +41,9 @@ class SettingsViewModel @Inject constructor(
                     )
             )
         }
+    }
+
+    fun syncData() {
+        syncManager.dataSync()
     }
 }

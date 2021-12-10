@@ -164,6 +164,14 @@ public class SettingsActivity extends BaseActivity
                     return true;
                 });
             }
+
+            Preference forceSyncPref = findPreference(getString(R.string.force_sync_pref_key));
+            if (forceSyncPref != null) {
+                forceSyncPref.setOnPreferenceClickListener(preference -> {
+                    sViewModel.syncData();
+                    return true;
+                });
+            }
         }
 
         private void logout() {

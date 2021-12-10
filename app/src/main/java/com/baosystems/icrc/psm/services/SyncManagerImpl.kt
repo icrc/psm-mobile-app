@@ -134,18 +134,9 @@ class SyncManagerImpl @Inject constructor(
         Completable.fromObservable(d2.metadataModule().download()).blockingAwait()
     }
 
-//    override fun dataSync(program: String): Observable<D2Progress> {
-//        return Observable.defer{
-//            d2.trackedEntityModule()
-//                .trackedEntityInstanceDownloader()
-//                .byProgramUid(program)
-//                .limitByOrgunit(true)
-//                .limitByProgram(true)
-//                .download()
-//        }
-//    }
-//
-//    override fun upload(): Observable<D2Progress>? {
-//        return d2.eventModule().events().upload()
-//    }
+    override fun dataSync() {
+        val workerItem = WorkItem(INSTANT_DATA_SYNC, WorkType.DATA, null, null,
+            ExistingWorkPolicy.KEEP, null)
+        workManagerController.sync(workerItem)
+    }
 }

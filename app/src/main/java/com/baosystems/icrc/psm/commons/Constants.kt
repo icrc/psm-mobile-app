@@ -48,6 +48,9 @@ object Constants {
     const val LAST_METADATA_SYNC_STATUS = "LAST_METADATA_SYNC_STATUS"
     const val SYNC_PERIOD_METADATA = "SYNC_PERIOD_METADATA"
     const val SYNC_PERIOD_DATA = "SYNC_PERIOD_DATA"
+    const val SYNC_DATA_NOTIFICATION_CHANNEL = "SYNC_DATA_CHANNEL"
+    const val SYNC_DATA_CHANNEL_NAME = "DATA_SYNC"
+    const val SYNC_DATA_NOTIFICATION_ID = 710776
 
     // Metadata & Data sync periods
     const val PERIOD_DAILY = 24 * 60 * 60
