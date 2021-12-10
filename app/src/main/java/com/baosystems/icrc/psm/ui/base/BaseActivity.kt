@@ -101,8 +101,7 @@ abstract class BaseActivity : AppCompatActivity() {
             menuInflater.inflate(R.menu.more_options, menu)
             return true
         }
-
-        return false
+        return true
     }
 
     /**
@@ -111,6 +110,7 @@ abstract class BaseActivity : AppCompatActivity() {
     open fun showMoreOptions(): Boolean = false
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Timber.d("Options clicked: %s", item.itemId)
         when(item.itemId) {
             R.id.action_settings -> {
                 startActivity(SettingsActivity.getSettingsActivityIntent(this))

@@ -184,7 +184,6 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private void navigateToReviewStock() {
-        Timber.d("About to start review activity with payload: %s", viewModel.getData());
         startActivity(
                 ReviewStockActivity.getReviewStockActivityIntent(this, viewModel.getData())
         );
