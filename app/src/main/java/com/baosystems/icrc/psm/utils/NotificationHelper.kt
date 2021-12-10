@@ -46,7 +46,7 @@ class NotificationHelper {
                     setProgress(100, progress, false)
                 }
 
-                setPriority(NotificationCompat.PRIORITY_HIGH)
+                setPriority(NotificationCompat.PRIORITY_DEFAULT)
             }
             notificationManager.notify(notificationId, builder.build())
         }

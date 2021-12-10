@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants.INSTANT_DATA_SYNC
 import com.baosystems.icrc.psm.data.NetworkState
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.UserManager
@@ -46,4 +47,6 @@ class SettingsViewModel @Inject constructor(
     fun syncData() {
         syncManager.dataSync()
     }
+
+    fun getSyncDataStatus() = syncManager.getSyncStatus(INSTANT_DATA_SYNC)
 }

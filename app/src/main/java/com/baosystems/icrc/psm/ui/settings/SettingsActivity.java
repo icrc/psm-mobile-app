@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.settings;
 
+import static com.baosystems.icrc.psm.commons.Constants.INSTANT_DATA_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE;
 
 import android.content.Context;
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.work.WorkInfo;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.NetworkState;
@@ -169,8 +171,32 @@ public class SettingsActivity extends BaseActivity
             if (forceSyncPref != null) {
                 forceSyncPref.setOnPreferenceClickListener(preference -> {
                     sViewModel.syncData();
+                    sViewModel.getSyncDataStatus().observe(getViewLifecycleOwner(), workInfoList ->
+                            workInfoList.forEach(workInfo -> {
+                                if (workInfo.getTags().contains(INSTANT_DATA_SYNC)) {
+                                    handleDataSyncResponse(workInfo);
+                                }
+                            })
+                    );
                     return true;
                 });
+            }
+        }
+
+        private void handleDataSyncResponse(WorkInfo workInfo) {
+            if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                if (getView() != null) {
+                    ActivityManager.showInfoMessage(
+                            getView(), getString(R.string.data_sync_in_progress));
+                }
+            } else if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                if (getView() != null) {
+                    ActivityManager.showInfoMessage(getView(), getString(R.string.sync_completed));
+                }
+            } else if (workInfo.getState() == WorkInfo.State.FAILED) {
+                if (getView() != null) {
+                    ActivityManager.showErrorMessage(getView(), getString(R.string.data_sync_error));
+                }
             }
         }
 

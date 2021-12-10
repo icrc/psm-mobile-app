@@ -3,7 +3,6 @@ package com.baosystems.icrc.psm.ui.sync
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.work.WorkInfo
-import com.baosystems.icrc.psm.commons.Constants.INITIAL_SYNC
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.services.SyncManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,5 +18,5 @@ class SyncViewModel @Inject constructor(
         syncManager.sync()
     }
 
-    fun getSyncStatus(): LiveData<List<WorkInfo>> = syncManager.getSyncStatus(INITIAL_SYNC)
+    fun getSyncStatus(workName: String): LiveData<List<WorkInfo>> = syncManager.getSyncStatus(workName)
 }

@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.sync;
 
+import static com.baosystems.icrc.psm.commons.Constants.INITIAL_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.INSTANT_DATA_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.INSTANT_METADATA_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.SCREEN_TRANSITION_DELAY;
@@ -54,7 +55,7 @@ public class SyncActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        viewModel.getSyncStatus().observe(this, workInfoList ->
+        viewModel.getSyncStatus(INITIAL_SYNC).observe(this, workInfoList ->
                 workInfoList.forEach(workInfo -> {
 
             if (workInfo.getTags().contains(INSTANT_METADATA_SYNC)) {
