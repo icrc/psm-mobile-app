@@ -97,8 +97,10 @@ class HomeViewModelUnitTest {
         val savedState = SavedStateHandle()
 
         userManager = UserManagerImpl(d2)
-        viewModel = HomeViewModel(savedState, disposable, appConfig, schedulerProvider, preferenceProvider,
-            metadataManager, userManager, userActivityRepository)
+        viewModel = HomeViewModel(
+            savedState, disposable, appConfig, schedulerProvider, preferenceProvider,
+            metadataManager, userActivityRepository
+        )
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)

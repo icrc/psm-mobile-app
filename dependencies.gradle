@@ -22,6 +22,7 @@ ext.versions = [
     legacy_support_v4           : '1.0.0',
     desugar_jdk_libs            : '1.1.5',
     room                        : '2.4.0-beta02',
+    workmanager                 : '2.7.1',
 
     // security
     security_crypto             : '1.0.0',
@@ -30,6 +31,7 @@ ext.versions = [
 
     // DI
     hilt                        : '2.40',
+    hilt_work                   : '1.0.0',
 
     // DHIS2
     dhis_core                   : '1.4.3',

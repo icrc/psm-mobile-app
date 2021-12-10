@@ -29,8 +29,11 @@
     <string name="recent_activities_empty_message">Вы еще не выполняли никаких действий</string>
 
     <!-- Sync -->
-    <string name="sync_in_progress">Синхронизация метаданных&#8230;</string>
-    <string name="sync_error">Невозможно завершить синхронизацию</string>
+    <string name="metadata_sync_in_progress">Синхронизация метаданных&#8230;</string>
+    <string name="metadata_sync_error">Невозможно завершить синхронизацию метаданных</string>
+    <string name="data_sync_in_progress">Синхронизация данных&#8230;</string>
+    <string name="data_sync_error">Невозможно завершить синхронизацию данных</string>
+    <string name="metadata_sync_completed">Синхронизация метаданных завершена!</string>
     <string name="sync_completed">Синхронизация завершена!</string>
 
     <!-- FloatingActionButtons -->

@@ -30,8 +30,11 @@
     <string name="recent_activities_empty_message">Aún no has realizado ninguna actividad.</string>
 
     <!-- Sync -->
-    <string name="sync_in_progress">Sincronizar metadatos&#8230;</string>
-    <string name="sync_error">No se pudo completar la sincronización</string>
+    <string name="metadata_sync_in_progress">Sincronizar metadatos&#8230;</string>
+    <string name="metadata_sync_error">No se pudo completar la sincronización de metadatos</string>
+    <string name="data_sync_in_progress">Sincronizando datos&#8230;</string>
+    <string name="data_sync_error">No se pudo completar la sincronización de datos</string>
+    <string name="metadata_sync_completed">¡Se completó la sincronización de metadatos!</string>
     <string name="sync_completed">¡Sincronización completada!</string>
 
     <!-- FloatingActionButtons -->

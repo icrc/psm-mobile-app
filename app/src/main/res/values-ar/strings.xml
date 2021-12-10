@@ -30,8 +30,11 @@
     <string name="recent_activities_empty_message">أنت لم تقم بأي نشاط بعد</string>
 
     <!-- Sync -->
-    <string name="sync_in_progress">&#8230;مزامنة البيانات الوصفية</string>
-    <string name="sync_error">تعذر إكمال المزامنة</string>
+    <string name="metadata_sync_in_progress">&#8230;مزامنة البيانات الوصفية</string>
+    <string name="metadata_sync_error">تعذر إكمال مزامنة البيانات الوصفية</string>
+    <string name="data_sync_in_progress">&#8230;مزامنة البيانات</string>
+    <string name="data_sync_error">تعذر إكمال مزامنة البيانات</string>
+    <string name="metadata_sync_completed">اكتملت مزامنة البيانات الوصفية!</string>
     <string name="sync_completed">اكتملت المزامنة!</string>
 
     <!-- FloatingActionButtons -->

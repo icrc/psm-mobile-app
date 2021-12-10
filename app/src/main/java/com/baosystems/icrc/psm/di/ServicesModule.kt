@@ -22,7 +22,4 @@ abstract class ServicesModule {
 
     @Binds
     abstract fun provideStockManager(impl: StockManagerImpl): StockManager
-
-    @Binds
-    abstract fun provideSyncManager(impl: SyncManagerImpl): SyncManager
 }

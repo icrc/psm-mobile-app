@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.baosystems.icrc.psm.utils.Constants
+import com.baosystems.icrc.psm.commons.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -94,7 +94,7 @@ class SecurePreferenceProviderImpl @Inject constructor(
         return sharedPreferences.getInt(key, default)
     }
 
-    override fun getLong(key: String, default: Long): Long? {
+    override fun getLong(key: String, default: Long): Long {
         return sharedPreferences.getLong(key, default)
     }
 
@@ -102,7 +102,7 @@ class SecurePreferenceProviderImpl @Inject constructor(
         return sharedPreferences.getBoolean(key, default)
     }
 
-    override fun getFloat(key: String, default: Float): Float? {
+    override fun getFloat(key: String, default: Float): Float {
         return sharedPreferences.getFloat(key, default)
     }
 }

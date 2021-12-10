@@ -2,7 +2,7 @@ package com.baosystems.icrc.psm.services
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.baosystems.icrc.psm.utils.Constants
+import com.baosystems.icrc.psm.commons.Constants
 
 class PreferenceProviderImpl(val context: Context): PreferenceProvider {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -74,7 +74,7 @@ class PreferenceProviderImpl(val context: Context): PreferenceProvider {
         return sharedPreferences.getInt(key, default)
     }
 
-    override fun getLong(key: String, default: Long): Long? {
+    override fun getLong(key: String, default: Long): Long {
         return sharedPreferences.getLong(key, default)
     }
 
@@ -82,7 +82,7 @@ class PreferenceProviderImpl(val context: Context): PreferenceProvider {
         return sharedPreferences.getBoolean(key, default)
     }
 
-    override fun getFloat(key: String, default: Float): Float? {
+    override fun getFloat(key: String, default: Float): Float {
         return sharedPreferences.getFloat(key, default)
     }
 }

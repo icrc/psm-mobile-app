@@ -1,9 +1,59 @@
 package com.baosystems.icrc.psm.di
 
+import android.content.Context
+import androidx.work.WorkManager
+import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.services.*
+import com.baosystems.icrc.psm.utils.ConfigUtils
+import com.baosystems.icrc.psm.utils.Sdk
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import org.hisp.dhis.android.core.D2
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
-object AppModule {}
+@InstallIn(SingletonComponent::class)
+class AppModule {
+    @Provides
+    @Singleton
+    fun providesAppConfig(@ApplicationContext appContext: Context): AppConfig {
+        return ConfigUtils.getAppConfig(appContext.resources)
+    }
+
+    @Provides
+    @Singleton
+    fun providesD2(@ApplicationContext appContext: Context): D2 {
+        return Sdk.d2(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPreferenceProvider(@ApplicationContext appContext: Context): PreferenceProvider {
+        return SecurePreferenceProviderImpl(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun providesWorkManager(@ApplicationContext appContext: Context): WorkManager {
+        return WorkManager.getInstance(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun providesWorkManagerController(workManager: WorkManager): WorkManagerController {
+        return WorkManagerControllerImpl(workManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSyncManager(
+        d2: D2,
+        preferenceProvider: PreferenceProvider,
+        workManagerController: WorkManagerController
+    ): SyncManager {
+        return SyncManagerImpl(d2, preferenceProvider, workManagerController)
+    }
+}

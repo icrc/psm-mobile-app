@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants.USER_ACTIVITY_COUNT
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.NetworkState
 import com.baosystems.icrc.psm.data.TransactionType
@@ -15,7 +16,6 @@ import com.baosystems.icrc.psm.services.MetadataManager
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
-import com.baosystems.icrc.psm.utils.Constants.USER_ACTIVITY_COUNT
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,6 +1,6 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
-import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_TRANSACTION;
+import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION;
 
 import android.content.Context;
 import android.content.Intent;
@@ -65,10 +65,7 @@ public class ManageStockActivity extends BaseActivity {
         setupObservers();
 
         // TODO: Temporarily set to a particular code pending when actual scan is implemented
-        binding.scanButton.setOnClickListener(
-                view -> {
-                    scanBarcode();
-                });
+        binding.scanButton.setOnClickListener(view -> scanBarcode());
     }
 
     private final ActivityResultLauncher barcodeLauncher =

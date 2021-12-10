@@ -89,9 +89,19 @@ dependencies {
     // Preferences
     implementation "androidx.preference:preference-ktx:$versions.preference_ktx"
 
+    // WorkManager
+    implementation "androidx.work:work-runtime:$versions.workmanager"
+    implementation "androidx.work:work-runtime-ktx:$versions.workmanager"
+    implementation "androidx.work:work-rxjava2:$versions.workmanager"
+    implementation "androidx.work:work-gcm:$versions.workmanager"
+
     // DI
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+
+    implementation "androidx.hilt:hilt-compiler:$versions.hilt_work"
+    implementation "androidx.hilt:hilt-work:$versions.hilt_work"
+    kapt "androidx.hilt:hilt-compiler:$versions.hilt_work"
 
     // Barcode scanner
     implementation "com.journeyapps:zxing-android-embedded:$versions.zxing_android_embedded"

@@ -5,15 +5,15 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.baosystems.icrc.psm.commons.Constants.CONFIG_ITEM_CODE
+import com.baosystems.icrc.psm.commons.Constants.CONFIG_ITEM_VALUE
+import com.baosystems.icrc.psm.commons.Constants.CONFIG_PROGRAM
+import com.baosystems.icrc.psm.commons.Constants.CONFIG_STOCK_ON_HAND
+import com.baosystems.icrc.psm.commons.Constants.LAST_METADATA_SYNC_STATUS
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.ConfigUtils
 import com.baosystems.icrc.psm.utils.ConfigUtils.loadConfigFile
-import com.baosystems.icrc.psm.utils.Constants
-import com.baosystems.icrc.psm.utils.Constants.CONFIG_ITEM_CODE
-import com.baosystems.icrc.psm.utils.Constants.CONFIG_ITEM_VALUE
-import com.baosystems.icrc.psm.utils.Constants.CONFIG_PROGRAM
-import com.baosystems.icrc.psm.utils.Constants.CONFIG_STOCK_ON_HAND
 import com.baosystems.icrc.psm.utils.Sdk
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -83,11 +83,8 @@ class SplashViewModel @Inject constructor(
 
     }
 
-//    fun isLoggedIn(): LiveData<Boolean> {
-//        return this.loggedIn
-//    }
-
-    fun hasSyncedMetadata(): Boolean = preferenceProvider.contains(Constants.LAST_SYNC_DATE)
+    fun hasSyncedMetadata(): Boolean = preferenceProvider.getBoolean(
+        LAST_METADATA_SYNC_STATUS, false)
 
     // TODO: Check for the actual existence of the configured values in their respective models
     /**

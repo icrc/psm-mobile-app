@@ -1,7 +1,7 @@
 package com.baosystems.icrc.psm.ui.reviewstock;
 
-import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_MESSAGE;
-import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_STOCK_ENTRIES;
+import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE;
+import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES;
 
 import android.content.Context;
 import android.content.Intent;

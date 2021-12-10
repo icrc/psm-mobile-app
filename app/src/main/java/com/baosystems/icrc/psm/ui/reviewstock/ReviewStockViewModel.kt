@@ -3,6 +3,8 @@ package com.baosystems.icrc.psm.ui.reviewstock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.baosystems.icrc.psm.commons.Constants
+import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES
 import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
@@ -12,8 +14,6 @@ import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
-import com.baosystems.icrc.psm.utils.Constants
-import com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_STOCK_ENTRIES
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable

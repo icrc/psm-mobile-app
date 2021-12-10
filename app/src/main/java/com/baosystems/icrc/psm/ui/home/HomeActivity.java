@@ -1,6 +1,6 @@
 package com.baosystems.icrc.psm.ui.home;
 
-import static com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_APP_CONFIG;
+import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_APP_CONFIG;
 
 import android.app.Dialog;
 import android.content.Context;

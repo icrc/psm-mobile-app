@@ -29,8 +29,11 @@
     <string name="recent_activities_empty_message">You are yet to perform any activity</string>
 
     <!-- Sync -->
-    <string name="sync_in_progress">Syncing metadata&#8230;</string>
-    <string name="sync_error">Unable to complete sync</string>
+    <string name="metadata_sync_in_progress">Syncing metadata&#8230;</string>
+    <string name="metadata_sync_error">Unable to complete metadata sync</string>
+    <string name="data_sync_in_progress">Syncing data&#8230;</string>
+    <string name="data_sync_error">Unable to complete data sync</string>
+    <string name="metadata_sync_completed">Metadata sync completed!</string>
     <string name="sync_completed">Syncing completed!</string>
 
     <!-- FloatingActionButtons -->

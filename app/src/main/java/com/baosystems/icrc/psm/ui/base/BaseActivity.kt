@@ -9,9 +9,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE
 import com.baosystems.icrc.psm.ui.settings.SettingsActivity
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
-import com.baosystems.icrc.psm.utils.Constants.INTENT_EXTRA_MESSAGE
 import com.baosystems.icrc.psm.utils.LocaleManager
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber

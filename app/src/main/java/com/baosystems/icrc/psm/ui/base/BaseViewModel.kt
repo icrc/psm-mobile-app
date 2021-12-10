@@ -2,8 +2,8 @@ package com.baosystems.icrc.psm.ui.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.services.PreferenceProvider
-import com.baosystems.icrc.psm.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,6 +12,6 @@ open class BaseViewModel @Inject constructor(val preferenceProvider: PreferenceP
     val lastSyncDate: MutableLiveData<String> = MutableLiveData()
 
     init {
-        lastSyncDate.value = preferenceProvider.getString(Constants.LAST_SYNC_DATE)
+        lastSyncDate.value = preferenceProvider.getString(Constants.LAST_DATA_SYNC_DATE)
     }
 }

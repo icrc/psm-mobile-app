@@ -1,10 +1,17 @@
 package com.baosystems.icrc.psm.services
 
-import io.reactivex.Observable
-import org.hisp.dhis.android.core.arch.call.D2Progress
+import androidx.lifecycle.LiveData
+import androidx.work.WorkInfo
+import com.baosystems.icrc.psm.data.SyncResult
+import org.hisp.dhis.android.core.settings.SynchronizationSettings
 
 interface SyncManager {
-    fun metadataSync(): Observable<D2Progress>
-    fun dataSync(program: String): Observable<D2Progress>
-    fun upload(): Observable<D2Progress>?
+    fun sync()
+    fun metadataSync()
+    fun checkSyncStatus(): SyncResult
+    fun syncTEIs(program: String)
+    fun schedulePeriodicDataSync()
+    fun schedulePeriodicMetadataSync()
+    fun getSyncStatus(workName: String): LiveData<List<WorkInfo>>
+    fun getSyncSettings(): SynchronizationSettings?
 }

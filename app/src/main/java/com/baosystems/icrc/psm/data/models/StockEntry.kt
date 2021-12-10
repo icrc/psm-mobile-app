@@ -2,7 +2,7 @@ package com.baosystems.icrc.psm.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.baosystems.icrc.psm.utils.Constants.NULL_NUMBER_PLACEHOLDER
+import com.baosystems.icrc.psm.commons.Constants.NULL_NUMBER_PLACEHOLDER
 
 data class StockEntry(
     val id: String,

@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.utils
 
 import android.content.res.Resources
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import java.io.IOException
