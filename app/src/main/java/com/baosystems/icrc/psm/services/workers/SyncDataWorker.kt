@@ -6,6 +6,9 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
+import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_CHANNEL_NAME
+import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_NOTIFICATION_CHANNEL
+import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_NOTIFICATION_ID
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
@@ -42,6 +45,12 @@ class SyncDataWorker @AssistedInject constructor(
             Timber.e(e)
         }
 
+        triggerNotification(
+            R.string.app_name,
+            R.string.sync_completed,
+            R.drawable.ic_end_sync_notification
+        )
+
         val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_DATE, syncDate)
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_STATUS, teiSynced)
@@ -49,11 +58,8 @@ class SyncDataWorker @AssistedInject constructor(
         val syncStatus = syncManager.checkSyncStatus()
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_RESULT, syncStatus.name)
 
-        triggerNotification(
-            R.string.app_name,
-            R.string.sync_completed,
-            R.drawable.ic_end_sync_notification
-        )
+        cancelNotification(SYNC_DATA_NOTIFICATION_ID)
+        syncManager.schedulePeriodicDataSync()
 
         return Result.success()
     }
@@ -61,12 +67,16 @@ class SyncDataWorker @AssistedInject constructor(
     private fun triggerNotification(title: Int, message: Int, icon: Int?) {
         NotificationHelper.triggerNotification(
             applicationContext,
-            Constants.SYNC_DATA_NOTIFICATION_ID,
-            Constants.SYNC_DATA_NOTIFICATION_CHANNEL,
-            Constants.SYNC_DATA_CHANNEL_NAME,
+            SYNC_DATA_NOTIFICATION_ID,
+            SYNC_DATA_NOTIFICATION_CHANNEL,
+            SYNC_DATA_CHANNEL_NAME,
             applicationContext.getString(title),
             applicationContext.getString(message),
             icon
         )
+    }
+
+    private fun cancelNotification(notificationId: Int) {
+        NotificationHelper.cancelNotification(applicationContext, notificationId)
     }
 }
