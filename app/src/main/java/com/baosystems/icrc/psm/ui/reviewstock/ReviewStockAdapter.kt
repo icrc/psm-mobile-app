@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
 import timber.log.Timber
 
 class ReviewStockAdapter(
-    private val itemWatcher: ItemWatcher<StockEntry, Long>
+    private val itemWatcher: ItemWatcher<StockEntry, Long>,
+    val appConfig: AppConfig
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockItemViewHolder>(DIFF_CALLBACK) {
     companion object {
         // TODO: Find a way to use a type-aware DIFF_CALLBACK for different adapters for reusability
@@ -67,9 +69,10 @@ class ReviewStockAdapter(
         }
 
         fun bindTo(stockEntry: StockEntry) {
-            Timber.d("Bind -> StockEntry: %s, Qty: %d", stockEntry, stockEntry.qty)
+            val stockOnHandUid = appConfig.stockOnHand
+
             tvItemName.text = stockEntry.name
-            tvStockOnHand.text = stockEntry.stockOnHand
+            tvStockOnHand.text = stockEntry.trackingData?.getString(stockOnHandUid)
             tvItemQtyLayout.editText?.setText(stockEntry.qty.toString())
         }
     }

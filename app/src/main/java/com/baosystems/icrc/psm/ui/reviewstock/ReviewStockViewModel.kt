@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class ReviewStockViewModel @Inject constructor(
     savedState: SavedStateHandle,
     private val disposable: CompositeDisposable,
+    val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
@@ -69,7 +71,6 @@ class ReviewStockViewModel @Inject constructor(
                     {
                         // TODO: Report the error to the user
                         it.printStackTrace()
-                        Timber.w(it, "Unable to fetch search results")
                     })
         )
     }
@@ -104,7 +105,6 @@ class ReviewStockViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({
-                    Timber.d("Successfully committed transaction!")
                     _commitStatus.postValue(true)
                     logAudit(transaction)
                 }, {

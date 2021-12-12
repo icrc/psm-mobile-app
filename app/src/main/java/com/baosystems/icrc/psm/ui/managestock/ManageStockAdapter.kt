@@ -82,8 +82,10 @@ class ManageStockAdapter(
         }
 
         fun bindTo(item: StockEntry) {
+            val stockOnHandUid = appConfig.stockOnHand
+
             tvItemName.text = item.name
-            tvStockOnHand.text = item.stockOnHand
+            tvStockOnHand.text = item.trackingData?.getString(stockOnHandUid)
             etQty.editText?.setText(watcher.getValue(item).let { value ->
                 value?.toString() ?: ""
             })

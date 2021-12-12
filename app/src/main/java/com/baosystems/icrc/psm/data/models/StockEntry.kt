@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.data.models
 
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import com.baosystems.icrc.psm.commons.Constants.NULL_NUMBER_PLACEHOLDER
@@ -7,17 +8,18 @@ import com.baosystems.icrc.psm.commons.Constants.NULL_NUMBER_PLACEHOLDER
 data class StockEntry(
     val id: String,
     val name: String,
-    val stockOnHand: String?,
-    var qty: Long?
+    val trackingData: Bundle? = null,
+    var qty: Long? = null
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-        parcel.readString(),
+        parcel.readBundle(ClassLoader.getSystemClassLoader()),
         parcel.readLong()
     )
 
-    constructor(id: String, name: String, stockOnHand: String?): this(id, name, stockOnHand, null)
+    constructor(id: String, name: String): this(id, name, null, null)
+    constructor(id: String, name: String, trackingData: Bundle?): this(id, name, trackingData, null)
 
     override fun toString() = name
 
@@ -26,7 +28,7 @@ data class StockEntry(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(name)
-        parcel.writeString(stockOnHand ?: "")
+        parcel.writeBundle(trackingData)
         parcel.writeLong(qty ?: NULL_NUMBER_PLACEHOLDER)
     }
 

@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.services
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
@@ -75,9 +76,34 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
             StockEntry(
                 tei.uid(),
                 AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemName) ?: "",
-                getStockOnHand(tei, config.stockOnHand) ?: ""
+//                getStockOnHand(tei, config.stockOnHand) ?: ""
+                getTrackingData(tei)
             )
         }
+    }
+
+    private fun getTrackingData(tei: TrackedEntityInstance): Bundle? {
+        var bundle: Bundle? = null
+
+        // Get the most recent event
+        val latestEvent = d2.eventModule()
+            .events()
+            .byTrackedEntityInstanceUids(Collections.singletonList(tei.uid()))
+            .byDeleted().isFalse
+            .withTrackedEntityDataValues()
+            .orderByLastUpdated(RepositoryScope.OrderByDirection.DESC)
+            .one()
+            .blockingGet()
+
+        val dataValues = latestEvent.trackedEntityDataValues()
+        if (dataValues != null) {
+            bundle = Bundle()
+            dataValues.forEach {
+                bundle.putString(it.dataElement(), it.value())
+            }
+        }
+
+        return bundle
     }
 
     private fun getStockOnHand(tei: TrackedEntityInstance, stockOnHandUid: String): String? {
