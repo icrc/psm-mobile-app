@@ -1,6 +1,8 @@
 package com.baosystems.icrc.psm.di
 
 import com.baosystems.icrc.psm.services.*
+import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
+import com.baosystems.icrc.psm.services.rules.RuleValidationHelperImpl
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.services.scheduler.SchedulerProviderImpl
 import dagger.Binds
@@ -22,4 +24,9 @@ abstract class ServicesModule {
 
     @Binds
     abstract fun provideStockManager(impl: StockManagerImpl): StockManager
+
+    @Binds
+    abstract fun provideProgramRuleValidationHelper(
+        impl: RuleValidationHelperImpl
+    ): RuleValidationHelper
 }

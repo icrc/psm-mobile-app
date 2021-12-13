@@ -91,7 +91,8 @@ public class ReviewStockActivity extends BaseActivity {
             }
 
             @Override
-            public void quantityChanged(StockEntry item, Long value) {
+            public void quantityChanged(
+                    StockEntry item, Long value, @Nullable OnQuantityValidated callback) {
                 viewModel.updateQuantity(item, value);
             }
         };

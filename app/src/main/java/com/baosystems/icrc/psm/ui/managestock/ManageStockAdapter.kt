@@ -16,6 +16,7 @@ import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
+import org.hisp.dhis.rules.models.RuleEffect
 import timber.log.Timber
 
 class ManageStockAdapter(
@@ -61,7 +62,6 @@ class ManageStockAdapter(
         private val etQty: TextInputLayout = itemView.findViewById(R.id.itemQtyTextField)
 
         init {
-            Timber.d("Created new StockItemHolder. Attaching listeners...")
             etQty.editText?.addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -69,12 +69,17 @@ class ManageStockAdapter(
                 // TODO: Optimize to update stock on hand after a debounce,
                 //  rather than on every keystroke
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s == null || TextUtils.isEmpty(s.toString()) ||
-                        adapterPosition == RecyclerView.NO_POSITION) return
+                    if (adapterPosition == RecyclerView.NO_POSITION) return
 
-                    getItem(adapterPosition)?.let {
-                        watcher.quantityChanged(it, s.toString().toLong())
-                    }
+                    val qty = if (s == null || TextUtils.isEmpty(s.toString())) {
+                        0
+                    } else { s.toString().toLong() }
+
+                    getItem(adapterPosition)?.let { watcher.quantityChanged(it, qty, object : ItemWatcher.OnQuantityValidated {
+                        override fun validationCompleted(ruleEffects: List<RuleEffect>) {
+                            Timber.d("Received Effects: %s", ruleEffects)
+                        }
+                    }) }
                 }
 
                 override fun afterTextChanged(s: Editable?) {}

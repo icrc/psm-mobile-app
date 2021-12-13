@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.baosystems.icrc.psm.commons.Constants
 
-class PreferenceProviderImpl(val context: Context): PreferenceProvider {
+class PreferenceProviderImpl(context: Context): PreferenceProvider {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         Constants.SHARED_PREFS, Context.MODE_PRIVATE)
 

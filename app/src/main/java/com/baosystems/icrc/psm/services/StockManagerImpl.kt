@@ -106,27 +106,27 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
         return bundle
     }
 
-    private fun getStockOnHand(tei: TrackedEntityInstance, stockOnHandUid: String): String? {
-        val events = d2.eventModule()
-            .events()
-            .byTrackedEntityInstanceUids(Collections.singletonList(tei.uid()))
-            .byDataValue(stockOnHandUid).like("")
-            .byDeleted().isFalse
-            .withTrackedEntityDataValues()
-            .blockingGet()
-
-        events.forEach { event ->
-            event.trackedEntityDataValues()?.forEach { dataValue ->
-                dataValue.dataElement().let { dv ->
-                    if (dv.equals(stockOnHandUid)) {
-                        return dataValue.value()
-                    }
-                }
-            }
-        }
-
-        return null
-    }
+//    private fun getStockOnHand(tei: TrackedEntityInstance, stockOnHandUid: String): String? {
+//        val events = d2.eventModule()
+//            .events()
+//            .byTrackedEntityInstanceUids(Collections.singletonList(tei.uid()))
+//            .byDataValue(stockOnHandUid).like("")
+//            .byDeleted().isFalse
+//            .withTrackedEntityDataValues()
+//            .blockingGet()
+//
+//        events.forEach { event ->
+//            event.trackedEntityDataValues()?.forEach { dataValue ->
+//                dataValue.dataElement().let { dv ->
+//                    if (dv.equals(stockOnHandUid)) {
+//                        return dataValue.value()
+//                    }
+//                }
+//            }
+//        }
+//
+//        return null
+//    }
 
     private fun filterDeleted(list: MutableList<TrackedEntityInstance>):
             List<TrackedEntityInstance> {

@@ -11,7 +11,7 @@ import org.hisp.dhis.android.core.program.Program
 import javax.inject.Inject
 
 class MetadataManagerImpl @Inject constructor(
-    val d2: D2,
+    private val d2: D2,
     val config: AppConfig
 ): MetadataManager {
     override fun stockManagementProgram(programUid: String): Single<Program?> {

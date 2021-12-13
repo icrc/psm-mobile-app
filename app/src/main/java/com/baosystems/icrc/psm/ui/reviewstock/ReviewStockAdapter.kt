@@ -16,7 +16,6 @@ import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
-import timber.log.Timber
 
 class ReviewStockAdapter(
     private val itemWatcher: ItemWatcher<StockEntry, Long>,
@@ -54,18 +53,18 @@ class ReviewStockAdapter(
                     s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s == null || TextUtils.isEmpty(s.toString()) ||
-                        adapterPosition == RecyclerView.NO_POSITION) return
+                    if (adapterPosition == RecyclerView.NO_POSITION) return
 
-                    getItem(adapterPosition)?.let {
-                        watcher.quantityChanged(it, s.toString().toLong())
-                    }
+                    val qty = if (s == null || TextUtils.isEmpty(s.toString())) {
+                        0
+                    } else { s.toString().toLong() }
+
+                    // TODO: Add a listener to handle validation completion
+                    getItem(adapterPosition)?.let { watcher.quantityChanged(it, qty, null) }
                 }
 
                 override fun afterTextChanged(p0: Editable?) {}
             })
-
-            Timber.d("Initialized new StockItemHolder with listeners")
         }
 
         fun bindTo(stockEntry: StockEntry) {

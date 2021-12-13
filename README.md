@@ -7,7 +7,6 @@
 ### Todo
 
 - Voice input
-- Force & Scheduled sync
 - Use custom dividers and spacers for the recyclerview items
 - Use ViewModel's SavedState to save state across process death or share data between
   different activities

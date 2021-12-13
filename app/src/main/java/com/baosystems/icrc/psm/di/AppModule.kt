@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.services.*
+import com.baosystems.icrc.psm.services.rules.ExpressionEvaluatorImpl
 import com.baosystems.icrc.psm.utils.ConfigUtils
 import com.baosystems.icrc.psm.utils.Sdk
 import dagger.Module
@@ -11,7 +12,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.apache.commons.jexl2.JexlEngine
 import org.hisp.dhis.android.core.D2
+import org.hisp.dhis.rules.RuleExpressionEvaluator
 import javax.inject.Singleton
 
 @Module
@@ -55,5 +58,17 @@ class AppModule {
         workManagerController: WorkManagerController
     ): SyncManager {
         return SyncManagerImpl(d2, preferenceProvider, workManagerController)
+    }
+
+    @Provides
+    @Singleton
+    fun providesJexlEngine(): JexlEngine {
+        return JexlEngine()
+    }
+
+    @Provides
+    @Singleton
+    fun providesRuleExpressionEvaluator(jexlEngine: JexlEngine): RuleExpressionEvaluator {
+        return ExpressionEvaluatorImpl(jexlEngine)
     }
 }
