@@ -68,10 +68,8 @@ class ReviewStockAdapter(
         }
 
         fun bindTo(stockEntry: StockEntry) {
-            val stockOnHandUid = appConfig.stockOnHand
-
             tvItemName.text = stockEntry.name
-            tvStockOnHand.text = stockEntry.trackingData?.getString(stockOnHandUid)
+            tvStockOnHand.text = stockEntry.stockOnHand
             tvItemQtyLayout.editText?.setText(stockEntry.qty.toString())
         }
     }

@@ -1,6 +1,5 @@
 package com.baosystems.icrc.psm.services
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
@@ -76,57 +75,32 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
             StockEntry(
                 tei.uid(),
                 AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemName) ?: "",
-//                getStockOnHand(tei, config.stockOnHand) ?: ""
-                getTrackingData(tei)
+                getStockOnHand(tei, config.stockOnHand) ?: ""
             )
         }
     }
 
-    private fun getTrackingData(tei: TrackedEntityInstance): Bundle? {
-        var bundle: Bundle? = null
-
-        // Get the most recent event
-        val latestEvent = d2.eventModule()
+    private fun getStockOnHand(tei: TrackedEntityInstance, stockOnHandUid: String): String? {
+        val events = d2.eventModule()
             .events()
             .byTrackedEntityInstanceUids(Collections.singletonList(tei.uid()))
+            .byDataValue(stockOnHandUid).like("")
             .byDeleted().isFalse
             .withTrackedEntityDataValues()
-            .orderByLastUpdated(RepositoryScope.OrderByDirection.DESC)
-            .one()
             .blockingGet()
 
-        val dataValues = latestEvent.trackedEntityDataValues()
-        if (dataValues != null) {
-            bundle = Bundle()
-            dataValues.forEach {
-                bundle.putString(it.dataElement(), it.value())
+        events.forEach { event ->
+            event.trackedEntityDataValues()?.forEach { dataValue ->
+                dataValue.dataElement().let { dv ->
+                    if (dv.equals(stockOnHandUid)) {
+                        return dataValue.value()
+                    }
+                }
             }
         }
 
-        return bundle
+        return null
     }
-
-//    private fun getStockOnHand(tei: TrackedEntityInstance, stockOnHandUid: String): String? {
-//        val events = d2.eventModule()
-//            .events()
-//            .byTrackedEntityInstanceUids(Collections.singletonList(tei.uid()))
-//            .byDataValue(stockOnHandUid).like("")
-//            .byDeleted().isFalse
-//            .withTrackedEntityDataValues()
-//            .blockingGet()
-//
-//        events.forEach { event ->
-//            event.trackedEntityDataValues()?.forEach { dataValue ->
-//                dataValue.dataElement().let { dv ->
-//                    if (dv.equals(stockOnHandUid)) {
-//                        return dataValue.value()
-//                    }
-//                }
-//            }
-//        }
-//
-//        return null
-//    }
 
     private fun filterDeleted(list: MutableList<TrackedEntityInstance>):
             List<TrackedEntityInstance> {
