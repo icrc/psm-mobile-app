@@ -72,13 +72,14 @@ class ManageStockAdapter(
                     if (adapterPosition == RecyclerView.NO_POSITION) return
 
                     val qty = if (s == null || TextUtils.isEmpty(s.toString())) {
-                        0
+                        null
                     } else { s.toString().toLong() }
 
-                    getItem(adapterPosition)?.let { watcher.quantityChanged(it, qty, object : ItemWatcher.OnQuantityValidated {
-                        override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                            Timber.d("Received Effects: %s", ruleEffects)
-                        }
+                    getItem(adapterPosition)?.let {
+                        watcher.quantityChanged(it, qty, object : ItemWatcher.OnQuantityValidated {
+                            override fun validationCompleted(ruleEffects: List<RuleEffect>) {
+                                Timber.d("Received Effects: %s", ruleEffects)
+                            }
                     }) }
                 }
 
@@ -91,9 +92,7 @@ class ManageStockAdapter(
 
             tvItemName.text = item.name
             tvStockOnHand.text = item.trackingData?.getString(stockOnHandUid)
-            etQty.editText?.setText(watcher.getValue(item).let { value ->
-                value?.toString() ?: ""
-            })
+            etQty.editText?.setText(watcher.getValue(item)?.toString())
         }
     }
 }

@@ -133,7 +133,7 @@ public class ManageStockActivity extends BaseActivity {
 
         ItemWatcher<StockEntry, Long> itemWatcher = new ItemWatcher<StockEntry, Long>() {
                     @Override
-                    public void quantityChanged(StockEntry item, Long value,
+                    public void quantityChanged(StockEntry item, @Nullable Long value,
                                                 @Nullable OnQuantityValidated callback) {
                         viewModel.setItemQuantity(item, value, callback);
                     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.commons.Constants.SEARCH_QUERY_DEBOUNCE
 import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.NullableTriple
 import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
@@ -41,7 +42,7 @@ class ManageStockViewModel @Inject constructor(
     private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
     private val entryRelay =
-        PublishRelay.create<Triple<StockEntry, Long, ItemWatcher.OnQuantityValidated?>>()
+        PublishRelay.create<NullableTriple<StockEntry, Long?, ItemWatcher.OnQuantityValidated?>>()
     private val itemsCache = linkedMapOf<StockEntry, Long>()
     private val stockItems = Transformations.switchMap(search) { q ->
         stockManager.search(q, transaction.facility.uid)
@@ -86,11 +87,11 @@ class ManageStockViewModel @Inject constructor(
             entryRelay
                 .debounce(SEARCH_QUERY_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged {
-                        t1, t2 -> t1.first.id == t2.first.id && t1.second == t2.second
+                        t1, t2 -> t1.first!!.id == t2.first!!.id && t1.second == t2.second
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe({ evaluate(it.first, it.second, it.third) }, { it.printStackTrace() })
+                .subscribe({ evaluate(it.first!!, it.second, it.third) }, { it.printStackTrace() })
         )
     }
 
@@ -104,10 +105,15 @@ class ManageStockViewModel @Inject constructor(
 
     fun setItemQuantity(
         item: @NotNull StockEntry,
-        qty: Long,
+        qty: Long?,
         callback: ItemWatcher.OnQuantityValidated?
     ) {
-        entryRelay.accept(Triple(item, qty, callback))
+        entryRelay.accept(NullableTriple(item, qty, callback))
+        if (qty == null) {
+            itemsCache.remove(item)
+            return
+        }
+
         itemsCache[item] = qty
     }
 
@@ -123,7 +129,7 @@ class ManageStockViewModel @Inject constructor(
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 
-    fun evaluate(item: StockEntry, qty: Long, callback: ItemWatcher.OnQuantityValidated?) {
+    fun evaluate(item: StockEntry, qty: Long?, callback: ItemWatcher.OnQuantityValidated?) {
         // TODO: Change data values to what is obtained from the repository in addition to
         //  the quantity for the transaction added
         val data = hashMapOf<String, String>()
