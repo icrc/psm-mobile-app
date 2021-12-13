@@ -1,12 +1,15 @@
 package com.baosystems.icrc.psm.services.rules
 
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.utils.RuleEngineHelper
-import com.baosystems.icrc.psm.utils.toRuleList
-import com.baosystems.icrc.psm.utils.toRuleVariableList
+import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.Transaction
+import com.baosystems.icrc.psm.utils.*
 import io.reactivex.Flowable
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
+import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
+import org.hisp.dhis.android.core.event.Event
 import org.hisp.dhis.android.core.program.ProgramStage
 import org.hisp.dhis.rules.RuleEngine
 import org.hisp.dhis.rules.models.RuleDataValue
@@ -18,7 +21,7 @@ import javax.inject.Inject
 
 class RuleValidationHelperImpl @Inject constructor(
     private val d2: D2,
-    appConfig: AppConfig,
+    private val appConfig: AppConfig,
 ): RuleValidationHelper {
 
     private var cachedRuleEngine: Flowable<RuleEngine>
@@ -38,14 +41,19 @@ class RuleValidationHelperImpl @Inject constructor(
             .cacheWithInitialCapacity(1)
     }
 
-    override fun evaluate(program: String, ou: String, eventDate: Date,
-                          values: Map<String, String>): Flowable<List<RuleEffect>> {
+    override fun evaluate(
+        entry: StockEntry,
+        qty: Long?,
+        eventDate: Date,
+        program: String,
+        transaction: Transaction
+    ): Flowable<List<RuleEffect>> {
         return ruleEngine().flatMap { ruleEngine ->
             val programStage = programStage(program)
-            val dataValues = values.map { RuleDataValue.create(eventDate, programStage.uid(), it.key, it.value) }
+            val dataValues = dataValues(entry.id, qty, programStage.uid(), transaction, eventDate)
             Flowable.fromCallable(
                 ruleEngine.evaluate(
-                    createRuleEvent(programStage, ou, dataValues, Date())
+                    createRuleEvent(programStage, transaction.facility.uid, dataValues, eventDate)
                 )
             )
         }
@@ -116,6 +124,60 @@ class RuleValidationHelperImpl @Inject constructor(
                     it
                 }
             }
+
+    private fun mostRecentEvent(teiUid: String): Single<Event> {
+        return d2.eventModule()
+            .events()
+            .byTrackedEntityInstanceUids(Collections.singletonList(teiUid))
+            .byDeleted().isFalse
+            .withTrackedEntityDataValues()
+            .orderByLastUpdated(RepositoryScope.OrderByDirection.DESC)
+            .one()
+            .get()
+    }
+
+    private fun dataValues(
+        teiUid: String,
+        qty: Long?,
+        programStage: String,
+        transaction: Transaction,
+        eventDate: Date
+    ): List<RuleDataValue> {
+        val values = mostRecentEvent(teiUid).map { event ->
+            if (event.trackedEntityDataValues() != null) {
+                event.trackedEntityDataValues()!!.toRuleDataValue(
+                    event,
+                    d2.dataElementModule().dataElements(),
+                    d2.programModule().programRuleVariables(),
+                    d2.optionModule().options()
+                )
+            } else {
+                listOf()
+            }
+        }.blockingGet().toMutableList()
+
+        // Add the quantity if defined
+        if (qty != null) {
+            val deUid = ConfigUtils.getTransactionDataElement(transaction.transactionType, appConfig)
+            values.add(RuleDataValue.create(eventDate, programStage, deUid, qty.toString()))
+
+            // Add the 'deliver to' if it's a distribution event
+            if (transaction.transactionType == TransactionType.DISTRIBUTION) {
+                transaction.distributedTo?.let { distributedTo ->
+                    d2.optionModule()
+                        .options()
+                        .uid(distributedTo.uid)
+                        .blockingGet()
+                        .code()?.let { code ->
+                            values.add(
+                                RuleDataValue.create(eventDate, programStage, appConfig.distributedTo, code))
+                        }
+                }
+            }
+        }
+
+        return values.toList()
+    }
 }
 
 

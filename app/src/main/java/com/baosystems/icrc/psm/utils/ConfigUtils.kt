@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import java.io.IOException
 import java.util.*
@@ -46,5 +47,16 @@ object ConfigUtils {
 
         configProps.load(resources.openRawResource(CONFIG_RESOURCE))
         return configProps
+    }
+
+    @JvmStatic
+    fun getTransactionDataElement(transactionType: TransactionType, config: AppConfig): String {
+        val dataElementUid = when (transactionType) {
+            TransactionType.DISTRIBUTION -> config.stockDistribution
+            TransactionType.CORRECTION -> config.stockCorrection
+            TransactionType.DISCARD -> config.stockDiscarded
+        }
+
+        return dataElementUid
     }
 }

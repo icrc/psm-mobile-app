@@ -129,16 +129,9 @@ class ManageStockViewModel @Inject constructor(
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 
-    fun evaluate(item: StockEntry, qty: Long?, callback: ItemWatcher.OnQuantityValidated?) {
-        // TODO: Change data values to what is obtained from the repository in addition to
-        //  the quantity for the transaction added
-        val data = hashMapOf<String, String>()
-        data.put("j3ydinp6Qp8", "156")
-        data.put("oc8tn8CewiP", "-88")
-        data.put("yfsEseIcEXr", "25")
-
+    private fun evaluate(item: StockEntry, qty: Long?, callback: ItemWatcher.OnQuantityValidated?) {
         disposable.add(
-            ruleValidationHelper.evaluate(config.program, transaction.facility.uid, Date(), data)
+            ruleValidationHelper.evaluate(item, qty, Date(), config.program, transaction)
                 .doOnError { it.printStackTrace() }
                 .observeOn(schedulerProvider.io())
                 .subscribe { ruleEffects -> callback?.validationCompleted(ruleEffects) }
