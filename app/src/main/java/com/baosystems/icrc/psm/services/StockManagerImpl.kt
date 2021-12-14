@@ -6,10 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.models.IdentifiableModel
-import com.baosystems.icrc.psm.data.models.SearchParametersModel
-import com.baosystems.icrc.psm.data.models.StockEntry
-import com.baosystems.icrc.psm.data.models.Transaction
+import com.baosystems.icrc.psm.data.models.*
 import com.baosystems.icrc.psm.utils.AttributeHelper
 import com.baosystems.icrc.psm.utils.ConfigUtils.getTransactionDataElement
 import com.baosystems.icrc.psm.utils.toDate
@@ -24,11 +21,14 @@ import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import java.util.*
 import javax.inject.Inject
 
-class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): StockManager {
+class StockManagerImpl @Inject constructor(
+    val d2: D2, val config: AppConfig
+): StockManager {
+
     override fun search(
         query: SearchParametersModel,
         ou: String?
-    ): LiveData<PagedList<StockEntry>> {
+    ): LiveData<PagedList<StockItem>> {
         var teiRepository = d2.trackedEntityModule().trackedEntityInstanceQuery()
 
         if (!ou.isNullOrEmpty())
@@ -59,20 +59,20 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
             .eq(RepositoryScope.OrderByDirection.ASC)
             .also { teiRepository = it }
 
-        val dataSource: DataSource<TrackedEntityInstance, StockEntry> = teiRepository.dataSource
+        val dataSource: DataSource<TrackedEntityInstance, StockItem> = teiRepository.dataSource
             .mapByPage(this::filterDeleted)
             .mapByPage { transform(it, config) }
 
-        return LivePagedListBuilder(object : DataSource.Factory<TrackedEntityInstance, StockEntry>() {
-            override fun create(): DataSource<TrackedEntityInstance, StockEntry> {
+        return LivePagedListBuilder(object : DataSource.Factory<TrackedEntityInstance, StockItem>() {
+            override fun create(): DataSource<TrackedEntityInstance, StockItem> {
                 return dataSource
             }
         }, Constants.ITEM_PAGE_SIZE).build()
     }
 
-    private fun transform(teis: List<TrackedEntityInstance>, config: AppConfig): List<StockEntry> {
+    private fun transform(teis: List<TrackedEntityInstance>, config: AppConfig): List<StockItem> {
         return teis.map { tei ->
-            StockEntry(
+            StockItem(
                 tei.uid(),
                 AttributeHelper.teiAttributeValueByAttributeUid(tei, config.itemName) ?: "",
                 getStockOnHand(tei, config.stockOnHand) ?: ""
@@ -127,7 +127,7 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
         )
     }
 
-    override fun saveTransaction(entries: List<StockEntry>, transaction: Transaction):
+    override fun saveTransaction(items: List<StockEntry>, transaction: Transaction):
             Single<Unit> {
 
         return Single.defer{
@@ -138,16 +138,16 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
                 .one()
                 .get()
                 .map { programStage ->
-                    entries.forEach {
-                        val enrollment = getEnrollment(it.id)
-                        addEvent(it, programStage, enrollment, transaction)
+                    items.forEach { entry ->
+                        val enrollment = getEnrollment(entry.item.id)
+                        addEvent(entry, programStage, enrollment, transaction)
                     }
                 }
         }
     }
 
     private fun addEvent(
-        entry: StockEntry,
+        item: StockEntry,
         programStage: ProgramStage,
         enrollment: Enrollment,
         transaction: Transaction
@@ -162,7 +162,7 @@ class StockManagerImpl @Inject constructor(val d2: D2, val config: AppConfig): S
         d2.trackedEntityModule().trackedEntityDataValues().value(
             eventUid,
             getTransactionDataElement(transaction.transactionType, config)
-        ).blockingSet(entry.qty.toString())
+        ).blockingSet(item.qty.toString())
 
         transaction.distributedTo?.let {
             val destination = d2.optionModule()

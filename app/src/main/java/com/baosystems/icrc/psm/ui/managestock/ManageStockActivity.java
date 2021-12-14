@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.models.StockEntry;
+import com.baosystems.icrc.psm.data.models.StockItem;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
@@ -45,6 +45,50 @@ public class ManageStockActivity extends BaseActivity {
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
 
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher =
+            registerForActivityResult(new ScanContract(), scanIntentResult -> {
+                if (scanIntentResult.getContents() == null) {
+                    ActivityManager.showInfoMessage(binding.getRoot(),
+                            getString(R.string.scan_canceled));
+                } else {
+                    String data = scanIntentResult.getContents();
+                    Timber.i("Result: %s", data);
+//                    viewModel.onScanCompleted("AFORMEDFPF2");
+                    // TODO: Set the name of the item in the search field
+                    viewModel.onScanCompleted(data);
+                }
+            });
+
+    private final ItemWatcher<StockItem, Long, String> itemWatcher =
+            new ItemWatcher<StockItem, Long, String>() {
+
+        @Override
+        public String getStockOnHand(StockItem item) {
+            return viewModel.getStockOnHand(item);
+        }
+
+        @Override
+        public void updateStockOnHand(StockItem item, String value, int position) {
+            viewModel.updateStockOnHand(item, value);
+            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+        }
+
+        @Override
+        public void quantityChanged(StockItem item, @Nullable Long value,
+                                    @Nullable OnQuantityValidated callback) {
+            viewModel.setItemQuantity(item, value, callback);
+        }
+
+        @Override
+        public void removeItem(StockItem item) { }
+
+        @Nullable
+        @Override
+        public Long getQuantity(StockItem item) {
+            return viewModel.getItemQuantity(item);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,20 +110,6 @@ public class ManageStockActivity extends BaseActivity {
 
         binding.scanButton.setOnClickListener(view -> scanBarcode());
     }
-
-    private final ActivityResultLauncher barcodeLauncher =
-            registerForActivityResult(new ScanContract(), scanIntentResult -> {
-                if (scanIntentResult.getContents() == null) {
-                    ActivityManager.showInfoMessage(binding.getRoot(),
-                            getString(R.string.scan_canceled));
-                } else {
-                    String data = scanIntentResult.getContents();
-                    Timber.i("Result: %s", data);
-//                    viewModel.onScanCompleted("AFORMEDFPF2");
-                    // TODO: Set the name of the item in the search field
-                    viewModel.onScanCompleted(data);
-                }
-            });
 
     private void scanBarcode() {
         ScanOptions scanOptions = new ScanOptions()
@@ -131,22 +161,6 @@ public class ManageStockActivity extends BaseActivity {
     private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
 
-        ItemWatcher<StockEntry, Long> itemWatcher = new ItemWatcher<StockEntry, Long>() {
-                    @Override
-                    public void quantityChanged(StockEntry item, @Nullable Long value,
-                                                @Nullable OnQuantityValidated callback) {
-                        viewModel.setItemQuantity(item, value, callback);
-                    }
-
-                    @Override
-                    public void removeItem(StockEntry item) { }
-
-                    @Nullable
-                    @Override
-                    public Long getValue(StockEntry item) {
-                        return viewModel.getItemQuantity(item);
-                    }
-        };
         adapter = new ManageStockAdapter(itemWatcher, viewModel.getConfig());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(

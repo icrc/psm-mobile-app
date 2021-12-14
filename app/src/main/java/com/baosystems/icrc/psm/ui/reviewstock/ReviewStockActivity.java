@@ -36,6 +36,39 @@ import io.reactivex.disposables.CompositeDisposable;
 public class ReviewStockActivity extends BaseActivity {
     private ReviewStockViewModel viewModel;
     private ActivityReviewStockBinding binding;
+    private ReviewStockAdapter adapter;
+
+    private final ItemWatcher<StockEntry, Long, String> itemWatcher =
+            new ItemWatcher<StockEntry, Long, String>() {
+        @Override
+        public void removeItem(StockEntry item) {
+            viewModel.removeItem(item);
+        }
+
+        @Nullable
+        @Override
+        public String getStockOnHand(StockEntry item) {
+            return viewModel.getItemStockOnHand(item);
+        }
+
+        @Nullable
+        @Override
+        public Long getQuantity(StockEntry item) {
+            return viewModel.getItemQuantity(item);
+        }
+
+        @Override
+        public void updateStockOnHand(StockEntry item, String value, int position) {
+            viewModel.updateItemStockOnHand(item, value);
+            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+        }
+
+        @Override
+        public void quantityChanged(StockEntry item, @Nullable Long value,
+                                    @Nullable OnQuantityValidated callback) {
+            viewModel.updateItemQuantity(item, value);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,24 +112,7 @@ public class ReviewStockActivity extends BaseActivity {
         RecyclerView recyclerView = binding.stockItemsList;
         recyclerView.setHasFixedSize(true);
 
-        ItemWatcher<StockEntry, Long> itemWatcher = new ItemWatcher<StockEntry, Long>() {
-            @Override
-            public void removeItem(StockEntry item) {
-                viewModel.removeItem(item);
-            }
-
-            @Override
-            public Long getValue(StockEntry item) {
-                return viewModel.getItemQuantity(item);
-            }
-
-            @Override
-            public void quantityChanged(
-                    StockEntry item, Long value, @Nullable OnQuantityValidated callback) {
-                viewModel.updateQuantity(item, value);
-            }
-        };
-        ReviewStockAdapter adapter = new ReviewStockAdapter(itemWatcher, viewModel.getConfig());
+        adapter = new ReviewStockAdapter(itemWatcher, viewModel.getConfig());
         recyclerView.setAdapter(adapter);
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);

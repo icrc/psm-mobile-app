@@ -11,6 +11,7 @@ import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
@@ -42,11 +43,11 @@ class ManageStockViewModel @Inject constructor(
     private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
     private val entryRelay =
-        PublishRelay.create<NullableTriple<StockEntry, Long?, ItemWatcher.OnQuantityValidated?>>()
-    private val itemsCache = linkedMapOf<StockEntry, Long>()
+        PublishRelay.create<NullableTriple<StockItem, Long?, ItemWatcher.OnQuantityValidated?>>()
     private val stockItems = Transformations.switchMap(search) { q ->
         stockManager.search(q, transaction.facility.uid)
     }
+    private val itemsCache = linkedMapOf<String, StockEntry>()
 
     init {
         if (transaction.transactionType != TransactionType.DISTRIBUTION &&
@@ -104,37 +105,44 @@ class ManageStockViewModel @Inject constructor(
     }
 
     fun setItemQuantity(
-        item: @NotNull StockEntry,
+        item: @NotNull StockItem,
         qty: Long?,
         callback: ItemWatcher.OnQuantityValidated?
     ) {
-        entryRelay.accept(NullableTriple(item, qty, callback))
         if (qty == null) {
-            itemsCache.remove(item)
+            itemsCache.remove(item.id)
             return
         }
 
-        itemsCache[item] = qty
+        entryRelay.accept(NullableTriple(item, qty, callback))
+
+        // TODO: Accept the quantity entered if valid
+        itemsCache[item.id] = StockEntry(item, qty)
     }
 
-    fun getItemQuantity(item: StockEntry) = itemsCache[item]
+    fun getItemQuantity(item: StockItem) = itemsCache[item.id]?.qty
+
+    fun getStockOnHand(item: StockItem) = itemsCache[item.id]?.stockOnHand
+
+    fun updateStockOnHand(item: StockItem, value: String) {
+        itemsCache[item.id]?.stockOnHand = value
+    }
 
     private fun getPopulatedEntries(): MutableList<StockEntry> {
-        itemsCache.entries.forEach {
-            it.key.qty = it.value
-        }
-
-        return itemsCache.keys.toMutableList()
+        return itemsCache.values.toMutableList()
     }
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 
-    private fun evaluate(item: StockEntry, qty: Long?, callback: ItemWatcher.OnQuantityValidated?) {
+    private fun evaluate(item: StockItem, qty: Long?, callback: ItemWatcher.OnQuantityValidated?) {
         disposable.add(
             ruleValidationHelper.evaluate(item, qty, Date(), config.program, transaction)
                 .doOnError { it.printStackTrace() }
                 .observeOn(schedulerProvider.io())
-                .subscribe { ruleEffects -> callback?.validationCompleted(ruleEffects) }
+                .subscribeOn(schedulerProvider.ui())
+                .subscribe { ruleEffects ->
+                    callback?.validationCompleted(ruleEffects)
+                }
         )
     }
 }

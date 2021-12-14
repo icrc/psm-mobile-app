@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.data.models.Transaction
 import io.reactivex.Single
 
@@ -18,8 +19,8 @@ interface StockManager {
      */
 
     fun search(query: SearchParametersModel, ou: String?):
-            LiveData<PagedList<StockEntry>>
+            LiveData<PagedList<StockItem>>
 
-    fun saveTransaction(entries: List<StockEntry>, transaction: Transaction):
+    fun saveTransaction(items: List<StockEntry>, transaction: Transaction):
             Single<Unit>
 }

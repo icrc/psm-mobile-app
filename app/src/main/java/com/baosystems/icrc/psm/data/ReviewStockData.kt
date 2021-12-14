@@ -7,21 +7,21 @@ import com.baosystems.icrc.psm.data.models.Transaction
 
 class ReviewStockData(
     val transaction: Transaction,
-    val entries: MutableList<StockEntry>
+    val items: MutableList<StockEntry>
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(Transaction::class.java.classLoader)!!,
         mutableListOf<StockEntry>()
     ) {
-        parcel.readTypedList(entries, StockEntry)
+        parcel.readTypedList(items, StockEntry)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(transaction, flags)
-        parcel.writeTypedList(entries)
+        parcel.writeTypedList(items)
     }
 
-    fun removeItem(entry: StockEntry) = entries.remove(entry)
+    fun removeItem(item: StockEntry) = items.remove(item)
 
     override fun describeContents() = 0
 
@@ -36,6 +36,6 @@ class ReviewStockData(
     }
 
     override fun toString(): String {
-        return "$entries"
+        return "$items"
     }
 }

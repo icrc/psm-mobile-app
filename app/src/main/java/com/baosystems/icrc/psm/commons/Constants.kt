@@ -27,7 +27,6 @@ object Constants {
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
     const val SCREEN_TRANSITION_DELAY = 100L
-    const val NULL_NUMBER_PLACEHOLDER = -112L
 
     // Intent Extras
     const val INTENT_EXTRA_APP_CONFIG = "APP_CONFIG"

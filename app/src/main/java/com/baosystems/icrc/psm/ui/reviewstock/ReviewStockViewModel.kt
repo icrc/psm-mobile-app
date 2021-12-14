@@ -40,7 +40,7 @@ class ReviewStockViewModel @Inject constructor(
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
 
-    private val populatedItems = data.entries
+    private val populatedItems = data.items
     private val _reviewedItems: MutableLiveData<List<StockEntry>> = MutableLiveData(populatedItems)
     val reviewedItems: LiveData<List<StockEntry>>
         get() = _reviewedItems
@@ -77,11 +77,17 @@ class ReviewStockViewModel @Inject constructor(
 
     fun removeItem(item: StockEntry) = populatedItems.remove(item)
 
-    fun updateQuantity(item: StockEntry, value: Long) {
+    fun updateItemQuantity(item: StockEntry, value: Long) {
         item.qty = value
     }
 
+    fun updateItemStockOnHand(item: StockEntry, value: String) {
+        item.stockOnHand = value
+    }
+
     fun getItemQuantity(item: StockEntry) = item.qty
+
+    fun getItemStockOnHand(item: StockEntry) = item.stockOnHand
 
     fun onSearchQueryChanged(query: String) = searchRelay.accept(query)
 
@@ -89,7 +95,7 @@ class ReviewStockViewModel @Inject constructor(
         return if (q == null || q.isEmpty())
             populatedItems.toList()
         else
-            populatedItems.filter { it.name.contains(q, true) }
+            populatedItems.filter { it.item.name.contains(q, true) }
     }
 
     fun commitTransaction() {

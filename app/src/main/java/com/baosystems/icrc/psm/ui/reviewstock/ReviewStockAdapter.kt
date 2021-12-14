@@ -18,23 +18,23 @@ import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
 
 class ReviewStockAdapter(
-    private val itemWatcher: ItemWatcher<StockEntry, Long>,
+    private val itemWatcher: ItemWatcher<StockEntry, Long, String>,
     val appConfig: AppConfig
-): ListAdapter<StockEntry, ReviewStockAdapter.StockItemViewHolder>(DIFF_CALLBACK) {
+): ListAdapter<StockEntry, ReviewStockAdapter.StockEntryViewHolder>(DIFF_CALLBACK) {
     companion object {
         // TODO: Find a way to use a type-aware DIFF_CALLBACK for different adapters for reusability
         private val DIFF_CALLBACK = object: DiffUtil.ItemCallback<StockEntry> () {
             override fun areItemsTheSame(oldItem: StockEntry, newItem: StockEntry) =
-                oldItem.id == newItem.id
+                oldItem.item.id == newItem.item.id
 
             override fun areContentsTheSame(oldItem: StockEntry, newItem: StockEntry) =
                 oldItem == newItem
         }
     }
 
-    inner class StockItemViewHolder(
+    inner class StockEntryViewHolder(
         itemView: View,
-        private val watcher: ItemWatcher<StockEntry, Long>
+        private val watcher: ItemWatcher<StockEntry, Long, String>
     ): RecyclerView.ViewHolder(itemView) {
         private val tvItemName: TextView = itemView.findViewById(R.id.tvReviewStockItemName)
         private val tvStockOnHand: TextView = itemView.findViewById(R.id.tvReviewStockOnHandValue)
@@ -67,20 +67,20 @@ class ReviewStockAdapter(
             })
         }
 
-        fun bindTo(stockEntry: StockEntry) {
-            tvItemName.text = stockEntry.name
-            tvStockOnHand.text = stockEntry.stockOnHand
-            tvItemQtyLayout.editText?.setText(stockEntry.qty.toString())
+        fun bindTo(entry: StockEntry) {
+            tvItemName.text = entry.item.name
+            tvStockOnHand.text = entry.stockOnHand
+            tvItemQtyLayout.editText?.setText(entry.qty.toString())
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockEntryViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.review_stock_item_entry, parent, false)
-        return StockItemViewHolder(itemView, itemWatcher)
+        return StockEntryViewHolder(itemView, itemWatcher)
     }
 
-    override fun onBindViewHolder(holder: StockItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StockEntryViewHolder, position: Int) {
         holder.bindTo(getItem(position))
     }
 }

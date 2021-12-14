@@ -2,7 +2,7 @@ package com.baosystems.icrc.psm.services.rules
 
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.utils.*
 import io.reactivex.Flowable
@@ -42,7 +42,7 @@ class RuleValidationHelperImpl @Inject constructor(
     }
 
     override fun evaluate(
-        entry: StockEntry,
+        item: StockItem,
         qty: Long?,
         eventDate: Date,
         program: String,
@@ -50,7 +50,7 @@ class RuleValidationHelperImpl @Inject constructor(
     ): Flowable<List<RuleEffect>> {
         return ruleEngine().flatMap { ruleEngine ->
             val programStage = programStage(program)
-            val dataValues = dataValues(entry.id, qty, programStage.uid(), transaction, eventDate)
+            val dataValues = dataValues(item.id, qty, programStage.uid(), transaction, eventDate)
             Flowable.fromCallable(
                 ruleEngine.evaluate(
                     createRuleEvent(programStage, transaction.facility.uid, dataValues, eventDate)
