@@ -29,6 +29,10 @@ import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.hisp.dhis.rules.models.RuleEffect;
+
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -40,7 +44,15 @@ public class ReviewStockActivity extends BaseActivity {
 
     private final ItemWatcher<StockEntry, Long, String> itemWatcher =
             new ItemWatcher<StockEntry, Long, String>() {
-        @Override
+                @Override
+                public void updateFields(StockEntry item, @Nullable Long qty, int position,
+                                         @NonNull List<? extends RuleEffect> ruleEffects) {
+                    // TODO: Handle updating the fields after validation is completed
+//                    viewModel.updateItemStockOnHand(item, value);
+//                    runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+                }
+
+                @Override
         public void removeItem(StockEntry item) {
             viewModel.removeItem(item);
         }
@@ -55,12 +67,6 @@ public class ReviewStockActivity extends BaseActivity {
         @Override
         public Long getQuantity(StockEntry item) {
             return viewModel.getItemQuantity(item);
-        }
-
-        @Override
-        public void updateStockOnHand(StockEntry item, String value, int position) {
-            viewModel.updateItemStockOnHand(item, value);
-            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
         }
 
         @Override

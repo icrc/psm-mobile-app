@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,7 +34,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import org.hisp.dhis.rules.models.RuleActionAssign;
+import org.hisp.dhis.rules.models.RuleEffect;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
@@ -63,14 +68,36 @@ public class ManageStockActivity extends BaseActivity {
             new ItemWatcher<StockItem, Long, String>() {
 
         @Override
-        public String getStockOnHand(StockItem item) {
-            return viewModel.getStockOnHand(item);
+        public void updateFields(StockItem item, @Nullable Long qty, int position,
+                                 @NonNull List<? extends RuleEffect> ruleEffects) {
+            Timber.d("Received Effects: %s", ruleEffects);
+
+            ruleEffects.forEach(ruleEffect -> {
+                if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
+                        (((RuleActionAssign) ruleEffect.ruleAction()).field()
+                                .equals(viewModel.getConfig().getStockOnHand()))) {
+
+                    String value = ruleEffect.data();
+                    if (value != null && !TextUtils.isEmpty(value)) {
+                        if (Long.parseLong(value) > 0) {
+                            // Update the quantity and stock on hand
+                            viewModel.updateItem(item, qty, value);
+
+                            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+                        } else {
+                            // TODO: Report the error to the user and clear the field
+//                            flagError(item)
+                            Timber.e("Quantity %d is invalid as it results in SOH of %s",
+                                    qty, value);
+                        }
+                    }
+                }
+            });
         }
 
-        @Override
-        public void updateStockOnHand(StockItem item, String value, int position) {
-            viewModel.updateStockOnHand(item, value);
-            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+                @Override
+        public String getStockOnHand(StockItem item) {
+            return viewModel.getStockOnHand(item);
         }
 
         @Override

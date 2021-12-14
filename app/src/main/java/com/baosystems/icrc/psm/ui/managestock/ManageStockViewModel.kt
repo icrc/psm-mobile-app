@@ -109,23 +109,15 @@ class ManageStockViewModel @Inject constructor(
         qty: Long?,
         callback: ItemWatcher.OnQuantityValidated?
     ) {
-        if (qty == null) {
-            itemsCache.remove(item.id)
-            return
-        }
-
         entryRelay.accept(NullableTriple(item, qty, callback))
-
-        // TODO: Accept the quantity entered if valid
-        itemsCache[item.id] = StockEntry(item, qty)
     }
 
     fun getItemQuantity(item: StockItem) = itemsCache[item.id]?.qty
 
     fun getStockOnHand(item: StockItem) = itemsCache[item.id]?.stockOnHand
 
-    fun updateStockOnHand(item: StockItem, value: String) {
-        itemsCache[item.id]?.stockOnHand = value
+    fun updateItem(item: StockItem, qty: Long, stockOnHand: String?) {
+        itemsCache[item.id] = StockEntry(item, qty, stockOnHand)
     }
 
     private fun getPopulatedEntries(): MutableList<StockEntry> {
@@ -134,15 +126,31 @@ class ManageStockViewModel @Inject constructor(
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 
-    private fun evaluate(item: StockItem, qty: Long?, callback: ItemWatcher.OnQuantityValidated?) {
-        disposable.add(
-            ruleValidationHelper.evaluate(item, qty, Date(), config.program, transaction)
-                .doOnError { it.printStackTrace() }
-                .observeOn(schedulerProvider.io())
-                .subscribeOn(schedulerProvider.ui())
-                .subscribe { ruleEffects ->
-                    callback?.validationCompleted(ruleEffects)
-                }
-        )
+    /**
+     * Evaluates the quantity assigned to the StockItem
+     *
+     * @param item The stock item
+     * @param qty The item quantity
+     * @param callback The method to be invoked when the validation completes its operation
+     *
+     * @return Boolean a boolean value indicating whether the evaluation was performed
+     */
+    private fun evaluate(item: StockItem, qty: Long?,
+                         callback: ItemWatcher.OnQuantityValidated?): Boolean {
+        if (qty != null) {
+            disposable.add(
+                ruleValidationHelper.evaluate(item, qty, Date(), config.program, transaction)
+                    .doOnError { it.printStackTrace() }
+                    .observeOn(schedulerProvider.io())
+                    .subscribeOn(schedulerProvider.ui())
+                    .subscribe { ruleEffects ->
+                        callback?.validationCompleted(ruleEffects)
+                    }
+            )
+
+            return true
+        }
+
+        return false
     }
 }

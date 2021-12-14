@@ -16,9 +16,7 @@ import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
-import org.hisp.dhis.rules.models.RuleActionAssign
 import org.hisp.dhis.rules.models.RuleEffect
-import timber.log.Timber
 
 class ManageStockAdapter(
     private val itemWatcher: ItemWatcher<StockItem, Long, String>,
@@ -67,8 +65,6 @@ class ManageStockAdapter(
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-                // TODO: Optimize to update stock on hand after a debounce,
-                //  rather than on every keystroke
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (adapterPosition == RecyclerView.NO_POSITION) return
 
@@ -79,31 +75,13 @@ class ManageStockAdapter(
                     getItem(adapterPosition)?.let { stockEntry ->
                         watcher.quantityChanged(stockEntry, qty, object : ItemWatcher.OnQuantityValidated {
                             override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                                Timber.d("Received Effects: %s", ruleEffects)
-                                ruleEffects.forEach { ruleEffect ->
-                                    if (ruleEffect.ruleAction() is RuleActionAssign &&
-                                        (ruleEffect.ruleAction() as RuleActionAssign).field() == appConfig.stockOnHand) {
-                                        ruleEffect.data()?.let {
-//                                            updateStockOnHandColumn(it)
-//                                            stockEntry.stockOnHand = it
-                                            watcher.updateStockOnHand(stockEntry, it, adapterPosition)
-//                                            notifyItemRangeChanged(adapterPosition, 1)
-//                                            notifyItemChanged(adapterPosition)
-                                        }
-                                    }
-                                }
+                                watcher.updateFields(stockEntry, qty, adapterPosition, ruleEffects)
                             }
                     }) }
                 }
 
                 override fun afterTextChanged(s: Editable?) {}
             })
-        }
-
-        private fun updateStockOnHandColumn(s: String) {
-            Timber.d("Updating stock on hand column")
-
-            etQty.editText?.setText(s)
         }
 
         fun bindTo(item: StockItem) {
