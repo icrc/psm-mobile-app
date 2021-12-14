@@ -66,36 +66,47 @@ public class ManageStockActivity extends BaseActivity {
 
     private final ItemWatcher<StockItem, Long, String> itemWatcher =
             new ItemWatcher<StockItem, Long, String>() {
-
-        @Override
+                @Override
         public void updateFields(StockItem item, @Nullable Long qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
-            Timber.d("Received Effects: %s", ruleEffects);
-
             ruleEffects.forEach(ruleEffect -> {
                 if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
                         (((RuleActionAssign) ruleEffect.ruleAction()).field()
                                 .equals(viewModel.getConfig().getStockOnHand()))) {
 
                     String value = ruleEffect.data();
-                    if (value != null && !TextUtils.isEmpty(value)) {
-                        if (Long.parseLong(value) > 0) {
-                            // Update the quantity and stock on hand
-                            viewModel.updateItem(item, qty, value);
-
-                            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
-                        } else {
-                            // TODO: Report the error to the user and clear the field
-//                            flagError(item)
-                            Timber.e("Quantity %d is invalid as it results in SOH of %s",
-                                    qty, value);
-                        }
+                    if (isValidStockOnHand(value)) {
+                        viewModel.updateItem(item, qty, value);
+                    } else {
+                        Timber.e("Quantity %d is invalid as it results in SOH of %s", qty, value);
+                        flagError(item);
                     }
+
+                    updateItemView(position);
                 }
             });
         }
 
-                @Override
+        private boolean isValidStockOnHand(String value) {
+            if (value == null || TextUtils.isEmpty(value)) {
+                Timber.w("Stock on hand value received is empty");
+                return false;
+            }
+
+            return Long.parseLong(value) >= 0;
+        }
+
+        private void updateItemView(int position) {
+            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+        }
+
+        private void flagError(StockItem item) {
+            // TODO: Localize
+            ActivityManager.showErrorMessage(binding.getRoot(),
+                    "Available stock on hand cannot be exceeded");
+        }
+
+        @Override
         public String getStockOnHand(StockItem item) {
             return viewModel.getStockOnHand(item);
         }

@@ -26,6 +26,7 @@ object Constants {
     const val CONFIG_DE_STOCK_DISCARD = "de_stock_discarded"
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
+    const val QUANTITY_ENTRY_DEBOUNCE = 1200L
     const val SCREEN_TRANSITION_DELAY = 100L
 
     // Intent Extras

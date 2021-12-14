@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
+import com.baosystems.icrc.psm.commons.Constants.QUANTITY_ENTRY_DEBOUNCE
 import com.baosystems.icrc.psm.commons.Constants.SEARCH_QUERY_DEBOUNCE
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.NullableTriple
@@ -86,7 +87,7 @@ class ManageStockViewModel @Inject constructor(
 
         disposable.add(
             entryRelay
-                .debounce(SEARCH_QUERY_DEBOUNCE, TimeUnit.MILLISECONDS)
+                .debounce(QUANTITY_ENTRY_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged {
                         t1, t2 -> t1.first!!.id == t2.first!!.id && t1.second == t2.second
                 }
@@ -119,6 +120,10 @@ class ManageStockViewModel @Inject constructor(
     fun updateItem(item: StockItem, qty: Long, stockOnHand: String?) {
         itemsCache[item.id] = StockEntry(item, qty, stockOnHand)
     }
+
+//    fun hasError(item: StockItem): Boolean {
+//        return itemsCache[item.id]?.hasError ?: false
+//    }
 
     private fun getPopulatedEntries(): MutableList<StockEntry> {
         return itemsCache.values.toMutableList()

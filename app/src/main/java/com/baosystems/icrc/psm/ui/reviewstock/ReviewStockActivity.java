@@ -44,15 +44,16 @@ public class ReviewStockActivity extends BaseActivity {
 
     private final ItemWatcher<StockEntry, Long, String> itemWatcher =
             new ItemWatcher<StockEntry, Long, String>() {
-                @Override
-                public void updateFields(StockEntry item, @Nullable Long qty, int position,
-                                         @NonNull List<? extends RuleEffect> ruleEffects) {
-                    // TODO: Handle updating the fields after validation is completed
+
+        @Override
+        public void updateFields(StockEntry item, @Nullable Long qty, int position,
+                                 @NonNull List<? extends RuleEffect> ruleEffects) {
+            // TODO: Handle updating the fields after validation is completed
 //                    viewModel.updateItemStockOnHand(item, value);
 //                    runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
-                }
+        }
 
-                @Override
+        @Override
         public void removeItem(StockEntry item) {
             viewModel.removeItem(item);
         }
