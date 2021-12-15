@@ -29,25 +29,24 @@ class GenericListAdapter<T: BaseIdentifiableObject>(context: Context,
     }
 
     private val modelFilter: Filter = object : Filter() {
-        override fun performFiltering(constraint: CharSequence): FilterResults {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
             val results = FilterResults()
-            val suggestions: MutableList<T> = ArrayList()
-            if (constraint.isEmpty()) {
-                suggestions.addAll(options)
-            } else {
-                val filterPattern = constraint.toString().lowercase().trim()
-                for (item in options) {
-                    if (item.displayName()?.lowercase()?.contains(filterPattern) == true) {
-                        suggestions.add(item)
-                    }
+
+            val queryString = constraint?.toString()?.lowercase()?.trim()
+            val suggestions = if (queryString == null || queryString.isEmpty())
+                options
+            else
+                options.filter {
+                    it.displayName()?.lowercase()?.contains(queryString) ?: false
                 }
-            }
+
             results.values = suggestions
             results.count = suggestions.size
+
             return results
         }
 
-        override fun publishResults(constraint: CharSequence, results: FilterResults) {
+        override fun publishResults(constraint: CharSequence?, results: FilterResults) {
             if (results.count > 0) {
                 notifyDataSetChanged()
             } else {
@@ -56,6 +55,7 @@ class GenericListAdapter<T: BaseIdentifiableObject>(context: Context,
         }
 
         override fun convertResultToString(resultValue: Any): CharSequence {
+            @Suppress("UNCHECKED_CAST")
             val objName = (resultValue as T).displayName()
             return objName?.subSequence(0, objName.length) ?:
             super.convertResultToString(resultValue)

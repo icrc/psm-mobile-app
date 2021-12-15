@@ -23,8 +23,6 @@ import timber.log.Timber
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private lateinit var binding: ViewDataBinding
-
-    // TODO: Inject via DI if possible/necessary
     private val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +74,6 @@ abstract class BaseActivity : AppCompatActivity() {
     fun getViewBinding(): ViewDataBinding = binding
 
     override fun onDestroy() {
-        Timber.d("About to clear existing 'disposables'")
         disposable.clear()
         super.onDestroy()
     }
@@ -110,7 +107,6 @@ abstract class BaseActivity : AppCompatActivity() {
     open fun showMoreOptions(): Boolean = false
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Timber.d("Options clicked: %s", item.itemId)
         when(item.itemId) {
             R.id.action_settings -> {
                 startActivity(SettingsActivity.getSettingsActivityIntent(this))
