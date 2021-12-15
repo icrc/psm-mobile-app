@@ -4,15 +4,18 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE
+import com.baosystems.icrc.psm.ui.scanner.ScannerActivity
 import com.baosystems.icrc.psm.ui.settings.SettingsActivity
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
 import com.baosystems.icrc.psm.utils.LocaleManager
+import com.journeyapps.barcodescanner.ScanOptions
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -123,5 +126,12 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleManager.setLocale(newBase))
+    }
+
+    open fun scanBarcode(launcher: ActivityResultLauncher<ScanOptions>) {
+        val scanOptions = ScanOptions()
+            .setBeepEnabled(true)
+            .setCaptureActivity(ScannerActivity::class.java)
+        launcher.launch(scanOptions)
     }
 }

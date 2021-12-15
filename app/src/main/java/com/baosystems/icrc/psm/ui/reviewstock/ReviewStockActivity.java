@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +29,8 @@ import com.baosystems.icrc.psm.ui.home.HomeActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import org.hisp.dhis.rules.models.RuleEffect;
 
@@ -96,12 +99,28 @@ public class ReviewStockActivity extends BaseActivity {
 
         setupSearchInput();
         setupRecyclerView();
+        configureScanner();
 
         binding.fabCommitStock.setOnClickListener(view -> viewModel.commitTransaction());
         viewModel.getCommitStatus().observe(this, status -> {
             if (status)
                 navigateToHome();
         });
+    }
+
+    private void configureScanner() {
+        ActivityResultLauncher<ScanOptions> barcodeLauncher =
+                registerForActivityResult(new ScanContract(), scanIntentResult -> {
+                    if (scanIntentResult.getContents() == null) {
+                        ActivityManager.showInfoMessage(binding.getRoot(),
+                                getString(R.string.scan_canceled));
+                    } else {
+                        String data = scanIntentResult.getContents();
+//                        Timber.i("Result: %s", data);
+                        binding.searchInputField.setText(data);
+                    }
+                });
+        binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
     }
 
     private void navigateToHome() {

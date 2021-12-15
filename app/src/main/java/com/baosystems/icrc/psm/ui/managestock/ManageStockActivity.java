@@ -28,7 +28,6 @@ import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
 import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
-import com.baosystems.icrc.psm.ui.scanner.ScannerActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -49,20 +48,6 @@ public class ManageStockActivity extends BaseActivity {
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
-
-    private final ActivityResultLauncher<ScanOptions> barcodeLauncher =
-            registerForActivityResult(new ScanContract(), scanIntentResult -> {
-                if (scanIntentResult.getContents() == null) {
-                    ActivityManager.showInfoMessage(binding.getRoot(),
-                            getString(R.string.scan_canceled));
-                } else {
-                    String data = scanIntentResult.getContents();
-                    Timber.i("Result: %s", data);
-//                    viewModel.onScanCompleted("AFORMEDFPF2");
-                    // TODO: Set the name of the item in the search field
-                    viewModel.onScanCompleted(data);
-                }
-            });
 
     private final ItemWatcher<StockItem, Long, String> itemWatcher =
             new ItemWatcher<StockItem, Long, String>() {
@@ -156,16 +141,24 @@ public class ManageStockActivity extends BaseActivity {
         setupSearchInput();
         setupRecyclerView();
         setupObservers();
-
-        binding.scanButton.setOnClickListener(view -> scanBarcode());
+        configureScanner();
         updateNextButton();
     }
 
-    private void scanBarcode() {
-        ScanOptions scanOptions = new ScanOptions()
-                .setBeepEnabled(true)
-                .setCaptureActivity(ScannerActivity.class);
-        barcodeLauncher.launch(scanOptions);
+    private void configureScanner() {
+        ActivityResultLauncher<ScanOptions> barcodeLauncher =
+                registerForActivityResult(new ScanContract(), scanIntentResult -> {
+                    if (scanIntentResult.getContents() == null) {
+                        ActivityManager.showInfoMessage(binding.getRoot(),
+                                getString(R.string.scan_canceled));
+                    } else {
+                        String data = scanIntentResult.getContents();
+//                        Timber.i("Result: %s", data);
+                        viewModel.onScanCompleted(data);
+                        binding.searchInputField.setText(data);
+                    }
+                });
+        binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
     }
 
     private void setupObservers() {
