@@ -137,4 +137,5 @@
     <string name="scan_canceled">Scan annulé !</string>
     <string name="logout_error_message">Une erreur s\'est produite lors de la déconnexion. Veuillez réessayer plus tard.</string>
     <string name="logout_success_message">Déconnecté avec succès</string>
+    <string name="stock_on_hand_exceeded_message">Le stock disponible ne peut pas être dépassé</string>
 </resources>

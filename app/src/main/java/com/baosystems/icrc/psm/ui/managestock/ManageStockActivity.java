@@ -78,7 +78,6 @@ public class ManageStockActivity extends BaseActivity {
                     if (isValidStockOnHand(value)) {
                         viewModel.updateItem(item, qty, value);
                     } else {
-                        Timber.e("Quantity %d is invalid as it results in SOH of %s", qty, value);
                         flagError(item);
                     }
 
@@ -101,9 +100,8 @@ public class ManageStockActivity extends BaseActivity {
         }
 
         private void flagError(StockItem item) {
-            // TODO: Localize
             ActivityManager.showErrorMessage(binding.getRoot(),
-                    "Available stock on hand cannot be exceeded");
+                    getString(R.string.stock_on_hand_exceeded_message));
         }
 
         @Override

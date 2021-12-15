@@ -136,4 +136,5 @@
     <string name="scan_canceled">تم إلغاء المسح!</string>
     <string name="logout_error_message">حدث خطأ أثناء تسجيل الخروج. الرجاء معاودة المحاولة في وقت لاحق.</string>
     <string name="logout_success_message">تم تسجيل الخروج بنجاح</string>
+    <string name="stock_on_hand_exceeded_message">لا يمكن تجاوز المخزون المتاح في متناول اليد</string>
 </resources>

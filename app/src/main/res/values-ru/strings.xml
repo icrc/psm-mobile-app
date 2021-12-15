@@ -142,4 +142,5 @@
     <string name="scan_canceled">Сканирование отменено!</string>
     <string name="logout_error_message">Произошла ошибка при выходе из системы. Пожалуйста, попробуйте позже.</string>
     <string name="logout_success_message">Успешный выход из системы</string>
+    <string name="stock_on_hand_exceeded_message">Доступный запас на складе не может быть превышен</string>
 </resources>
