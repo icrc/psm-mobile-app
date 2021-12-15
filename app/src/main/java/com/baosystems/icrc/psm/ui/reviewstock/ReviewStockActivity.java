@@ -44,8 +44,7 @@ public class ReviewStockActivity extends BaseActivity {
 
     private final ItemWatcher<StockEntry, Long, String> itemWatcher =
             new ItemWatcher<StockEntry, Long, String>() {
-
-        @Override
+                @Override
         public void updateFields(StockEntry item, @Nullable Long qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
             // TODO: Handle updating the fields after validation is completed
@@ -74,6 +73,11 @@ public class ReviewStockActivity extends BaseActivity {
         public void quantityChanged(StockEntry item, @Nullable Long value,
                                     @Nullable OnQuantityValidated callback) {
             viewModel.updateItemQuantity(item, value);
+        }
+
+        @Override
+        public boolean hasError(StockEntry item) {
+            return false;
         }
     };
 

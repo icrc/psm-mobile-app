@@ -117,13 +117,19 @@ class ManageStockViewModel @Inject constructor(
 
     fun getStockOnHand(item: StockItem) = itemsCache[item.id]?.stockOnHand
 
-    fun updateItem(item: StockItem, qty: Long, stockOnHand: String?) {
-        itemsCache[item.id] = StockEntry(item, qty, stockOnHand)
+    fun addItem(item: StockItem, qty: Long?, stockOnHand: String?, hasError: Boolean) {
+        // Remove from cache any item whose quantity has been cleared
+        if (qty == null) {
+            itemsCache.remove(item.id)
+            return
+        }
+
+        itemsCache[item.id] = StockEntry(item, qty, stockOnHand, hasError)
     }
 
-//    fun hasError(item: StockItem): Boolean {
-//        return itemsCache[item.id]?.hasError ?: false
-//    }
+    fun hasError(item: StockItem) = itemsCache[item.id]?.hasError ?: false
+
+    fun canReview(): Boolean = itemsCache.size > 0 && itemsCache.filter { it.value.hasError }.isEmpty()
 
     private fun getPopulatedEntries(): MutableList<StockEntry> {
         return itemsCache.values.toMutableList()
@@ -141,8 +147,7 @@ class ManageStockViewModel @Inject constructor(
      * @return Boolean a boolean value indicating whether the evaluation was performed
      */
     private fun evaluate(item: StockItem, qty: Long?,
-                         callback: ItemWatcher.OnQuantityValidated?): Boolean {
-        if (qty != null) {
+                         callback: ItemWatcher.OnQuantityValidated?) {
             disposable.add(
                 ruleValidationHelper.evaluate(item, qty, Date(), config.program, transaction)
                     .doOnError { it.printStackTrace() }
@@ -152,10 +157,5 @@ class ManageStockViewModel @Inject constructor(
                         callback?.validationCompleted(ruleEffects)
                     }
             )
-
-            return true
-        }
-
-        return false
     }
 }

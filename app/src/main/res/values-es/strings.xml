@@ -137,5 +137,7 @@
     <string name="scan_canceled">¡Escaneo cancelado!</string>
     <string name="logout_error_message">Ocurrió un error durante el cierre de sesión. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="logout_success_message">Cerrar sesión correctamente</string>
+
+    <string name="invalid_quantity">Inválido</string>
     <string name="stock_on_hand_exceeded_message">No se puede exceder el stock disponible disponible</string>
 </resources>

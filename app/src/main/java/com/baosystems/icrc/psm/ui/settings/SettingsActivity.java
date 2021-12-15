@@ -37,15 +37,13 @@ public class SettingsActivity extends BaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private static final String TITLE_TAG = "settings-title";
-    private SettingsViewModel viewModel;
-    private ActivitySettingsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = (SettingsViewModel) getViewModel();
-        binding = (ActivitySettingsBinding) getViewBinding();
+        SettingsViewModel viewModel = (SettingsViewModel) getViewModel();
+        com.baosystems.icrc.psm.databinding.ActivitySettingsBinding binding = (ActivitySettingsBinding) getViewBinding();
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -235,11 +233,11 @@ public class SettingsActivity extends BaseActivity
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            confirmAppRestart(newValue);
+            confirmAppRestart();
             return true;
         }
 
-        private void confirmAppRestart(Object newValue) {
+        private void confirmAppRestart() {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setMessage(R.string.confirm_app_restart_message)
                     .setTitle(R.string.language_change_dialog_title)

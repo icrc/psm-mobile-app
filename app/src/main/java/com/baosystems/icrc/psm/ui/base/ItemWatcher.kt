@@ -5,6 +5,7 @@ import org.hisp.dhis.rules.models.RuleEffect
 interface ItemWatcher<A, B, C> {
     fun quantityChanged(item: A, value: B?, callback: OnQuantityValidated?)
     fun updateFields(item: A, qty: B?, position: Int, ruleEffects: List<RuleEffect>)
+    fun hasError(item: A): Boolean
     fun getQuantity(item: A): B?
     fun getStockOnHand(item: A): C?
     fun removeItem(item:A)

@@ -75,15 +75,19 @@ public class ManageStockActivity extends BaseActivity {
                                 .equals(viewModel.getConfig().getStockOnHand()))) {
 
                     String value = ruleEffect.data();
-                    if (isValidStockOnHand(value)) {
-                        viewModel.updateItem(item, qty, value);
-                    } else {
+                    boolean isValid = isValidStockOnHand(value);
+                    String stockOnHand = isValid ? value : item.getStockOnHand();
+
+                    viewModel.addItem(item, qty, stockOnHand, !isValid);
+                    if (!isValid) {
                         flagError(item);
                     }
 
                     updateItemView(position);
                 }
             });
+
+            updateNextButton();
         }
 
         private boolean isValidStockOnHand(String value) {
@@ -123,7 +127,16 @@ public class ManageStockActivity extends BaseActivity {
         public Long getQuantity(StockItem item) {
             return viewModel.getItemQuantity(item);
         }
+
+        @Override
+        public boolean hasError(StockItem item) {
+            return viewModel.hasError(item);
+        }
     };
+
+    private void updateNextButton() {
+        runOnUiThread(() -> binding.fabManageStock.setEnabled(viewModel.canReview()));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +158,7 @@ public class ManageStockActivity extends BaseActivity {
         setupObservers();
 
         binding.scanButton.setOnClickListener(view -> scanBarcode());
+        updateNextButton();
     }
 
     private void scanBarcode() {

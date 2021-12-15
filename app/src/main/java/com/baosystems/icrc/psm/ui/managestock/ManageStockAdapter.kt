@@ -1,6 +1,7 @@
 package com.baosystems.icrc.psm.ui.managestock
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -24,9 +25,13 @@ class ManageStockAdapter(
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
 
+    lateinit var resources: Resources
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.manage_stock_item_entry, parent, false)
+        resources = parent.context.resources
+
         return StockItemHolder(itemView, itemWatcher)
     }
 
@@ -86,9 +91,17 @@ class ManageStockAdapter(
 
         fun bindTo(item: StockItem) {
             tvItemName.text = item.name
-//            tvStockOnHand.text = item.stockOnHand
             tvStockOnHand.text = watcher.getStockOnHand(item) ?: item.stockOnHand
             etQty.editText?.setText(watcher.getQuantity(item)?.toString())
+
+            var error: String? = null
+            if (watcher.hasError(item)) {
+                error = resources.getString(R.string.invalid_quantity)
+
+                // Highlight the erroneous text for easy correction
+                etQty.editText?.selectAll()
+            }
+            etQty.error = error
         }
     }
 }

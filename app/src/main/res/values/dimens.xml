@@ -48,6 +48,7 @@
     <dimen name="search_box_top_margin">16dp</dimen>
     <dimen name="stock_item_entry_left_margin">16dp</dimen>
     <dimen name="stock_item_margin">8dp</dimen>
+    <dimen name="stock_item_margin_bottom">4dp</dimen>
     <dimen name="stock_table_top_margin">32dp</dimen>
     <dimen name="text_input_width">90dp</dimen>
     <dimen name="text_input_corner_radius">4dp</dimen>
