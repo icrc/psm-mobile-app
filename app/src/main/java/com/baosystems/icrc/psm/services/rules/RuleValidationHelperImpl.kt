@@ -7,6 +7,7 @@ import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.utils.*
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.apache.commons.lang3.math.NumberUtils
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.event.Event
@@ -176,8 +177,8 @@ class RuleValidationHelperImpl @Inject constructor(
             }
         }?.blockingGet()?.toMutableList() ?: mutableListOf()
 
-        // Add the quantity if defined
-        if (qty != null) {
+        // Add the quantity if defined, and valid (signs (+/-) could come as streams if incomplete)
+        if (qty != null && NumberUtils.isCreatable(qty)) {
             val deUid = ConfigUtils.getTransactionDataElement(transaction.transactionType, appConfig)
             values.add(RuleDataValue.create(eventDate, programStage, deUid, qty))
 

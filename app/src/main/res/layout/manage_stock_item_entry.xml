@@ -67,7 +67,7 @@
             tools:text="20">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:inputType="number"
+                android:inputType="numberSigned"
                 android:maxLines="1"
                 android:maxLength="19"
                 android:padding="@dimen/qty_field_padding"

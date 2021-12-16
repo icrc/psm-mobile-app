@@ -71,6 +71,7 @@ public class ManageStockActivity extends BaseActivity {
                     }
 
                     updateItemView(position);
+                    updateNextButton();
                 }
             });
 
