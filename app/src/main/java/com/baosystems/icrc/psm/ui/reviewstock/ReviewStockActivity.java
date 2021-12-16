@@ -45,10 +45,11 @@ public class ReviewStockActivity extends BaseActivity {
     private ActivityReviewStockBinding binding;
     private ReviewStockAdapter adapter;
 
-    private final ItemWatcher<StockEntry, Long, String> itemWatcher =
-            new ItemWatcher<StockEntry, Long, String>() {
+    private final ItemWatcher<StockEntry, String, String> itemWatcher =
+            new ItemWatcher<StockEntry, String, String>() {
+
                 @Override
-        public void updateFields(StockEntry item, @Nullable Long qty, int position,
+        public void updateFields(StockEntry item, @Nullable String qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
             // TODO: Handle updating the fields after validation is completed
 //                    viewModel.updateItemStockOnHand(item, value);
@@ -56,8 +57,11 @@ public class ReviewStockActivity extends BaseActivity {
         }
 
         @Override
-        public void removeItem(StockEntry item) {
+        public void removeItem(StockEntry item, int position) {
             viewModel.removeItem(item);
+
+            adapter.notifyItemRemoved(position);
+            adapter.notifyItemRangeChanged(position, 1);
         }
 
         @Nullable
@@ -66,14 +70,13 @@ public class ReviewStockActivity extends BaseActivity {
             return viewModel.getItemStockOnHand(item);
         }
 
-        @Nullable
         @Override
         public Long getQuantity(StockEntry item) {
             return viewModel.getItemQuantity(item);
         }
 
         @Override
-        public void quantityChanged(StockEntry item, @Nullable Long value,
+        public void quantityChanged(StockEntry item, int position, @Nullable String value,
                                     @Nullable OnQuantityValidated callback) {
             viewModel.updateItemQuantity(item, value);
         }

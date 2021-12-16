@@ -49,10 +49,11 @@ public class ManageStockActivity extends BaseActivity {
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
 
-    private final ItemWatcher<StockItem, Long, String> itemWatcher =
-            new ItemWatcher<StockItem, Long, String>() {
-                @Override
-        public void updateFields(StockItem item, @Nullable Long qty, int position,
+    private final ItemWatcher<StockItem, String, String> itemWatcher =
+            new ItemWatcher<StockItem, String, String>() {
+
+        @Override
+        public void updateFields(StockItem item, @Nullable String qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
             ruleEffects.forEach(ruleEffect -> {
                 if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
@@ -60,6 +61,7 @@ public class ManageStockActivity extends BaseActivity {
                                 .equals(viewModel.getConfig().getStockOnHand()))) {
 
                     String value = ruleEffect.data();
+                    Timber.d("Rule effect: %s", ruleEffect);
                     boolean isValid = isValidStockOnHand(value);
                     String stockOnHand = isValid ? value : item.getStockOnHand();
 
@@ -81,11 +83,11 @@ public class ManageStockActivity extends BaseActivity {
                 return false;
             }
 
-            return Long.parseLong(value) >= 0;
-        }
-
-        private void updateItemView(int position) {
-            runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+            try {
+                return Long.parseLong(value) >= 0;
+            } catch (Exception e) {
+                return false;
+            }
         }
 
         private void flagError(StockItem item) {
@@ -99,13 +101,24 @@ public class ManageStockActivity extends BaseActivity {
         }
 
         @Override
-        public void quantityChanged(StockItem item, @Nullable Long value,
+        public void quantityChanged(StockItem item, int position, @Nullable String value,
                                     @Nullable OnQuantityValidated callback) {
-            viewModel.setItemQuantity(item, value, callback);
+            // If the qty is cleared, remove from cache if already present
+            if (value == null || value.isEmpty()) {
+                boolean outcome = viewModel.removeItemFromCache(item);
+                if (outcome) {
+                    updateItemView(position);
+                    updateNextButton();
+                }
+
+                return;
+            }
+
+            viewModel.setItemQuantity(item, position, value, callback);
         }
 
         @Override
-        public void removeItem(StockItem item) { }
+        public void removeItem(StockItem item, int position) { }
 
         @Nullable
         @Override
@@ -118,6 +131,10 @@ public class ManageStockActivity extends BaseActivity {
             return viewModel.hasError(item);
         }
     };
+
+    private void updateItemView(int position) {
+        runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+    }
 
     private void updateNextButton() {
         runOnUiThread(() -> binding.fabManageStock.setEnabled(viewModel.canReview()));

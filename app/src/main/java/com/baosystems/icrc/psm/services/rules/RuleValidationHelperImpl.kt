@@ -16,6 +16,7 @@ import org.hisp.dhis.rules.models.RuleDataValue
 import org.hisp.dhis.rules.models.RuleEffect
 import org.hisp.dhis.rules.models.RuleEvent
 import org.hisp.dhis.rules.models.RuleVariable
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -43,14 +44,20 @@ class RuleValidationHelperImpl @Inject constructor(
 
     override fun evaluate(
         item: StockItem,
-        qty: Long?,
+        qty: String?,
         eventDate: Date,
         program: String,
         transaction: Transaction
     ): Flowable<List<RuleEffect>> {
+        Timber.d("Evaluate(): StockItem - %s, qty - %s, transaction - %s",
+            item.name, qty, transaction.transactionType)
         return ruleEngine().flatMap { ruleEngine ->
             val programStage = programStage(program)
             val dataValues = dataValues(item.id, qty, programStage.uid(), transaction, eventDate)
+            dataValues.forEach {
+                Timber.d("Data values: %s", it)
+            }
+
             Flowable.fromCallable(
                 ruleEngine.evaluate(
                     createRuleEvent(programStage, transaction.facility.uid, dataValues, eventDate)
@@ -132,18 +139,31 @@ class RuleValidationHelperImpl @Inject constructor(
             .byDeleted().isFalse
             .withTrackedEntityDataValues()
             .orderByLastUpdated(RepositoryScope.OrderByDirection.DESC)
-            .one()
+            .one() // buggy - doesn't return the topmost item for whatever reason
+            .get()
+    }
+
+    private fun events(teiUid: String): Single<MutableList<Event>>? {
+        return d2.eventModule()
+            .events()
+            .byTrackedEntityInstanceUids(Collections.singletonList(teiUid))
+            .byDeleted().isFalse
+            .orderByLastUpdated(RepositoryScope.OrderByDirection.DESC)
+            .withTrackedEntityDataValues()
             .get()
     }
 
     private fun dataValues(
         teiUid: String,
-        qty: Long?,
+        qty: String?,
         programStage: String,
         transaction: Transaction,
         eventDate: Date
     ): List<RuleDataValue> {
-        val values = mostRecentEvent(teiUid).map { event ->
+        // mostRecentEvent() doesn't return the latest event which is at the top
+        // of the list for one reason or the other, so the approach below was adopted
+        val values = events(teiUid)?.map {
+            val event = it.first()
             if (event.trackedEntityDataValues() != null) {
                 event.trackedEntityDataValues()!!.toRuleDataValue(
                     event,
@@ -154,12 +174,12 @@ class RuleValidationHelperImpl @Inject constructor(
             } else {
                 listOf()
             }
-        }.blockingGet().toMutableList()
+        }?.blockingGet()?.toMutableList() ?: mutableListOf()
 
         // Add the quantity if defined
         if (qty != null) {
             val deUid = ConfigUtils.getTransactionDataElement(transaction.transactionType, appConfig)
-            values.add(RuleDataValue.create(eventDate, programStage, deUid, qty.toString()))
+            values.add(RuleDataValue.create(eventDate, programStage, deUid, qty))
 
             // Add the 'deliver to' if it's a distribution event
             if (transaction.transactionType == TransactionType.DISTRIBUTION) {

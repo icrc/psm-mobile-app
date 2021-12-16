@@ -3,7 +3,6 @@ package com.baosystems.icrc.psm.ui.managestock
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,7 @@ import com.google.android.material.textfield.TextInputLayout
 import org.hisp.dhis.rules.models.RuleEffect
 
 class ManageStockAdapter(
-    private val itemWatcher: ItemWatcher<StockItem, Long, String>,
+    private val itemWatcher: ItemWatcher<StockItem, String, String>,
     val appConfig: AppConfig
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
@@ -57,7 +56,7 @@ class ManageStockAdapter(
 
     inner class StockItemHolder(
         itemView: View,
-        private val watcher: ItemWatcher<StockItem, Long, String>
+        private val watcher: ItemWatcher<StockItem, String, String>
     ):
         RecyclerView.ViewHolder(itemView) {
 
@@ -73,12 +72,9 @@ class ManageStockAdapter(
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (adapterPosition == RecyclerView.NO_POSITION) return
 
-                    val qty = if (s == null || TextUtils.isEmpty(s.toString())) {
-                        null
-                    } else { s.toString().toLong() }
-
+                    val qty = s?.toString()
                     getItem(adapterPosition)?.let { stockEntry ->
-                        watcher.quantityChanged(stockEntry, qty, object : ItemWatcher.OnQuantityValidated {
+                        watcher.quantityChanged(stockEntry, adapterPosition, qty, object : ItemWatcher.OnQuantityValidated {
                             override fun validationCompleted(ruleEffects: List<RuleEffect>) {
                                 watcher.updateFields(stockEntry, qty, adapterPosition, ruleEffects)
                             }

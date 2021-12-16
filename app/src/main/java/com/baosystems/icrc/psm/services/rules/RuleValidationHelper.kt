@@ -7,6 +7,6 @@ import org.hisp.dhis.rules.models.RuleEffect
 import java.util.*
 
 interface RuleValidationHelper {
-    fun evaluate(item: StockItem, qty: Long?, eventDate: Date, program: String,
+    fun evaluate(item: StockItem, qty: String?, eventDate: Date, program: String,
                  transaction: Transaction): Flowable<List<RuleEffect>>
 }

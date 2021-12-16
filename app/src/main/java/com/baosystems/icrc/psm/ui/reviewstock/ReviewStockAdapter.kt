@@ -1,7 +1,6 @@
 package com.baosystems.icrc.psm.ui.reviewstock
 
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,7 @@ import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.google.android.material.textfield.TextInputLayout
 
 class ReviewStockAdapter(
-    private val itemWatcher: ItemWatcher<StockEntry, Long, String>,
+    private val itemWatcher: ItemWatcher<StockEntry, String, String>,
     val appConfig: AppConfig
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockEntryViewHolder>(DIFF_CALLBACK) {
     companion object {
@@ -34,7 +33,7 @@ class ReviewStockAdapter(
 
     inner class StockEntryViewHolder(
         itemView: View,
-        private val watcher: ItemWatcher<StockEntry, Long, String>
+        private val watcher: ItemWatcher<StockEntry, String, String>
     ): RecyclerView.ViewHolder(itemView) {
         private val tvItemName: TextView = itemView.findViewById(R.id.tvReviewStockItemName)
         private val tvStockOnHand: TextView = itemView.findViewById(R.id.tvReviewStockOnHandValue)
@@ -43,9 +42,7 @@ class ReviewStockAdapter(
 
         init {
             btnRemoveItem.setOnClickListener {
-                watcher.removeItem(getItem(adapterPosition))
-                notifyItemRemoved(adapterPosition)
-                notifyItemRangeChanged(adapterPosition, 1)
+                watcher.removeItem(getItem(adapterPosition), adapterPosition)
             }
 
             tvItemQtyLayout.editText?.addTextChangedListener(object: TextWatcher {
@@ -55,12 +52,12 @@ class ReviewStockAdapter(
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (adapterPosition == RecyclerView.NO_POSITION) return
 
-                    val qty = if (s == null || TextUtils.isEmpty(s.toString())) {
-                        0
-                    } else { s.toString().toLong() }
+                    val qty = s?.toString()
 
                     // TODO: Add a listener to handle validation completion
-                    getItem(adapterPosition)?.let { watcher.quantityChanged(it, qty, null) }
+                    getItem(adapterPosition)?.let {
+                        watcher.quantityChanged(it, adapterPosition, qty, null)
+                    }
                 }
 
                 override fun afterTextChanged(p0: Editable?) {}

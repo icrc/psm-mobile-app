@@ -77,8 +77,8 @@ class ReviewStockViewModel @Inject constructor(
 
     fun removeItem(item: StockEntry) = populatedItems.remove(item)
 
-    fun updateItemQuantity(item: StockEntry, value: Long) {
-        item.qty = value
+    fun updateItemQuantity(item: StockEntry, value: String) {
+        item.qty = value.toLong()
     }
 
     fun updateItemStockOnHand(item: StockEntry, value: String) {
