@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.baosystems.icrc.psm.R
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
@@ -21,6 +22,7 @@ class ActivityManager {
                 activity.finish()
         }
 
+        @JvmStatic
         private fun showMessage(view: View, message: String, isError: Boolean) {
             val color = if (isError) {
                 R.color.error
@@ -50,6 +52,17 @@ class ActivityManager {
         fun hasFlash(context: Context): Boolean {
             return context.packageManager
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+        }
+
+        @JvmStatic
+        fun showBackButtonWarning(context: Context, confirmationCallback: () -> Unit) {
+            AlertDialog.Builder(context)
+                .setMessage(R.string.previous_page_lose_data_warning)
+                .setTitle(R.string.confirmation)
+                .setPositiveButton(android.R.string.ok) { dialog, which -> confirmationCallback() }
+                .setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                .create()
+                .show()
         }
     }
 }

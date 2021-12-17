@@ -141,6 +141,14 @@ public class ReviewStockActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        ActivityManager.showBackButtonWarning(this, () -> {
+            super.onBackPressed();
+            return null;
+        });
+    }
+
     private void configureScanner() {
         ActivityResultLauncher<ScanOptions> barcodeLauncher =
                 registerForActivityResult(new ScanContract(), scanIntentResult -> {
