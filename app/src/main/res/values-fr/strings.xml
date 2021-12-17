@@ -89,7 +89,7 @@
     <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter\?</string>
 
     <string name="remove_confirmation_message">
-        Êtes-vous sûr de vouloir %1$s définitivement l\'entrée pour la correction de \"%2$s\"?
+        Êtes-vous sûr de vouloir effacer définitivement l\'entrée pour la correction de \"%1$s\"?
          Cette action ne peut pas être annulée.
     </string>
 

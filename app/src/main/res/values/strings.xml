@@ -95,7 +95,7 @@
     <string name="logout_confirmation_message">Are you sure you want to log out\?</string>
 
     <string name="remove_confirmation_message">
-        Are you sure you want to permanently %1$s the entry for the correction of \"%2$s\"\?
+        Are you sure you want to permanently delete the entry for the correction of \"%1$s\"\?
         This action cannot be undone.
     </string>
 

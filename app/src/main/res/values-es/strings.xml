@@ -89,7 +89,7 @@
     <string name="logout_confirmation_message">¿Está seguro de que desea cerrar la sesión\?</string>
 
     <string name="remove_confirmation_message">
-        ¿Está seguro de que desea %1$s de forma permanente la entrada para la corrección de \"%2$s\"?
+        ¿Está seguro de que desea eliminar de forma permanente la entrada para la corrección de \"%1$s\"?
          Esta acción no se puede deshacer.
     </string>
 

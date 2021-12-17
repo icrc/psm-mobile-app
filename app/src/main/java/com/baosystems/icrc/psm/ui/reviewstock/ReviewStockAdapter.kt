@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.reviewstock
 
+import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,7 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
+import com.baosystems.icrc.psm.utils.ActivityManager
 import com.google.android.material.textfield.TextInputLayout
 import org.hisp.dhis.rules.models.RuleEffect
 
@@ -22,7 +24,8 @@ class ReviewStockAdapter(
     private val itemWatcher: ItemWatcher<StockEntry, String, String>,
     val appConfig: AppConfig
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockEntryViewHolder>(DIFF_CALLBACK) {
-    lateinit var resources: Resources
+    private lateinit var context: Context
+    private lateinit var resources: Resources
 
     companion object {
         // TODO: Find a way to use a type-aware DIFF_CALLBACK for different adapters for reusability
@@ -46,7 +49,15 @@ class ReviewStockAdapter(
 
         init {
             btnRemoveItem.setOnClickListener {
-                watcher.removeItem(getItem(adapterPosition), adapterPosition)
+                ActivityManager.showDialog(
+                    context,
+                    R.string.confirmation,
+                    context.getString(R.string.remove_confirmation_message,
+                        getItem(adapterPosition).item.name
+                    )
+                ) {
+                    watcher.removeItem(getItem(adapterPosition), adapterPosition)
+                }
             }
 
             tvItemQtyLayout.editText?.addTextChangedListener(object: TextWatcher {
@@ -94,6 +105,7 @@ class ReviewStockAdapter(
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.review_stock_item_entry, parent, false)
         resources = parent.context.resources
+        context = parent.context
 
         return StockEntryViewHolder(itemView, itemWatcher)
     }

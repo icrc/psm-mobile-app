@@ -85,7 +85,7 @@
     <string name="logout_confirmation_message">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
 
     <string name="remove_confirmation_message">
-        هل أنت متأكد من أنك تريد٪ s$1% بشكل دائم إدخال تصحيح \"%2$s\"؟
+        هل أنت متأكد من أنك تريد٪ حذف بشكل دائم إدخال تصحيح \"%1$s\"؟
         This action cannot be undone.
     </string>
 

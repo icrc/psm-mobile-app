@@ -55,7 +55,7 @@ class ActivityManager {
         }
 
         @JvmStatic
-        fun showDialog(context: Context, titleRes: Int, messageRes: Int,
+        fun showDialog(context: Context, titleRes: Int, messageRes: String,
                        confirmationCallback: () -> Unit) {
             AlertDialog.Builder(context)
                 .setMessage(messageRes)
@@ -69,7 +69,8 @@ class ActivityManager {
         @JvmStatic
         fun showBackButtonWarning(context: Context, confirmationCallback: () -> Unit) {
             showDialog(context, R.string.confirmation,
-                R.string.previous_page_lose_data_warning, confirmationCallback)
+                context.resources.getString(R.string.previous_page_lose_data_warning),
+                confirmationCallback)
         }
     }
 }
