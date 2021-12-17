@@ -55,14 +55,21 @@ class ActivityManager {
         }
 
         @JvmStatic
-        fun showBackButtonWarning(context: Context, confirmationCallback: () -> Unit) {
+        fun showDialog(context: Context, titleRes: Int, messageRes: Int,
+                       confirmationCallback: () -> Unit) {
             AlertDialog.Builder(context)
-                .setMessage(R.string.previous_page_lose_data_warning)
-                .setTitle(R.string.confirmation)
-                .setPositiveButton(android.R.string.ok) { dialog, which -> confirmationCallback() }
-                .setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                .setMessage(messageRes)
+                .setTitle(titleRes)
+                .setPositiveButton(android.R.string.ok) { _, _ -> confirmationCallback() }
+                .setNegativeButton(android.R.string.cancel, null)
                 .create()
                 .show()
+        }
+
+        @JvmStatic
+        fun showBackButtonWarning(context: Context, confirmationCallback: () -> Unit) {
+            showDialog(context, R.string.confirmation,
+                R.string.previous_page_lose_data_warning, confirmationCallback)
         }
     }
 }
