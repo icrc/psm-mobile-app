@@ -3,15 +3,43 @@ package com.baosystems.icrc.psm.ui.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.commons.Constants
+import com.baosystems.icrc.psm.data.RowAction
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.services.PreferenceProvider
+import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
+import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.disposables.Disposable
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-open class BaseViewModel @Inject constructor(val preferenceProvider: PreferenceProvider): ViewModel() {
+open class BaseViewModel @Inject constructor(
+    preferenceProvider: PreferenceProvider,
+    private val schedulerProvider: BaseSchedulerProvider
+
+): ViewModel() {
     val lastSyncDate: MutableLiveData<String> = MutableLiveData()
 
     init {
         lastSyncDate.value = preferenceProvider.getString(Constants.LAST_DATA_SYNC_DATE)
+    }
+
+    /**
+     * Evaluates the quantity assigned to the StockItem
+     *
+     * @param action The row action that comprises the item, adapter position, quantity and
+     * callback invoked when the validation completes
+     */
+    fun evaluate(ruleValidationHelper: RuleValidationHelper, action: RowAction,
+                 program: String, transaction: Transaction, date: Date): Disposable {
+
+        return ruleValidationHelper.evaluate(action.entry, date, program, transaction)
+            .doOnError { it.printStackTrace() }
+            .observeOn(schedulerProvider.io())
+            .subscribeOn(schedulerProvider.ui())
+            .subscribe { ruleEffects ->
+                action.callback?.validationCompleted(ruleEffects)
+            }
     }
 }

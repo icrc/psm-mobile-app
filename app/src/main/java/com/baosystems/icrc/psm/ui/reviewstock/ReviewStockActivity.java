@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.ui.reviewstock;
 
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES;
+import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import org.hisp.dhis.rules.models.RuleActionAssign;
 import org.hisp.dhis.rules.models.RuleEffect;
 
 import java.util.List;
@@ -48,12 +50,42 @@ public class ReviewStockActivity extends BaseActivity {
     private final ItemWatcher<StockEntry, String, String> itemWatcher =
             new ItemWatcher<StockEntry, String, String>() {
 
+        @Override
+        public void quantityChanged(StockEntry item, int position, @Nullable String value,
+                                    @Nullable OnQuantityValidated callback) {
+            viewModel.setQuantity(item, position, value, callback);
+        }
+
                 @Override
         public void updateFields(StockEntry item, @Nullable String qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
-            // TODO: Handle updating the fields after validation is completed
-//                    viewModel.updateItemStockOnHand(item, value);
-//                    runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+            ruleEffects.forEach(ruleEffect -> {
+                if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
+                        (((RuleActionAssign) ruleEffect.ruleAction()).field()
+                                .equals(viewModel.getConfig().getStockOnHand()))) {
+
+                    String value = ruleEffect.data();
+                    boolean isValidStockOnHand = isValidStockOnHand(value);
+                    boolean isValidQty = !(qty == null || qty.isEmpty());
+                    boolean isValid = isValidStockOnHand && isValidQty;
+
+                    String stockOnHand = isValid ? value : item.getStockOnHand();
+                    viewModel.updateItem(item, qty, stockOnHand, !isValid);
+
+                    if (!isValidStockOnHand) {
+                        ActivityManager.showErrorMessage(binding.getRoot(),
+                                getString(R.string.stock_on_hand_exceeded_message));
+                    }
+
+                    if (!isValidQty) {
+                        ActivityManager.showErrorMessage(binding.getRoot(),
+                                getString(R.string.reviewed_item_cannot_be_empty_message));
+                    }
+                }
+            });
+
+            updateItemView(position);
+            updateCommitButton();
         }
 
         @Override
@@ -71,21 +103,19 @@ public class ReviewStockActivity extends BaseActivity {
         }
 
         @Override
-        public Long getQuantity(StockEntry item) {
+        public String getQuantity(StockEntry item) {
             return viewModel.getItemQuantity(item);
         }
 
         @Override
-        public void quantityChanged(StockEntry item, int position, @Nullable String value,
-                                    @Nullable OnQuantityValidated callback) {
-            viewModel.updateItemQuantity(item, value);
-        }
-
-        @Override
         public boolean hasError(StockEntry item) {
-            return false;
+            return item.getHasError();
         }
     };
+
+    private void updateCommitButton() {
+        runOnUiThread(() -> binding.fabCommitStock.setEnabled(viewModel.canCommit()));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -206,5 +236,9 @@ public class ReviewStockActivity extends BaseActivity {
     @Override
     public Toolbar getToolBar() {
         return ((ActivityReviewStockBinding) getViewBinding()).toolbarContainer.toolbar;
+    }
+
+    private void updateItemView(int position) {
+        runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
     }
 }

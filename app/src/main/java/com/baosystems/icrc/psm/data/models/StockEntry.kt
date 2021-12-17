@@ -5,13 +5,13 @@ import android.os.Parcelable
 
 data class StockEntry(
     val item: StockItem,
-    var qty: Long,
+    var qty: String?,
     var stockOnHand: String? = null,
     var hasError: Boolean = false
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(StockItem::class.java.classLoader)!!,
-        parcel.readLong(),
+        parcel.readString(),
         parcel.readString(),
         parcel.readInt() == 1
     )
@@ -20,7 +20,7 @@ data class StockEntry(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeParcelable(item, flags)
-        dest.writeLong(qty)
+        dest.writeString(qty)
         dest.writeString(stockOnHand)
 
         if (hasError)

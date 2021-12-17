@@ -1,12 +1,12 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION;
+import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -41,7 +41,6 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 @AndroidEntryPoint
 public class ManageStockActivity extends BaseActivity {
@@ -61,13 +60,13 @@ public class ManageStockActivity extends BaseActivity {
                                 .equals(viewModel.getConfig().getStockOnHand()))) {
 
                     String value = ruleEffect.data();
-                    Timber.d("Rule effect: %s", ruleEffect);
                     boolean isValid = isValidStockOnHand(value);
                     String stockOnHand = isValid ? value : item.getStockOnHand();
 
                     viewModel.addItem(item, qty, stockOnHand, !isValid);
                     if (!isValid) {
-                        flagError(item);
+                        ActivityManager.showErrorMessage(binding.getRoot(),
+                                getString(R.string.stock_on_hand_exceeded_message));
                     }
 
                     updateItemView(position);
@@ -76,24 +75,6 @@ public class ManageStockActivity extends BaseActivity {
             });
 
             updateNextButton();
-        }
-
-        private boolean isValidStockOnHand(String value) {
-            if (value == null || TextUtils.isEmpty(value)) {
-                Timber.w("Stock on hand value received is empty");
-                return false;
-            }
-
-            try {
-                return Long.parseLong(value) >= 0;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-
-        private void flagError(StockItem item) {
-            ActivityManager.showErrorMessage(binding.getRoot(),
-                    getString(R.string.stock_on_hand_exceeded_message));
         }
 
         @Override
@@ -115,7 +96,7 @@ public class ManageStockActivity extends BaseActivity {
                 return;
             }
 
-            viewModel.setItemQuantity(item, position, value, callback);
+            viewModel.setQuantity(item, position, value, callback);
         }
 
         @Override
@@ -123,7 +104,7 @@ public class ManageStockActivity extends BaseActivity {
 
         @Nullable
         @Override
-        public Long getQuantity(StockItem item) {
+        public String getQuantity(StockItem item) {
             return viewModel.getItemQuantity(item);
         }
 

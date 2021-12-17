@@ -7,19 +7,25 @@ import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.ReviewStockData
+import com.baosystems.icrc.psm.data.RowAction
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
+import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
+import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 import timber.log.Timber
 import java.time.LocalDateTime
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -31,14 +37,16 @@ class ReviewStockViewModel @Inject constructor(
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
-    private val userActivityRepository: UserActivityRepository
-): BaseViewModel(preferenceProvider) {
+    private val userActivityRepository: UserActivityRepository,
+    private val ruleValidationHelper: RuleValidationHelper
+): BaseViewModel(preferenceProvider, schedulerProvider) {
     // TODO: Figure out a better way than using !!
     val data = savedState.get<ReviewStockData>(INTENT_EXTRA_STOCK_ENTRIES)!!
     val transaction = data.transaction
 
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
+    private val entryRelay = PublishRelay.create<RowAction>()
 
     private val populatedItems = data.items
     private val _reviewedItems: MutableLiveData<List<StockEntry>> = MutableLiveData(populatedItems)
@@ -50,7 +58,7 @@ class ReviewStockViewModel @Inject constructor(
         get() = _commitStatus
 
     init {
-        configureSearchRelay()
+        configureRelays()
         loadPopulatedItems()
     }
 
@@ -59,7 +67,7 @@ class ReviewStockViewModel @Inject constructor(
     }
 
     // TODO: Find a way to reuse this function, as the same is being used by ManageStockModel
-    private fun configureSearchRelay() {
+    private fun configureRelays() {
         disposable.add(
             searchRelay
                 .debounce(Constants.SEARCH_QUERY_DEBOUNCE, TimeUnit.MILLISECONDS)
@@ -73,16 +81,57 @@ class ReviewStockViewModel @Inject constructor(
                         it.printStackTrace()
                     })
         )
+
+        disposable.add(
+            entryRelay
+                .debounce(Constants.QUANTITY_ENTRY_DEBOUNCE, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged { t1, t2 ->
+                    t1.entry.item.id == t2.entry.item.id &&
+                            t1.position == t2.position &&
+                            t1.entry.qty == t2.entry.qty
+                }
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                    {
+                        disposable.add(
+                            evaluate(ruleValidationHelper, it, config.program, transaction, Date())
+                        )
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
+        )
     }
 
-    fun removeItem(item: StockEntry) = populatedItems.remove(item)
-
-    fun updateItemQuantity(item: StockEntry, value: String) {
-        item.qty = value.toLong()
+    fun removeItem(entry: StockEntry) {
+        _reviewedItems.postValue(
+            populatedItems.filter { it.item.id != entry.item.id }
+        )
     }
 
-    fun updateItemStockOnHand(item: StockEntry, value: String) {
-        item.stockOnHand = value
+    fun updateItem(entry: StockEntry, qty: String?, stockOnHand: String?,
+                   hasError: Boolean = false) {
+        val itemIndex = populatedItems.indexOfFirst { it.item.id == entry.item.id }
+        if (itemIndex >= 0) {
+            val newEntry = entry.copy(qty = qty, hasError = hasError)
+            if (!hasError) {
+                newEntry.stockOnHand = stockOnHand
+            }
+
+            populatedItems[itemIndex] = newEntry
+            _reviewedItems.postValue(populatedItems)
+        }
+    }
+
+    fun setQuantity(
+        item: @NotNull StockEntry,
+        position: @NotNull Int,
+        qty: @Nullable String,
+        callback: @Nullable ItemWatcher.OnQuantityValidated?
+    ) {
+        entryRelay.accept(RowAction(item.copy(qty = qty), position, callback))
     }
 
     fun getItemQuantity(item: StockEntry) = item.qty
@@ -132,5 +181,18 @@ class ReviewStockViewModel @Inject constructor(
                 .observeOn(schedulerProvider.ui())
                 .subscribe()
         )
+    }
+
+    /**
+     * Stock entries can be committed if there are items in the list,
+     * and none of the entries have errors
+     */
+    fun canCommit(): Boolean {
+        val items = _reviewedItems.value
+        Timber.d(">>>         Items about to be committed: ")
+        items?.forEach {
+            println("${it.item.name} (${it.qty}) - error = ${it.hasError}")
+        }
+        return items?.size ?: 0 > 0 && (items?.none { it.hasError } ?: false)
     }
 }

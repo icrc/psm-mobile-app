@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     preferenceProvider: PreferenceProvider,
     private val metadataManager: MetadataManager,
     private val userActivityRepository: UserActivityRepository
-): BaseViewModel(preferenceProvider) {
+): BaseViewModel(preferenceProvider, schedulerProvider) {
     // TODO: Move all the properties below into a singular object
     var program: Program? = null
 

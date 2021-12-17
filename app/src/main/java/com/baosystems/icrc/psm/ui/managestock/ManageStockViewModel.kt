@@ -38,7 +38,7 @@ class ManageStockViewModel @Inject constructor(
     preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
     private val ruleValidationHelper: RuleValidationHelper
-): BaseViewModel(preferenceProvider) {
+): BaseViewModel(preferenceProvider, schedulerProvider) {
     // TODO: Handle cases where transaction is null. (remove transaction!!)
     val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!
 
@@ -89,11 +89,22 @@ class ManageStockViewModel @Inject constructor(
             entryRelay
                 .debounce(QUANTITY_ENTRY_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged { t1, t2 ->
-                    t1.item.id == t2.item.id && t1.position == t2.position && t1.qty == t2.qty
+                    t1.entry.item.id == t2.entry.item.id &&
+                            t1.position == t2.position &&
+                            t1.entry.qty == t2.entry.qty
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe({ evaluate(it) }, { it.printStackTrace() })
+                .subscribe(
+                    {
+                        disposable.add(
+                            evaluate(ruleValidationHelper, it, config.program, transaction, Date())
+                        )
+                    },
+                    {
+                        it.printStackTrace()
+                    }
+                )
         )
     }
 
@@ -105,13 +116,13 @@ class ManageStockViewModel @Inject constructor(
         search.postValue(SearchParametersModel(null, itemCode, transaction.facility.uid))
     }
 
-    fun setItemQuantity(
+    fun setQuantity(
         item: @NotNull StockItem,
         position: @NotNull Int,
         qty: @NotNull String,
         callback: @Nullable ItemWatcher.OnQuantityValidated?
     ) {
-        entryRelay.accept(RowAction(item, position, qty, callback))
+        entryRelay.accept(RowAction(StockEntry(item, qty), position, callback))
     }
 
     fun getItemQuantity(item: StockItem) = itemsCache[item.id]?.qty
@@ -125,41 +136,19 @@ class ManageStockViewModel @Inject constructor(
             return
         }
 
-        val numQty = try {
-            qty.toLong()
-        } catch (e: Exception) {
-            0
-        }
-        itemsCache[item.id] = StockEntry(item, numQty, stockOnHand, hasError)
+        // TODO: Flag invalid entries that are not positive or negative numbers
+        itemsCache[item.id] = StockEntry(item, qty, stockOnHand, hasError)
     }
 
     fun removeItemFromCache(item: StockItem) = itemsCache.remove(item.id) != null
 
     fun hasError(item: StockItem) = itemsCache[item.id]?.hasError ?: false
 
-    fun canReview(): Boolean = itemsCache.size > 0 && itemsCache.filter { it.value.hasError }.isEmpty()
+    fun canReview(): Boolean = itemsCache.size > 0 && itemsCache.none { it.value.hasError }
 
     private fun getPopulatedEntries(): MutableList<StockEntry> {
         return itemsCache.values.toMutableList()
     }
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
-
-    /**
-     * Evaluates the quantity assigned to the StockItem
-     *
-     * @param action The row action that comprises the item, adapter position, quantity and
-     * callback invoked when the validation completes
-     */
-    private fun evaluate(action: RowAction) {
-            disposable.add(
-                ruleValidationHelper.evaluate(action.item, action.qty, Date(), config.program, transaction)
-                    .doOnError { it.printStackTrace() }
-                    .observeOn(schedulerProvider.io())
-                    .subscribeOn(schedulerProvider.ui())
-                    .subscribe { ruleEffects ->
-                        action.callback?.validationCompleted(ruleEffects)
-                    }
-            )
-    }
 }

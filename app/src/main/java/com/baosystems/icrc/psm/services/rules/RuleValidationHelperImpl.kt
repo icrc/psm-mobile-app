@@ -2,7 +2,7 @@ package com.baosystems.icrc.psm.services.rules
 
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.TransactionType
-import com.baosystems.icrc.psm.data.models.StockItem
+import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.utils.*
 import io.reactivex.Flowable
@@ -44,17 +44,14 @@ class RuleValidationHelperImpl @Inject constructor(
     }
 
     override fun evaluate(
-        item: StockItem,
-        qty: String?,
+        entry: StockEntry,
         eventDate: Date,
         program: String,
         transaction: Transaction
     ): Flowable<List<RuleEffect>> {
-        Timber.d("Evaluate(): StockItem - %s, qty - %s, transaction - %s",
-            item.name, qty, transaction.transactionType)
         return ruleEngine().flatMap { ruleEngine ->
             val programStage = programStage(program)
-            val dataValues = dataValues(item.id, qty, programStage.uid(), transaction, eventDate)
+            val dataValues = dataValues(entry.item.id, entry.qty, programStage.uid(), transaction, eventDate)
             dataValues.forEach {
                 Timber.d("Data values: %s", it)
             }

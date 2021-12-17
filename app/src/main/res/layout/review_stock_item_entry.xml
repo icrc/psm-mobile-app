@@ -52,17 +52,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/stock_item_margin"
-            android:layout_marginBottom="@dimen/stock_item_margin"
+            android:layout_marginBottom="@dimen/stock_item_margin_bottom"
             app:boxCornerRadiusBottomEnd="@dimen/text_input_corner_radius"
             app:boxCornerRadiusBottomStart="@dimen/text_input_corner_radius"
             app:boxCornerRadiusTopEnd="@dimen/text_input_corner_radius"
             app:boxCornerRadiusTopStart="@dimen/text_input_corner_radius"
             android:minWidth="@dimen/text_input_width"
             android:maxWidth="@dimen/text_input_width"
+            app:errorEnabled="true"
             tools:text="20">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:inputType="number"
+                android:inputType="numberSigned"
                 android:maxLines="1"
                 android:maxLength="19"
                 android:padding="@dimen/qty_field_padding"

@@ -73,10 +73,10 @@ class ManageStockAdapter(
                     if (adapterPosition == RecyclerView.NO_POSITION) return
 
                     val qty = s?.toString()
-                    getItem(adapterPosition)?.let { stockEntry ->
-                        watcher.quantityChanged(stockEntry, adapterPosition, qty, object : ItemWatcher.OnQuantityValidated {
+                    getItem(adapterPosition)?.let { item ->
+                        watcher.quantityChanged(item, adapterPosition, qty, object : ItemWatcher.OnQuantityValidated {
                             override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                                watcher.updateFields(stockEntry, qty, adapterPosition, ruleEffects)
+                                watcher.updateFields(item, qty, adapterPosition, ruleEffects)
                             }
                     }) }
                 }
@@ -88,7 +88,7 @@ class ManageStockAdapter(
         fun bindTo(item: StockItem) {
             tvItemName.text = item.name
             tvStockOnHand.text = watcher.getStockOnHand(item) ?: item.stockOnHand
-            etQty.editText?.setText(watcher.getQuantity(item)?.toString())
+            etQty.editText?.setText(watcher.getQuantity(item))
 
             var error: String? = null
             if (watcher.hasError(item)) {
