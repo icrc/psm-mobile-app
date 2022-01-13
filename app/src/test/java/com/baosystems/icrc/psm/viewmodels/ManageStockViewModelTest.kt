@@ -9,7 +9,7 @@ import com.baosystems.icrc.psm.data.DestinationFactory
 import com.baosystems.icrc.psm.data.FacilityFactory
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
-import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.services.MetadataManager
 import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
@@ -67,16 +67,21 @@ class ManageStockViewModelTest {
             stockManager
         )
 
-    private fun createStockEntry(uid: String) = StockEntry(
+    private fun createStockEntry(uid: String) = StockItem(
         uid, faker.name().name(), faker.number().numberBetween(1, 800).toString())
 
     @Before
     fun setUp() {
         appConfig = AppConfig(
-            "programUid", "itemCodeUid", "itemNameUid",
-            "stockOnHandUid", "distributedToUid",
-            "stockDistributionUid", "stockCorrectionUid",
-            "stockDiscardedUid")
+            "programUid",
+            "itemCodeUid",
+            "itemNameUid",
+            "stockOnHandUid",
+            "distributedToUid",
+            "stockDistributionUid",
+            "stockCorrectionUid",
+            "stockDiscardedUid"
+        )
 
         facility = ParcelUtils.facilityToIdentifiableModelParcel(
             FacilityFactory.create(57L))
@@ -144,7 +149,7 @@ class ManageStockViewModelTest {
         val item = createStockEntry("someUid")
         val qty = 319L
 
-        viewModel.setItemQuantity(item, qty)
+        viewModel.setQuantity(item, qty)
         assertEquals(viewModel.getItemQuantity(item), qty)
     }
 
@@ -154,8 +159,8 @@ class ManageStockViewModelTest {
         val qty2 = 95L
         val item = createStockEntry("someUid")
 
-        viewModel.setItemQuantity(item, 49)
-        viewModel.setItemQuantity(item, qty2)
+        viewModel.setQuantity(item, 49)
+        viewModel.setQuantity(item, qty2)
         assertEquals(viewModel.getItemQuantity(item), qty2)
     }
 

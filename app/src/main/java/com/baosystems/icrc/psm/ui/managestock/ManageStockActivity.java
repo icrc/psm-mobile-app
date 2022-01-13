@@ -41,6 +41,7 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 @AndroidEntryPoint
 public class ManageStockActivity extends BaseActivity {
@@ -54,6 +55,12 @@ public class ManageStockActivity extends BaseActivity {
         @Override
         public void updateFields(StockItem item, @Nullable String qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
+            // TODO: remove logging below (just for debugging)
+            Timber.d(">>>>>>     Rule Effects");
+            ruleEffects.forEach(ruleEffect -> {
+                System.out.println(ruleEffect);
+            });
+
             ruleEffects.forEach(ruleEffect -> {
                 if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
                         (((RuleActionAssign) ruleEffect.ruleAction()).field()

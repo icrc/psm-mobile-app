@@ -189,10 +189,6 @@ class ReviewStockViewModel @Inject constructor(
      */
     fun canCommit(): Boolean {
         val items = _reviewedItems.value
-        Timber.d(">>>         Items about to be committed: ")
-        items?.forEach {
-            println("${it.item.name} (${it.qty}) - error = ${it.hasError}")
-        }
         return items?.size ?: 0 > 0 && (items?.none { it.hasError } ?: false)
     }
 }

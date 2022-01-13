@@ -8,5 +8,5 @@ import java.util.*
 
 interface RuleValidationHelper {
     fun evaluate(entry: StockEntry, eventDate: Date, program: String,
-                 transaction: Transaction): Flowable<List<RuleEffect>>
+                 transaction: Transaction, eventUid: String? = null): Flowable<List<RuleEffect>>
 }

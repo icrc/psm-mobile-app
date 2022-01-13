@@ -7,10 +7,14 @@ import androidx.paging.PagedList
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.*
+import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
+import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.AttributeHelper
 import com.baosystems.icrc.psm.utils.ConfigUtils.getTransactionDataElement
 import com.baosystems.icrc.psm.utils.toDate
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
+import org.apache.commons.lang3.math.NumberUtils
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.enrollment.Enrollment
@@ -18,11 +22,18 @@ import org.hisp.dhis.android.core.event.EventCreateProjection
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnitMode
 import org.hisp.dhis.android.core.program.ProgramStage
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
+import org.hisp.dhis.rules.models.RuleActionAssign
+import org.hisp.dhis.rules.models.RuleEffect
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 class StockManagerImpl @Inject constructor(
-    val d2: D2, val config: AppConfig
+    val d2: D2,
+    val config: AppConfig,
+    private val disposable: CompositeDisposable,
+    private val schedulerProvider: BaseSchedulerProvider,
+    private val ruleValidationHelper: RuleValidationHelper
 ): StockManager {
 
     override fun search(
@@ -87,6 +98,7 @@ class StockManagerImpl @Inject constructor(
             .byDataValue(stockOnHandUid).like("")
             .byDeleted().isFalse
             .withTrackedEntityDataValues()
+            .orderByLastUpdated(RepositoryScope.OrderByDirection.DESC)
             .blockingGet()
 
         events.forEach { event ->
@@ -174,6 +186,49 @@ class StockManagerImpl @Inject constructor(
                 eventUid,
                 config.distributedTo
             ).blockingSet(destination.code())
+        }
+
+        updateStockOnHand(item, config.program, transaction, eventUid)
+    }
+
+    private fun updateStockOnHand(
+        entry: StockEntry,
+        program: String,
+        transaction: Transaction,
+        eventUid: String
+    ) {
+        disposable.add(
+            ruleValidationHelper.evaluate(entry, Date(), program, transaction, eventUid)
+            .doOnError { it.printStackTrace() }
+            .observeOn(schedulerProvider.io())
+            .subscribeOn(schedulerProvider.ui())
+            .subscribe { ruleEffects -> performRuleActions(ruleEffects, eventUid) }
+        )
+    }
+
+    private fun performRuleActions(ruleEffects: List<RuleEffect>?, eventUid: String) {
+        Timber.d("Rule Effects: %s", ruleEffects)
+        ruleEffects?.forEach { ruleEffect ->
+            if (ruleEffect.ruleAction() is RuleActionAssign) {
+                val ruleAssign = ruleEffect.ruleAction() as RuleActionAssign
+                val de = ruleAssign.field()
+                val value = ruleEffect.data()
+                if (!de.isNullOrEmpty() && !value.isNullOrEmpty()) {
+                    Timber.d("++++      Assigning rule actions:")
+                    println("Event uid: ${eventUid}, dvUid: ${de}, value: $value")
+
+                    if (NumberUtils.isCreatable(value)) {
+                        d2.trackedEntityModule()
+                            .trackedEntityDataValues()
+                            .value(eventUid, de)
+                            .blockingSet(value)
+
+                        println("Added data value '$value' to DE $de - Event($eventUid)")
+                    } else {
+                        Timber.w("Unable to assign program action using invalid data: %s", value)
+                    }
+                }
+            }
         }
     }
 
