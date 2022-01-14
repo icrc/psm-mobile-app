@@ -9,8 +9,8 @@
     <color name="black">#FF000000</color>
     <color name="transparent">#00FFFFFF</color>
 
-    <color name="distribution_color">#FFAF2D3B</color>
-    <color name="discard_color">#FF5F8D79</color>
+    <color name="distribution_color">#FF5F8D79</color>
+    <color name="discard_color">#FFAF2D3B</color>
     <color name="correction_color">#FF969191</color>
     <!-- Change to actual red color for errors -->
     <color name="error">#FFAF2D3B</color>
