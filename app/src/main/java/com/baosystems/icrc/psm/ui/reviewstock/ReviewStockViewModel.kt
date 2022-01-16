@@ -121,9 +121,9 @@ class ReviewStockViewModel @Inject constructor(
                     newEntry.stockOnHand = stockOnHand
                 }
 
-                _reviewedItems.postValue(
-                    items.apply { toMutableList()[itemIndex] = newEntry }
-                )
+                val newList = items.toMutableList()
+                newList[itemIndex] = newEntry
+                _reviewedItems.postValue(newList.toList())
             }
         }
     }
