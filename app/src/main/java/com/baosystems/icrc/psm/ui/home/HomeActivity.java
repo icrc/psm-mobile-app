@@ -91,7 +91,7 @@ public class HomeActivity extends BaseActivity {
         viewModel.getFacilities().observe(this, networkState -> {
             if (reportNetworkError(networkState)) return;
 
-            if (networkState.getClass() == NetworkState.Success.class) {
+            if (networkState instanceof NetworkState.Success) {
                 List<OrganisationUnit> facilities =
                         ((NetworkState.Success<List<OrganisationUnit>>) networkState).getResult();
                 facilityTextView.setAdapter(
@@ -102,12 +102,18 @@ public class HomeActivity extends BaseActivity {
         viewModel.getDestinationsList().observe(this, networkState -> {
             if (reportNetworkError(networkState)) return;
 
-            if (networkState.getClass() == NetworkState.Success.class) {
+            if (networkState instanceof NetworkState.Success) {
                 List<Option> destinations = ((NetworkState.Success<List<Option>>) networkState).getResult();
                 distributedToTextView.setAdapter(
                         new GenericListAdapter<>(
                                 this, R.layout.list_item, destinations
                         ));
+            }
+        });
+
+        viewModel.getDestination().observe(this, destination -> {
+            if (destination == null) {
+                distributedToTextView.getEditableText().clear();
             }
         });
     }
@@ -292,7 +298,6 @@ public class HomeActivity extends BaseActivity {
         binding.recentActivityMessageTextview.setCompoundDrawablePadding(32);
         binding.recentActivityMessageTextview.setText(R.string.recent_activities_loading_message);
     }
-
 
     private void navigateToManageStock() {
         if (!viewModel.readyManageStock()) {

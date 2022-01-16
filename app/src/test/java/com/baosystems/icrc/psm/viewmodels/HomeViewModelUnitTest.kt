@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.data.*
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
@@ -94,12 +93,10 @@ class HomeViewModelUnitTest {
         Mockito.`when`(metadataManager.destinations())
             .thenReturn(Single.just(destinations))
 
-        val savedState = SavedStateHandle()
-
         userManager = UserManagerImpl(d2)
         viewModel = HomeViewModel(
-            savedState, disposable, appConfig, schedulerProvider, preferenceProvider,
-            metadataManager, userActivityRepository
+            disposable, appConfig, schedulerProvider, preferenceProvider, metadataManager,
+            userActivityRepository
         )
 
         viewModel.facilities.observeForever(facilitiesObserver)

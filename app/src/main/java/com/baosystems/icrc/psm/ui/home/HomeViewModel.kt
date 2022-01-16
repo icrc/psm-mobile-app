@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants.USER_ACTIVITY_COUNT
 import com.baosystems.icrc.psm.data.AppConfig
@@ -30,7 +29,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val savedState: SavedStateHandle,
     val disposable: CompositeDisposable,
     val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
@@ -59,7 +57,7 @@ class HomeViewModel @Inject constructor(
         get() = _transactionDate
 
     private val _destination: MutableLiveData<Option> = MutableLiveData(null)
-    private val destination: LiveData<Option>
+    val destination: LiveData<Option>
         get() = _destination
 
     private val _facilities = MutableLiveData<NetworkState<List<OrganisationUnit>>>()
