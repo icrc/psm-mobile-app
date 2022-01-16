@@ -146,9 +146,7 @@ class ManageStockViewModel @Inject constructor(
 
     fun canReview(): Boolean = itemsCache.size > 0 && itemsCache.none { it.value.hasError }
 
-    private fun getPopulatedEntries(): MutableList<StockEntry> {
-        return itemsCache.values.toMutableList()
-    }
+    private fun getPopulatedEntries() = Collections.synchronizedList(itemsCache.values.toList())
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
 }

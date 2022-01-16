@@ -8,7 +8,7 @@ interface ItemWatcher<A, B, C> {
     fun hasError(item: A): Boolean
     fun getQuantity(item: A): B?
     fun getStockOnHand(item: A): C?
-    fun removeItem(item: A, position: Int)
+    fun removeItem(item: A)
 
     interface OnQuantityValidated {
         fun validationCompleted(ruleEffects: List<RuleEffect>)

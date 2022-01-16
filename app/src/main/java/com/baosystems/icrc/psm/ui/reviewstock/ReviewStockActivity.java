@@ -89,11 +89,8 @@ public class ReviewStockActivity extends BaseActivity {
         }
 
         @Override
-        public void removeItem(StockEntry item, int position) {
+        public void removeItem(StockEntry item) {
             viewModel.removeItem(item);
-
-            adapter.notifyItemRemoved(position);
-            adapter.notifyItemRangeChanged(position, 1);
         }
 
         @Nullable

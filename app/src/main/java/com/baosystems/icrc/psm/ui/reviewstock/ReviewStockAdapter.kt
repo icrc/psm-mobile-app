@@ -56,7 +56,7 @@ class ReviewStockAdapter(
                         getItem(adapterPosition).item.name
                     )
                 ) {
-                    watcher.removeItem(getItem(adapterPosition), adapterPosition)
+                    watcher.removeItem(getItem(adapterPosition))
                 }
             }
 

@@ -141,7 +141,6 @@ class StockManagerImpl @Inject constructor(
 
     override fun saveTransaction(items: List<StockEntry>, transaction: Transaction):
             Single<Unit> {
-
         return Single.defer{
             d2.programModule()
                 .programStages()

@@ -57,9 +57,7 @@ public class ManageStockActivity extends BaseActivity {
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
             // TODO: remove logging below (just for debugging)
             Timber.d(">>>>>>     Rule Effects");
-            ruleEffects.forEach(ruleEffect -> {
-                System.out.println(ruleEffect);
-            });
+            ruleEffects.forEach(System.out::println);
 
             ruleEffects.forEach(ruleEffect -> {
                 if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
@@ -96,10 +94,10 @@ public class ManageStockActivity extends BaseActivity {
             if (value == null || value.isEmpty()) {
                 boolean outcome = viewModel.removeItemFromCache(item);
                 if (outcome) {
+
                     updateItemView(position);
                     updateNextButton();
                 }
-
                 return;
             }
 
@@ -107,7 +105,7 @@ public class ManageStockActivity extends BaseActivity {
         }
 
         @Override
-        public void removeItem(StockItem item, int position) { }
+        public void removeItem(StockItem item) { }
 
         @Nullable
         @Override
@@ -167,7 +165,6 @@ public class ManageStockActivity extends BaseActivity {
                                 getString(R.string.scan_canceled));
                     } else {
                         String data = scanIntentResult.getContents();
-//                        Timber.i("Result: %s", data);
                         viewModel.onScanCompleted(data);
                         binding.searchInputField.setText(data);
                     }

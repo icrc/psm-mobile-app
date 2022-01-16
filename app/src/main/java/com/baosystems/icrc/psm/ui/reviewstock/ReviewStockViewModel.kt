@@ -48,8 +48,7 @@ class ReviewStockViewModel @Inject constructor(
     private val searchRelay = PublishRelay.create<String>()
     private val entryRelay = PublishRelay.create<RowAction>()
 
-    private val populatedItems = data.items
-    private val _reviewedItems: MutableLiveData<List<StockEntry>> = MutableLiveData(populatedItems)
+    private val _reviewedItems: MutableLiveData<List<StockEntry>> = MutableLiveData(data.items)
     val reviewedItems: LiveData<List<StockEntry>>
         get() = _reviewedItems
 
@@ -106,22 +105,26 @@ class ReviewStockViewModel @Inject constructor(
     }
 
     fun removeItem(entry: StockEntry) {
-        _reviewedItems.postValue(
-            populatedItems.filter { it.item.id != entry.item.id }
-        )
+        _reviewedItems.value?.apply {
+            _reviewedItems.postValue(this.filter { it.item.id != entry.item.id })
+        }
     }
 
     fun updateItem(entry: StockEntry, qty: String?, stockOnHand: String?,
                    hasError: Boolean = false) {
-        val itemIndex = populatedItems.indexOfFirst { it.item.id == entry.item.id }
-        if (itemIndex >= 0) {
-            val newEntry = entry.copy(qty = qty, hasError = hasError)
-            if (!hasError) {
-                newEntry.stockOnHand = stockOnHand
-            }
+        _reviewedItems.value?.let { items ->
+            val itemIndex = items.indexOfFirst { it.item.id == entry.item.id }
 
-            populatedItems[itemIndex] = newEntry
-            _reviewedItems.postValue(populatedItems)
+            if (itemIndex >= 0) {
+                val newEntry = entry.copy(qty = qty, hasError = hasError)
+                if (!hasError) {
+                    newEntry.stockOnHand = stockOnHand
+                }
+
+                _reviewedItems.postValue(
+                    items.apply { toMutableList()[itemIndex] = newEntry }
+                )
+            }
         }
     }
 
@@ -142,9 +145,9 @@ class ReviewStockViewModel @Inject constructor(
 
     private fun performSearch(q: String?): List<StockEntry> {
         return if (q == null || q.isEmpty())
-            populatedItems.toList()
+            data.items
         else
-            populatedItems.filter { it.item.name.contains(q, true) }
+            data.items.filter { it.item.name.contains(q, true) }
     }
 
     fun commitTransaction() {
