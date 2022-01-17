@@ -220,6 +220,10 @@ public class ManageStockActivity extends BaseActivity {
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         );
+
+        // Set up listeners for the guide info box
+        binding.stockEntriesTableHeader.qtyInfoIconButton.setOnClickListener(v -> viewModel.toggleGuideDisplay());
+        binding.qtyGuide.closeGuideButton.setOnClickListener(v -> viewModel.toggleGuideDisplay());
     }
 
     private void setupSearchInput() {

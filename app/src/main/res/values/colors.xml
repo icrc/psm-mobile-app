@@ -42,4 +42,8 @@
 
     <color name="amber">#FFBF00</color>
     <color name="viewfinder_mask">#E0161616</color>
+
+    <color name="info_guide_background_color">#F5FCFF</color>
+    <color name="info_guide_border_color">#99579DBB</color>
+    <color name="info_guide_icon_color">#D8D8D8</color>
 </resources>

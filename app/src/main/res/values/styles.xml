@@ -9,4 +9,9 @@
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">@color/gray_400</item>
     </style>
+
+    <style name="InfoBoxTextStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

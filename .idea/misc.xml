@@ -30,8 +30,8 @@
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.3302083333333333" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.2760416666666667" />
-        <entry key="app/src/main/res/layout/activity_review_stock.xml" value="0.36860795454545453" />
+        <entry key="app/src/main/res/layout/activity_manage_stock.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_review_stock.xml" value="0.55" />
         <entry key="app/src/main/res/layout/activity_scanner.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.13454433497536947" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
@@ -48,7 +48,9 @@
         <entry key="app/src/main/res/layout/review_stock_item_entry.xml" value="0.625" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.12838669950738915" />
         <entry key="app/src/main/res/layout/stock_item_entry.xml" value="0.45" />
-        <entry key="app/src/main/res/layout/stock_table_header.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/stock_quantities_guide.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/stock_quantity_guide.xml" value="0.2484375" />
+        <entry key="app/src/main/res/layout/stock_table_header.xml" value="0.75" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.10190886699507389" />
         <entry key="app/src/main/res/layout/toolbar1.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_options.xml" value="0.105859375" />
@@ -70,5 +72,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3684782608695652" />
+      </ProjectState>
+    </option>
   </component>
 </project>

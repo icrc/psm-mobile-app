@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.baosystems.icrc.psm.ui.managestock.ManageStockViewModel" />
@@ -126,10 +127,28 @@
                 app:layout_constraintStart_toEndOf="@id/searchFieldLayout"
                 app:layout_constraintTop_toBottomOf="@id/choices_container" />
 
+            <!-- quantity guide -->
+            <include
+                android:id="@+id/qty_guide"
+                layout="@layout/stock_quantities_guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/stock_table_top_margin"
+                app:layout_constraintTop_toBottomOf="@id/searchFieldLayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:visibility="@{viewModel.showGuide ? View.VISIBLE : View.GONE}" />
+
             <!-- Table header -->
             <include
                 android:id="@+id/stockEntriesTableHeader"
-                layout="@layout/stock_table_header" />
+                layout="@layout/stock_table_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/stock_table_top_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/qty_guide" />
 
             <!-- Stock entries list -->
             <androidx.recyclerview.widget.RecyclerView

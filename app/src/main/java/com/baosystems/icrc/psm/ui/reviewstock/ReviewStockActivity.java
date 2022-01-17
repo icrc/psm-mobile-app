@@ -184,6 +184,10 @@ public class ReviewStockActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);
+
+        // Set up listeners for the guide info box
+        binding.stockEntriesTableHeader.qtyInfoIconButton.setOnClickListener(v -> viewModel.toggleGuideDisplay());
+        binding.qtyGuide.closeGuideButton.setOnClickListener(v -> viewModel.toggleGuideDisplay());
     }
 
     private void setupSearchInput() {

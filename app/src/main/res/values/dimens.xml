@@ -53,6 +53,10 @@
     <dimen name="text_input_width">90dp</dimen>
     <dimen name="text_input_corner_radius">4dp</dimen>
 
+    <dimen name="qty_guide_tb_padding">16dp</dimen>
+    <dimen name="qty_guide_lr_padding">24dp</dimen>
+    <dimen name="qty_guide_message_margin">4dp</dimen>
+
     <dimen name="recent_activity_margin">8dp</dimen>
     <dimen name="recent_activity_list_margin_bottom">96dp</dimen>
 

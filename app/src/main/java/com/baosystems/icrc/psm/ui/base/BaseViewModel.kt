@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.base
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.commons.Constants
@@ -20,6 +21,9 @@ open class BaseViewModel @Inject constructor(
 
 ): ViewModel() {
     val lastSyncDate: MutableLiveData<String> = MutableLiveData()
+    private val _showGuide: MutableLiveData<Boolean> = MutableLiveData(false)
+    val showGuide: LiveData<Boolean>
+        get() = _showGuide
 
     init {
         lastSyncDate.value = preferenceProvider.getString(Constants.LAST_DATA_SYNC_DATE)
@@ -41,5 +45,9 @@ open class BaseViewModel @Inject constructor(
             .subscribe { ruleEffects ->
                 action.callback?.validationCompleted(ruleEffects)
             }
+    }
+
+    fun toggleGuideDisplay() {
+        _showGuide.value = if (_showGuide.value == null) { true } else { !_showGuide.value!! }
     }
 }
