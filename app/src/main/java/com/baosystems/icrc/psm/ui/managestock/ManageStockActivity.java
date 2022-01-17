@@ -26,6 +26,7 @@ import com.baosystems.icrc.psm.data.models.StockItem;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
+import com.baosystems.icrc.psm.ui.base.BaseViewModel;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
 import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
@@ -48,7 +49,7 @@ public class ManageStockActivity extends BaseActivity {
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
-    private Integer shortAnimationDuration;
+
 
     private final ItemWatcher<StockItem, String, String> itemWatcher =
             new ItemWatcher<StockItem, String, String>() {
@@ -132,7 +133,6 @@ public class ManageStockActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
         viewModel = (ManageStockViewModel) getViewModel();
 
         binding = (ActivityManageStockBinding) getViewBinding();
@@ -194,7 +194,8 @@ public class ManageStockActivity extends BaseActivity {
         });
 
         viewModel.getShowGuide().observe(this,
-                showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide, shortAnimationDuration));
+                showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
+                        getResources().getInteger(android.R.integer.config_shortAnimTime)));
     }
 
     @Override
@@ -250,7 +251,7 @@ public class ManageStockActivity extends BaseActivity {
 
     @NonNull
     @Override
-    public ViewModel createViewModel(@NonNull CompositeDisposable disposable) {
+    public BaseViewModel createViewModel(@NonNull CompositeDisposable disposable) {
         return new ViewModelProvider(this).get(ManageStockViewModel.class);
     }
 

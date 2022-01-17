@@ -132,10 +132,15 @@ public class ReviewStockActivity extends BaseActivity {
         configureScanner();
 
         binding.fabCommitStock.setOnClickListener(view -> viewModel.commitTransaction());
+
         viewModel.getCommitStatus().observe(this, status -> {
             if (status)
                 navigateToHome();
         });
+
+        viewModel.getShowGuide().observe(this,
+                showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
+                        getResources().getInteger(android.R.integer.config_shortAnimTime)));
     }
 
     @Override
