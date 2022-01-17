@@ -17,6 +17,8 @@ class RuleEngineHelper {
             supplementaryData: Map<String, List<String>>,
             events: List<RuleEvent>
         ): RuleEngine {
+            debugRuleEngine(rules, ruleVariables, events)
+
             return RuleEngineContext.builder()
                 .rules(rules)
                 .ruleVariables(ruleVariables)

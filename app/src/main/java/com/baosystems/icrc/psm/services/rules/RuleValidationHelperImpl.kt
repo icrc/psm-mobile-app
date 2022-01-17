@@ -145,10 +145,8 @@ class RuleValidationHelperImpl @Inject constructor(
             enrollmentEvents,
             {
                     rules, variables, constants, supplData, events ->
-                Timber.d("Enrollment events: %s", events)
                 RuleEngineHelper.getRuleEngine(rules, variables, constants, supplData, events)
             })
-//            .doOnSuccess { ruleEngine = it }
             .toFlowable()
             .cacheWithInitialCapacity(1)
     }
