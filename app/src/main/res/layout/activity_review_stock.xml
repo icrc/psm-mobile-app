@@ -136,7 +136,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/searchFieldLayout"
-                app:visibility="@{viewModel.showGuide ? View.VISIBLE : View.GONE}" />
+                android:visibility="gone" />
 
             <!-- Table header -->
             <include

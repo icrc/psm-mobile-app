@@ -1,9 +1,12 @@
 package com.baosystems.icrc.psm.ui.base
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -133,5 +136,25 @@ abstract class BaseActivity : AppCompatActivity() {
             .setBeepEnabled(true)
             .setCaptureActivity(ScannerActivity::class.java)
         launcher.launch(scanOptions)
+    }
+
+    open fun crossFade(view: View, show: Boolean, duration: Long) {
+        if (show) {
+            view.alpha = 0f
+            view.visibility = View.VISIBLE
+            view.animate()
+                .alpha(1f)
+                .setDuration(duration)
+                .setListener(null)
+        } else {
+            view.animate()
+                .alpha(0f)
+                .setDuration(duration)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        view.visibility = View.GONE
+                    }
+                })
+        }
     }
 }
