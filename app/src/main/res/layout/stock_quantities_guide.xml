@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/info_guide_background_color">
+
+        <TextView
+            android:id="@+id/positiveValueTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/InfoBoxTextStyle"
+            android:paddingTop="@dimen/qty_guide_tb_padding"
+            android:paddingStart="@dimen/qty_guide_lr_padding"
+            android:paddingEnd="@dimen/qty_guide_lr_padding"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/positive_value"/>
+
+        <TextView
+            android:id="@+id/negativeValueTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/InfoBoxTextStyle"
+            android:paddingBottom="@dimen/qty_guide_tb_padding"
+            android:paddingStart="@dimen/qty_guide_lr_padding"
+            android:paddingEnd="@dimen/qty_guide_lr_padding"
+            android:layout_marginTop="@dimen/qty_guide_message_margin"
+            app:layout_constraintTop_toBottomOf="@id/positiveValueTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/negative_value"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/closeGuideButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/ic_baseline_close"
+            android:tint="@color/info_guide_icon_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
