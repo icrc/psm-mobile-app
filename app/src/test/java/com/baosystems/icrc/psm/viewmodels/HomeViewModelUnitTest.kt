@@ -6,9 +6,9 @@ import com.baosystems.icrc.psm.data.*
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
-import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.UserManagerImpl
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.services.scheduler.TrampolineSchedulerProvider
 import com.baosystems.icrc.psm.ui.home.HomeViewModel

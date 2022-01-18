@@ -15,6 +15,7 @@ import com.baosystems.icrc.psm.commons.Constants.SYNC_PERIOD_METADATA
 import com.baosystems.icrc.psm.data.SyncResult
 import com.baosystems.icrc.psm.data.WorkItem
 import com.baosystems.icrc.psm.data.WorkType
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.utils.toSeconds
 import io.reactivex.Completable
 import org.hisp.dhis.android.core.D2

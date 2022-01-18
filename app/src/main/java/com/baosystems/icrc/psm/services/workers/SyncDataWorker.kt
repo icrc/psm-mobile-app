@@ -10,8 +10,8 @@ import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_CHANNEL_NAME
 import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_NOTIFICATION_CHANNEL
 import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_NOTIFICATION_ID
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.utils.DateUtils
 import com.baosystems.icrc.psm.utils.NotificationHelper
 import dagger.assisted.Assisted

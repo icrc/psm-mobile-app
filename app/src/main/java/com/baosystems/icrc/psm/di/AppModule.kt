@@ -3,7 +3,12 @@ package com.baosystems.icrc.psm.di
 import android.content.Context
 import androidx.work.WorkManager
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.services.*
+import com.baosystems.icrc.psm.services.SyncManager
+import com.baosystems.icrc.psm.services.SyncManagerImpl
+import com.baosystems.icrc.psm.services.WorkManagerController
+import com.baosystems.icrc.psm.services.WorkManagerControllerImpl
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
+import com.baosystems.icrc.psm.services.preferences.PreferenceProviderImpl
 import com.baosystems.icrc.psm.services.rules.ExpressionEvaluatorImpl
 import com.baosystems.icrc.psm.utils.ConfigUtils
 import com.baosystems.icrc.psm.utils.Sdk
@@ -35,7 +40,8 @@ class AppModule {
     @Provides
     @Singleton
     fun providesPreferenceProvider(@ApplicationContext appContext: Context): PreferenceProvider {
-        return SecurePreferenceProviderImpl(appContext)
+//        return SecurePreferenceProviderImpl(appContext)
+        return PreferenceProviderImpl(appContext)
     }
 
     @Provides

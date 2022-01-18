@@ -14,8 +14,8 @@ import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.data.models.Transaction
-import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel

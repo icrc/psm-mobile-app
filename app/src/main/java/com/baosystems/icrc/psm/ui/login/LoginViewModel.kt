@@ -5,8 +5,8 @@ import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.commons.Constants
-import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.UserManager
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Completable

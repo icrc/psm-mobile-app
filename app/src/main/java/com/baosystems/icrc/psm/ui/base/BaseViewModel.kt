@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.RowAction
 import com.baosystems.icrc.psm.data.models.Transaction
-import com.baosystems.icrc.psm.services.PreferenceProvider
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,9 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class BaseViewModel @Inject constructor(
-    preferenceProvider: PreferenceProvider,
+    private val preferenceProvider: PreferenceProvider,
     private val schedulerProvider: BaseSchedulerProvider
-
 ): ViewModel() {
     val lastSyncDate: MutableLiveData<String> = MutableLiveData()
     private val _showGuide: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -50,4 +49,6 @@ open class BaseViewModel @Inject constructor(
     fun toggleGuideDisplay() {
         _showGuide.value = if (_showGuide.value == null) { true } else { !_showGuide.value!! }
     }
+
+    fun isVoiceInputEnabled(prefKey: String) = preferenceProvider.getBoolean(prefKey, false)
 }

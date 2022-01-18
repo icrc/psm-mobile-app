@@ -6,8 +6,8 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
-import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.SyncManager
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.utils.DateUtils
 import com.baosystems.icrc.psm.utils.NotificationHelper
 import dagger.assisted.Assisted

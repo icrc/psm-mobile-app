@@ -11,8 +11,8 @@ import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.services.MetadataManager
-import com.baosystems.icrc.psm.services.PreferenceProvider
 import com.baosystems.icrc.psm.services.StockManager
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.services.scheduler.TrampolineSchedulerProvider
 import com.baosystems.icrc.psm.ui.managestock.ManageStockViewModel
