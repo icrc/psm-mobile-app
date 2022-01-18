@@ -1,6 +1,7 @@
 package com.baosystems.icrc.psm.ui.settings
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import com.baosystems.icrc.psm.commons.Constants.INSTANT_DATA_SYNC
 import com.baosystems.icrc.psm.data.NetworkState
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.UserManager
+import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -19,6 +21,7 @@ class SettingsViewModel @Inject constructor(
     application: Application,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
+    private val preferenceProvider: PreferenceProvider,
     private val userManager: UserManager,
     private val syncManager: SyncManager
 ): AndroidViewModel(application) {
@@ -49,4 +52,5 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun getSyncDataStatus() = syncManager.getSyncStatus(INSTANT_DATA_SYNC)
+    fun preferenceDataStore(context: Context) = preferenceProvider.preferenceDataStore(context)
 }

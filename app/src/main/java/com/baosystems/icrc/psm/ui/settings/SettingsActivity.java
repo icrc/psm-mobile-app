@@ -132,9 +132,6 @@ public class SettingsActivity extends BaseActivity
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            sViewModel = new ViewModelProvider(requireActivity())
-                    .get(SettingsViewModel.class);
-
             sViewModel.getLogoutStatus().observe(getViewLifecycleOwner(), networkState -> {
                 if (networkState.getClass() == NetworkState.Error.class) {
                     ActivityManager.showErrorMessage(view,
@@ -151,7 +148,14 @@ public class SettingsActivity extends BaseActivity
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root, rootKey);
+            sViewModel = new ViewModelProvider(requireActivity())
+                    .get(SettingsViewModel.class);
+
+            getPreferenceManager().setPreferenceDataStore(
+                    sViewModel.preferenceDataStore(getActivity().getApplicationContext())
+            );
+
+            setPreferencesFromResource(R.xml.preferences, rootKey);
             addListeners();
         }
 
