@@ -78,12 +78,15 @@ class ActivityManager {
 
         @JvmStatic
         fun checkPermission(activity: Activity, requestCode: Int) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                ActivityCompat.requestPermissions(
-                    activity,
-                    arrayOf(Manifest.permission.RECORD_AUDIO),
-                    requestCode
-                )
+            if (ContextCompat.checkSelfPermission(activity.applicationContext,
+                    Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    ActivityCompat.requestPermissions(
+                        activity,
+                        arrayOf(Manifest.permission.RECORD_AUDIO),
+                        requestCode
+                    )
+                }
             }
         }
     }
