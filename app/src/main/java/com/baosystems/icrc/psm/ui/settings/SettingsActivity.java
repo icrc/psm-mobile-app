@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.settings;
 
+import static com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE;
 import static com.baosystems.icrc.psm.commons.Constants.INSTANT_DATA_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE;
 
@@ -180,6 +181,18 @@ public class SettingsActivity extends BaseActivity
                                 }
                             })
                     );
+                    return true;
+                });
+            }
+
+            Preference useMicPref = findPreference(getString(R.string.use_mic_pref_key));
+            if (useMicPref != null) {
+                useMicPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                    if (newValue instanceof Boolean && ((Boolean)newValue)) {
+                        ActivityManager.checkPermission(
+                                requireActivity(), AUDIO_RECORDING_REQUEST_CODE);
+                    }
+
                     return true;
                 });
             }

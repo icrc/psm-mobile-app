@@ -26,3 +26,18 @@ while communicating with the invalid server. This currently isn't handled approp
 ### DHIS2 Android SDK feature requests
 
 - Ability to create multiple events at once
+
+### Notes
+
+- **Android Permissions** - Starting in Android 11 (API level 30), if the user taps Deny for a
+specific permission more than once during your app's lifetime of installation on a device,
+the user doesn't see the system permissions dialog if your app requests that permission again.
+The user's action implies "don't ask again." On previous versions, users would see the system
+permissions dialog each time your app requested a permission, unless the user had previously
+selected a __"don't ask again"__ checkbox or option. 
+
+  In certain situations, the permission might be denied automatically, without the user taking 
+  any action. (Similarly, a permission might be granted automatically as well.) It's important to 
+  not assume anything about automatic behavior. Each time your app needs to access functionality 
+  that requires a permission, you should check that your app is still granted that permission. 
+  ([guide](https://developer.android.com/training/permissions/requesting))

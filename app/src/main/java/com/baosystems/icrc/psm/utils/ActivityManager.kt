@@ -1,11 +1,14 @@
 package com.baosystems.icrc.psm.utils
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.baosystems.icrc.psm.R
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
@@ -71,6 +74,17 @@ class ActivityManager {
             showDialog(context, R.string.confirmation,
                 context.resources.getString(R.string.previous_page_lose_data_warning),
                 confirmationCallback)
+        }
+
+        @JvmStatic
+        fun checkPermission(activity: Activity, requestCode: Int) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.RECORD_AUDIO),
+                    requestCode
+                )
+            }
         }
     }
 }
