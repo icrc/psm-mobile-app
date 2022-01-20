@@ -140,4 +140,7 @@
     <string name="invalid_quantity">غير صالح</string>
     <string name="stock_on_hand_exceeded_message">لا يمكن تجاوز المخزون المتاح في متناول اليد</string>
     <string name="reviewed_item_cannot_be_empty_message">لا يمكن أن يكون المخزون قيد المراجعة فارغًا. يمكنك إزالة العنصر إذا لم ترغب في ذلك</string>
+
+    <string name="permission_granted">تم تأمين التصريح</string>
+    <string name="permission_denied">طلب الاذن مرفوض</string>
 </resources>

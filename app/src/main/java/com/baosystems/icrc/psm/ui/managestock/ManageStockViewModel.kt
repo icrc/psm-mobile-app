@@ -14,6 +14,7 @@ import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.data.models.Transaction
+import com.baosystems.icrc.psm.services.SpeechRecognitionManager
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
@@ -37,7 +38,8 @@ class ManageStockViewModel @Inject constructor(
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
-    private val ruleValidationHelper: RuleValidationHelper
+    private val ruleValidationHelper: RuleValidationHelper,
+    private val speechRecognitionManager: SpeechRecognitionManager
 ): BaseViewModel(preferenceProvider, schedulerProvider) {
     // TODO: Handle cases where transaction is null. (remove transaction!!)
     val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!
@@ -149,4 +151,21 @@ class ManageStockViewModel @Inject constructor(
     private fun getPopulatedEntries() = Collections.synchronizedList(itemsCache.values.toList())
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
+
+    fun startListening() {
+        // Stop any running events
+        stopListening()
+
+        speechRecognitionManager.start()
+    }
+
+    fun stopListening() {
+        speechRecognitionManager.stop()
+    }
+
+    fun getSpeechStatus() = speechRecognitionManager.getStatus()
+
+    fun restartSpeechRecognizer() {
+        speechRecognitionManager.restart()
+    }
 }

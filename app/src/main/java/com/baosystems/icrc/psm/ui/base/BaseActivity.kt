@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.ui.base
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,10 +14,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE
 import com.baosystems.icrc.psm.ui.scanner.ScannerActivity
 import com.baosystems.icrc.psm.ui.settings.SettingsActivity
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
+import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showToast
 import com.baosystems.icrc.psm.utils.LocaleManager
 import com.journeyapps.barcodescanner.ScanOptions
 import io.reactivex.disposables.CompositeDisposable
@@ -155,6 +158,26 @@ abstract class BaseActivity : AppCompatActivity() {
                         view.visibility = View.GONE
                     }
                 })
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == AUDIO_RECORDING_REQUEST_CODE && grantResults.isNotEmpty()) {
+            var messageRes: Int = R.string.permission_denied
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                messageRes = R.string.permission_granted
+            else if (grantResults[0] == PackageManager.PERMISSION_DENIED)
+                // Permission denial may occur for different reasons.
+                // For more information, see
+                // https://developer.android.com/training/permissions/requesting#handle-denial
+                messageRes = R.string.permission_denied
+
+            showToast(this, messageRes)
         }
     }
 }

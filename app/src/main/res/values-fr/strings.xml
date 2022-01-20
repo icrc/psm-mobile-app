@@ -141,4 +141,7 @@
     <string name="invalid_quantity">Invalide</string>
     <string name="stock_on_hand_exceeded_message">Le stock disponible ne peut pas être dépassé</string>
     <string name="reviewed_item_cannot_be_empty_message">Un stock en révision ne peut pas être vide. Vous pouvez supprimer l\'article si vous ne le souhaitez pas</string>
+
+    <string name="permission_granted">Permission accordée</string>
+    <string name="permission_denied">Permission refusée</string>
 </resources>

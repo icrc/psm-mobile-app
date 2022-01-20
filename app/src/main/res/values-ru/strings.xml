@@ -146,4 +146,7 @@
     <string name="invalid_quantity">Недействителен</string>
     <string name="stock_on_hand_exceeded_message">Доступный запас на складе не может быть превышен</string>
     <string name="reviewed_item_cannot_be_empty_message">Акция на рассмотрении не может быть пустой. При желании вы можете убрать товар.</string>
+
+    <string name="permission_granted">Разрешение получено</string>
+    <string name="permission_denied">Доступ запрещен</string>
 </resources>

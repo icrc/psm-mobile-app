@@ -3,10 +3,7 @@ package com.baosystems.icrc.psm.di
 import android.content.Context
 import androidx.work.WorkManager
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.services.SyncManager
-import com.baosystems.icrc.psm.services.SyncManagerImpl
-import com.baosystems.icrc.psm.services.WorkManagerController
-import com.baosystems.icrc.psm.services.WorkManagerControllerImpl
+import com.baosystems.icrc.psm.services.*
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.preferences.PreferenceProviderImpl
 import com.baosystems.icrc.psm.services.rules.ExpressionEvaluatorImpl
@@ -76,5 +73,12 @@ class AppModule {
     @Singleton
     fun providesRuleExpressionEvaluator(jexlEngine: JexlEngine): RuleExpressionEvaluator {
         return ExpressionEvaluatorImpl(jexlEngine)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSpeechRecognitionManager(@ApplicationContext appContext: Context):
+            SpeechRecognitionManager {
+        return SpeechRecognitionManagerImpl(appContext)
     }
 }

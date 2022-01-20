@@ -1,11 +1,13 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
+import static com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION;
 import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -22,12 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.SpeechRecognitionState;
 import com.baosystems.icrc.psm.data.models.StockItem;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.BaseViewModel;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
+import com.baosystems.icrc.psm.ui.base.SpeechController;
 import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,6 +46,8 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 @AndroidEntryPoint
@@ -49,7 +55,7 @@ public class ManageStockActivity extends BaseActivity {
     private ActivityManageStockBinding binding;
     private ManageStockViewModel viewModel;
     private ManageStockAdapter adapter;
-
+    private boolean voiceInputEnabled;
 
     private final ItemWatcher<StockItem, String, String> itemWatcher =
             new ItemWatcher<StockItem, String, String>() {
@@ -121,6 +127,27 @@ public class ManageStockActivity extends BaseActivity {
         }
     };
 
+    private final SpeechController speechController = new SpeechController() {
+        private Function1<? super String, Unit> callback;
+
+        @Override
+        public void startListening(@NonNull Function1<? super String, Unit> callback) {
+            this.callback = callback;
+
+            viewModel.startListening();
+        }
+
+        @Override
+        public void onResult(@Nullable String data) {
+            callback.invoke(data);
+        }
+
+        @Override
+        public void stopListening() {
+            viewModel.stopListening();
+        }
+    };
+
     private void updateItemView(int position) {
         runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
     }
@@ -140,6 +167,14 @@ public class ManageStockActivity extends BaseActivity {
         binding.setLifecycleOwner(this);
         binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
+        voiceInputEnabled = viewModel.isVoiceInputEnabled(
+                getResources().getString(R.string.use_mic_pref_key)
+        );
+
+        if (voiceInputEnabled) {
+            ActivityManager.checkPermission(this, AUDIO_RECORDING_REQUEST_CODE);
+        }
+
         // Set the activity title to the active transaction name
         // TODO: use localized name for the title
         setTitle(viewModel.getTransaction().getTransactionType().name());
@@ -149,6 +184,25 @@ public class ManageStockActivity extends BaseActivity {
         setupObservers();
         configureScanner();
         updateNextButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        boolean currentVoiceInputState = viewModel.isVoiceInputEnabled(
+                getResources().getString(R.string.use_mic_pref_key)
+        );
+
+        if (currentVoiceInputState != voiceInputEnabled) {
+            adapter.setVoiceInputEnabled(currentVoiceInputState);
+            voiceInputEnabled = currentVoiceInputState;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -196,6 +250,59 @@ public class ManageStockActivity extends BaseActivity {
         viewModel.getShowGuide().observe(this,
                 showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
                         getResources().getInteger(android.R.integer.config_shortAnimTime)));
+
+        viewModel.getSpeechStatus().observe(this, status -> {
+            if (status instanceof SpeechRecognitionState.Errored) {
+                handleSpeechError(((SpeechRecognitionState.Errored)status).getCode());
+            } else if (status instanceof SpeechRecognitionState.Completed) {
+//                adapter.setSpeechResult(((SpeechRecognitionState.Completed)status).getData());
+                speechController.onResult(((SpeechRecognitionState.Completed)status).getData());
+            } else {
+
+            }
+
+//            speechController.onStateChange()
+        });
+    }
+
+    private void handleSpeechError(int code) {
+        String message;
+
+        switch (code) {
+            case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                message = "Insufficient permissions. Request android.permission.RECORD_AUDIO";
+                break;
+            case SpeechRecognizer.ERROR_AUDIO:
+                message = "Audio recording error";
+                break;
+            case SpeechRecognizer.ERROR_CLIENT:
+                message = "Client side error. Maybe your internet connection is poor!";
+                break;
+            case SpeechRecognizer.ERROR_NETWORK:
+                message = "Network error";
+                break;
+            case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                message = "Network operation timed out";
+                break;
+            case SpeechRecognizer.ERROR_NO_MATCH:
+                message = "No recognition result matched.";
+                break;
+            case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                message = "RecognitionService busy";
+                break;
+            case SpeechRecognizer.ERROR_SERVER:
+                message = "Server sends error status";
+                break;
+            case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                message = "No speech input detected";
+                break;
+            default:
+                message = "Unhandled speech recognition error code";
+                break;
+        }
+
+        Timber.d("Speech status error: code = %d, message = %s", code, message);
+        ActivityManager.showErrorMessage(binding.getRoot(), message);
     }
 
     @Override
@@ -221,7 +328,14 @@ public class ManageStockActivity extends BaseActivity {
     private void setupRecyclerView() {
         RecyclerView recyclerView = binding.stockItemsList;
 
-        adapter = new ManageStockAdapter(itemWatcher, viewModel.getConfig());
+        boolean isVoiceInputEnabled = viewModel.isVoiceInputEnabled(
+                getResources().getString(R.string.use_mic_pref_key));
+        adapter = new ManageStockAdapter(
+                itemWatcher,
+                speechController,
+                viewModel.getConfig(),
+                isVoiceInputEnabled
+        );
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)

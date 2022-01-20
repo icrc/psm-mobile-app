@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -49,6 +50,11 @@ class ActivityManager {
         @JvmStatic
         fun showInfoMessage(view: View, message: String) {
             showMessage(view, message, false)
+        }
+
+        @JvmStatic
+        fun showToast(context: Context, messageRes: Int) {
+            Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
         }
 
         @JvmStatic

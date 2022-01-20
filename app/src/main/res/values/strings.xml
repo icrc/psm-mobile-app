@@ -161,4 +161,7 @@
     <string name="invalid_quantity">Invalid</string>
     <string name="stock_on_hand_exceeded_message">Available stock on hand cannot be exceeded</string>
     <string name="reviewed_item_cannot_be_empty_message">A stock under review cannot be empty. You can remove the item if not desired</string>
+
+    <string name="permission_granted">Permission Granted</string>
+    <string name="permission_denied">Permission Denied</string>
 </resources>

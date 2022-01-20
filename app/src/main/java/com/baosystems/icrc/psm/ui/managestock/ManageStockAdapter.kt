@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.ui.managestock
 import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -15,15 +16,20 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
+import com.baosystems.icrc.psm.ui.base.SpeechController
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
+import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import org.hisp.dhis.rules.models.RuleEffect
+import timber.log.Timber
 
 class ManageStockAdapter(
     private val itemWatcher: ItemWatcher<StockItem, String, String>,
-    val appConfig: AppConfig
+    private val speechController: SpeechController,
+    val appConfig: AppConfig,
+    var voiceInputEnabled: Boolean
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
-
     lateinit var resources: Resources
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
@@ -40,6 +46,8 @@ class ManageStockAdapter(
     }
 
     companion object {
+        const val CLEAR_ICON = 0
+
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StockItem>() {
             override fun areItemsTheSame(
                 oldItem: StockItem,
@@ -56,7 +64,7 @@ class ManageStockAdapter(
 
     inner class StockItemHolder(
         itemView: View,
-        private val watcher: ItemWatcher<StockItem, String, String>
+        private val watcher: ItemWatcher<StockItem, String, String>,
     ):
         RecyclerView.ViewHolder(itemView) {
 
@@ -65,6 +73,8 @@ class ManageStockAdapter(
         private val etQty: TextInputLayout = itemView.findViewById(R.id.itemQtyTextField)
 
         init {
+            Timber.d("Voice input enabled: %s", voiceInputEnabled)
+
             etQty.editText?.addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -83,6 +93,37 @@ class ManageStockAdapter(
 
                 override fun afterTextChanged(s: Editable?) {}
             })
+
+            etQty.editText?.setOnFocusChangeListener { v, hasFocus ->
+                Timber.d("Item: %s, has focus: %s, voice input enabled: %s",
+                    getItem(adapterPosition)?.name, hasFocus, voiceInputEnabled)
+
+                if (hasFocus && voiceInputEnabled) {
+                    etQty.endIconMode = END_ICON_CUSTOM
+                    etQty.setEndIconDrawable(R.drawable.ic_mic_active)
+                    etQty.setEndIconOnClickListener {
+                        Timber.d("Mic activated")
+
+                        // TODO: Stop the mic if already started, otherwise restart it
+                    }
+
+                    // prevent the keyboard from showing since we're using the mic
+//                    KeyboardUtils.hideKeyboard(activity, etQty?.editText?.windowToken)
+                    etQty.editText?.inputType = InputType.TYPE_NULL
+
+                    speechController.startListening { result ->
+                        etQty.editText?.setText(result)
+                    }
+
+                } else {
+                    etQty.endIconMode = END_ICON_NONE
+                    etQty.setEndIconDrawable(Companion.CLEAR_ICON)
+                    etQty.setEndIconOnClickListener(null)
+
+                    // reset the input type back to default
+                    etQty.editText?.inputType = InputType.TYPE_NUMBER_FLAG_SIGNED
+                }
+            }
         }
 
         fun bindTo(item: StockItem) {
