@@ -1,6 +1,7 @@
 package com.baosystems.icrc.psm.ui.managestock
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.text.Editable
 import android.text.InputType
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.SpeechRecognitionState
+import com.baosystems.icrc.psm.data.SpeechRecognitionState.Completed
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.baosystems.icrc.psm.ui.base.SpeechController
@@ -75,46 +78,30 @@ class ManageStockAdapter(
         init {
             Timber.d("Voice input enabled: %s", voiceInputEnabled)
 
-            etQty.editText?.addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?, start: Int, count: Int, after: Int) {}
+            addTextListener()
+            addFocusListener()
+        }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (adapterPosition == RecyclerView.NO_POSITION) return
-
-                    val qty = s?.toString()
-                    getItem(adapterPosition)?.let { item ->
-                        watcher.quantityChanged(item, adapterPosition, qty, object : ItemWatcher.OnQuantityValidated {
-                            override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                                watcher.updateFields(item, qty, adapterPosition, ruleEffects)
-                            }
-                    }) }
-                }
-
-                override fun afterTextChanged(s: Editable?) {}
-            })
-
+        private fun addFocusListener() {
             etQty.editText?.setOnFocusChangeListener { v, hasFocus ->
-                Timber.d("Item: %s, has focus: %s, voice input enabled: %s",
-                    getItem(adapterPosition)?.name, hasFocus, voiceInputEnabled)
 
                 if (hasFocus && voiceInputEnabled) {
                     etQty.endIconMode = END_ICON_CUSTOM
-                    etQty.setEndIconDrawable(R.drawable.ic_mic_active)
-                    etQty.setEndIconOnClickListener {
-                        Timber.d("Mic activated")
-
-                        // TODO: Stop the mic if already started, otherwise restart it
-                    }
+                    etQty.setEndIconDrawable(R.drawable.ic_mic_inactive)
+                    etQty.setEndIconTintList(itemView.context.getColorStateList(R.color.mic_selector))
+                    etQty.setEndIconOnClickListener { speechController.toggleState() }
 
                     // prevent the keyboard from showing since we're using the mic
 //                    KeyboardUtils.hideKeyboard(activity, etQty?.editText?.windowToken)
                     etQty.editText?.inputType = InputType.TYPE_NULL
 
-                    speechController.startListening { result ->
-                        etQty.editText?.setText(result)
-                    }
+                    speechController.startListening {
+                        if (it is Completed) {
+                            etQty.editText?.setText(it.data)
+                        }
 
+                        updateMicState(it)
+                    }
                 } else {
                     etQty.endIconMode = END_ICON_NONE
                     etQty.setEndIconDrawable(Companion.CLEAR_ICON)
@@ -124,6 +111,49 @@ class ManageStockAdapter(
                     etQty.editText?.inputType = InputType.TYPE_NUMBER_FLAG_SIGNED
                 }
             }
+        }
+
+        private fun updateMicState(state: SpeechRecognitionState?) {
+            state?.let {
+                when (state) {
+                    SpeechRecognitionState.Started ->
+                        etQty.setEndIconTintList(
+                            ColorStateList.valueOf(
+                                itemView.resources.getColor(R.color.mic_active)
+                            )
+                        )
+                    else ->
+                        etQty.setEndIconTintList(
+                            itemView.context.getColorStateList(R.color.mic_selector))
+                }
+            }
+        }
+
+        private fun addTextListener() {
+            etQty.editText?.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int
+                ) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (adapterPosition == RecyclerView.NO_POSITION) return
+
+                    val qty = s?.toString()
+                    getItem(adapterPosition)?.let { item ->
+                        watcher.quantityChanged(
+                            item,
+                            adapterPosition,
+                            qty,
+                            object : ItemWatcher.OnQuantityValidated {
+                                override fun validationCompleted(ruleEffects: List<RuleEffect>) {
+                                    watcher.updateFields(item, qty, adapterPosition, ruleEffects)
+                                }
+                            })
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
         }
 
         fun bindTo(item: StockItem) {

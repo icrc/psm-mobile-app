@@ -6,10 +6,7 @@ import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.commons.Constants.QUANTITY_ENTRY_DEBOUNCE
 import com.baosystems.icrc.psm.commons.Constants.SEARCH_QUERY_DEBOUNCE
-import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.ReviewStockData
-import com.baosystems.icrc.psm.data.RowAction
-import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.*
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.StockItem
@@ -154,7 +151,7 @@ class ManageStockViewModel @Inject constructor(
 
     fun startListening() {
         // Stop any running events
-        stopListening()
+//        stopListening()
 
         speechRecognitionManager.start()
     }
@@ -164,6 +161,17 @@ class ManageStockViewModel @Inject constructor(
     }
 
     fun getSpeechStatus() = speechRecognitionManager.getStatus()
+
+    fun toggleSpeechRecognitionState() {
+        val state = getSpeechStatus().value
+        if (state != null) {
+            if (state == SpeechRecognitionState.Started) {
+                stopListening()
+            } else {
+                startListening()
+            }
+        }
+    }
 
     fun restartSpeechRecognizer() {
         speechRecognitionManager.restart()

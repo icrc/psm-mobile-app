@@ -79,8 +79,6 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
         )
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-//        intent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
-        //        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
 
         return intent
     }
@@ -121,16 +119,12 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     override fun onResults(bundle: Bundle?) {
         //                micButton.setImageResource(R.drawable.ic_mic_foreground)
         val data = bundle?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-        var result: String? = null
+
+        println("Results received: $data")
         data?.let {
             if (data.size > 0)
-                result = data.reduce { acc, s -> acc + s }
+                _speechRecognitionStatus.postValue(SpeechRecognitionState.Completed(data[0]))
         }
-//                editText.setText(data!![0])
-        println("Results received: $data")
-        println("Results received (combined): $result")
-
-        _speechRecognitionStatus.postValue(SpeechRecognitionState.Completed(result))
     }
 
     override fun onPartialResults(partialResults: Bundle?) {

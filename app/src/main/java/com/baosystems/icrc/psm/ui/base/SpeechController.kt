@@ -1,7 +1,10 @@
 package com.baosystems.icrc.psm.ui.base
 
+import com.baosystems.icrc.psm.data.SpeechRecognitionState
+
 interface SpeechController {
-    fun startListening(callback: (String) -> Unit)
+    fun startListening(callback: (state: SpeechRecognitionState) -> Unit)
     fun stopListening()
-    fun onResult(data: String?)
+    fun onStateChange(state: SpeechRecognitionState)
+    fun toggleState()
 }

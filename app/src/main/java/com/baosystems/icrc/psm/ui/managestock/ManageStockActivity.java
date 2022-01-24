@@ -128,23 +128,29 @@ public class ManageStockActivity extends BaseActivity {
     };
 
     private final SpeechController speechController = new SpeechController() {
-        private Function1<? super String, Unit> callback;
+        private Function1<? super SpeechRecognitionState, Unit> callback;
 
         @Override
-        public void startListening(@NonNull Function1<? super String, Unit> callback) {
+        public void onStateChange(@NonNull SpeechRecognitionState state) {
+            if (callback != null)
+                callback.invoke(state);
+        }
+
+        @Override
+        public void stopListening() {
+            viewModel.stopListening();
+        }
+
+        @Override
+        public void startListening(@NonNull Function1<? super SpeechRecognitionState, Unit> callback) {
             this.callback = callback;
 
             viewModel.startListening();
         }
 
         @Override
-        public void onResult(@Nullable String data) {
-            callback.invoke(data);
-        }
-
-        @Override
-        public void stopListening() {
-            viewModel.stopListening();
+        public void toggleState() {
+            viewModel.toggleSpeechRecognitionState();
         }
     };
 
@@ -251,23 +257,19 @@ public class ManageStockActivity extends BaseActivity {
                 showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
                         getResources().getInteger(android.R.integer.config_shortAnimTime)));
 
-        viewModel.getSpeechStatus().observe(this, status -> {
-            if (status instanceof SpeechRecognitionState.Errored) {
-                handleSpeechError(((SpeechRecognitionState.Errored)status).getCode());
-            } else if (status instanceof SpeechRecognitionState.Completed) {
-//                adapter.setSpeechResult(((SpeechRecognitionState.Completed)status).getData());
-                speechController.onResult(((SpeechRecognitionState.Completed)status).getData());
-            } else {
-
+        viewModel.getSpeechStatus().observe(this, state -> {
+            if (state instanceof SpeechRecognitionState.Errored) {
+                handleSpeechError(((SpeechRecognitionState.Errored)state).getCode());
             }
 
-//            speechController.onStateChange()
+            speechController.onStateChange(state);
         });
     }
 
     private void handleSpeechError(int code) {
         String message;
 
+        // TODO: Change messages to use string resources
         switch (code) {
             case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
                 message = "Insufficient permissions. Request android.permission.RECORD_AUDIO";

@@ -46,4 +46,9 @@
     <color name="info_guide_background_color">#F5FCFF</color>
     <color name="info_guide_border_color">#99579DBB</color>
     <color name="info_guide_icon_color">#D8D8D8</color>
+
+    <!-- mic color definition -->
+    <color name="mic_active">#E00019</color>
+    <color name="mic_default">#C7C7C7</color>
+    <color name="mic_disabled">#59C7C7C7</color>
 </resources>
