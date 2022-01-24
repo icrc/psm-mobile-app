@@ -11,7 +11,7 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="5">
+        android:layout_weight="7">
 
         <TextView
             android:id="@+id/itemHeaderTextView"
@@ -27,7 +27,7 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2">
+        android:layout_weight="1.5">
 
         <TextView
             android:id="@+id/stockOnHandHeaderTextView"
@@ -37,26 +37,27 @@
             android:layout_marginStart="@dimen/stock_item_margin"
             android:layout_marginTop="@dimen/stock_item_margin"
             android:text="@string/stock_on_hand"
-            android:textAlignment="center"
             android:textColor="@color/white" />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:layout_weight="1.5">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteX="50dp">
 
             <TextView
                 android:id="@+id/qtyHeaderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/quantity"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/qtyInfoIconButton"
                 app:layout_constraintEnd_toStartOf="@+id/qtyInfoIconButton"

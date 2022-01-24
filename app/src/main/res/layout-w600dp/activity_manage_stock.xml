@@ -52,25 +52,11 @@
                     android:drawablePadding="@dimen/facility_icon_padding"
                     android:text="@{viewModel.transaction.facility.displayName}"
                     app:drawableLeftCompat="@drawable/home"
+                    app:layout_constraintEnd_toStartOf="@+id/transactionDateTextView"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
-
-                <TextView
-                    android:id="@+id/distributedToTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:drawablePadding="@dimen/distribution_icon_padding"
-                    app:distributedTo="@{viewModel.transaction.distributedTo.displayName}"
-                    app:drawableLeftCompat="@drawable/destination"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/facilityTextView"
-                    tools:text="Diagnostic imaging (X-Ray)" />
 
                 <TextView
                     android:id="@+id/transactionDateTextView"
@@ -81,9 +67,23 @@
                     app:drawableLeftCompat="@drawable/calendar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/distributedToTextView"
+                    app:layout_constraintStart_toEndOf="@+id/facilityTextView"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="2021-08-09" />
+
+                <TextView
+                    android:id="@+id/distributedToTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:drawablePadding="@dimen/distribution_icon_padding"
+                    android:gravity="center"
+                    app:distributedTo="@{viewModel.transaction.distributedTo.displayName}"
+                    app:drawableLeftCompat="@drawable/destination"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/facilityTextView"
+                    tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -118,6 +118,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/scan_barcode"
                 app:cornerRadius="@dimen/scan_button_corner_radius"
                 app:icon="@drawable/barcode"
                 app:iconGravity="end"
