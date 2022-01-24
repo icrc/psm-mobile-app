@@ -2,7 +2,9 @@
     <dimen name="splash_screen_text_size">24sp</dimen>
     <dimen name="splash_screen_text_top_margin">32dp</dimen>
 
-    <dimen name="fab_margin">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_right_margin">8dp</dimen>
+    <dimen name="fab_bottom_margin">40dp</dimen>
     <dimen name="fab_corner_radius">16dp</dimen>
     <dimen name="fab_lr_padding">24dp</dimen>
 
@@ -68,6 +70,8 @@
     <dimen name="margin_64">64dp</dimen>
 
     <dimen name="scan_button_corner_radius">24dp</dimen>
+    <dimen name="scan_button_tb_padding">8dp</dimen>
+    <dimen name="search_field_corner_radius">24dp</dimen>
 
     <!-- Footer -->
     <dimen name="last_sync_label_top_margin">8dp</dimen>

@@ -222,8 +222,7 @@ public class ManageStockActivity extends BaseActivity {
         ActivityResultLauncher<ScanOptions> barcodeLauncher =
                 registerForActivityResult(new ScanContract(), scanIntentResult -> {
                     if (scanIntentResult.getContents() == null) {
-                        ActivityManager.showInfoMessage(binding.getRoot(),
-                                getString(R.string.scan_canceled));
+                        ActivityManager.showToast(this, R.string.scan_canceled);
                     } else {
                         String data = scanIntentResult.getContents();
                         viewModel.onScanCompleted(data);
