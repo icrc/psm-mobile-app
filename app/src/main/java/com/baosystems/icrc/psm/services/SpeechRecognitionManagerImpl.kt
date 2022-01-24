@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
+import timber.log.Timber
 import java.util.*
 
 
@@ -19,8 +19,6 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
 
     private val _speechRecognitionStatus: MutableLiveData<SpeechRecognitionState> =
         MutableLiveData(SpeechRecognitionState.NotInitialized)
-    val speechRecognitionStatus: LiveData<SpeechRecognitionState>
-        get() = _speechRecognitionStatus
 
     init {
         setup()
@@ -31,11 +29,9 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
 
         // Check if speech recognition is available
         if (SpeechRecognizer.isRecognitionAvailable(context)) {
-            println("Speech recognition is available")
-
             initialize()
         } else {
-            println("Speech recognition is not available")
+            Timber.e("Speech recognition is not available")
 
             _speechRecognitionStatus.postValue(SpeechRecognitionState.NotAvailable)
         }
@@ -49,7 +45,6 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
         readyForSpeech = false
 
         speechRecognizer?.startListening(getIntent())
-        println("Started Listening")
     }
 
     override fun restart() {
@@ -62,7 +57,6 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     override fun stop() {
         speechRecognizer?.stopListening()
         _speechRecognitionStatus.postValue(SpeechRecognitionState.Stopped)
-        println("Stopped Listening")
     }
 
     override fun cleanUp() {
@@ -84,28 +78,17 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     }
 
     override fun onReadyForSpeech(params: Bundle?) {
-        println("Ready for Speech...")
         readyForSpeech = true
 
         _speechRecognitionStatus.postValue(SpeechRecognitionState.Started)
     }
 
     override fun onBeginningOfSpeech() {
-        //                editText.setHint("Listening...")
-        println("The user has started to speak...")
-
-    }
-
-    override fun onRmsChanged(rmsdB: Float) {
-        println("onRmsChanged: rms = $rmsdB")
-    }
-
-    override fun onBufferReceived(buffer: ByteArray?) {
-        println("onBufferReceived")
+        Timber.d("Speech started - The user has started to speak...")
     }
 
     override fun onEndOfSpeech() {
-        println("End of Speech - User has stopped speaking...")
+        Timber.d("End of Speech - User has stopped speaking...")
     }
 
     override fun onError(errorCode: Int) {
@@ -119,19 +102,14 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     override fun onResults(bundle: Bundle?) {
         //                micButton.setImageResource(R.drawable.ic_mic_foreground)
         val data = bundle?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-
-        println("Results received: $data")
         data?.let {
             if (data.size > 0)
                 _speechRecognitionStatus.postValue(SpeechRecognitionState.Completed(data[0]))
         }
     }
 
-    override fun onPartialResults(partialResults: Bundle?) {
-        println("onPartialResults")
-    }
-
-    override fun onEvent(eventType: Int, params: Bundle?) {
-        println("onEvent: $eventType")
-    }
+    override fun onPartialResults(partialResults: Bundle?) {}
+    override fun onEvent(eventType: Int, params: Bundle?) {}
+    override fun onRmsChanged(rmsdB: Float) {}
+    override fun onBufferReceived(buffer: ByteArray?) {}
 }
