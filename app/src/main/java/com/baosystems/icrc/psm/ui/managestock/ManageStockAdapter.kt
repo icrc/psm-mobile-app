@@ -3,17 +3,20 @@ package com.baosystems.icrc.psm.ui.managestock
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants.CLEAR_FIELD_DELAY
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
 import com.baosystems.icrc.psm.data.SpeechRecognitionState.Completed
@@ -167,8 +170,25 @@ class ManageStockAdapter(
 
                 // Highlight the erroneous text for easy correction
                 etQty.editText?.selectAll()
+
+                // Clear the erroneous field after some time to prepare for next entry,
+                // if input is via voice
+                if (voiceInputEnabled)
+                    clearInvalidField(etQty.editText)
             }
             etQty.error = error
+        }
+
+        private fun clearInvalidField(editText: EditText?) {
+            editText?.let {
+                object: CountDownTimer(CLEAR_FIELD_DELAY, CLEAR_FIELD_DELAY) {
+                    override fun onTick(millisUntilFinished: Long) {}
+
+                    override fun onFinish() {
+                        it.setText("")
+                    }
+                }.start()
+            }
         }
     }
 }

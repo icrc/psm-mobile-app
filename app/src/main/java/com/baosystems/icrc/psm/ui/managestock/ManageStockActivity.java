@@ -102,7 +102,6 @@ public class ManageStockActivity extends BaseActivity {
             if (value == null || value.isEmpty()) {
                 boolean outcome = viewModel.removeItemFromCache(item);
                 if (outcome) {
-
                     updateItemView(position);
                     updateNextButton();
                 }
