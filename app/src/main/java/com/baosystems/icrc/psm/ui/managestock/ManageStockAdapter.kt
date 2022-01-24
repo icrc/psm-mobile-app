@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,7 @@ class ManageStockAdapter(
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
     lateinit var resources: Resources
+    private var focusPosition: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -88,6 +90,9 @@ class ManageStockAdapter(
         private fun addFocusListener() {
             etQty.editText?.setOnFocusChangeListener { v, hasFocus ->
 
+                if (hasFocus)
+                    focusPosition = adapterPosition
+
                 if (hasFocus && voiceInputEnabled) {
                     etQty.endIconMode = END_ICON_CUSTOM
                     etQty.setEndIconDrawable(R.drawable.ic_mic_inactive)
@@ -122,7 +127,7 @@ class ManageStockAdapter(
                     SpeechRecognitionState.Started ->
                         etQty.setEndIconTintList(
                             ColorStateList.valueOf(
-                                itemView.resources.getColor(R.color.mic_active)
+                                ContextCompat.getColor(itemView.context, R.color.mic_active)
                             )
                         )
                     else ->
@@ -195,7 +200,10 @@ class ManageStockAdapter(
     fun updateVoiceInputState(enabled: Boolean) {
         voiceInputEnabled = enabled
 
-        // Re-render the active fields to reflect the change
-        notifyDataSetChanged()
+        // Re-render the active field to reflect the change
+        focusPosition?.let {
+            if (focusPosition != RecyclerView.NO_POSITION)
+                notifyItemChanged(it)
+        }
     }
 }
