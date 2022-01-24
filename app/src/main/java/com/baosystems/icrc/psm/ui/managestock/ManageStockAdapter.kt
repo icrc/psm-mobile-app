@@ -33,7 +33,7 @@ class ManageStockAdapter(
     private val itemWatcher: ItemWatcher<StockItem, String, String>,
     private val speechController: SpeechController,
     val appConfig: AppConfig,
-    var voiceInputEnabled: Boolean
+    private var voiceInputEnabled: Boolean
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
     lateinit var resources: Resources
@@ -190,5 +190,12 @@ class ManageStockAdapter(
                 }.start()
             }
         }
+    }
+
+    fun updateVoiceInputState(enabled: Boolean) {
+        voiceInputEnabled = enabled
+
+        // Re-render the active fields to reflect the change
+        notifyDataSetChanged()
     }
 }

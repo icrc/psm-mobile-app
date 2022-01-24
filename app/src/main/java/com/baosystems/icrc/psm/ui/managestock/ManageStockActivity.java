@@ -200,8 +200,8 @@ public class ManageStockActivity extends BaseActivity {
         );
 
         if (currentVoiceInputState != voiceInputEnabled) {
-            adapter.setVoiceInputEnabled(currentVoiceInputState);
             voiceInputEnabled = currentVoiceInputState;
+            adapter.updateVoiceInputState(currentVoiceInputState);
         }
     }
 
