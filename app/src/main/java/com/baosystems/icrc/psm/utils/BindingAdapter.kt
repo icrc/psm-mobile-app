@@ -32,3 +32,8 @@ fun transactionButtonSelected(button: MaterialButton, selected: Boolean) {
         button.setStrokeWidthResource(R.dimen.transaction_button_no_highlight_width)
     }
 }
+
+@BindingAdapter("totalCount")
+fun setCount(view: TextView, count: Int) {
+    view.text = view.context.resources.getQuantityString(R.plurals.items_found, count, count)
+}

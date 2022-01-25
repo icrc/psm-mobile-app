@@ -17,6 +17,8 @@
     <dimen name="content_area_top_margin">32dp</dimen>
     <dimen name="transaction_button_corner_radius">12dp</dimen>
 
+    <dimen name="available_count_top_margin">32dp</dimen>
+
     <!-- Misc -->
     <dimen name="input_to_label_top_margin">4dp</dimen>
 

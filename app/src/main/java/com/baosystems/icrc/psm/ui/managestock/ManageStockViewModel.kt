@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.managestock
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
@@ -42,10 +43,14 @@ class ManageStockViewModel @Inject constructor(
     val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!
 
     private var search = MutableLiveData<SearchParametersModel>()
+    private val _itemsAvailableCount = MutableLiveData<Int>(0)
     private val searchRelay = PublishRelay.create<String>()
     private val entryRelay = PublishRelay.create<RowAction>()
     private val stockItems = Transformations.switchMap(search) { q ->
-        stockManager.search(q, transaction.facility.uid)
+        val result = stockManager.search(q, transaction.facility.uid)
+        _itemsAvailableCount.postValue(result.totalCount)
+
+        result.items
     }
     private val itemsCache = linkedMapOf<String, StockEntry>()
 
@@ -68,6 +73,8 @@ class ManageStockViewModel @Inject constructor(
     }
 
     fun getStockItems() = stockItems
+
+    fun getAvailableCount(): LiveData<Int> = _itemsAvailableCount
 
     private fun configureRelays() {
         disposable.add(

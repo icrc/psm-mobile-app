@@ -1,10 +1,8 @@
 package com.baosystems.icrc.psm.services
 
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
+import com.baosystems.icrc.psm.data.models.SearchResult
 import com.baosystems.icrc.psm.data.models.StockEntry
-import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.data.models.Transaction
 import io.reactivex.Single
 
@@ -15,11 +13,11 @@ interface StockManager {
      * @param query The query object which comprises the search query, OU and other parameters
      * @param ou The organisation unit under consideration (optional)
      *
-     * @return LiveData containing a paged list of the matching stock items
+     * @return The search result containing the livedata of paged list of the matching stock items
+     * and total count of matched items
      */
 
-    fun search(query: SearchParametersModel, ou: String?):
-            LiveData<PagedList<StockItem>>
+    fun search(query: SearchParametersModel, ou: String?): SearchResult
 
     fun saveTransaction(items: List<StockEntry>, transaction: Transaction):
             Single<Unit>
