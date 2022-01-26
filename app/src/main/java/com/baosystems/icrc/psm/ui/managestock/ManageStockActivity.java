@@ -32,6 +32,7 @@ import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.BaseViewModel;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
 import com.baosystems.icrc.psm.ui.base.SpeechController;
+import com.baosystems.icrc.psm.ui.base.SpeechControllerImpl;
 import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,8 +47,6 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 @AndroidEntryPoint
@@ -126,32 +125,7 @@ public class ManageStockActivity extends BaseActivity {
         }
     };
 
-    private final SpeechController speechController = new SpeechController() {
-        private Function1<? super SpeechRecognitionState, Unit> callback;
-
-        @Override
-        public void onStateChange(@NonNull SpeechRecognitionState state) {
-            if (callback != null)
-                callback.invoke(state);
-        }
-
-        @Override
-        public void stopListening() {
-            viewModel.stopListening();
-        }
-
-        @Override
-        public void startListening(@NonNull Function1<? super SpeechRecognitionState, Unit> callback) {
-            this.callback = callback;
-
-            viewModel.startListening();
-        }
-
-        @Override
-        public void toggleState() {
-            viewModel.toggleSpeechRecognitionState();
-        }
-    };
+    private SpeechController speechController;
 
     private void updateItemView(int position) {
         runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
@@ -172,6 +146,7 @@ public class ManageStockActivity extends BaseActivity {
         binding.setLifecycleOwner(this);
         binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
 
+        speechController = new SpeechControllerImpl(viewModel);
         voiceInputEnabled = viewModel.isVoiceInputEnabled(
                 getResources().getString(R.string.use_mic_pref_key)
         );
