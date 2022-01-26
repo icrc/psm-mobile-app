@@ -132,11 +132,22 @@
                 layout="@layout/stock_quantities_guide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/stock_table_top_margin"
+                android:layout_marginTop="@dimen/qty_guide_tb_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/searchFieldLayout"
                 android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/total_count_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/qty_guide"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/available_count_top_margin"
+                app:totalCount="@{viewModel.getReviewedItemsCount()}"
+                android:textAppearance="@android:style/TextAppearance.Material.Caption"
+                tools:text="17 items available" />
 
             <!-- Table header -->
             <include
@@ -147,7 +158,7 @@
                 android:layout_marginTop="@dimen/stock_table_top_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/qty_guide" />
+                app:layout_constraintTop_toBottomOf="@id/total_count_label" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stock_items_list"

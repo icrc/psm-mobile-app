@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.ui.reviewstock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.Transformations
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES
 import com.baosystems.icrc.psm.data.AppConfig
@@ -51,6 +52,8 @@ class ReviewStockViewModel @Inject constructor(
     private val _reviewedItems: MutableLiveData<List<StockEntry>> = MutableLiveData(data.items)
     val reviewedItems: LiveData<List<StockEntry>>
         get() = _reviewedItems
+
+    private val _reviewedItemsCount = Transformations.map(_reviewedItems) { it.size }
 
     private val _commitStatus = MutableLiveData<Boolean>(false)
     val commitStatus: LiveData<Boolean>
@@ -194,4 +197,6 @@ class ReviewStockViewModel @Inject constructor(
         val items = _reviewedItems.value
         return items?.size ?: 0 > 0 && (items?.none { it.hasError } ?: false)
     }
+
+    fun getReviewedItemsCount() = _reviewedItemsCount
 }
