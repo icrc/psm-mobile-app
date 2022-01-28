@@ -16,16 +16,21 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
+import com.baosystems.icrc.psm.ui.base.SpeechController
+import com.baosystems.icrc.psm.ui.base.TextInputDelegate
 import com.baosystems.icrc.psm.utils.ActivityManager
 import com.google.android.material.textfield.TextInputLayout
-import org.hisp.dhis.rules.models.RuleEffect
+import timber.log.Timber
 
 class ReviewStockAdapter(
     private val itemWatcher: ItemWatcher<StockEntry, String, String>,
-    val appConfig: AppConfig
+    private val speechController: SpeechController?,
+    val appConfig: AppConfig,
+    private var voiceInputEnabled: Boolean
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockEntryViewHolder>(DIFF_CALLBACK) {
     private lateinit var context: Context
     private lateinit var resources: Resources
+    private val textInputDelegate: TextInputDelegate = TextInputDelegate()
 
     companion object {
         // TODO: Find a way to use a type-aware DIFF_CALLBACK for different adapters for reusability
@@ -60,25 +65,8 @@ class ReviewStockAdapter(
                 }
             }
 
-            tvItemQtyLayout.editText?.addTextChangedListener(object: TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (adapterPosition == RecyclerView.NO_POSITION) return
-
-                    val qty = s?.toString()
-                    getItem(adapterPosition)?.let {
-                        watcher.quantityChanged(it, adapterPosition, qty, object : ItemWatcher.OnQuantityValidated {
-                            override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                                watcher.updateFields(it, qty, adapterPosition, ruleEffects)
-                            }
-                        })
-                    }
-                }
-
-                override fun afterTextChanged(p0: Editable?) {}
-            })
+            addTextListener()
+            addFocusListener()
         }
 
         fun bindTo(entry: StockEntry) {
@@ -99,6 +87,37 @@ class ReviewStockAdapter(
             }
             tvItemQtyLayout.error = error
         }
+
+        private fun addTextListener() {
+            tvItemQtyLayout.editText?.addTextChangedListener(object: TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (adapterPosition == RecyclerView.NO_POSITION) return
+
+                    val qty = s?.toString()
+                    getItem(adapterPosition)?.let {
+                        textInputDelegate.textChanged(it, qty, adapterPosition, watcher)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+        }
+
+        private fun addFocusListener() {
+            if (speechController == null) {
+                Timber.e("Speech controller is null")
+            } else {
+                Timber.d("Speech Controller is available")
+            }
+            tvItemQtyLayout.editText?.setOnFocusChangeListener { v, hasFocus ->
+                Timber.d("Focus state: %s", hasFocus)
+                textInputDelegate.focusChanged(
+                    speechController, tvItemQtyLayout, hasFocus, voiceInputEnabled, adapterPosition)
+            }
+
+//            etQty.editText?.onFocusChangeListener = textInputFocusListener
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockEntryViewHolder {
@@ -112,5 +131,10 @@ class ReviewStockAdapter(
 
     override fun onBindViewHolder(holder: StockEntryViewHolder, position: Int) {
         holder.bindTo(getItem(position))
+    }
+
+    fun voiceInputStateChanged(status: Boolean) {
+        voiceInputEnabled = status
+        textInputDelegate.voiceInputStateChanged(this)
     }
 }

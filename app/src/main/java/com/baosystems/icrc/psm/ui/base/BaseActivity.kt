@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.speech.SpeechRecognizer
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,12 +13,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE
+import com.baosystems.icrc.psm.data.SpeechRecognitionState
+import com.baosystems.icrc.psm.data.SpeechRecognitionState.Errored
 import com.baosystems.icrc.psm.ui.scanner.ScannerActivity
 import com.baosystems.icrc.psm.ui.settings.SettingsActivity
+import com.baosystems.icrc.psm.utils.ActivityManager.Companion.checkPermission
+import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showErrorMessage
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showToast
 import com.baosystems.icrc.psm.utils.LocaleManager
@@ -32,12 +38,33 @@ import timber.log.Timber
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
     private lateinit var binding: ViewDataBinding
+    var speechController: SpeechController? = null
+
     private val disposable = CompositeDisposable()
+
+    var voiceInputEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = createViewModel(disposable)
+
+        if (viewModel is BaseViewModel) {
+            voiceInputEnabled = isVoiceInputEnabled(viewModel)
+
+            // Request Audio permission if required
+            if (voiceInputEnabled) {
+                checkPermission(this, AUDIO_RECORDING_REQUEST_CODE)
+            }
+        }
+
+        if (viewModel is SpeechRecognitionAwareViewModel) {
+            val speechAwareViewModel = viewModel as SpeechRecognitionAwareViewModel
+            speechController = SpeechControllerImpl(speechAwareViewModel)
+
+            registerSpeechRecognitionStatusObserver(
+                speechAwareViewModel.getSpeechStatus(), speechController)
+        }
 
         // Set the custom theme, if any,
         // before calling setContentView (which happens in ViewBinding)
@@ -55,6 +82,33 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         showPendingMessages()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (viewModel is BaseViewModel) {
+            val currentVoiceInputState: Boolean = isVoiceInputEnabled(viewModel)
+
+            if (voiceInputEnabled != currentVoiceInputState) {
+                voiceInputEnabled = currentVoiceInputState
+
+                onVoiceInputStateChanged()
+            }
+        }
+    }
+
+    /**
+     * Should be overriden by subclasses that require custom logic
+     */
+    open fun onVoiceInputStateChanged() {}
+
+    private fun isVoiceInputEnabled(viewModel: ViewModel) =
+        (viewModel as BaseViewModel).isVoiceInputEnabled(resources.getString(R.string.use_mic_pref_key))
+
+    override fun onDestroy() {
+        disposable.clear()
+        super.onDestroy()
     }
 
     private fun showPendingMessages() {
@@ -81,11 +135,6 @@ abstract class BaseActivity : AppCompatActivity() {
     fun getViewModel(): ViewModel = viewModel
 
     fun getViewBinding(): ViewDataBinding = binding
-
-    override fun onDestroy() {
-        disposable.clear()
-        super.onDestroy()
-    }
 
     private fun setupToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
@@ -179,5 +228,36 @@ abstract class BaseActivity : AppCompatActivity() {
 
             showToast(this, messageRes)
         }
+    }
+
+    open fun registerSpeechRecognitionStatusObserver(
+        speechStatus: LiveData<SpeechRecognitionState>,
+        speechController: SpeechController?
+    ) {
+        speechStatus.observe(this) { state: SpeechRecognitionState ->
+            if (state is Errored) {
+                handleSpeechError(state.code)
+            }
+            speechController?.onStateChange(state)
+        }
+    }
+
+    open fun handleSpeechError(code: Int) {
+        val message: String = when (code) {
+            SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
+                "Insufficient permissions. Request android.permission.RECORD_AUDIO"
+            SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
+            SpeechRecognizer.ERROR_CLIENT ->
+                "Client side error. Maybe your internet connection is poor!"
+            SpeechRecognizer.ERROR_NETWORK -> "Network error"
+            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network operation timed out"
+            SpeechRecognizer.ERROR_NO_MATCH -> "No recognition result matched."
+            SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "RecognitionService busy"
+            SpeechRecognizer.ERROR_SERVER -> "Server sends error status"
+            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech input detected"
+            else -> "Unhandled speech recognition error code"
+        }
+        Timber.d("Speech status error: code = %d, message = %s", code, message)
+        showErrorMessage(binding.root, message)
     }
 }

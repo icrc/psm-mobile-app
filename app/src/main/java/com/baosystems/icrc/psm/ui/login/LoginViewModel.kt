@@ -1,13 +1,12 @@
 package com.baosystems.icrc.psm.ui.login
 
-import android.app.Application
 import android.util.Patterns
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
@@ -17,15 +16,13 @@ import org.hisp.dhis.android.core.user.User
 import timber.log.Timber
 import javax.inject.Inject
 
-// TODO: Extend 'ViewModel' if it doesn't eventually require the application context
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    application: Application,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     private val preferenceProvider: PreferenceProvider,
     private val userManager: UserManager
-) : AndroidViewModel(application) {
+) : BaseViewModel(preferenceProvider, schedulerProvider) {
     val username: MutableLiveData<String> = MutableLiveData()
     val password: MutableLiveData<String> = MutableLiveData()
 

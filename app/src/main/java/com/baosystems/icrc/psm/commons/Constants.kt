@@ -66,4 +66,5 @@ object Constants {
     const val PERIOD_12H = 12 * 60 * 60
 
     const val AUDIO_RECORDING_REQUEST_CODE = 105
+    const val CLEAR_ICON = 0
 }

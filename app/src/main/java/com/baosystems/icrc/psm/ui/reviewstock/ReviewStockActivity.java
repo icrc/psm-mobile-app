@@ -159,7 +159,6 @@ public class ReviewStockActivity extends BaseActivity {
                                 getString(R.string.scan_canceled));
                     } else {
                         String data = scanIntentResult.getContents();
-//                        Timber.i("Result: %s", data);
                         binding.searchInputField.setText(data);
                     }
                 });
@@ -185,7 +184,8 @@ public class ReviewStockActivity extends BaseActivity {
         RecyclerView recyclerView = binding.stockItemsList;
         recyclerView.setHasFixedSize(true);
 
-        adapter = new ReviewStockAdapter(itemWatcher, viewModel.getConfig());
+        adapter = new ReviewStockAdapter(
+                itemWatcher, getSpeechController(), viewModel.getConfig(), getVoiceInputEnabled());
         recyclerView.setAdapter(adapter);
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);
@@ -254,5 +254,11 @@ public class ReviewStockActivity extends BaseActivity {
 
     private void updateItemView(int position) {
         runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
+    }
+
+    @Override
+    public void onVoiceInputStateChanged() {
+        super.onVoiceInputStateChanged();
+        adapter.voiceInputStateChanged(getVoiceInputEnabled());
     }
 }

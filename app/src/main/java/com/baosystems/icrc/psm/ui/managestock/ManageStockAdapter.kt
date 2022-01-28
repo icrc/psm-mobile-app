@@ -1,44 +1,35 @@
 package com.baosystems.icrc.psm.ui.managestock
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
 import android.content.res.Resources
-import android.os.CountDownTimer
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants.CLEAR_FIELD_DELAY
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.SpeechRecognitionState
-import com.baosystems.icrc.psm.data.SpeechRecognitionState.Completed
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.baosystems.icrc.psm.ui.base.SpeechController
+import com.baosystems.icrc.psm.ui.base.TextInputDelegate
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
-import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
-import org.hisp.dhis.rules.models.RuleEffect
 import timber.log.Timber
 
 class ManageStockAdapter(
     private val itemWatcher: ItemWatcher<StockItem, String, String>,
-    private val speechController: SpeechController,
+    private var speechController: SpeechController?,
     val appConfig: AppConfig,
     private var voiceInputEnabled: Boolean
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
     lateinit var resources: Resources
-    private var focusPosition: Int? = null
+    private val textInputDelegate: TextInputDelegate = TextInputDelegate()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -54,8 +45,6 @@ class ManageStockAdapter(
     }
 
     companion object {
-        const val CLEAR_ICON = 0
-
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<StockItem>() {
             override fun areItemsTheSame(
                 oldItem: StockItem,
@@ -79,9 +68,11 @@ class ManageStockAdapter(
         private val tvItemName: TextView = itemView.findViewById(R.id.itemNameTextView)
         private val tvStockOnHand: TextView = itemView.findViewById(R.id.stockOnHandValueTextView)
         private val etQty: TextInputLayout = itemView.findViewById(R.id.itemQtyTextField)
+//        private lateinit var textInputFocusListener: TextInputLayoutFocusListener
 
         init {
-            Timber.d("Voice input enabled: %s", voiceInputEnabled)
+//            textInputFocusListener = TextInputLayoutFocusListener(
+//                etQty, this, speechController, voiceInputEnabled)
 
             addTextListener()
             addFocusListener()
@@ -89,77 +80,26 @@ class ManageStockAdapter(
 
         private fun addFocusListener() {
             etQty.editText?.setOnFocusChangeListener { v, hasFocus ->
-
-                if (hasFocus)
-                    focusPosition = adapterPosition
-
-                if (hasFocus && voiceInputEnabled) {
-                    etQty.endIconMode = END_ICON_CUSTOM
-                    etQty.setEndIconDrawable(R.drawable.ic_mic_inactive)
-                    etQty.setEndIconTintList(itemView.context.getColorStateList(R.color.mic_selector))
-                    etQty.setEndIconOnClickListener { speechController.toggleState() }
-
-                    // prevent the keyboard from showing since we're using the mic
-//                    KeyboardUtils.hideKeyboard(activity, etQty?.editText?.windowToken)
-                    etQty.editText?.inputType = InputType.TYPE_NULL
-
-                    speechController.startListening {
-                        if (it is Completed) {
-                            etQty.editText?.setText(it.data)
-                        }
-
-                        updateMicState(it)
-                    }
-                } else {
-                    etQty.endIconMode = END_ICON_NONE
-                    etQty.setEndIconDrawable(Companion.CLEAR_ICON)
-                    etQty.setEndIconOnClickListener(null)
-
-                    // reset the input type back to default
-                    etQty.editText?.inputType = InputType.TYPE_NUMBER_FLAG_SIGNED
-                }
+                Timber.d("Focus state: %s", hasFocus)
+                textInputDelegate.focusChanged(
+                    speechController, etQty, hasFocus, voiceInputEnabled, adapterPosition)
             }
-        }
 
-        private fun updateMicState(state: SpeechRecognitionState?) {
-            state?.let {
-                when (state) {
-                    SpeechRecognitionState.Started ->
-                        etQty.setEndIconTintList(
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(itemView.context, R.color.mic_active)
-                            )
-                        )
-                    else ->
-                        etQty.setEndIconTintList(
-                            itemView.context.getColorStateList(R.color.mic_selector))
-                }
-            }
+//            etQty.editText?.onFocusChangeListener = textInputFocusListener
         }
 
         private fun addTextListener() {
             etQty.editText?.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?, start: Int, count: Int, after: Int
-                ) {}
-
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     if (adapterPosition == RecyclerView.NO_POSITION) return
 
                     val qty = s?.toString()
-                    getItem(adapterPosition)?.let { item ->
-                        watcher.quantityChanged(
-                            item,
-                            adapterPosition,
-                            qty,
-                            object : ItemWatcher.OnQuantityValidated {
-                                override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                                    watcher.updateFields(item, qty, adapterPosition, ruleEffects)
-                                }
-                            })
+                    getItem(adapterPosition)?.let {
+                        textInputDelegate.textChanged(it, qty, adapterPosition, watcher)
                     }
                 }
 
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable?) {}
             })
         }
@@ -179,31 +119,16 @@ class ManageStockAdapter(
                 // Clear the erroneous field after some time to prepare for next entry,
                 // if input is via voice
                 if (voiceInputEnabled)
-                    clearInvalidField(etQty.editText)
+                        textInputDelegate.clearFieldAfterDelay(
+                            etQty.editText, CLEAR_FIELD_DELAY)
             }
             etQty.error = error
         }
-
-        private fun clearInvalidField(editText: EditText?) {
-            editText?.let {
-                object: CountDownTimer(CLEAR_FIELD_DELAY, CLEAR_FIELD_DELAY) {
-                    override fun onTick(millisUntilFinished: Long) {}
-
-                    override fun onFinish() {
-                        it.setText("")
-                    }
-                }.start()
-            }
-        }
     }
 
-    fun updateVoiceInputState(enabled: Boolean) {
+    fun voiceInputStateChanged(enabled: Boolean) {
         voiceInputEnabled = enabled
 
-        // Re-render the active field to reflect the change
-        focusPosition?.let {
-            if (focusPosition != RecyclerView.NO_POSITION)
-                notifyItemChanged(it)
-        }
+        textInputDelegate.voiceInputStateChanged(this)
     }
 }

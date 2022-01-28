@@ -1,8 +1,6 @@
 package com.baosystems.icrc.psm.ui.settings
 
-import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.R
@@ -12,19 +10,19 @@ import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    application: Application,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     private val preferenceProvider: PreferenceProvider,
     private val userManager: UserManager,
     private val syncManager: SyncManager
-): AndroidViewModel(application) {
+): BaseViewModel(preferenceProvider, schedulerProvider) {
     private val _logoutStatus: MutableLiveData<NetworkState<Boolean>> = MutableLiveData()
     val logoutStatus: LiveData<NetworkState<Boolean>>
         get() = _logoutStatus
