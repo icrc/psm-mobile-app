@@ -36,7 +36,7 @@ class TextInputDelegate {
 
         if (hasFocus && voiceInputEnabled) {
             textInputLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
-            textInputLayout.setEndIconDrawable(R.drawable.ic_mic_inactive)
+            textInputLayout.setEndIconDrawable(R.drawable.ic_microphone)
             textInputLayout.setEndIconTintList(textInputLayout.context.getColorStateList(R.color.mic_selector))
             textInputLayout.setEndIconOnClickListener { speechController?.toggleState() }
 
