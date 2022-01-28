@@ -11,7 +11,6 @@ import com.baosystems.icrc.psm.data.SpeechRecognitionState
 import timber.log.Timber
 import java.util.*
 
-
 class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecognitionManager,
     RecognitionListener {
     private var speechRecognizer: SpeechRecognizer? = null
@@ -83,14 +82,6 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
         _speechRecognitionStatus.postValue(SpeechRecognitionState.Started)
     }
 
-    override fun onBeginningOfSpeech() {
-        Timber.d("Speech started - The user has started to speak...")
-    }
-
-    override fun onEndOfSpeech() {
-        Timber.d("End of Speech - User has stopped speaking...")
-    }
-
     override fun onError(errorCode: Int) {
         // handle buggy situation where onError(5) is always called before onReadyForSpeech()
         if (!readyForSpeech && errorCode == SpeechRecognizer.ERROR_CLIENT)
@@ -100,7 +91,6 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     }
 
     override fun onResults(bundle: Bundle?) {
-        //                micButton.setImageResource(R.drawable.ic_mic_foreground)
         val data = bundle?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         data?.let {
             if (data.size > 0)
@@ -108,6 +98,8 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
         }
     }
 
+    override fun onBeginningOfSpeech() {}
+    override fun onEndOfSpeech() {}
     override fun onPartialResults(partialResults: Bundle?) {}
     override fun onEvent(eventType: Int, params: Bundle?) {}
     override fun onRmsChanged(rmsdB: Float) {}
