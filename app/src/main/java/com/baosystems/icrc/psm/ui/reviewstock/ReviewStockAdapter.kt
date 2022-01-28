@@ -20,7 +20,6 @@ import com.baosystems.icrc.psm.ui.base.SpeechController
 import com.baosystems.icrc.psm.ui.base.TextInputDelegate
 import com.baosystems.icrc.psm.utils.ActivityManager
 import com.google.android.material.textfield.TextInputLayout
-import timber.log.Timber
 
 class ReviewStockAdapter(
     private val itemWatcher: ItemWatcher<StockEntry, String, String>,
@@ -105,18 +104,10 @@ class ReviewStockAdapter(
         }
 
         private fun addFocusListener() {
-            if (speechController == null) {
-                Timber.e("Speech controller is null")
-            } else {
-                Timber.d("Speech Controller is available")
-            }
             tvItemQtyLayout.editText?.setOnFocusChangeListener { v, hasFocus ->
-                Timber.d("Focus state: %s", hasFocus)
                 textInputDelegate.focusChanged(
                     speechController, tvItemQtyLayout, hasFocus, voiceInputEnabled, adapterPosition)
             }
-
-//            etQty.editText?.onFocusChangeListener = textInputFocusListener
         }
     }
 

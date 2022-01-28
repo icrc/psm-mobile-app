@@ -19,7 +19,6 @@ import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.baosystems.icrc.psm.ui.base.SpeechController
 import com.baosystems.icrc.psm.ui.base.TextInputDelegate
 import com.google.android.material.textfield.TextInputLayout
-import timber.log.Timber
 
 class ManageStockAdapter(
     private val itemWatcher: ItemWatcher<StockItem, String, String>,
@@ -68,24 +67,17 @@ class ManageStockAdapter(
         private val tvItemName: TextView = itemView.findViewById(R.id.itemNameTextView)
         private val tvStockOnHand: TextView = itemView.findViewById(R.id.stockOnHandValueTextView)
         private val etQty: TextInputLayout = itemView.findViewById(R.id.itemQtyTextField)
-//        private lateinit var textInputFocusListener: TextInputLayoutFocusListener
 
         init {
-//            textInputFocusListener = TextInputLayoutFocusListener(
-//                etQty, this, speechController, voiceInputEnabled)
-
             addTextListener()
             addFocusListener()
         }
 
         private fun addFocusListener() {
             etQty.editText?.setOnFocusChangeListener { v, hasFocus ->
-                Timber.d("Focus state: %s", hasFocus)
                 textInputDelegate.focusChanged(
                     speechController, etQty, hasFocus, voiceInputEnabled, adapterPosition)
             }
-
-//            etQty.editText?.onFocusChangeListener = textInputFocusListener
         }
 
         private fun addTextListener() {
