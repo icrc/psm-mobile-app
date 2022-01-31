@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -196,7 +197,9 @@ public class ManageStockActivity extends BaseActivity {
                 }
             }
 
-            // TODO: Handle empty results state
+            // Handle empty results state
+            binding.noResultsTextView.setVisibility(
+                    pagedListLiveData.isEmpty() ? View.VISIBLE : View.GONE);
 
             // TODO: Handle error states
         });

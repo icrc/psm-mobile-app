@@ -96,6 +96,7 @@
         <item quantity="few">تم العثور على العناصر d%</item>
         <item quantity="many"> %dتم العثور على العناصر %d</item>
     </plurals>
+    <string name="no_items_found">لم يتم العثور على العناصر</string>
     <string name="prompt_email">بريد الالكتروني</string>
     <string name="prompt_password">كلمه السر</string>
     <string name="action_sign_in">تسجيل الدخول أو التسجيل</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Gestión de stock de farmacia</string>
     <string name="title_activity_home">Hogar</string>
     <string name="title_activity_review">Revisar</string>
@@ -97,6 +97,7 @@
         <item quantity="one">%d artículo encontrado</item>
         <item quantity="other">%d artículos encontrados</item>
     </plurals>
+    <string name="no_items_found">No se encontraron artículos</string>
     <string name="prompt_email">Correo electrónico</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Ingresa o Registro</string>
@@ -139,7 +140,7 @@
     <string name="logout_success_message">Cerrar sesión correctamente</string>
 
     <string name="invalid_quantity">Inválido</string>
-    <string name="stock_on_hand_exceeded_message">No se puede exceder el stock disponible disponible</string>
+    <string name="stock_on_hand_exceeded_message" tools:ignore="Typos">No se puede exceder el stock disponible disponible</string>
     <string name="reviewed_item_cannot_be_empty_message">Un stock en revisión no puede estar vacío. Puede quitar el artículo si no lo desea</string>
 
     <string name="permission_granted">Permiso concedido</string>
