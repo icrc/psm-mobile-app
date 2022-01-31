@@ -54,10 +54,12 @@
         <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".ui.managestock.ManageStockActivity"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:parentActivityName=".ui.home.HomeActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.reviewstock.ReviewStockActivity"
-            android:parentActivityName=".ui.managestock.ManageStockActivity" />
+            android:parentActivityName=".ui.managestock.ManageStockActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity" />
     </application>
 
