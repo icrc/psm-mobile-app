@@ -81,6 +81,8 @@ public class ReviewStockActivity extends BaseActivity {
                         ActivityManager.showErrorMessage(binding.getRoot(),
                                 getString(R.string.reviewed_item_cannot_be_empty_message));
                     }
+
+                    updateCommitButton();
                 }
             });
 
@@ -91,6 +93,7 @@ public class ReviewStockActivity extends BaseActivity {
         @Override
         public void removeItem(StockEntry item) {
             viewModel.removeItem(item);
+            updateCommitButton();
         }
 
         @Nullable
@@ -141,6 +144,8 @@ public class ReviewStockActivity extends BaseActivity {
         viewModel.getShowGuide().observe(this,
                 showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
                         getResources().getInteger(android.R.integer.config_shortAnimTime)));
+
+        updateCommitButton();
     }
 
     @Override

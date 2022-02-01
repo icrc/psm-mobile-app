@@ -111,7 +111,7 @@ class ReviewStockViewModel @Inject constructor(
 
     fun removeItem(entry: StockEntry) {
         _reviewedItems.value?.apply {
-            _reviewedItems.postValue(this.filter { it.item.id != entry.item.id })
+            _reviewedItems.value = this.filter { it.item.id != entry.item.id }
         }
     }
 

@@ -104,7 +104,7 @@ class ReviewStockAdapter(
         }
 
         private fun addFocusListener() {
-            tvItemQtyLayout.editText?.setOnFocusChangeListener { v, hasFocus ->
+            tvItemQtyLayout.editText?.setOnFocusChangeListener { _, hasFocus ->
                 textInputDelegate.focusChanged(
                     speechController, tvItemQtyLayout, hasFocus, voiceInputEnabled, adapterPosition)
             }
