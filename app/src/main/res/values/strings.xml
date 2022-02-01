@@ -165,4 +165,6 @@
 
     <string name="permission_granted">Permission Granted</string>
     <string name="permission_denied">Permission Denied</string>
+
+    <string name="default_language" translatable="false">en</string>
 </resources>
