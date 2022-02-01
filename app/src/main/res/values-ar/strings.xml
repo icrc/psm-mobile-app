@@ -85,17 +85,19 @@
     <string name="logout_confirmation_message">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
 
     <string name="remove_confirmation_message">
-        هل أنت متأكد من أنك تريد٪ حذف بشكل دائم إدخال تصحيح \"%1$s\"؟
+        هل أنت متأكد من أنك تريد٪ حذف بشكل دائم إدخال تصحيح \"%1$s\""؟
         This action cannot be undone.
     </string>
 
+
     <plurals name="items_found">
-        <item quantity="zero">%d تم العثور على العنصر %d</item>
-        <item quantity="one">%d تم العثور على العنصر %d</item>
-        <item quantity="two">تم العثور على العناصر d%</item>
-        <item quantity="few">تم العثور على العناصر d%</item>
-        <item quantity="many"> %dتم العثور على العناصر %d</item>
+        <item quantity="zero">%d</item>
+        <item quantity="one">%d</item>
+        <item quantity="two">%d</item>
+        <item quantity="few">%d</item>
+        <item quantity="many">%d</item>
     </plurals>
+
     <string name="no_items_found">لم يتم العثور على العناصر</string>
     <string name="prompt_email">بريد الالكتروني</string>
     <string name="prompt_password">كلمه السر</string>
