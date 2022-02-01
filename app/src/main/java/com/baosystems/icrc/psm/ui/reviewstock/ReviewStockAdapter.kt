@@ -83,6 +83,9 @@ class ReviewStockAdapter(
                 // Highlight the erroneous text for easy correction
                 if (!qty.isNullOrEmpty())
                     tvItemQtyLayout.editText?.selectAll()
+            } else {
+                // set the cursor at the end
+                tvItemQtyLayout.editText?.setSelection(tvItemQtyLayout.editText!!.text.length)
             }
             tvItemQtyLayout.error = error
         }

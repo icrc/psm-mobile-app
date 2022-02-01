@@ -113,6 +113,9 @@ class ManageStockAdapter(
                 if (voiceInputEnabled)
                         textInputDelegate.clearFieldAfterDelay(
                             etQty.editText, CLEAR_FIELD_DELAY)
+            } else {
+                // set the cursor at the end
+                etQty.editText?.setSelection(etQty.editText!!.text.length)
             }
             etQty.error = error
         }
