@@ -7,7 +7,7 @@
     android:background="@drawable/border">
 
     <TextView
-        android:id="@+id/transactionTypeTextview"
+        android:id="@+id/transaction_type_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/recent_activity_margin"
@@ -19,13 +19,13 @@
         tools:text="Distribution" />
 
     <ImageView
-        android:id="@+id/directionalArrowImageview"
+        android:id="@+id/directional_arrow_image_view"
         android:contentDescription="@string/content_desc_distributed_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/recent_activity_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/transactionTypeTextview"
+        app:layout_constraintStart_toEndOf="@+id/transaction_type_text_view"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/directional_arrow" />
 
@@ -35,12 +35,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/recent_activity_margin"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@+id/directionalArrowImageview"
-        app:layout_constraintBaseline_toBaselineOf="@id/transactionTypeTextview"
+        app:layout_constraintStart_toEndOf="@+id/directional_arrow_image_view"
+        app:layout_constraintBaseline_toBaselineOf="@id/transaction_type_text_view"
         tools:text="Sterilization Department" />
 
     <TextView
-        android:id="@+id/creationDateTextview"
+        android:id="@+id/creation_date_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

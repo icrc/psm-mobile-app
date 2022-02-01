@@ -15,7 +15,7 @@
         tools:context="com.baosystems.icrc.psm.ui.login.LoginActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/serverURLContainer"
+            android:id="@+id/server_url_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/server_url_lr_margin"
@@ -28,7 +28,7 @@
             app:layout_constraintVertical_bias="0.3">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/serverURLTextFieldLayout"
+                android:id="@+id/server_url_text_field_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/serverURLTextField"
+                    android:id="@+id/server_url_text_field"
                     android:text="@={viewModel.serverUrl}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/loginContainer"
+            android:id="@+id/login_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/server_url_lr_margin"
@@ -59,10 +59,10 @@
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/serverURLContainer">
+            app:layout_constraintTop_toBottomOf="@id/server_url_container">
 
             <TextView
-                android:id="@+id/signInLabel"
+                android:id="@+id/sign_in_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16"
@@ -73,26 +73,26 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/usernameTextFieldlayout"
+                android:id="@+id/username_text_field_layout"
                 android:hint="@string/username"
                 android:enabled="@{!viewModel.loginInProgress}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:layout_constraintTop_toBottomOf="@id/signInLabel"
+                app:layout_constraintTop_toBottomOf="@id/sign_in_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/usernameTextField"
+                    android:id="@+id/username_text_field"
                     android:text="@={viewModel.username}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordTextFieldLayout"
+                android:id="@+id/password_text_field_layout"
                 android:hint="@string/password"
                 android:enabled="@{!viewModel.loginInProgress}"
                 android:layout_width="0dp"
@@ -100,12 +100,12 @@
                 android:layout_margin="@dimen/margin_16"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@id/usernameTextFieldlayout"
+                app:layout_constraintTop_toBottomOf="@id/username_text_field_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordTextField"
+                    android:id="@+id/password_text_field"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}"
                     android:layout_width="match_parent"
@@ -114,37 +114,26 @@
 
             <!-- TODO: Use titlecase for forgot password button -->
             <Button
-                android:id="@+id/forgotPasswordButton"
+                android:id="@+id/forgot_password_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/forgot_password"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@id/passwordTextFieldLayout"
-                app:layout_constraintEnd_toEndOf="@id/passwordTextFieldLayout" />
+                app:layout_constraintTop_toBottomOf="@id/password_text_field_layout"
+                app:layout_constraintEnd_toEndOf="@id/password_text_field_layout" />
 
             <Button
-                android:id="@+id/signInButton"
+                android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16"
                 android:text="@string/action_sign_in_short"
                 android:layout_marginTop="@dimen/margin_32"
-                app:layout_constraintTop_toBottomOf="@id/forgotPasswordButton"
+                app:layout_constraintTop_toBottomOf="@id/forgot_password_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:enabled="@{viewModel.canLogin}" />
-
-            <!-- TODO: Show a progress bar when the user is logging in -->
-<!--            <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--                android:id="@+id/loginProgressIndicator"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:indeterminate="true"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/signInButton"-->
-<!--                app:layout_constraintStart_toStartOf="@id/signInButton"-->
-<!--                app:layout_constraintTop_toTopOf="@id/signInButton" />-->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

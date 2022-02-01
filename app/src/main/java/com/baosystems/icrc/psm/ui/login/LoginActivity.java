@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {
         //  Save it in Preferences for reuse
 
         // TODO: Flag errors in URL field, if any
-        binding.serverURLTextField.addTextChangedListener(afterTextChangedListener);
+        binding.serverUrlTextField.addTextChangedListener(afterTextChangedListener);
         binding.usernameTextField.addTextChangedListener(afterTextChangedListener);
         binding.passwordTextField.addTextChangedListener(afterTextChangedListener);
         binding.signInButton.setOnClickListener(view -> login());

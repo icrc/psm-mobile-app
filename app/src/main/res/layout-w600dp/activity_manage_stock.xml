@@ -16,7 +16,7 @@
         tools:context="com.baosystems.icrc.psm.ui.managestock.ManageStockActivity">
 
         <include
-            android:id="@+id/toolbarContainer"
+            android:id="@+id/toolbar_container"
             layout="@layout/toolbar" />
 
         <!-- Content Area -->
@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toTopOf="@+id/stock_items_footer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarContainer">
+            app:layout_constraintTop_toBottomOf="@id/toolbar_container">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/choices_container"
@@ -46,20 +46,20 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/facilityTextView"
+                    android:id="@+id/facility_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/facility_icon_padding"
                     android:text="@{viewModel.transaction.facility.displayName}"
                     app:drawableLeftCompat="@drawable/home"
-                    app:layout_constraintEnd_toStartOf="@+id/transactionDateTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/transaction_date_text_view"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="AFGOYE MHT1 Clinic OPD/MCH" />
 
                 <TextView
-                    android:id="@+id/transactionDateTextView"
+                    android:id="@+id/transaction_date_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/trans_date_icon_padding"
@@ -67,12 +67,12 @@
                     app:drawableLeftCompat="@drawable/calendar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/facilityTextView"
+                    app:layout_constraintStart_toEndOf="@+id/facility_text_view"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="2021-08-09" />
 
                 <TextView
-                    android:id="@+id/distributedToTextView"
+                    android:id="@+id/distributed_to_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16"
@@ -82,12 +82,12 @@
                     app:drawableLeftCompat="@drawable/destination"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/facilityTextView"
+                    app:layout_constraintTop_toBottomOf="@id/facility_text_view"
                     tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchFieldLayout"
+                android:id="@+id/search_field_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 app:startIconTint="@color/input_field_icon_color_tint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/searchInputField"
+                    android:id="@+id/search_input_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -130,7 +130,7 @@
                 app:iconGravity="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toEndOf="@id/searchFieldLayout"
+                app:layout_constraintStart_toEndOf="@id/search_field_layout"
                 app:layout_constraintTop_toBottomOf="@id/choices_container" />
 
             <!-- quantity guide -->
@@ -140,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/qty_guide_tb_padding"
-                app:layout_constraintTop_toBottomOf="@id/searchFieldLayout"
+                app:layout_constraintTop_toBottomOf="@id/search_field_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone" />
@@ -158,7 +158,7 @@
 
             <!-- Table header -->
             <include
-                android:id="@+id/stockEntriesTableHeader"
+                android:id="@+id/stock_entries_table_header"
                 layout="@layout/stock_table_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -178,11 +178,11 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/stockEntriesTableHeader"
+                app:layout_constraintTop_toBottomOf="@id/stock_entries_table_header"
                 tools:listitem="@layout/manage_stock_item_entry" />
 
             <TextView
-                android:id="@+id/noResultsTextView"
+                android:id="@+id/no_results_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -208,7 +208,7 @@
 
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fabManageStock"
+            android:id="@+id/fab_review_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_right_margin"

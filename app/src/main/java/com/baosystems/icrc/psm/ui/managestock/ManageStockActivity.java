@@ -125,7 +125,7 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private void updateNextButton() {
-        runOnUiThread(() -> binding.fabManageStock.setEnabled(viewModel.canReview()));
+        runOnUiThread(() -> binding.fabReviewStock.setEnabled(viewModel.canReview()));
     }
 
     @Override
@@ -137,7 +137,7 @@ public class ManageStockActivity extends BaseActivity {
         binding = (ActivityManageStockBinding) getViewBinding();
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
-        binding.fabManageStock.setOnClickListener(view -> navigateToReviewStock());
+        binding.fabReviewStock.setOnClickListener(view -> navigateToReviewStock());
 
         // Set the activity title to the active transaction name
         // TODO: use localized name for the title

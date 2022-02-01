@@ -141,7 +141,7 @@ public class HomeActivity extends BaseActivity {
                         (Option) distributedToTextView.getAdapter().getItem(position))
         );
 
-        binding.fabNext.setOnClickListener(view -> navigateToManageStock());
+        binding.fabManageStock.setOnClickListener(view -> navigateToManageStock());
         setupTransactionDateField();
         setupRecentActivities();
     }
@@ -192,9 +192,9 @@ public class HomeActivity extends BaseActivity {
             ColorStateList colorStateList = ColorStateList.valueOf(
                     ContextCompat.getColor(this, color)
             );
-            binding.fabNext.setBackgroundTintBlendMode(BlendMode.SRC_OVER);
+            binding.fabManageStock.setBackgroundTintBlendMode(BlendMode.SRC_OVER);
             binding.toolbar.setBackgroundTintBlendMode(BlendMode.SRC_OVER);
-            binding.fabNext.setBackgroundTintList(colorStateList);
+            binding.fabManageStock.setBackgroundTintList(colorStateList);
             binding.toolbar.setBackgroundTintList(colorStateList);
         }
     }

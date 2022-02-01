@@ -14,20 +14,20 @@ import com.baosystems.icrc.psm.utils.DateUtils
 class ViewHolder private constructor(val binding: ListItemRecentActivityBinding):
     RecyclerView.ViewHolder(binding.root) {
     fun bindTo(item: UserActivity) {
-        binding.transactionTypeTextview.text = item.type.name
-        binding.creationDateTextview.text = item.date.format(DateUtils.getDateTimePattern())
+        binding.transactionTypeTextView.text = item.type.name
+        binding.transactionTypeTextView.text = item.date.format(DateUtils.getDateTimePattern())
 
         if(item.type == TransactionType.DISTRIBUTION) {
             binding.distributedToTextview.text = item.distributedTo ?: ""
-            binding.directionalArrowImageview.visibility = View.VISIBLE
+            binding.directionalArrowImageView.visibility = View.VISIBLE
         }
 
         when (item.type) {
             TransactionType.DISTRIBUTION -> {
                 binding.distributedToTextview.text = item.distributedTo ?: ""
-                binding.directionalArrowImageview.visibility = View.VISIBLE
+                binding.directionalArrowImageView.visibility = View.VISIBLE
             } else -> {
-                binding.directionalArrowImageview.visibility = View.GONE
+                binding.directionalArrowImageView.visibility = View.GONE
             }
         }
     }

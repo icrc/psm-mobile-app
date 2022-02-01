@@ -64,9 +64,9 @@ class ManageStockAdapter(
     ):
         RecyclerView.ViewHolder(itemView) {
 
-        private val tvItemName: TextView = itemView.findViewById(R.id.itemNameTextView)
-        private val tvStockOnHand: TextView = itemView.findViewById(R.id.stockOnHandValueTextView)
-        private val etQty: TextInputLayout = itemView.findViewById(R.id.itemQtyTextField)
+        private val tvItemName: TextView = itemView.findViewById(R.id.item_name_text_view)
+        private val tvStockOnHand: TextView = itemView.findViewById(R.id.stock_on_hand_value_text_view)
+        private val etQty: TextInputLayout = itemView.findViewById(R.id.item_qty_text_field)
 
         init {
             addTextListener()
@@ -74,7 +74,7 @@ class ManageStockAdapter(
         }
 
         private fun addFocusListener() {
-            etQty.editText?.setOnFocusChangeListener { v, hasFocus ->
+            etQty.editText?.setOnFocusChangeListener { _, hasFocus ->
                 textInputDelegate.focusChanged(
                     speechController, etQty, hasFocus, voiceInputEnabled, adapterPosition)
             }

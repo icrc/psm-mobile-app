@@ -8,14 +8,14 @@
     android:baselineAligned="false">
 
     <FrameLayout
-        android:id="@+id/itemNameColumn"
+        android:id="@+id/item_name_column"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:background="@color/light_grey">
 
         <TextView
-            android:id="@+id/itemNameTextView"
+            android:id="@+id/item_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
@@ -26,14 +26,14 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/stockOnHandColumn"
+        android:id="@+id/stock_on_hand_column"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:background="@color/gray_200">
 
         <TextView
-            android:id="@+id/stockOnHandValueTextView"
+            android:id="@+id/stock_on_hand_value_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -44,13 +44,13 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/qtyColumn"
+        android:id="@+id/qty_column"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/itemQtyTextField"
+            android:id="@+id/item_qty_text_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/stock_item_margin"

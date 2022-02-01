@@ -18,7 +18,7 @@
     <dimen name="toolbar_text_size">20sp</dimen>
 
     <!-- Transaction buttons -->
-    <dimen name="transaction_button_text_size">14sp</dimen>
+    <dimen name="transaction_button_text_size">12sp</dimen>
     <dimen name="transaction_button_lr_padding">16dp</dimen>
     <dimen name="transaction_button_tb_padding">24dp</dimen>
     <dimen name="transaction_center_button_margin">8dp</dimen>

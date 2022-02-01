@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/lastSyncIconImageview"
+            android:id="@+id/last_sync_icon_image_view"
             android:contentDescription="@string/content_desc_last_sync"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             app:srcCompat="@drawable/last_sync" />
 
         <TextView
-            android:id="@+id/lastSyncDescTextView"
+            android:id="@+id/last_sync_desc_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -35,18 +35,18 @@
             android:layout_marginBottom="@dimen/last_sync_label_bottom_margin"
             android:text="@string/last_synced"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lastSyncIconImageview"
+            app:layout_constraintStart_toEndOf="@id/last_sync_icon_image_view"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/last_synced" />
 
         <TextView
-            android:id="@+id/lastSyncDateTextView"
+            android:id="@+id/last_sync_date_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@{lastSyncDate}"
-            app:layout_constraintBaseline_toBaselineOf="@id/lastSyncDescTextView"
-            app:layout_constraintStart_toEndOf="@id/lastSyncDescTextView"
+            app:layout_constraintBaseline_toBaselineOf="@id/last_sync_desc_text_view"
+            app:layout_constraintStart_toEndOf="@id/last_sync_desc_text_view"
             tools:text="2021-06-30 14:32:33" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

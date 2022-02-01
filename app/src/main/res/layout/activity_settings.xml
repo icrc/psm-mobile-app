@@ -14,7 +14,7 @@
         tools:context=".ui.settings.SettingsActivity">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/toolbarLayout"
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -32,6 +32,6 @@
             android:id="@+id/settings_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbarLayout"/>
+            android:layout_below="@id/toolbar_layout"/>
     </RelativeLayout>
 </layout>

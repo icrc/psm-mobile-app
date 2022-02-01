@@ -17,7 +17,7 @@
         tools:context="com.baosystems.icrc.psm.ui.home.HomeActivity">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/toolbarLayout"
+            android:id="@+id/toolbar_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
             android:layout_marginRight="@dimen/content_area_lr_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarLayout">
+            app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/distribution_button"
@@ -127,14 +127,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/select_facility"
-                    android:labelFor="@id/actvSelectedFacility"
+                    android:labelFor="@id/selected_facility_autocomplete"
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/choices_container" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/selectedFacilityTextView"
+                    android:id="@+id/selected_facility_text_view"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:background="@color/white">
 
                     <AutoCompleteTextView
-                        android:id="@+id/actvSelectedFacility"
+                        android:id="@+id/selected_facility_autocomplete"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -158,9 +158,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/select_facility_bottom_margin"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintTop_toBottomOf="@id/selectedFacilityTextView"
+                    app:layout_constraintTop_toBottomOf="@id/selected_facility_text_view"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/distributedToContainer"
+                    app:layout_constraintEnd_toStartOf="@id/distributed_to_container"
                     android:orientation="vertical">
 
                     <TextView
@@ -168,11 +168,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/transaction_date"
-                        android:labelFor="@id/actvTransactionDate"
+                        android:labelFor="@id/transaction_date_autocomplete"
                         android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/transactionDateTextView"
+                        android:id="@+id/transaction_date_text_view"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                         android:background="@color/white">
 
                         <AutoCompleteTextView
-                            android:id="@+id/actvTransactionDate"
+                            android:id="@+id/transaction_date_autocomplete"
                             android:inputType="none"
                             app:date="@{viewModel.transactionDate}"
                             android:layout_width="match_parent"
@@ -193,7 +193,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/distributedToContainer"
+                    android:id="@+id/distributed_to_container"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -205,15 +205,15 @@
                     android:visibility="@{viewModel.distribution ? View.VISIBLE : View.GONE}">
 
                     <TextView
-                        android:id="@+id/distributedToLabel"
+                        android:id="@+id/distributed_to_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/distributed_to"
-                        android:labelFor="@id/actvDistributedTo"
+                        android:labelFor="@id/distributed_to_autocomplete"
                         android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/distributedToTextView"
+                        android:id="@+id/distributed_to_text_view"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                         android:background="@color/white">
 
                         <AutoCompleteTextView
-                            android:id="@+id/actvDistributedTo"
+                            android:id="@+id/distributed_to_autocomplete"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none" />
@@ -269,7 +269,7 @@
 
         <!-- Floating Button -->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fabNext"
+            android:id="@+id/fab_manage_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
@@ -280,12 +280,12 @@
             android:text="@string/next"
             app:icon="@drawable/arrow_forward"
             app:iconGravity="textEnd"
-            app:layout_constraintBottom_toTopOf="@id/homeFooter"
+            app:layout_constraintBottom_toTopOf="@id/home_footer"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Footer -->
         <include
-            android:id="@+id/homeFooter"
+            android:id="@+id/home_footer"
             layout="@layout/footer"
             app:lastSyncDate="@{viewModel.lastSyncDate}" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,10 +46,10 @@ class ReviewStockAdapter(
         itemView: View,
         private val watcher: ItemWatcher<StockEntry, String, String>
     ): RecyclerView.ViewHolder(itemView) {
-        private val tvItemName: TextView = itemView.findViewById(R.id.tvReviewStockItemName)
-        private val tvStockOnHand: TextView = itemView.findViewById(R.id.tvReviewStockOnHandValue)
-        private val tvItemQtyLayout: TextInputLayout = itemView.findViewById(R.id.tiReviewItemQty)
-        private val btnRemoveItem: ImageButton = itemView.findViewById(R.id.ibRemoveStockItem)
+        private val tvItemName: TextView = itemView.findViewById(R.id.review_stock_item_name_text_view)
+        private val tvStockOnHand: TextView = itemView.findViewById(R.id.review_stock_on_hand_value_text_view)
+        private val tvItemQtyLayout: TextInputLayout = itemView.findViewById(R.id.review_item_qty_layout)
+        private val btnRemoveItem: ImageButton = itemView.findViewById(R.id.remove_stock_item_image_button)
 
         init {
             btnRemoveItem.setOnClickListener {
