@@ -21,14 +21,15 @@ class DateUtils {
         fun getMonthStartToNowConstraint(): CalendarConstraints {
             val constraintsBuilderRange = CalendarConstraints.Builder()
 
+            // Day end (current day)
             val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
             cal.set(Calendar.SECOND, 0)
             val endTime = cal.timeInMillis
 
-            // Month start
-            cal.set(Calendar.DAY_OF_MONTH, 0)
+            // Day start
+            cal.set(Calendar.DAY_OF_WEEK_IN_MONTH, Constants.MAX_ALLOWABLE_DAYS_BACK_RANGE)
             val startTime = cal.timeInMillis
 
             val dateValidatorMin = DateValidatorPointForward.from(startTime)

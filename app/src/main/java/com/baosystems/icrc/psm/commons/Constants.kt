@@ -67,4 +67,5 @@ object Constants {
 
     const val AUDIO_RECORDING_REQUEST_CODE = 105
     const val CLEAR_ICON = 0
+    const val MAX_ALLOWABLE_DAYS_BACK_RANGE = -5
 }
