@@ -9,12 +9,12 @@
     <!-- Transaction buttons -->
     <dimen name="transaction_button_text_size">21sp</dimen>
     <dimen name="transaction_button_lr_padding">32dp</dimen>
-    <dimen name="transaction_button_tb_padding">40dp</dimen>
+    <dimen name="transaction_button_tb_padding">64dp</dimen>
     <dimen name="transaction_center_button_margin">16dp</dimen>
     <dimen name="transaction_button_corner_radius">8dp</dimen>
 
     <dimen name="content_area_lr_margin">16dp</dimen>
-    <dimen name="content_area_top_margin">24dp</dimen>
+    <dimen name="content_area_top_margin">40dp</dimen>
 
     <dimen name="available_count_top_margin">32dp</dimen>
 

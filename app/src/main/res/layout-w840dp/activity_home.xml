@@ -38,12 +38,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/content_area"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="@dimen/content_area_lr_margin"
             android:layout_marginTop="@dimen/content_area_top_margin"
             android:layout_marginRight="@dimen/content_area_lr_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/home_footer"
             app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
 
             <com.google.android.material.button.MaterialButton
@@ -256,9 +257,9 @@
             <TextView
                 android:id="@+id/recent_activity_message_textview"
                 style="?attr/textAppearanceCaption"
+                android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
