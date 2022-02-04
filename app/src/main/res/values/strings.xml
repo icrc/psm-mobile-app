@@ -168,4 +168,16 @@
 
     <string name="default_language" translatable="false">en</string>
     <string name="content_desc_splash" translatable="false">Splash screen image</string>
+
+    <!-- Speech error messages -->
+    <string name="insufficient_speech_permissions_error">Insufficient permissions. Request android.permission.RECORD_AUDIO</string>
+    <string name="speech_audio_error">Audio recording error</string>
+    <string name="speech_client_error">Client side error. Please check your internet connection!</string>
+    <string name="speech_network_error">Network error</string>
+    <string name="speech_network_timeout_error">Network operation timed out</string>
+    <string name="no_speech_match_error">No recognition result matched.</string>
+    <string name="speech_recognition_service_busy_error">Recognition service is busy</string>
+    <string name="speech_server_error">An error occurred on the speech server</string>
+    <string name="speech_timeout_error">No speech input detected</string>
+    <string name="unknown_speech_error">An unknown error occurred.</string>
 </resources>

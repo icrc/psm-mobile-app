@@ -146,4 +146,16 @@
 
     <string name="permission_granted">تم تأمين التصريح</string>
     <string name="permission_denied">طلب الاذن مرفوض</string>
+
+    <!-- Speech error messages -->
+    <string name="insufficient_speech_permissions_error">أذونات غير كافية. اطلب android.permission.RECORD_AUDIO</string>
+    <string name="speech_audio_error">خطأ في تسجيل الصوت</string>
+    <string name="speech_client_error">خطأ من جانب العميل. الرجاء التحقق من اتصال الانترنت الخاص بك!</string>
+    <string name="speech_network_error">خطأ في الشبكة</string>
+    <string name="speech_network_timeout_error">انتهت مهلة تشغيل الشبكة</string>
+    <string name="no_speech_match_error">لا توجد نتيجة التعرف المتطابقة.</string>
+    <string name="speech_recognition_service_busy_error">خدمة التعرف مشغولة</string>
+    <string name="speech_server_error">حدث خطأ في خادم الكلام</string>
+    <string name="speech_timeout_error">لم يتم الكشف عن إدخال كلام</string>
+    <string name="unknown_speech_error">حدث خطأ غير معروف</string>
 </resources>

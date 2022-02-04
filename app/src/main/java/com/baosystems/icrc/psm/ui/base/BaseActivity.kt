@@ -243,20 +243,20 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun handleSpeechError(code: Int) {
-        val message: String = when (code) {
-            SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
-                "Insufficient permissions. Request android.permission.RECORD_AUDIO"
-            SpeechRecognizer.ERROR_AUDIO -> "Audio recording error"
-            SpeechRecognizer.ERROR_CLIENT ->
-                "Client side error. Maybe your internet connection is poor!"
-            SpeechRecognizer.ERROR_NETWORK -> "Network error"
-            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network operation timed out"
-            SpeechRecognizer.ERROR_NO_MATCH -> "No recognition result matched."
-            SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "RecognitionService busy"
-            SpeechRecognizer.ERROR_SERVER -> "Server sends error status"
-            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> "No speech input detected"
-            else -> "Unhandled speech recognition error code"
+        val resId: Int = when (code) {
+            SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> R.string.insufficient_speech_permissions_error
+            SpeechRecognizer.ERROR_AUDIO -> R.string.speech_audio_error
+            SpeechRecognizer.ERROR_CLIENT -> R.string.speech_client_error
+            SpeechRecognizer.ERROR_NETWORK -> R.string.speech_network_error
+            SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> R.string.speech_network_timeout_error
+            SpeechRecognizer.ERROR_NO_MATCH -> R.string.no_speech_match_error
+            SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> R.string.speech_recognition_service_busy_error
+            SpeechRecognizer.ERROR_SERVER -> R.string.speech_server_error
+            SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> R.string.speech_timeout_error
+            else -> R.string.unknown_speech_error
         }
+
+        val message = getString(resId)
         Timber.d("Speech status error: code = %d, message = %s", code, message)
         showErrorMessage(binding.root, message)
     }
