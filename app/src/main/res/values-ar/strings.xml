@@ -89,13 +89,12 @@
         This action cannot be undone.
     </string>
 
-
     <plurals name="items_found">
-        <item quantity="zero">%d</item>
-        <item quantity="one">%d</item>
-        <item quantity="two">%d</item>
-        <item quantity="few">%d</item>
-        <item quantity="many">%d</item>
+        <item quantity="zero"> تم العثور على سلع<xliff:g id="zero_item">%d</xliff:g></item>
+        <item quantity="one"> م العثور على العنصر<xliff:g id="one_item">%d</xliff:g></item>
+        <item quantity="two"> م العثور على سلع<xliff:g id="two_items">%d</xliff:g></item>
+        <item quantity="few"> م العثور على سلع<xliff:g id="few_items">%d</xliff:g></item>
+        <item quantity="many"> تم العثور على سلع<xliff:g id="many_items">%d</xliff:g></item>
     </plurals>
 
     <string name="no_items_found">لم يتم العثور على العناصر</string>
