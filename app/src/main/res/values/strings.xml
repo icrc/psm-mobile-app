@@ -180,4 +180,5 @@
     <string name="speech_server_error">An error occurred on the speech server</string>
     <string name="speech_timeout_error">No speech input detected</string>
     <string name="unknown_speech_error">An unknown error occurred.</string>
+    <string name="non_numeric_speech_input_error">Non-numeric input is not allowed: \"%s\"</string>
 </resources>

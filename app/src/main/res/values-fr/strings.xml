@@ -158,4 +158,5 @@
     <string name="speech_server_error">Une erreur s\'est produite sur le serveur vocal</string>
     <string name="speech_timeout_error">Aucune entrée vocale détectée</string>
     <string name="unknown_speech_error">Une erreur inconnue est survenue</string>
+    <string name="non_numeric_speech_input_error">La saisie non numérique n\'est pas autorisée: \"%s\"</string>
 </resources>

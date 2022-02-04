@@ -158,4 +158,7 @@
     <string name="speech_server_error">حدث خطأ في خادم الكلام</string>
     <string name="speech_timeout_error">لم يتم الكشف عن إدخال كلام</string>
     <string name="unknown_speech_error">حدث خطأ غير معروف</string>
+    <string name="non_numeric_speech_input_error">
+        <xliff:g id="recognized speech">\"%1$s\"</xliff:g>غير مسموح بالإدخال غير الرقمي :
+    </string>
 </resources>

@@ -162,4 +162,5 @@
     <string name="speech_server_error">Произошла ошибка на речевом сервере</string>
     <string name="speech_timeout_error">Речевой ввод не обнаружен</string>
     <string name="unknown_speech_error">Произошла неизвестная ошибка</string>
+    <string name="non_numeric_speech_input_error">Нечисловой ввод запрещен: \"%s\"</string>
 </resources>

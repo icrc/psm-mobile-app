@@ -16,6 +16,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
@@ -236,13 +237,13 @@ abstract class BaseActivity : AppCompatActivity() {
     ) {
         speechStatus.observe(this) { state: SpeechRecognitionState ->
             if (state is Errored) {
-                handleSpeechError(state.code)
+                handleSpeechError(state.code, state.data)
             }
             speechController?.onStateChange(state)
         }
     }
 
-    open fun handleSpeechError(code: Int) {
+    open fun handleSpeechError(code: Int, data: String?) {
         val resId: Int = when (code) {
             SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> R.string.insufficient_speech_permissions_error
             SpeechRecognizer.ERROR_AUDIO -> R.string.speech_audio_error
@@ -253,10 +254,16 @@ abstract class BaseActivity : AppCompatActivity() {
             SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> R.string.speech_recognition_service_busy_error
             SpeechRecognizer.ERROR_SERVER -> R.string.speech_server_error
             SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> R.string.speech_timeout_error
+            Constants.NON_NUMERIC_SPEECH_INPUT_ERROR -> R.string.non_numeric_speech_input_error
             else -> R.string.unknown_speech_error
         }
 
-        val message = getString(resId)
+        val message =
+            if (code == Constants.NON_NUMERIC_SPEECH_INPUT_ERROR)
+                getString(resId, data ?: "")
+            else
+                getString(resId)
+
         Timber.d("Speech status error: code = %d, message = %s", code, message)
         showErrorMessage(binding.root, message)
     }

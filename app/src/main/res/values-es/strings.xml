@@ -157,4 +157,5 @@
     <string name="speech_server_error">Se produjo un error en el servidor de voz</string>
     <string name="speech_timeout_error">No se detectó ninguna entrada de voz</string>
     <string name="unknown_speech_error">Un error desconocido ocurrió</string>
+    <string name="non_numeric_speech_input_error">No se permite la entrada no numérica: \"%s\"</string>
 </resources>

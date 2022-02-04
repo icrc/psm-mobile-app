@@ -7,7 +7,9 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import androidx.lifecycle.MutableLiveData
+import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
+import com.baosystems.icrc.psm.utils.Utils
 import timber.log.Timber
 import java.util.*
 
@@ -93,8 +95,15 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     override fun onResults(bundle: Bundle?) {
         val data = bundle?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         data?.let {
-            if (data.size > 0)
-                _speechRecognitionStatus.postValue(SpeechRecognitionState.Completed(data[0]))
+            if (data.size > 0) {
+                val str = data[0]
+                val response = if (Utils.isSignedNumeric(str))
+                    SpeechRecognitionState.Completed(str)
+                else
+                    SpeechRecognitionState.Errored(Constants.NON_NUMERIC_SPEECH_INPUT_ERROR, str)
+
+                _speechRecognitionStatus.postValue(response)
+            }
         }
     }
 
