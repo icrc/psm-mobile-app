@@ -2,7 +2,6 @@ package com.baosystems.icrc.psm.ui.base
 
 import android.content.res.ColorStateList
 import android.os.CountDownTimer
-import android.text.InputType
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -40,10 +39,6 @@ class TextInputDelegate {
             textInputLayout.setEndIconTintList(textInputLayout.context.getColorStateList(R.color.mic_selector))
             textInputLayout.setEndIconOnClickListener { speechController?.toggleState() }
 
-            // prevent the keyboard from showing since we're using the mic
-//                    KeyboardUtils.hideKeyboard(activity, etQty?.editText?.windowToken)
-            textInputLayout.editText?.inputType = InputType.TYPE_NULL
-
             speechController?.startListening {
                 if (it is SpeechRecognitionState.Completed) {
                     textInputLayout.editText?.setText(it.data)
@@ -55,9 +50,6 @@ class TextInputDelegate {
             textInputLayout.endIconMode = TextInputLayout.END_ICON_NONE
             textInputLayout.setEndIconDrawable(CLEAR_ICON)
             textInputLayout.setEndIconOnClickListener(null)
-
-            // reset the input type back to default
-            textInputLayout.editText?.inputType = InputType.TYPE_NUMBER_FLAG_SIGNED
         }
     }
 
