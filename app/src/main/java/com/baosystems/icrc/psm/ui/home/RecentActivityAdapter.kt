@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.databinding.ListItemRecentActivityBinding
@@ -14,7 +15,19 @@ import com.baosystems.icrc.psm.utils.DateUtils
 class ViewHolder private constructor(val binding: ListItemRecentActivityBinding):
     RecyclerView.ViewHolder(binding.root) {
     fun bindTo(item: UserActivity) {
-        binding.raTransactionTypeTextView.text = item.type.name
+        val transactionMessageResource = when (item.type) {
+            TransactionType.DISTRIBUTION -> {
+                R.string.distribution
+            }
+            TransactionType.CORRECTION -> {
+                R.string.correction
+            }
+            else -> {
+                R.string.discard
+            }
+        }
+
+        binding.raTransactionTypeTextView.text = binding.root.context.getText(transactionMessageResource)
         binding.raCreationDateTextView.text = item.date.format(DateUtils.getDateTimePattern())
 
         if(item.type == TransactionType.DISTRIBUTION) {
