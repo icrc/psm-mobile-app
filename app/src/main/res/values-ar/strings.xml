@@ -85,8 +85,8 @@
     <string name="logout_confirmation_message">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
 
     <string name="remove_confirmation_message">
-        هل أنت متأكد من أنك تريد٪ حذف بشكل دائم إدخال تصحيح \"%1$s\""؟
-        This action cannot be undone.
+        هل أنت متأكد من أنك تريد حذف الإدخال نهائيًا لتصحيح <xliff:g id="item_name_to_remove">\"%1$s\"</xliff:g>؟
+لا يمكن التراجع عن هذا الإجراء.
     </string>
 
     <plurals name="items_found">
