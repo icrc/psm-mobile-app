@@ -38,15 +38,15 @@ class TextInputDelegate {
             textInputLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
             textInputLayout.setEndIconDrawable(R.drawable.ic_microphone)
             textInputLayout.setEndIconTintList(textInputLayout.context.getColorStateList(R.color.mic_selector))
-            textInputLayout.setEndIconOnClickListener { speechController?.toggleState() }
+            textInputLayout.setEndIconOnClickListener {
+                speechController?.toggleState {
+                    onComplete(it, textInputLayout)
+                }
+            }
 
             if (autoStart) {
                 speechController?.startListening {
-                    if (it is SpeechRecognitionState.Completed) {
-                        textInputLayout.editText?.setText(it.data)
-                    }
-
-                    updateMicState(textInputLayout, it)
+                    onComplete(it, textInputLayout)
                 }
             } else {
                 Timber.w("Duplicate focus detected. Ignoring...")
@@ -59,6 +59,14 @@ class TextInputDelegate {
 
         if (hasFocus)
             focusPosition = position
+    }
+
+    private fun onComplete(state: SpeechRecognitionState, textInputLayout: TextInputLayout) {
+        if (state is SpeechRecognitionState.Completed) {
+            textInputLayout.editText?.setText(state.data)
+        }
+
+        updateMicState(textInputLayout, state)
     }
 
     private fun updateMicState(textInputLayout: TextInputLayout, state: SpeechRecognitionState?) {

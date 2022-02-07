@@ -19,7 +19,8 @@ class SpeechControllerImpl(private val viewModel: SpeechRecognitionAwareViewMode
         viewModel.stopListening()
     }
 
-    override fun toggleState() {
+    override fun toggleState(callback: (state: SpeechRecognitionState) -> Unit) {
+        this.callback = callback
         viewModel.toggleSpeechRecognitionState()
     }
 }
