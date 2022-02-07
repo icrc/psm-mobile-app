@@ -196,7 +196,7 @@
                 android:visibility="gone"
                 android:text="@string/no_items_found"
                 tools:text="No items found"
-                app:drawableTopCompat="@drawable/ic_no_match" />
+                app:drawableTopCompat="@drawable/ic_empty_list" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Footer -->
