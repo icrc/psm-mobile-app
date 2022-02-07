@@ -10,6 +10,7 @@ import com.baosystems.icrc.psm.commons.Constants.CLEAR_ICON
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
 import com.google.android.material.textfield.TextInputLayout
 import org.hisp.dhis.rules.models.RuleEffect
+import timber.log.Timber
 
 class TextInputDelegate {
     private var focusPosition: Int? = null
@@ -30,8 +31,8 @@ class TextInputDelegate {
 
     fun focusChanged(speechController: SpeechController?, textInputLayout: TextInputLayout, hasFocus: Boolean,
                      voiceInputEnabled: Boolean, position: Int) {
-        if (hasFocus)
-            focusPosition = position
+        // Prevent duplicate voice trigger
+        val autoStart = position != focusPosition
 
         if (hasFocus && voiceInputEnabled) {
             textInputLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
@@ -39,18 +40,25 @@ class TextInputDelegate {
             textInputLayout.setEndIconTintList(textInputLayout.context.getColorStateList(R.color.mic_selector))
             textInputLayout.setEndIconOnClickListener { speechController?.toggleState() }
 
-            speechController?.startListening {
-                if (it is SpeechRecognitionState.Completed) {
-                    textInputLayout.editText?.setText(it.data)
-                }
+            if (autoStart) {
+                speechController?.startListening {
+                    if (it is SpeechRecognitionState.Completed) {
+                        textInputLayout.editText?.setText(it.data)
+                    }
 
-                updateMicState(textInputLayout, it)
+                    updateMicState(textInputLayout, it)
+                }
+            } else {
+                Timber.w("Duplicate focus detected. Ignoring...")
             }
         } else {
             textInputLayout.endIconMode = TextInputLayout.END_ICON_NONE
             textInputLayout.setEndIconDrawable(CLEAR_ICON)
             textInputLayout.setEndIconOnClickListener(null)
         }
+
+        if (hasFocus)
+            focusPosition = position
     }
 
     private fun updateMicState(textInputLayout: TextInputLayout, state: SpeechRecognitionState?) {

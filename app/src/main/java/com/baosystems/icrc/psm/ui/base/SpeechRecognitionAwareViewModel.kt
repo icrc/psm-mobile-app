@@ -25,13 +25,12 @@ open class SpeechRecognitionAwareViewModel @Inject constructor(
     fun getSpeechStatus() = speechRecognitionManager.getStatus()
 
     fun toggleSpeechRecognitionState() {
-        val state = getSpeechStatus().value
-        if (state != null) {
-            if (state == SpeechRecognitionState.Started) {
-                stopListening()
-            } else {
-                startListening()
-            }
+        val state = getSpeechStatus().value ?: return
+
+        if (state == SpeechRecognitionState.Started) {
+            stopListening()
+        } else {
+            startListening()
         }
     }
 
