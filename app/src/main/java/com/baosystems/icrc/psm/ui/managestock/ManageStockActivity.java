@@ -236,7 +236,6 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private <T> void updateState(NetworkState<T> networkState) {
-        Timber.d("Network state: %s", networkState);
         if (networkState == NetworkState.Loading.INSTANCE) {
             updateStocklistInfoBox(R.drawable.ic_loading_items, R.string.loading_items_message, true);
             return;
