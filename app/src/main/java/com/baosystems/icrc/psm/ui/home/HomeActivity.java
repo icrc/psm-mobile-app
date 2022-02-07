@@ -291,7 +291,7 @@ public class HomeActivity extends BaseActivity {
 
         binding.recentActivityMessageTextview.setCompoundDrawablesWithIntrinsicBounds(
                 null,
-                AppCompatResources.getDrawable(this, R.drawable.ic_loading_activity),
+                AppCompatResources.getDrawable(this, R.drawable.ic_loading_items),
                 null,
                 null
         );
