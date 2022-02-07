@@ -98,6 +98,7 @@
         <item quantity="other">%d artículos encontrados</item>
     </plurals>
     <string name="no_items_found">No se encontraron artículos</string>
+    <string name="loading_items_message">Cargando artículos en stock &#8230;</string>
     <string name="prompt_email">Correo electrónico</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Ingresa o Registro</string>

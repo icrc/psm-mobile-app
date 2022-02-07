@@ -98,6 +98,9 @@
     </plurals>
 
     <string name="no_items_found">لم يتم العثور على العناصر</string>
+    <string name="loading_items_message">
+        <xliff:g id="ellipsis">&#8230;</xliff:g> تحميل عناصر المخزون
+    </string>
     <string name="prompt_email">بريد الالكتروني</string>
     <string name="prompt_password">كلمه السر</string>
     <string name="action_sign_in">تسجيل الدخول أو التسجيل</string>

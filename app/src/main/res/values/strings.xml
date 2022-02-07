@@ -104,6 +104,7 @@
         <item quantity="other">%d items found</item>
     </plurals>
     <string name="no_items_found">No items found</string>
+    <string name="loading_items_message">Loading stock items &#8230;</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>

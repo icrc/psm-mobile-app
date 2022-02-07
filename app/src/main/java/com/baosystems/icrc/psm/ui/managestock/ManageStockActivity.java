@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.NetworkState;
 import com.baosystems.icrc.psm.data.models.StockItem;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
@@ -184,10 +186,12 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private void setupObservers() {
+        viewModel.getNetworkState().observe(this, this::updateState);
+
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             adapter.submitList(pagedListLiveData);
 
-            // Scroll back to the top of the recyclerview if a new pagedlist is added
+            // Scroll back to the top of the recyclerview if a new paged list is added
             LinearLayoutManager layoutManager =
                     (LinearLayoutManager) binding.stockItemsList.getLayoutManager();
             if (layoutManager != null) {
@@ -198,8 +202,8 @@ public class ManageStockActivity extends BaseActivity {
             }
 
             // Handle empty results state
-            binding.noResultsTextView.setVisibility(
-                    pagedListLiveData.isEmpty() ? View.VISIBLE : View.GONE);
+            updateStocklistInfoBox(R.drawable.ic_empty_list, R.string.no_items_found,
+                    pagedListLiveData.isEmpty());
 
             // TODO: Handle error states
         });
@@ -207,6 +211,40 @@ public class ManageStockActivity extends BaseActivity {
         viewModel.getShowGuide().observe(this,
                 showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
                         getResources().getInteger(android.R.integer.config_shortAnimTime)));
+    }
+
+    private void updateStocklistInfoBox(Integer drawableRes, Integer stringRes, boolean show) {
+        if (drawableRes != null) {
+            binding.noResultsTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    ContextCompat.getDrawable(this, drawableRes),
+                    null,
+                    null
+            );
+        } else {
+            binding.noResultsTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    null, null, null, null);
+        }
+
+        if (stringRes != null) {
+            binding.noResultsTextView.setText(stringRes);
+        } else {
+            binding.noResultsTextView.setText("");
+        }
+
+        binding.noResultsTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private <T> void updateState(NetworkState<T> networkState) {
+        Timber.d("Network state: %s", networkState);
+        if (networkState == NetworkState.Loading.INSTANCE) {
+            updateStocklistInfoBox(R.drawable.ic_loading_items, R.string.loading_items_message, true);
+            return;
+        }
+
+        if (networkState.getClass() == NetworkState.Completed.class) {
+            updateStocklistInfoBox(null, null, false);
+        }
     }
 
     @Override

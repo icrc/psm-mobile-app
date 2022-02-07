@@ -103,6 +103,7 @@
         <item quantity="other">%d найденные предметы</item>
     </plurals>
     <string name="no_items_found">ничего не найдено</string>
+    <string name="loading_items_message">Загрузка товаров на складе &#8230;</string>
     <string name="prompt_email">Эл. адрес</string>
     <string name="prompt_password">Пароль</string>
     <string name="action_sign_in">Войдите или зарегистрируйтесь</string>

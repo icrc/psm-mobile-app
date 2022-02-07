@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
+import androidx.paging.PagedList
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.commons.Constants.QUANTITY_ENTRY_DEBOUNCE
 import com.baosystems.icrc.psm.commons.Constants.SEARCH_QUERY_DEBOUNCE
-import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.ReviewStockData
-import com.baosystems.icrc.psm.data.RowAction
-import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.*
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.StockItem
@@ -45,17 +43,24 @@ class ManageStockViewModel @Inject constructor(
     // TODO: Handle cases where transaction is null. (remove transaction!!)
     val transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)!!
 
-    private var search = MutableLiveData<SearchParametersModel>()
     private val _itemsAvailableCount = MutableLiveData<Int>(0)
+    private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
     private val entryRelay = PublishRelay.create<RowAction>()
     private val stockItems = Transformations.switchMap(search) { q ->
-        val result = stockManager.search(q, transaction.facility.uid)
-        _itemsAvailableCount.postValue(result.totalCount)
+        _networkState.value = NetworkState.Loading
 
+        val result = stockManager.search(q, transaction.facility.uid)
+        _itemsAvailableCount.value = result.totalCount
+
+        _networkState.postValue(NetworkState.Completed)
         result.items
     }
     private val itemsCache = linkedMapOf<String, StockEntry>()
+
+    private val _networkState = MutableLiveData<NetworkState<LiveData<PagedList<StockItem>>>>()
+    val networkState: LiveData<NetworkState<LiveData<PagedList<StockItem>>>>
+        get() = _networkState
 
     init {
         if (transaction.transactionType != TransactionType.DISTRIBUTION &&
@@ -87,8 +92,8 @@ class ManageStockViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { result -> search.postValue(
-                        SearchParametersModel(result, null, transaction.facility.uid))
+                    { result ->
+                        search.value = SearchParametersModel(result, null, transaction.facility.uid)
                     },
                     { it.printStackTrace() }
                 )

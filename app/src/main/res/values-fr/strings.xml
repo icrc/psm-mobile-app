@@ -99,6 +99,7 @@
         <item quantity="many">%d objets trouvés</item>
     </plurals>
     <string name="no_items_found">Aucun élément trouvé</string>
+    <string name="loading_items_message">Chargement des articles en stock &#8230;</string>
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Mot de passe</string>
     <string name="action_sign_in">Connexion ou Inscription</string>
