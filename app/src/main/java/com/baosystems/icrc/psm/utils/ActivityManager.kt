@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -34,7 +33,6 @@ class ActivityManager {
                 R.color.primaryColor
             }
 
-            // TODO: Style the backgroundTint of an snackbar in case of errors
             if (message.isNotEmpty())
             // TODO: Move the error and success Snackbar styling to the theme or styles (whichever is appropriate)
                 Snackbar.make(view, message, LENGTH_LONG).setBackgroundTint(
@@ -86,13 +84,11 @@ class ActivityManager {
         fun checkPermission(activity: Activity, requestCode: Int) {
             if (ContextCompat.checkSelfPermission(activity.applicationContext,
                     Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ActivityCompat.requestPermissions(
-                        activity,
-                        arrayOf(Manifest.permission.RECORD_AUDIO),
-                        requestCode
-                    )
-                }
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.RECORD_AUDIO),
+                    requestCode
+                )
             }
         }
     }
