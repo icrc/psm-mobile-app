@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
@@ -83,6 +84,13 @@ class ReviewStockAdapter(
                 // Highlight the erroneous text for easy correction
                 if (!qty.isNullOrEmpty())
                     tvItemQtyLayout.editText?.selectAll()
+
+                // Clear the erroneous field after some time to prepare for next entry,
+                // if input is via voice
+                if (voiceInputEnabled)
+                    textInputDelegate.clearFieldAfterDelay(
+                        tvItemQtyLayout.editText, Constants.CLEAR_FIELD_DELAY
+                    )
             } else {
                 // set the cursor at the end
                 tvItemQtyLayout.editText?.setSelection(tvItemQtyLayout.editText!!.text.length)
