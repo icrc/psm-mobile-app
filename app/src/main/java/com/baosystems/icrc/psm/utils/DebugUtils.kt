@@ -3,75 +3,76 @@ package com.baosystems.icrc.psm.utils
 import org.hisp.dhis.rules.models.*
 import timber.log.Timber
 
+const val MAX_LEN = 120
+
 fun debugRuleEngine(
     rules: List<Rule>,
     ruleVariables: List<RuleVariable>,
     events: List<RuleEvent>
 ) {
-    val strLen = 120
     val buffer = StringBuilder()
     buffer.append("-----                       Rules Engine dump                -----------")
     buffer.append("\n\n")
-    printSeparator(buffer, strLen)
-    printRuleEngineData(buffer, "Rules:", strLen)
-    printSeparator(buffer, strLen)
+    printSeparator(buffer)
+    printRuleEngineData(buffer, "Rules:")
+    printSeparator(buffer)
     rules.forEach { rule ->
-        printRuleEngineData(buffer, "uid:               ${rule.uid()}", strLen)
-        printRuleEngineData(buffer, "name:              ${rule.name()}", strLen)
-        printRuleEngineData(buffer, "condition:         ${rule.condition()}", strLen)
-        printRuleEngineData(buffer, "actions:", strLen)
+        printRuleEngineData(buffer, "uid:               ${rule.uid()}")
+        printRuleEngineData(buffer, "name:              ${rule.name()}")
+        printRuleEngineData(buffer, "condition:         ${rule.condition()}")
+        printRuleEngineData(buffer, "actions:")
         rule.actions().forEach { action ->
-            printRuleEngineData(buffer, "   type:           ${action.javaClass.simpleName}", strLen)
+            printRuleEngineData(buffer, "   type:           ${action.javaClass.simpleName}")
             if (action is RuleActionAssign) {
-                printRuleEngineData(buffer, "   field:          ${action.field()}", strLen)
+                printRuleEngineData(buffer, "   field:          ${action.field()}")
             }
-            printRuleEngineData(buffer, "   data:           ${action.data()}", strLen)
-            printEmpty(buffer, strLen)
+            printRuleEngineData(buffer, "   data:           ${action.data()}")
+            printEmpty(buffer)
         }
     }
 
-    printSeparator(buffer, strLen)
-    printRuleEngineData(buffer, "Variables:", strLen)
+    printSeparator(buffer)
+    printRuleEngineData(buffer, "Variables:")
     ruleVariables.forEach {
-        printRuleEngineData(buffer, "name:               ${it.name()}", strLen)
+        printRuleEngineData(buffer, "name:               ${it.name()}")
 
         if (it is RuleVariableCurrentEvent) {
-            printRuleEngineData(buffer, "dataElement:        ${it.dataElement()}", strLen)
+            printRuleEngineData(buffer, "dataElement:        ${it.dataElement()}")
         }
 
-        printEmpty(buffer, strLen)
+        printEmpty(buffer)
     }
 
-    printSeparator(buffer, strLen)
-    printRuleEngineData(buffer, "Events:", strLen)
-    printSeparator(buffer, strLen)
+    printSeparator(buffer)
+    printRuleEngineData(buffer, "Events:")
+    printSeparator(buffer)
     events.forEach {
-        printRuleEngineData(buffer, "uid:               ${it.event()}", strLen)
-        printRuleEngineData(buffer, "status:              ${it.status()}", strLen)
-        printRuleEngineData(buffer, "eventDate:         ${it.eventDate()}", strLen)
-        printRuleEngineData(buffer, "data values:", strLen)
+        printRuleEngineData(buffer, "uid:               ${it.event()}")
+        printRuleEngineData(buffer, "status:              ${it.status()}")
+        printRuleEngineData(buffer, "eventDate:         ${it.eventDate()}")
+        printRuleEngineData(buffer, "data values:")
         it.dataValues().forEach { dv ->
-            printRuleEngineData(buffer, "   dataElement:           ${dv.dataElement()}", strLen)
-            printRuleEngineData(buffer, "   value:           ${dv.value()}", strLen)
-            printEmpty(buffer, strLen)
+            printRuleEngineData(buffer, "   dataElement:           ${dv.dataElement()}")
+            printRuleEngineData(buffer, "   value:           ${dv.value()}")
+            printEmpty(buffer)
         }
     }
-    printSeparator(buffer, strLen)
+    printSeparator(buffer)
     buffer.append("\n\n")
     Timber.d(buffer.toString())
 }
 
-fun printRuleEngineData(buffer: StringBuilder, data: String, length: Int) {
+fun printRuleEngineData(buffer: StringBuilder, data: String) {
     val charsLen = data.length
-    val desiredLen = length - charsLen - 2
+    val desiredLen = MAX_LEN - charsLen - 2
     println(data)
-    buffer.append("|" + data.padEnd(if (desiredLen > length) desiredLen else length) + "|\n")
+    buffer.append("|" + data.padEnd(if (desiredLen > MAX_LEN) desiredLen else MAX_LEN) + "|\n")
 }
 
-fun printSeparator(buffer: StringBuilder, length: Int) {
-    buffer.append("".padEnd(length + 2, '-') + "\n")
+fun printSeparator(buffer: StringBuilder) {
+    buffer.append("".padEnd(MAX_LEN + 2, '-') + "\n")
 }
 
-fun printEmpty(buffer: StringBuilder, length: Int) {
-    buffer.append("|" + "".padEnd(length) + "|\n")
+fun printEmpty(buffer: StringBuilder) {
+    buffer.append("|" + "".padEnd(MAX_LEN) + "|\n")
 }
