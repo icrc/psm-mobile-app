@@ -26,7 +26,7 @@ object Constants {
     const val CONFIG_DE_STOCK_DISCARD = "de_stock_discarded"
 
     const val SEARCH_QUERY_DEBOUNCE = 300L
-    const val QUANTITY_ENTRY_DEBOUNCE = 300L
+    const val QUANTITY_ENTRY_DEBOUNCE = 500L
     const val SCREEN_TRANSITION_DELAY = 100L
     const val CLEAR_FIELD_DELAY = 3000L // A Toast clears within 4s or 7s
 
