@@ -34,38 +34,63 @@ fun debugRuleEngine(
     printSeparator(buffer)
     printRuleEngineData(buffer, "Variables:")
     ruleVariables.forEach {
-        printRuleEngineData(buffer, "name:               ${it.name()}")
-
+        var variable = "   name = ${it.name()}"
         if (it is RuleVariableCurrentEvent) {
-            printRuleEngineData(buffer, "dataElement:        ${it.dataElement()}")
+            variable += ", DE = ${it.dataElement()}"
         }
 
-        printEmpty(buffer)
+        printRuleEngineData(buffer, variable)
     }
 
     printSeparator(buffer)
     printRuleEngineData(buffer, "Events:")
     printSeparator(buffer)
     events.forEach {
-        printRuleEngineData(buffer, "uid:               ${it.event()}")
-        printRuleEngineData(buffer, "status:              ${it.status()}")
-        printRuleEngineData(buffer, "eventDate:         ${it.eventDate()}")
-        printRuleEngineData(buffer, "data values:")
+        printRuleEngineData(buffer,
+            "   Event uid = ${it.event()}, status = ${it.status()}, eventDate = ${it.eventDate()}")
+
+        printRuleEngineData(buffer, "   Data values:")
         it.dataValues().forEach { dv ->
-            printRuleEngineData(buffer, "   dataElement:           ${dv.dataElement()}")
-            printRuleEngineData(buffer, "   value:           ${dv.value()}")
-            printEmpty(buffer)
+            printRuleEngineData(buffer,
+                "      DE = ${dv.dataElement()}, value = ${dv.value()}")
         }
+
+        printEmpty(buffer)
     }
     printSeparator(buffer)
     buffer.append("\n\n")
     Timber.d(buffer.toString())
 }
 
+fun printRuleEffects(label: String, ruleEffects: List<RuleEffect>,
+                     dataValues: List<RuleDataValue>?) {
+    val buffer = StringBuilder()
+    buffer.append("\n")
+    printSeparator(buffer)
+    printRuleEngineData(buffer, "$label:")
+    printSeparator(buffer)
+    ruleEffects.forEach { ruleEffect ->
+        when(ruleEffect.ruleAction()) {
+            is RuleActionAssign -> {
+                val ruleAction = ruleEffect.ruleAction() as RuleActionAssign
+                printRuleEngineData(buffer, "field = ${ruleAction.field()}, data = ${ruleEffect.data()}, rule = ${ruleAction.data()}")
+            }
+        }
+    }
+
+    dataValues?.let { printSeparator(buffer) }
+    dataValues?.let { printRuleEngineData(buffer, "   Rule Data values:") }
+    dataValues?.forEach {
+        printRuleEngineData(buffer, "      DE = ${it.dataElement()}, value = ${it.value()}, eventDate= ${it.eventDate()}")
+    }
+    printSeparator(buffer)
+    Timber.d(buffer.toString())
+}
+
 fun printRuleEngineData(buffer: StringBuilder, data: String) {
     val charsLen = data.length
     val desiredLen = MAX_LEN - charsLen - 2
-    println(data)
+//    println(data)
     buffer.append("|" + data.padEnd(if (desiredLen > MAX_LEN) desiredLen else MAX_LEN) + "|\n")
 }
 

@@ -47,10 +47,6 @@ class RuleValidationHelperImpl @Inject constructor(
                     when(ruleEffect.ruleAction()) {
                         is RuleActionAssign -> {
                             val ruleAction = ruleEffect.ruleAction() as RuleActionAssign
-                            Timber.d("*****    Initial Data Values received:\n\n data = %s, " +
-                                    "rule = %s, field = %s",
-                                ruleEffect.data(), ruleAction.data(), ruleAction.field())
-
                             ruleEffect.data()?.let { data ->
                                 dataValues.add(
                                     RuleDataValue.create(eventDate, programStage.uid(), ruleAction.field(), data)
@@ -60,7 +56,7 @@ class RuleValidationHelperImpl @Inject constructor(
                     }
                 }
 
-                Timber.d("Data values: %s", dataValues)
+                printRuleEffects("Preliminary RuleEffects", prelimRuleEffects, dataValues)
 
                 Flowable.fromCallable(
                     ruleEngine.evaluate(
@@ -142,11 +138,10 @@ class RuleValidationHelperImpl @Inject constructor(
             ruleVariables(appConfig.program),
             constants(),
             supplementaryData(),
-            enrollmentEvents,
-            {
-                    rules, variables, constants, supplData, events ->
-                RuleEngineHelper.getRuleEngine(rules, variables, constants, supplData, events)
-            })
+            enrollmentEvents
+        ) { rules, variables, constants, supplData, events ->
+            RuleEngineHelper.getRuleEngine(rules, variables, constants, supplData, events)
+        }
             .toFlowable()
             .cacheWithInitialCapacity(1)
     }

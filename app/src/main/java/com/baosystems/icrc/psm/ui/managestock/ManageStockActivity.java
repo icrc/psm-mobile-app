@@ -1,6 +1,7 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION;
+import static com.baosystems.icrc.psm.utils.DebugUtilsKt.printRuleEffects;
 import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
 
 import android.content.Context;
@@ -45,7 +46,6 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 @AndroidEntryPoint
 public class ManageStockActivity extends BaseActivity {
@@ -60,8 +60,7 @@ public class ManageStockActivity extends BaseActivity {
         public void updateFields(StockItem item, @Nullable String qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
             // TODO: remove logging below (just for debugging)
-            Timber.d(">>>>>>     Rule Effects");
-            ruleEffects.forEach(System.out::println);
+            printRuleEffects("Final RuleEffects", ruleEffects, null);
 
             ruleEffects.forEach(ruleEffect -> {
                 if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
