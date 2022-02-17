@@ -19,6 +19,8 @@ android {
         versionName versions.versionName
         multiDexEnabled true
 
+        setProperty("archivesBaseName", "psm-v" + versions.versionName)
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
