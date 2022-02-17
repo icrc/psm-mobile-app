@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.ui.scanner;
 
 import static com.baosystems.icrc.psm.utils.ActivityManager.hasFlash;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +25,9 @@ public class ScannerActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Force 'portrait' mode
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scanner);
 

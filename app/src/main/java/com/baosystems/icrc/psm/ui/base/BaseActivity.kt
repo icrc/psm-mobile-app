@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.ui.base
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.SpeechRecognizer
@@ -47,6 +48,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Enforce 'portrait' mode
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         viewModel = createViewModel(disposable)
 

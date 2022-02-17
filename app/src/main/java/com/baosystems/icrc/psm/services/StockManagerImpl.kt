@@ -229,12 +229,21 @@ class StockManagerImpl @Inject constructor(
                     println("Event uid: ${eventUid}, dvUid: ${de}, value: $value")
 
                     if (NumberUtils.isCreatable(value)) {
-                        d2.trackedEntityModule()
-                            .trackedEntityDataValues()
-                            .value(eventUid, de)
-                            .blockingSet(value)
+                        try {
+                            d2.trackedEntityModule()
+                                .trackedEntityDataValues()
+                                .value(eventUid, de)
+                                .blockingSet(value)
 
-                        println("Added data value '$value' to DE $de - Event($eventUid)")
+                            println("Added data value '$value' to DE $de - Event($eventUid)")
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+
+                            // TODO: WIP
+                            if (e is D2Error) {
+                                Timber.e("Unable to save rule effect data: %s", e.errorCode().toString())
+                            }
+                        }
                     } else {
                         Timber.w("Unable to assign program action using invalid data: %s", value)
                     }
