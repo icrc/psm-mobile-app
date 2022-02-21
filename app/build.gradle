@@ -11,7 +11,7 @@ apply from: "$rootDir/dependencies.gradle"
 android {
     compileSdkVersion versions.compileSdk
     defaultConfig {
-        applicationId "com.baosystems.icrc.pharmacystockmanagement"
+        applicationId "org.icrc.dhis2.psmadvanced_test"
 
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk

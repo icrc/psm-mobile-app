@@ -1,8 +1,6 @@
 package com.baosystems.icrc.psm.utils
 
 import android.content.Context
-import com.baosystems.icrc.psm.BuildConfig
-import com.baosystems.icrc.psm.R
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.D2Configuration
 import org.hisp.dhis.android.core.D2Manager
@@ -28,8 +26,6 @@ class Sdk {
 //            }
 
             return D2Configuration.builder()
-                .appName(context.getString(R.string.app_name))
-                .appVersion(BuildConfig.VERSION_NAME)
                 .readTimeoutInSeconds(30)
                 .connectTimeoutInSeconds(30)
                 .writeTimeoutInSeconds(30)
