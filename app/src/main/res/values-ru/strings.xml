@@ -15,10 +15,10 @@
     <string name="select_one">Выбери один</string>
 
     <!-- Sign in -->
-    <string name="server_url">URL-адрес сервера</string>
+    <string name="server">Сервер:</string>
     <string name="sign_in">Войти</string>
     <string name="sign_in_to_your_account">Войдите в свой аккаунт</string>
-    <string name="sign_in_to_with_oidc">Войти через Microsoft</string>
+    <string name="sign_in_to_with_oidc">Войти с учетной записью МККК</string>
     <string name="non_icrc_staff_members">Только для сотрудников, не являющихся сотрудниками МККК.</string>
     <string name="icrc_staff_members">Только для сотрудников МККК</string>
     <string name="username">Имя пользователя</string>

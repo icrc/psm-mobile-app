@@ -1,7 +1,7 @@
 package com.baosystems.icrc.psm.ui.login
 
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
+import com.baosystems.icrc.psm.BuildConfig
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
     val username: MutableLiveData<String> = MutableLiveData()
     val password: MutableLiveData<String> = MutableLiveData()
 
-    val serverUrl: MutableLiveData<String> = MutableLiveData()
+    val serverUrl = BuildConfig.SERVER_URL
     val loginInProgress: MutableLiveData<Boolean> = MutableLiveData(false)
     val canLogin: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -54,9 +54,8 @@ class LoginViewModel @Inject constructor(
     fun login() {
         val loginUser = username.value
         val loginPwd = password.value
-        val loginUrl = serverUrl.value
 
-        if (loginUser == null || loginPwd == null || loginUrl == null) {
+        if (loginUser == null || loginPwd == null) {
           return
         }
 
@@ -65,7 +64,7 @@ class LoginViewModel @Inject constructor(
 
         disposable.add(
             userManager
-                .login(loginUser, loginPwd, loginUrl)
+                .login(loginUser, loginPwd, serverUrl)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doOnComplete {
@@ -123,11 +122,6 @@ class LoginViewModel @Inject constructor(
         updateLoginStatus()
     }
 
-    private fun isServerUrlValid(serverUrl: String?): Boolean {
-        return serverUrl != null &&
-                Patterns.WEB_URL.matcher(serverUrl).matches()
-    }
-
     private fun isUserNameValid(username: String?): Boolean {
         return username != null && username.trim().isNotEmpty()
     }
@@ -143,18 +137,12 @@ class LoginViewModel @Inject constructor(
     private fun saveUserCredentials(): Completable {
         return Completable.create {
             with(preferenceProvider) {
-                setValue(Constants.SERVER_URL, serverUrl.value)
-                setValue(Constants.USERNAME, username.value)
-
                 val prefUserName = username.value
-                val prefServerUrl = serverUrl.value
 
-                if (prefServerUrl != null)
-                    setValue(Constants.SERVER_URL, prefServerUrl)
+                setValue(Constants.SERVER_URL, serverUrl)
 
                 if (prefUserName != null)
                     setValue(Constants.USERNAME, prefUserName)
-
             }
         }
     }
@@ -162,15 +150,13 @@ class LoginViewModel @Inject constructor(
     private fun loadUserCredentials(): Completable {
         return Completable.create {
             with(preferenceProvider) {
-                serverUrl.value = getString(Constants.SERVER_URL, "")
-                username.value = getString(Constants.USERNAME, "")
+                username.value = getString(Constants.USERNAME, "") ?: ""
             }
         }
     }
 
     private fun updateLoginStatus() {
-        canLogin.value = isServerUrlValid(serverUrl.value) &&
-                            isUserNameValid(username.value) &&
+        canLogin.value = isUserNameValid(username.value) &&
                             isPasswordValid(password.value) &&
                             loginInProgress.value == false
     }

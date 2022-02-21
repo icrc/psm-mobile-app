@@ -11,7 +11,17 @@
     <!-- Sign in -->
     <dimen name="server_url_lr_margin">40dp</dimen>
     <dimen name="sign_in_lr_margin">40dp</dimen>
-    <dimen name="server_url_bottom_margin">56dp</dimen>
+    <dimen name="server_container_padding">12dp</dimen>
+    <dimen name="server_url_padding">8dp</dimen>
+    <dimen name="sign_in_header_label_top_margin">48dp</dimen>
+    <dimen name="sign_in_header_label_bottom_margin">24dp</dimen>
+    <dimen name="username_top_margin">24dp</dimen>
+    <dimen name="password_top_margin">12dp</dimen>
+    <dimen name="sign_in_button_top_margin">32dp</dimen>
+    <dimen name="staff_members_label_top_margin">48dp</dimen>
+    <dimen name="oidc_button_top_margin">24dp</dimen>
+    <dimen name="contact_label_top_margin">64dp</dimen>
+    <dimen name="login_container_precent_width1">0.8</dimen>
 
 
     <!-- Toolbar -->
@@ -73,9 +83,8 @@
     <dimen name="margin_32">32dp</dimen>
     <dimen name="margin_64">64dp</dimen>
 
-    <dimen name="scan_button_corner_radius">24dp</dimen>
+    <dimen name="round_button_corner_radius">24dp</dimen>
     <dimen name="scan_button_tb_padding">8dp</dimen>
-    <dimen name="search_field_corner_radius">24dp</dimen>
 
     <!-- Footer -->
     <dimen name="last_sync_label_top_margin">8dp</dimen>

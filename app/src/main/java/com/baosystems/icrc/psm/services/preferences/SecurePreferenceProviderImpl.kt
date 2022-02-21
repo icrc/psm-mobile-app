@@ -45,9 +45,6 @@ class SecurePreferenceProviderImpl @Inject constructor(
             putString(Constants.SERVER_URL, serverUrl)
             putString(Constants.USERNAME, userName)
 
-            if (pass.isNotEmpty())
-                putString(Constants.PASSWORD, pass)
-
             apply()
         }
     }

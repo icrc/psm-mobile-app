@@ -4,7 +4,6 @@
     <!-- Sign in -->
     <dimen name="server_url_lr_margin">100dp</dimen>
     <dimen name="sign_in_lr_margin">100dp</dimen>
-    <dimen name="server_url_bottom_margin">56dp</dimen>
 
     <!-- Transaction buttons -->
     <dimen name="transaction_button_text_size">21sp</dimen>

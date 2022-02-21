@@ -14,4 +14,10 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="SignInHeader">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/emphasized_text_color</item>
+    </style>
 </resources>

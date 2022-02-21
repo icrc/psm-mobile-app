@@ -27,18 +27,22 @@
     <color name="gray_700">#616161</color>
     <color name="gray_900">#212121</color>
 
-    <color name="primaryColor">#FF62A3BB</color>
-    <color name="primaryLightColor">#484848</color>
-    <color name="primaryDarkColor">#000000</color>
-    <color name="secondaryColor">#62A3BB</color>
-    <color name="secondaryLightColor">#94d4ed</color>
-    <color name="secondaryDarkColor">#2f748b</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
+    <color name="primary_color">#FF62A3BB</color>
+    <color name="primary_light_color">#94D4ED</color>
+    <color name="primary_dark_color">#2F748B</color>
+
+    <color name="secondary_color">#62A3BB</color>
+    <color name="secondary_light_color">#94d4ed</color>
+    <color name="secondary_dark_color">#2f748b</color>
+    <color name="primary_text_color">#ffffff</color>
+    <color name="secondary_text_color">#ffffff</color>
 
     <color name="input_field_icon_color_tint">#656565</color>
     <color name="table_text_color">#2E384D</color>
     <color name="button_highlight_color">#D685CDE8</color>
+
+    <color name="emphasized_text_color">#2E384D</color>
+    <color name="normal_text_color">#757D84</color>
 
     <color name="amber">#FFBF00</color>
     <color name="viewfinder_mask">#E0161616</color>

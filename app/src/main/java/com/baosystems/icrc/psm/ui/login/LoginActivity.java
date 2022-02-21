@@ -53,11 +53,7 @@ public class LoginActivity extends BaseActivity {
         binding.setViewModel(loginViewModel);
         binding.setLifecycleOwner(this);
 
-        // TODO: Ensure the user doesn't have to enter the server URL and username everytime.
-        //  Save it in Preferences for reuse
-
-        // TODO: Flag errors in URL field, if any
-        binding.serverUrlTextField.addTextChangedListener(afterTextChangedListener);
+        binding.serverUrlTextview.setText(loginViewModel.getServerUrl());
         binding.usernameTextField.addTextChangedListener(afterTextChangedListener);
         binding.passwordTextField.addTextChangedListener(afterTextChangedListener);
         binding.signInButton.setOnClickListener(view -> login());

@@ -16,10 +16,10 @@
     <string name="select_one">Sélectionnez-en un</string>
 
     <!-- Sign in -->
-    <string name="server_url">URL du serveur</string>
+    <string name="server">Serveur:</string>
     <string name="sign_in">S\'identifier</string>
     <string name="sign_in_to_your_account">Connectez-vous à votre compte</string>
-    <string name="sign_in_to_with_oidc">Connectez-vous avec Microsoft</string>
+    <string name="sign_in_to_with_oidc">Connectez-vous avec votre compte ICRC</string>
     <string name="non_icrc_staff_members">Pour les non-membres du personnel du CICR uniquement</string>
     <string name="icrc_staff_members">Pour les membres du personnel du CICR uniquement</string>
     <string name="username">Nom d\'utilisateur</string>
