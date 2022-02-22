@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.AppConfig;
-import com.baosystems.icrc.psm.data.NetworkState;
+import com.baosystems.icrc.psm.data.OperationState;
 import com.baosystems.icrc.psm.data.TransactionType;
 import com.baosystems.icrc.psm.data.persistence.UserActivity;
 import com.baosystems.icrc.psm.databinding.ActivityHomeBinding;
@@ -33,7 +33,6 @@ import com.baosystems.icrc.psm.ui.adapters.RecentActivityAdapter;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.GenericListAdapter;
 import com.baosystems.icrc.psm.ui.managestock.ManageStockActivity;
-import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.DateUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -88,22 +87,22 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void attachObservers() {
-        viewModel.getFacilities().observe(this, networkState -> {
-            if (reportNetworkError(networkState)) return;
+        viewModel.getFacilities().observe(this, operationState -> {
+            if (reportNetworkError(operationState)) return;
 
-            if (networkState instanceof NetworkState.Success) {
+            if (operationState instanceof OperationState.Success) {
                 List<OrganisationUnit> facilities =
-                        ((NetworkState.Success<List<OrganisationUnit>>) networkState).getResult();
+                        ((OperationState.Success<List<OrganisationUnit>>) operationState).getResult();
                 facilityTextView.setAdapter(
                         new GenericListAdapter<>(this, R.layout.list_item, facilities));
             }
         });
 
-        viewModel.getDestinationsList().observe(this, networkState -> {
-            if (reportNetworkError(networkState)) return;
+        viewModel.getDestinationsList().observe(this, operationState -> {
+            if (reportNetworkError(operationState)) return;
 
-            if (networkState instanceof NetworkState.Success) {
-                List<Option> destinations = ((NetworkState.Success<List<Option>>) networkState).getResult();
+            if (operationState instanceof OperationState.Success) {
+                List<Option> destinations = ((OperationState.Success<List<Option>>) operationState).getResult();
                 distributedToTextView.setAdapter(
                         new GenericListAdapter<>(
                                 this, R.layout.list_item, destinations
@@ -118,10 +117,10 @@ public class HomeActivity extends BaseActivity {
         });
     }
 
-    private <T> boolean reportNetworkError(NetworkState<T> networkState) {
-        if (networkState.getClass() == NetworkState.Error.class) {
-            ActivityManager.showErrorMessage(binding.getRoot(),
-                    getString(((NetworkState.Error) networkState).getErrorStringRes()));
+    private <T> boolean reportNetworkError(OperationState<T> operationState) {
+        if (operationState.getClass() == OperationState.Error.class) {
+            displayError(binding.getRoot(),
+                    ((OperationState.Error) operationState).getErrorStringRes());
             return true;
         }
         return false;
@@ -219,22 +218,22 @@ public class HomeActivity extends BaseActivity {
     private void setupRecentActivities() {
         recentActivityAdapter = new RecentActivityAdapter();
         recentActivitiesRecyclerView.setAdapter(recentActivityAdapter);
-        viewModel.getRecentActivities().observe(this, networkState -> {
+        viewModel.getRecentActivities().observe(this, operationState -> {
             // Loading
-            if (networkState == NetworkState.Loading.INSTANCE) {
+            if (operationState == OperationState.Loading.INSTANCE) {
                 showLoadingRecentActivities();
                 return;
             }
 
             // Error
-            if (networkState.getClass() == NetworkState.Error.class) {
-                showRecentActivitiesError(networkState);
+            if (operationState.getClass() == OperationState.Error.class) {
+                showRecentActivitiesError(operationState);
                 return;
             }
 
             // Success
-            if (networkState.getClass() == NetworkState.Success.class) {
-                showRecentActivities(networkState);
+            if (operationState.getClass() == OperationState.Success.class) {
+                showRecentActivities(operationState);
             }
         });
 
@@ -251,7 +250,7 @@ public class HomeActivity extends BaseActivity {
         binding.recentActivityMessageTextview.setTextAppearance(R.style.ListNormal);
     }
 
-    private void showRecentActivitiesError(NetworkState<List<UserActivity>> networkState) {
+    private void showRecentActivitiesError(OperationState<List<UserActivity>> operationState) {
         resetRecentActivitiesState();
 
         binding.recentActivityMessageTextview.setCompoundDrawablesWithIntrinsicBounds(
@@ -261,16 +260,16 @@ public class HomeActivity extends BaseActivity {
                 null
         );
 
-        int errorRes = ((NetworkState.Error) networkState).getErrorStringRes();
+        int errorRes = ((OperationState.Error) operationState).getErrorStringRes();
         binding.recentActivityMessageTextview.setText(errorRes);
         binding.recentActivityMessageTextview.setTextAppearance(R.style.ListError);
     }
 
-    private void showRecentActivities(NetworkState<List<UserActivity>> networkState) {
+    private void showRecentActivities(OperationState<List<UserActivity>> operationState) {
         resetRecentActivitiesState();
 
         List<UserActivity> activities =
-                ((NetworkState.Success<List<UserActivity>>) networkState).getResult();
+                ((OperationState.Success<List<UserActivity>>) operationState).getResult();
 
         if (!activities.isEmpty()) {
             binding.recentActivityList.setVisibility(View.VISIBLE);
@@ -301,10 +300,7 @@ public class HomeActivity extends BaseActivity {
 
     private void navigateToManageStock() {
         if (!viewModel.readyManageStock()) {
-            ActivityManager.showErrorMessage(
-                    binding.getRoot(),
-                    this.getString(R.string.cannot_proceed_from_home_warning)
-            );
+            displayError(binding.getRoot(), R.string.cannot_proceed_from_home_warning);
             return;
         }
 

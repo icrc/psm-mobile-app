@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.NetworkState;
+import com.baosystems.icrc.psm.data.OperationState;
 import com.baosystems.icrc.psm.data.models.StockItem;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
@@ -73,8 +73,7 @@ public class ManageStockActivity extends BaseActivity {
 
                     viewModel.addItem(item, qty, stockOnHand, !isValid);
                     if (!isValid) {
-                        ActivityManager.showErrorMessage(binding.getRoot(),
-                                getString(R.string.stock_on_hand_exceeded_message));
+                        displayError(binding.getRoot(), R.string.stock_on_hand_exceeded_message);
                     }
 
                     updateItemView(position);
@@ -185,7 +184,7 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private void setupObservers() {
-        viewModel.getNetworkState().observe(this, this::updateState);
+        viewModel.getOperationState().observe(this, this::updateState);
 
         viewModel.getStockItems().observe(this, pagedListLiveData -> {
             adapter.submitList(pagedListLiveData);
@@ -234,13 +233,13 @@ public class ManageStockActivity extends BaseActivity {
         binding.noResultsTextView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    private <T> void updateState(NetworkState<T> networkState) {
-        if (networkState == NetworkState.Loading.INSTANCE) {
+    private <T> void updateState(OperationState<T> operationState) {
+        if (operationState == OperationState.Loading.INSTANCE) {
             updateStocklistInfoBox(R.drawable.ic_loading_items, R.string.loading_items_message, true);
             return;
         }
 
-        if (networkState.getClass() == NetworkState.Completed.class) {
+        if (operationState.getClass() == OperationState.Completed.class) {
             updateStocklistInfoBox(null, null, false);
         }
     }

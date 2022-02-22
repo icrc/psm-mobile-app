@@ -271,4 +271,8 @@ abstract class BaseActivity : AppCompatActivity() {
         Timber.d("Speech status error: code = %d, message = %s", code, message)
         showErrorMessage(binding.root, message)
     }
+
+    fun displayError(view: View, messageRes: Int) {
+        showErrorMessage(view, getString(messageRes))
+    }
 }
