@@ -164,4 +164,11 @@
     <string name="speech_timeout_error">Речевой ввод не обнаружен</string>
     <string name="unknown_speech_error">Произошла неизвестная ошибка</string>
     <string name="non_numeric_speech_input_error">Нечисловой ввод запрещен: \"%s\"</string>
+
+    <string name="openid_config_load_error">Не удалось загрузить конфигурацию OpenID</string>
+    <string name="unexpected_openid_authentication_error">
+        Произошла непредвиденная ошибка при аутентификации с помощью OpenID
+    </string>
+    <string name="no_network_available">Нет доступного сетевого подключения</string>
+    <string name="openid_authentication_not_successful">Не удается пройти аутентификацию с помощью OpenID</string>
 </resources>

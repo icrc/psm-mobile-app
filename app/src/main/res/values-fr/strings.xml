@@ -160,4 +160,12 @@
     <string name="speech_timeout_error">Aucune entrée vocale détectée</string>
     <string name="unknown_speech_error">Une erreur inconnue est survenue</string>
     <string name="non_numeric_speech_input_error">La saisie non numérique n\'est pas autorisée: \"%s\"</string>
+
+    <string name="openid_config_load_error">Impossible de charger la configuration OpenID</string>
+    <string name="unexpected_openid_authentication_error">
+        Une erreur inattendue s\'est produite lors de l\'authentification avec OpenID
+    </string><string name="no_network_available">Aucune connexion réseau disponible</string>
+    <string name="openid_authentication_not_successful">
+        Impossible de s\'authentifier avec OpenID
+    </string>
 </resources>

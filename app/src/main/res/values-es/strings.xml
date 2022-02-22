@@ -148,7 +148,9 @@
     <string name="permission_denied">Permiso denegado</string>
 
     <!-- Speech error messages -->
-    <string name="insufficient_speech_permissions_error">Permisos insuficientes. Solicitar permiso de android.RECORD_AUDIO</string>
+    <string name="insufficient_speech_permissions_error">
+        Permisos insuficientes. Solicitar permiso de android.RECORD_AUDIO
+    </string>
     <string name="speech_audio_error">Error de grabación de audio</string>
     <string name="speech_client_error">Error del lado del cliente. ¡Por favor revise su conexion a internet!</string>
     <string name="speech_network_error">Error de red</string>
@@ -159,4 +161,11 @@
     <string name="speech_timeout_error">No se detectó ninguna entrada de voz</string>
     <string name="unknown_speech_error">Un error desconocido ocurrió</string>
     <string name="non_numeric_speech_input_error">No se permite la entrada no numérica: \"%s\"</string>
+
+    <string name="openid_config_load_error">No se puede cargar la configuración de OpenID</string>
+    <string name="unexpected_openid_authentication_error">
+        Ocurrió un error inesperado al autenticarse con OpenID
+    </string>
+    <string name="no_network_available">No hay conexión de red disponible</string>
+    <string name="openid_authentication_not_successful">No se puede autenticar con OpenID</string>
 </resources>

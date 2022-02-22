@@ -56,8 +56,8 @@ class HomeViewModel @Inject constructor(
     val transactionDate: LiveData<LocalDateTime>
         get() = _transactionDate
 
-    private val _destination: MutableLiveData<Option> = MutableLiveData(null)
-    val destination: LiveData<Option>
+    private val _destination: MutableLiveData<Option?> = MutableLiveData(null)
+    val destination: LiveData<Option?>
         get() = _destination
 
     private val _facilities = MutableLiveData<OperationState<List<OrganisationUnit>>>()

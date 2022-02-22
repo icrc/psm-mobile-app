@@ -185,4 +185,11 @@
     <string name="contact_service_desk_message" translatable="false">
         In case of problems, \nplease contact <a href="servicedesk@icrc.org">ICRC service desk</a>
     </string>
+
+    <string name="openid_config_load_error">Unable to load OpenID configuration</string>
+    <string name="unexpected_openid_authentication_error">
+        An unexpected error occurred while authenticating with OpenID
+    </string>
+    <string name="no_network_available">No network connection available</string>
+    <string name="openid_authentication_not_successful">Unable to authenticate with OpenID</string>
 </resources>

@@ -49,7 +49,9 @@ class UserManagerImpl @Inject constructor(val d2: D2) : UserManager {
     }
 
     override fun login(config: OpenIDConnectConfig): Observable<IntentWithRequestCode?> {
-        TODO("Not yet implemented")
+        return Observable.defer {
+            d2.userModule().openIdHandler().logIn(config).toObservable()
+        }
     }
 
     override fun handleAuthData(
@@ -57,7 +59,10 @@ class UserManagerImpl @Inject constructor(val d2: D2) : UserManager {
         data: Intent?,
         requestCode: Int
     ): Observable<User?> {
-        TODO("Not yet implemented")
+        return Observable.defer {
+            d2.userModule().openIdHandler()
+                .handleLogInResponse(serverUrl, data, requestCode).toObservable()
+        }
     }
 
     override fun isUserLoggedIn(): Observable<Boolean?> {
