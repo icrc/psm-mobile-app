@@ -190,7 +190,12 @@ public class ReviewStockActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
 
         adapter = new ReviewStockAdapter(
-                itemWatcher, getSpeechController(), viewModel.getConfig(), getVoiceInputEnabled());
+                itemWatcher,
+                getSpeechController(),
+                viewModel.getConfig(),
+                viewModel.getTransaction(),
+                getVoiceInputEnabled()
+        );
         recyclerView.setAdapter(adapter);
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);

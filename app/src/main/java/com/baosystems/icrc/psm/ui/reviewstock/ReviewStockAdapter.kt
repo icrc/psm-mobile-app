@@ -16,16 +16,21 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.baosystems.icrc.psm.ui.base.SpeechController
 import com.baosystems.icrc.psm.ui.base.TextInputDelegate
 import com.baosystems.icrc.psm.utils.ActivityManager
+import com.baosystems.icrc.psm.utils.KeyboardUtils
 import com.google.android.material.textfield.TextInputLayout
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 class ReviewStockAdapter(
-    private val itemWatcher: ItemWatcher<StockEntry, String, String>,
-    private val speechController: SpeechController?,
-    val appConfig: AppConfig,
+    private val itemWatcher: @NotNull ItemWatcher<StockEntry, String, String>,
+    private val speechController: @Nullable SpeechController?,
+    val appConfig: @NotNull AppConfig,
+    private val transaction: Transaction,
     private var voiceInputEnabled: Boolean
 ): ListAdapter<StockEntry, ReviewStockAdapter.StockEntryViewHolder>(DIFF_CALLBACK) {
     private lateinit var context: Context
@@ -53,6 +58,8 @@ class ReviewStockAdapter(
         private val btnRemoveItem: ImageButton = itemView.findViewById(R.id.remove_stock_item_image_button)
 
         init {
+            KeyboardUtils.configureInputTypeForTransaction(transaction, tvItemQtyLayout.editText)
+
             btnRemoveItem.setOnClickListener {
                 ActivityManager.showDialog(
                     context,

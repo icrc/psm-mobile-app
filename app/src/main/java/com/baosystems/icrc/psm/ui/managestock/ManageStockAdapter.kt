@@ -15,15 +15,20 @@ import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants.CLEAR_FIELD_DELAY
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.StockItem
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.baosystems.icrc.psm.ui.base.SpeechController
 import com.baosystems.icrc.psm.ui.base.TextInputDelegate
+import com.baosystems.icrc.psm.utils.KeyboardUtils
 import com.google.android.material.textfield.TextInputLayout
+import org.jetbrains.annotations.NotNull
+import org.jetbrains.annotations.Nullable
 
 class ManageStockAdapter(
-    private val itemWatcher: ItemWatcher<StockItem, String, String>,
-    private var speechController: SpeechController?,
-    val appConfig: AppConfig,
+    private val itemWatcher: @NotNull ItemWatcher<StockItem, String, String>,
+    private var speechController: @Nullable SpeechController?,
+    val appConfig: @NotNull AppConfig,
+    private val transaction: Transaction,
     private var voiceInputEnabled: Boolean
 ): PagedListAdapter<
         StockItem, ManageStockAdapter.StockItemHolder>(DIFF_CALLBACK) {
@@ -69,6 +74,8 @@ class ManageStockAdapter(
         private val etQty: TextInputLayout = itemView.findViewById(R.id.item_qty_text_field)
 
         init {
+            KeyboardUtils.configureInputTypeForTransaction(transaction, etQty.editText)
+
             addTextListener()
             addFocusListener()
         }

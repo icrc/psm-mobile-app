@@ -63,7 +63,7 @@
             tools:text="20">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:inputType="numberSigned"
+                android:inputType="number"
                 android:maxLines="1"
                 android:maxLength="19"
                 android:layout_width="match_parent"

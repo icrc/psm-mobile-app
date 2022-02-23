@@ -272,6 +272,7 @@ public class ManageStockActivity extends BaseActivity {
                 itemWatcher,
                 getSpeechController(),
                 viewModel.getConfig(),
+                viewModel.getTransaction(),
                 getVoiceInputEnabled()
         );
         recyclerView.setAdapter(adapter);
