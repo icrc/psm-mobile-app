@@ -162,8 +162,8 @@ class LoginViewModel @Inject constructor(
     private fun loadUserCredentials(): Completable {
         return Completable.create {
             with(preferenceProvider) {
-                serverUrl.value = getString(Constants.SERVER_URL, "")
-                username.value = getString(Constants.USERNAME, "")
+                serverUrl.value = getString(Constants.SERVER_URL, "") ?: ""
+                username.value = getString(Constants.USERNAME, "") ?: ""
             }
         }
     }

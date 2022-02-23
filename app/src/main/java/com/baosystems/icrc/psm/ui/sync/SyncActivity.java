@@ -101,6 +101,7 @@ public class SyncActivity extends BaseActivity {
     private void showProgress(@StringRes Integer messageRes) {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.infoIcon.setVisibility(View.GONE);
+        binding.resyncButton.setVisibility(View.GONE);
         binding.infoTextView.setText(messageRes);
     }
 

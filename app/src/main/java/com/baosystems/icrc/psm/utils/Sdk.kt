@@ -6,6 +6,7 @@ import com.baosystems.icrc.psm.R
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.D2Configuration
 import org.hisp.dhis.android.core.D2Manager
+import org.hisp.dhis.android.core.maintenance.D2Error
 
 class Sdk {
     companion object {
@@ -30,12 +31,25 @@ class Sdk {
             return D2Configuration.builder()
                 .appName(context.getString(R.string.app_name))
                 .appVersion(BuildConfig.VERSION_NAME)
-                .readTimeoutInSeconds(30)
-                .connectTimeoutInSeconds(30)
-                .writeTimeoutInSeconds(30)
+                .readTimeoutInSeconds(10 * 60)
+                .connectTimeoutInSeconds(10 * 60)
+                .writeTimeoutInSeconds(10 * 60)
 //                .networkInterceptors(networkInterceptors)
                 .context(context)
                 .build()
+        }
+
+        fun getFriendlyErrorMessage(throwable: Throwable): String? {
+            return when {
+                throwable.cause is D2Error -> processD2Error(throwable.cause as D2Error)
+                throwable is D2Error -> processD2Error(throwable)
+                else -> throwable.localizedMessage
+            }
+        }
+
+        // TODO: Use localized string resources to return a friendly message
+        private fun processD2Error(d2Error: D2Error?): String? {
+            return d2Error?.errorCode()?.name
         }
     }
 }
