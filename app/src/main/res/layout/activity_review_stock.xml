@@ -167,7 +167,7 @@
             android:paddingStart="@dimen/fab_lr_padding"
             android:paddingEnd="@dimen/fab_lr_padding"
             app:cornerRadius="@dimen/fab_corner_radius"
-            android:text="@string/transaction_label"
+            android:text="@string/commit_transaction_label"
             app:icon="@drawable/ic_commit"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"

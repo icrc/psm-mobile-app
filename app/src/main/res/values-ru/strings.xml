@@ -134,7 +134,7 @@
     <string name="content_desc_recent_activity">Направленная стрелка</string>
     <string name="content_desc_recent_activity_status">Статус недавней активности</string>
 
-    <string name="transaction_label">Сделка</string>
+    <string name="commit_transaction_label">Совершить</string>
     <string name="missing_configuration">В файле конфигурации отсутствуют одно или несколько обязательных полей.</string>
     <string name="select_language">Выберите желаемый язык</string>
 

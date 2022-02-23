@@ -130,7 +130,7 @@
     <string name="content_desc_recent_activity">Flèche directionnelle</string>
     <string name="content_desc_recent_activity_status">Statut de l\'activité récente</string>
 
-    <string name="transaction_label">Transaction</string>
+    <string name="commit_transaction_label">S\'engager</string>
     <string name="missing_configuration">Un ou plusieurs champs obligatoires sont manquants dans le fichier de configuration</string>
     <string name="select_language">Sélectionnez la langue souhaitée</string>
 
