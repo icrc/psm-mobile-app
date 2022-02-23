@@ -86,35 +86,7 @@
                     tools:text="Diagnostic imaging (X-Ray)" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_field_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_marginEnd="@dimen/margin_16"
-                app:boxCornerRadiusBottomEnd="@dimen/search_field_corner_radius"
-                app:boxCornerRadiusBottomStart="@dimen/search_field_corner_radius"
-                app:boxCornerRadiusTopEnd="@dimen/scan_button_corner_radius"
-                app:boxCornerRadiusTopStart="@dimen/scan_button_corner_radius"
-                app:endIconContentDescription="@string/content_description_clear_text"
-                app:endIconDrawable="@drawable/ic_clear_24"
-                app:endIconMode="clear_text"
-                app:layout_constraintEnd_toStartOf="@+id/scan_button"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/choices_container"
-                app:placeholderText="@string/search"
-                app:startIconContentDescription="@string/content_description_search"
-                app:startIconDrawable="@drawable/ic_search_24"
-                app:startIconTint="@color/input_field_icon_color_tint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/search_input_field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <include android:id="@+id/search_field_layout" layout="@layout/search_field" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/scan_button"
@@ -195,7 +167,7 @@
             android:paddingStart="@dimen/fab_lr_padding"
             android:paddingEnd="@dimen/fab_lr_padding"
             app:cornerRadius="@dimen/fab_corner_radius"
-            android:text="@string/transaction_label"
+            android:text="@string/commit_transaction_label"
             app:icon="@drawable/ic_commit"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,6 @@
 <resources>
     <dimen name="splash_screen_text_size">24sp</dimen>
-    <dimen name="splash_screen_text_top_margin">32dp</dimen>
+    <dimen name="splash_screen_text_top_margin">16dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_right_margin">8dp</dimen>

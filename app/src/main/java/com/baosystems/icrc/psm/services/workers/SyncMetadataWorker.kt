@@ -43,8 +43,8 @@ class SyncMetadataWorker @AssistedInject constructor(
 
         triggerNotification(
             R.string.app_name,
-            R.string.metadata_sync_completed,
-            R.drawable.ic_end_sync_notification
+            if (metadataSynced) R.string.metadata_sync_completed else R.string.metadata_sync_error,
+            if (metadataSynced) R.drawable.ic_end_sync_notification else R.drawable.ic_sync_canceled_notification
         )
 
         val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
@@ -53,12 +53,13 @@ class SyncMetadataWorker @AssistedInject constructor(
 
         cancelNotification(Constants.SYNC_METADATA_NOTIFICATION_ID)
 
-        if (!metadataSynced)
-            return Result.failure()
-
         syncManager.schedulePeriodicMetadataSync()
 
-        return Result.success()
+        return if (metadataSynced) {
+            Result.success()
+        } else {
+            Result.failure()
+        }
     }
 
     private fun triggerNotification(title: Int, message: Int, icon: Int?) {

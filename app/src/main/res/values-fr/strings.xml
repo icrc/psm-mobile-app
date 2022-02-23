@@ -38,13 +38,13 @@
     <string name="sync_completed">Synchronisation terminée!</string>
 
     <!-- FloatingActionButtons -->
-    <string name="next">Prochain</string>
+    <string name="proceed">procéder</string>
     <string name="review">Revoir</string>
     <string name="transaction">Transaction</string>
 
     <string name="scan_barcode">Scannez le code-barres</string>
     <string name="scanning">Balayage&#8230;</string>
-    <string name="search">Chercher</string>
+    <string name="search">Rechercher un élément</string>
     <string name="delete">Effacer</string>
     <string name="ok">D\'accord</string>
     <string name="cancel">Annuler</string>
@@ -130,7 +130,7 @@
     <string name="content_desc_recent_activity">Flèche directionnelle</string>
     <string name="content_desc_recent_activity_status">Statut de l\'activité récente</string>
 
-    <string name="transaction_label">Transaction</string>
+    <string name="commit_transaction_label">S\'engager</string>
     <string name="missing_configuration">Un ou plusieurs champs obligatoires sont manquants dans le fichier de configuration</string>
     <string name="select_language">Sélectionnez la langue souhaitée</string>
 

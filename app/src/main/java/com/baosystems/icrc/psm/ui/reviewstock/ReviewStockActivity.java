@@ -164,7 +164,7 @@ public class ReviewStockActivity extends BaseActivity {
                                 getString(R.string.scan_canceled));
                     } else {
                         String data = scanIntentResult.getContents();
-                        binding.searchInputField.setText(data);
+                        binding.searchFieldLayout.searchInputField.setText(data);
                     }
                 });
         binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
@@ -190,7 +190,12 @@ public class ReviewStockActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
 
         adapter = new ReviewStockAdapter(
-                itemWatcher, getSpeechController(), viewModel.getConfig(), getVoiceInputEnabled());
+                itemWatcher,
+                getSpeechController(),
+                viewModel.getConfig(),
+                viewModel.getTransaction(),
+                getVoiceInputEnabled()
+        );
         recyclerView.setAdapter(adapter);
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);
@@ -201,7 +206,7 @@ public class ReviewStockActivity extends BaseActivity {
     }
 
     private void setupSearchInput() {
-        TextInputEditText searchField = binding.searchInputField;
+        TextInputEditText searchField = binding.searchFieldLayout.searchInputField;
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(

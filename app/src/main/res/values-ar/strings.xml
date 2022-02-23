@@ -38,13 +38,13 @@
     <string name="sync_completed">اكتملت المزامنة!</string>
 
     <!-- FloatingActionButtons -->
-    <string name="next">التالي</string>
+    <string name="proceed">تقدم</string>
     <string name="review">إعادة النظر</string>
     <string name="transaction">عملية تجارية</string>
 
     <string name="scan_barcode">مسح الرمز الشريطى</string>
     <string name="scanning">&#8230;يتم المسح</string>
-    <string name="search">بحث</string>
+    <string name="search">عنصر البحث</string>
     <string name="delete">حذف</string>
     <string name="ok">نعم</string>
     <string name="cancel">يلغي</string>
@@ -131,7 +131,7 @@
     <string name="content_desc_recent_activity">سهم اتجاهي</string>
     <string name="content_desc_recent_activity_status">حالة النشاط الأخيرة</string>
 
-    <string name="transaction_label">عملية تجارية</string>
+    <string name="commit_transaction_label">ارتكب</string>
     <string name="missing_configuration">واحد أو أكثر من الحقول المطلوبة مفقود في ملف التكوين</string>
     <string name="select_language">حدد اللغة التي تريدها</string>
 

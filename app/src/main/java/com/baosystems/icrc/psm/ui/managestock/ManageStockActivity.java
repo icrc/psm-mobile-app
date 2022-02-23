@@ -178,7 +178,7 @@ public class ManageStockActivity extends BaseActivity {
                     } else {
                         String data = scanIntentResult.getContents();
                         viewModel.onScanCompleted(data);
-                        binding.searchInputField.setText(data);
+                        binding.searchFieldLayout.searchInputField.setText(data);
                     }
                 });
         binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
@@ -272,6 +272,7 @@ public class ManageStockActivity extends BaseActivity {
                 itemWatcher,
                 getSpeechController(),
                 viewModel.getConfig(),
+                viewModel.getTransaction(),
                 getVoiceInputEnabled()
         );
         recyclerView.setAdapter(adapter);
@@ -285,7 +286,7 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     private void setupSearchInput() {
-        TextInputEditText searchInputField = binding.searchInputField;
+        TextInputEditText searchInputField = binding.searchFieldLayout.searchInputField;
         searchInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(

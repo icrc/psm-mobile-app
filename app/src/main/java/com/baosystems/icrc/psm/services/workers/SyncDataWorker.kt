@@ -10,6 +10,7 @@ import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_CHANNEL_NAME
 import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_NOTIFICATION_CHANNEL
 import com.baosystems.icrc.psm.commons.Constants.SYNC_DATA_NOTIFICATION_ID
 import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.SyncResult
 import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.utils.DateUtils
@@ -41,27 +42,34 @@ class SyncDataWorker @AssistedInject constructor(
             syncManager.syncTEIs(appConfig.program)
             teiSynced = true
         } catch (e: Exception) {
-            // TODO: Handle situations where the error is due to no network
             Timber.e(e)
+            e.printStackTrace()
         }
 
         triggerNotification(
             R.string.app_name,
-            R.string.sync_completed,
-            R.drawable.ic_end_sync_notification
+            if (teiSynced) R.string.sync_completed else R.string.data_sync_error,
+            if (teiSynced) R.drawable.ic_end_sync_notification else R.drawable.ic_sync_canceled_notification
         )
 
         val syncDate = LocalDateTime.now().format(DateUtils.getDateTimePattern())
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_DATE, syncDate)
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_STATUS, teiSynced)
 
-        val syncStatus = syncManager.checkSyncStatus()
+        val syncStatus: SyncResult = if (teiSynced) {
+            syncManager.checkSyncStatus()
+        } else { SyncResult.ERRORED }
+
         preferenceProvider.setValue(Constants.LAST_DATA_SYNC_RESULT, syncStatus.name)
 
         cancelNotification(SYNC_DATA_NOTIFICATION_ID)
         syncManager.schedulePeriodicDataSync()
 
-        return Result.success()
+        return if (teiSynced) {
+            Result.success()
+        } else {
+            Result.failure()
+        }
     }
 
     private fun triggerNotification(title: Int, message: Int, icon: Int?) {
