@@ -38,7 +38,7 @@
     <string name="sync_completed">اكتملت المزامنة!</string>
 
     <!-- FloatingActionButtons -->
-    <string name="next">التالي</string>
+    <string name="proceed">تقدم</string>
     <string name="review">إعادة النظر</string>
     <string name="transaction">عملية تجارية</string>
 

@@ -38,7 +38,7 @@
     <string name="sync_completed">¡Sincronización completada!</string>
 
     <!-- FloatingActionButtons -->
-    <string name="next">próximo</string>
+    <string name="proceed">Continuar</string>
     <string name="review">Revisar</string>
     <string name="transaction">Transacción</string>
 

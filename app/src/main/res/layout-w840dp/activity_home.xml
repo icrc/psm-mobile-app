@@ -279,7 +279,7 @@
             android:paddingStart="@dimen/fab_lr_padding"
             android:paddingEnd="@dimen/fab_lr_padding"
             app:cornerRadius="@dimen/fab_corner_radius"
-            android:text="@string/next"
+            android:text="@string/proceed"
             app:icon="@drawable/arrow_forward"
             app:iconGravity="textEnd"
             app:layout_constraintBottom_toTopOf="@id/home_footer"
