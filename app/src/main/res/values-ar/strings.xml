@@ -44,7 +44,7 @@
 
     <string name="scan_barcode">مسح الرمز الشريطى</string>
     <string name="scanning">&#8230;يتم المسح</string>
-    <string name="search">بحث</string>
+    <string name="search">عنصر البحث</string>
     <string name="delete">حذف</string>
     <string name="ok">نعم</string>
     <string name="cancel">يلغي</string>

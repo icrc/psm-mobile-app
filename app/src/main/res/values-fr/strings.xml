@@ -44,7 +44,7 @@
 
     <string name="scan_barcode">Scannez le code-barres</string>
     <string name="scanning">Balayage&#8230;</string>
-    <string name="search">Chercher</string>
+    <string name="search">Rechercher un élément</string>
     <string name="delete">Effacer</string>
     <string name="ok">D\'accord</string>
     <string name="cancel">Annuler</string>

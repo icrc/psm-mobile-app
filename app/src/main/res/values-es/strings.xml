@@ -44,7 +44,7 @@
 
     <string name="scan_barcode">Escanear código de barras</string>
     <string name="scanning">Exploración&#8230;</string>
-    <string name="search">Buscar</string>
+    <string name="search">elemento de búsqueda</string>
     <string name="delete">Borrar</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>

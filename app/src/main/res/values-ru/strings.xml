@@ -44,7 +44,7 @@
     <string name="scan_barcode">Сканировать штрих-код</string>
 
     <string name="scanning">Сканирование&#8230;</string>
-    <string name="search">Поиск</string>
+    <string name="search">Элемент поиска</string>
     <string name="delete">Удалить</string>
     <string name="ok">Ok</string>
     <string name="cancel">Отмена</string>
