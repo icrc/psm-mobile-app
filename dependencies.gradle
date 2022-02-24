@@ -21,22 +21,22 @@ ext.versions = [
     preference_ktx              : '1.2.0',
     legacy_support_v4           : '1.0.0',
     desugar_jdk_libs            : '1.1.5',
-    room                        : '2.4.1',
+    room                        : '2.4.2',
     workmanager                 : '2.7.1',
 
     // security
     security_crypto             : '1.0.0',
     security_identity           : '1.0.0-alpha02',
     security_authenticator      : '1.0.0-alpha02',
-    openid                      : '0.7.1',
+    openid                      : '0.11.1',
 
     // DI
-    hilt                        : '2.40.5',
+    hilt                        : '2.41',
     hilt_work                   : '1.0.0',
 
     // DHIS2
     dhis_core                   : '1.5.2',
-    dhis_rules_engine           : '2.0.34',
+    dhis_rules_engine           : '2.0.36',
 
     // Rx
     rxjava                      : '2.2.21',
@@ -58,6 +58,6 @@ ext.versions = [
     espresso_core               : '3.4.0',
 
     // debugging
-    flipper                     : '0.134.0',
+    flipper                     : '0.136.0',
     soloader                    : '0.10.3'
 ]
