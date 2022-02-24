@@ -112,18 +112,23 @@ class SpeechRecognitionManagerImpl(
     private fun validateInput(inputStr: String): SpeechRecognitionState {
         // Only CORRECTION transaction supports negative number input
         val isCorrection = allowNegativeNumberInput
+
+        // There are cases where a space is added after the minus sign, which results
+        // if the entire input being flagged as a non-signed number. Prevent cases
+        // like this
+        val cleanInputStr = Utils.cleanUpSignedNumber(inputStr)
         return when {
             isCorrection -> {
-                if (Utils.isSignedNumeric(inputStr))
-                    SpeechRecognitionState.Completed(inputStr)
+                if (Utils.isSignedNumeric(cleanInputStr))
+                    SpeechRecognitionState.Completed(cleanInputStr)
                 else
-                    SpeechRecognitionState.Errored(Constants.NON_NUMERIC_SPEECH_INPUT_ERROR, inputStr)
+                    SpeechRecognitionState.Errored(Constants.NON_NUMERIC_SPEECH_INPUT_ERROR, cleanInputStr)
             }
             else -> {
-                if (TextUtils.isDigitsOnly(inputStr))
-                    SpeechRecognitionState.Completed(inputStr)
+                if (TextUtils.isDigitsOnly(cleanInputStr))
+                    SpeechRecognitionState.Completed(cleanInputStr)
                 else
-                    SpeechRecognitionState.Errored(Constants.NEGATIVE_NUMBER_NOT_ALLOWED_INPUT_ERROR, inputStr)
+                    SpeechRecognitionState.Errored(Constants.NEGATIVE_NUMBER_NOT_ALLOWED_INPUT_ERROR, cleanInputStr)
             }
         }
     }
