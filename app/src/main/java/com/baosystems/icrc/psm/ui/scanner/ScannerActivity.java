@@ -27,7 +27,7 @@ public class ScannerActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         // Force 'portrait' mode
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scanner);
 
