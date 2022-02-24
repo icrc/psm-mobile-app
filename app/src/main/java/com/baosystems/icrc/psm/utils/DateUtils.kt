@@ -29,7 +29,7 @@ class DateUtils {
             val endTime = cal.timeInMillis
 
             // Day start
-            cal.set(Calendar.DAY_OF_WEEK_IN_MONTH, Constants.MAX_ALLOWABLE_DAYS_BACK_RANGE)
+            cal.add(Calendar.DAY_OF_YEAR, Constants.MAX_ALLOWABLE_DAYS_BACK_RANGE - 1)
             val startTime = cal.timeInMillis
 
             val dateValidatorMin = DateValidatorPointForward.from(startTime)

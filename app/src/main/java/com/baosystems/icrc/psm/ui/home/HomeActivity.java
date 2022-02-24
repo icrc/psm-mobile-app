@@ -199,7 +199,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupTransactionDateField() {
-        // TODO: Theme datepicker, if necessary
         MaterialDatePicker<Long> picker = MaterialDatePicker.Builder
                 .datePicker()
                 .setCalendarConstraints(DateUtils.getMonthStartToNowConstraint())
