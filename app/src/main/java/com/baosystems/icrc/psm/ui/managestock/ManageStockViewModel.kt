@@ -72,6 +72,10 @@ class ManageStockViewModel @Inject constructor(
             transaction.distributedTo == null)
             throw UnsupportedOperationException("'distributedTo' is mandatory for model creation")
 
+        speechRecognitionManager.supportNegativeNumberInput(
+            transaction.transactionType == TransactionType.CORRECTION
+        )
+
         configureRelays()
         loadStockItems()
     }

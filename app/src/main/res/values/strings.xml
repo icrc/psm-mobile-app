@@ -123,7 +123,9 @@
     </string>
     <string name="recent_activities_load_error">Unable to load your recent activities</string>
     <string name="facilities_load_error">Unable to load the list of available facilities</string>
-    <string name="destinations_load_error">Unable to load the list of available destinations</string>
+    <string name="destinations_load_error">
+        Unable to load the list of available destinations
+    </string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_sync_info">Sync information</string>
@@ -157,12 +159,18 @@
     </string>
     <string name="language_change_dialog_title">Confirm Restart</string>
     <string name="scan_canceled">Scan cancelled!</string>
-    <string name="logout_error_message">An error occurred during logout. Please try again later.</string>
+    <string name="logout_error_message">
+        An error occurred during logout. Please try again later.
+    </string>
     <string name="logout_success_message">Successfully logged out</string>
 
     <string name="invalid_quantity">Invalid</string>
-    <string name="stock_on_hand_exceeded_message">Available stock on hand cannot be exceeded</string>
-    <string name="reviewed_item_cannot_be_empty_message">A stock under review cannot be empty. You can remove the item if not desired</string>
+    <string name="stock_on_hand_exceeded_message">
+        Available stock on hand cannot be exceeded
+    </string>
+    <string name="reviewed_item_cannot_be_empty_message">
+        A stock under review cannot be empty. You can remove the item if not desired
+    </string>
 
     <string name="permission_granted">Permission Granted</string>
     <string name="permission_denied">Permission Denied</string>
@@ -171,9 +179,13 @@
     <string name="content_desc_splash" translatable="false">Splash screen image</string>
 
     <!-- Speech error messages -->
-    <string name="insufficient_speech_permissions_error">Insufficient permissions. Request android.permission.RECORD_AUDIO</string>
+    <string name="insufficient_speech_permissions_error">
+        Insufficient permissions. Request android.permission.RECORD_AUDIO
+    </string>
     <string name="speech_audio_error">Audio recording error</string>
-    <string name="speech_client_error">Client side error. Please check your internet connection!</string>
+    <string name="speech_client_error">
+        Client side error. Please check your internet connection!
+    </string>
     <string name="speech_network_error">Network error</string>
     <string name="speech_network_timeout_error">Network operation timed out</string>
     <string name="no_speech_match_error">No recognition result matched.</string>
@@ -182,4 +194,7 @@
     <string name="speech_timeout_error">No speech input detected</string>
     <string name="unknown_speech_error">An unknown error occurred.</string>
     <string name="non_numeric_speech_input_error">Non-numeric input is not allowed: \"%s\"</string>
+    <string name="negative_number_speech_input_error">
+        Negative number input is not allowed: \"%s\"
+    </string>
 </resources>

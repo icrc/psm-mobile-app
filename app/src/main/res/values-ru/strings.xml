@@ -19,7 +19,9 @@
     <string name="sign_in">Войти</string>
     <string name="sign_in_to_your_account">Войдите в свой аккаунт</string>
     <string name="sign_in_to_with_oidc">Войти через Microsoft</string>
-    <string name="non_icrc_staff_members">Только для сотрудников, не являющихся сотрудниками МККК.</string>
+    <string name="non_icrc_staff_members">
+        Только для сотрудников, не являющихся сотрудниками МККК.
+    </string>
     <string name="icrc_staff_members">Только для сотрудников МККК</string>
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
@@ -79,14 +81,18 @@
     </string>
 
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">Все поля должны быть заполнены, прежде чем вы сможете продолжить.</string>
+    <string name="cannot_proceed_from_home_warning">
+        Все поля должны быть заполнены, прежде чем вы сможете продолжить.
+    </string>
     <string name="previous_page_lose_data_warning">
         Вы уверены, что хотите вернуться к предыдущему экрану?
         Вы потеряете только что введенные данные, если решите продолжить.
     </string>
     <string name="transaction_completed">Сделка успешно завершена!</string>
     <string name="transaction_cancelled">Транзакция успешно отменена!</string>
-    <string name="force_sync_confirmation_message">Вы уверены, что хотите принудительно синхронизировать \?</string>
+    <string name="force_sync_confirmation_message">
+        Вы уверены, что хотите принудительно синхронизировать \?
+    </string>
     <string name="logout_confirmation_message">Вы действительно хотите выйти\?</string>
 
 
@@ -117,10 +123,14 @@
     <!-- Errors -->
     <string name="login_error">Невозможно войти</string>
     <string name="config_file_error">Невозможно загрузить файл конфигурации</string>
-    <string name="config_file_program_error">Идентификатор стоковой программы не указан в файле конфигурации</string>
+    <string name="config_file_program_error">
+        Идентификатор стоковой программы не указан в файле конфигурации
+    </string>
     <string name="recent_activities_load_error">Не удалось загрузить ваши недавние действия</string>
     <string name="facilities_load_error">Невозможно загрузить список доступных объектов</string>
-    <string name="destinations_load_error">Невозможно загрузить список доступных направлений</string>
+    <string name="destinations_load_error">
+        Невозможно загрузить список доступных направлений
+    </string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_sync_info">Информация о синхронизации</string>
@@ -135,27 +145,41 @@
     <string name="content_desc_recent_activity_status">Статус недавней активности</string>
 
     <string name="commit_transaction_label">Совершить</string>
-    <string name="missing_configuration">В файле конфигурации отсутствуют одно или несколько обязательных полей.</string>
+    <string name="missing_configuration">
+        В файле конфигурации отсутствуют одно или несколько обязательных полей.
+    </string>
     <string name="select_language">Выберите желаемый язык</string>
 
     <string name="restart_later">Перезагрузить позже</string>
     <string name="language_change_dialog_title">Подтвердите перезапуск</string>
-    <string name="confirm_app_restart_message">Чтобы изменения вступили в силу, необходимо перезапустить приложение, однако все несохраненные изменения будут потеряны.\n\nХотите продолжить перезагрузку?</string>
+    <string name="confirm_app_restart_message">
+        Чтобы изменения вступили в силу, необходимо перезапустить приложение, однако все несохраненные изменения будут потеряны.\n\nХотите продолжить перезагрузку?
+    </string>
     <string name="scan_canceled">Сканирование отменено!</string>
-    <string name="logout_error_message">Произошла ошибка при выходе из системы. Пожалуйста, попробуйте позже.</string>
+    <string name="logout_error_message">
+        Произошла ошибка при выходе из системы. Пожалуйста, попробуйте позже.
+    </string>
     <string name="logout_success_message">Успешный выход из системы</string>
 
     <string name="invalid_quantity">Недействителен</string>
-    <string name="stock_on_hand_exceeded_message">Доступный запас на складе не может быть превышен</string>
-    <string name="reviewed_item_cannot_be_empty_message">Акция на рассмотрении не может быть пустой. При желании вы можете убрать товар.</string>
+    <string name="stock_on_hand_exceeded_message">
+        Доступный запас на складе не может быть превышен
+    </string>
+    <string name="reviewed_item_cannot_be_empty_message">
+        Акция на рассмотрении не может быть пустой. При желании вы можете убрать товар.
+    </string>
 
     <string name="permission_granted">Разрешение получено</string>
     <string name="permission_denied">Доступ запрещен</string>
 
     <!-- Speech error messages -->
-    <string name="insufficient_speech_permissions_error">Недостаточно разрешений. Запросить android.permission.RECORD_AUDIO</string>
+    <string name="insufficient_speech_permissions_error">
+        Недостаточно разрешений. Запросить android.permission.RECORD_AUDIO
+    </string>
     <string name="speech_audio_error">Ошибка записи звука</string>
-    <string name="speech_client_error">Ошибка на стороне клиента. Пожалуйста, проверьте подключение к интернету!</string>
+    <string name="speech_client_error">
+        Ошибка на стороне клиента. Пожалуйста, проверьте подключение к интернету!
+    </string>
     <string name="speech_network_error">Сетевая ошибка</string>
     <string name="speech_network_timeout_error">Время работы сети истекло</string>
     <string name="no_speech_match_error">Результат распознавания не совпал.</string>
@@ -164,4 +188,7 @@
     <string name="speech_timeout_error">Речевой ввод не обнаружен</string>
     <string name="unknown_speech_error">Произошла неизвестная ошибка</string>
     <string name="non_numeric_speech_input_error">Нечисловой ввод запрещен: \"%s\"</string>
+    <string name="negative_number_speech_input_error">
+        Ввод отрицательных чисел не допускается: \"%s\"
+    </string>
 </resources>

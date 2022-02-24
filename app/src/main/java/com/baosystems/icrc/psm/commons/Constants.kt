@@ -68,5 +68,7 @@ object Constants {
     const val AUDIO_RECORDING_REQUEST_CODE = 105
     const val CLEAR_ICON = 0
     const val MAX_ALLOWABLE_DAYS_BACK_RANGE = -5
+
     const val NON_NUMERIC_SPEECH_INPUT_ERROR = 991865
+    const val NEGATIVE_NUMBER_NOT_ALLOWED_INPUT_ERROR = 991866
 }

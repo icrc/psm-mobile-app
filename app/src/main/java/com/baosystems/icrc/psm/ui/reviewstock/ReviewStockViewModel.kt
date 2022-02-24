@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.ReviewStockData
 import com.baosystems.icrc.psm.data.RowAction
+import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
@@ -57,11 +58,15 @@ class ReviewStockViewModel @Inject constructor(
 
     private val _reviewedItemsCount = Transformations.map(_reviewedItems) { it.size }
 
-    private val _commitStatus = MutableLiveData<Boolean>(false)
+    private val _commitStatus = MutableLiveData(false)
     val commitStatus: LiveData<Boolean>
         get() = _commitStatus
 
     init {
+        speechRecognitionManager.supportNegativeNumberInput(
+            transaction.transactionType == TransactionType.CORRECTION
+        )
+
         configureRelays()
         loadPopulatedItems()
     }

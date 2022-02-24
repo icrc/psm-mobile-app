@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
@@ -13,10 +14,12 @@ import com.baosystems.icrc.psm.utils.Utils
 import timber.log.Timber
 import java.util.*
 
-class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecognitionManager,
-    RecognitionListener {
+class SpeechRecognitionManagerImpl(
+    private val context: Context
+) : SpeechRecognitionManager, RecognitionListener {
     private var speechRecognizer: SpeechRecognizer? = null
     private var readyForSpeech = false
+    private var allowNegativeNumberInput: Boolean = false
 
     private val _speechRecognitionStatus: MutableLiveData<SpeechRecognitionState> =
         MutableLiveData(SpeechRecognitionState.NotInitialized)
@@ -65,6 +68,10 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
     }
 
     override fun getStatus() = _speechRecognitionStatus
+    override fun supportNegativeNumberInput(allow: Boolean) {
+        allowNegativeNumberInput = allow
+        Timber.d("Speech recognizer: supportNegativeNumberInput() : %s", allow)
+    }
 
     private fun getIntent(): Intent {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -97,12 +104,31 @@ class SpeechRecognitionManagerImpl(private val context: Context) : SpeechRecogni
         data?.let {
             if (data.size > 0) {
                 val str = data[0]
-                val response = if (Utils.isSignedNumeric(str))
-                    SpeechRecognitionState.Completed(str)
-                else
-                    SpeechRecognitionState.Errored(Constants.NON_NUMERIC_SPEECH_INPUT_ERROR, str)
+                _speechRecognitionStatus.postValue(validateInput(str))
+            }
+        }
+    }
 
-                _speechRecognitionStatus.postValue(response)
+    private fun validateInput(inputStr: String): SpeechRecognitionState {
+        // Only CORRECTION transaction supports negative number input
+        val isCorrection = allowNegativeNumberInput
+
+        // There are cases where a space is added after the minus sign, which results
+        // if the entire input being flagged as a non-signed number. Prevent cases
+        // like this
+        val cleanInputStr = Utils.cleanUpSignedNumber(inputStr)
+        return when {
+            isCorrection -> {
+                if (Utils.isSignedNumeric(cleanInputStr))
+                    SpeechRecognitionState.Completed(cleanInputStr)
+                else
+                    SpeechRecognitionState.Errored(Constants.NON_NUMERIC_SPEECH_INPUT_ERROR, cleanInputStr)
+            }
+            else -> {
+                if (TextUtils.isDigitsOnly(cleanInputStr))
+                    SpeechRecognitionState.Completed(cleanInputStr)
+                else
+                    SpeechRecognitionState.Errored(Constants.NEGATIVE_NUMBER_NOT_ALLOWED_INPUT_ERROR, cleanInputStr)
             }
         }
     }

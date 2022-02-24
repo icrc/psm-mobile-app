@@ -28,6 +28,23 @@ class Utils {
          */
         @JvmStatic
         fun isSignedNumeric(s: String) = Pattern.compile("-?\\d+").matcher(s).matches()
+
+        /**
+         * Removes extraneous space from signed numbers
+         *
+         * For example,
+         *
+         * cleanUpSignedNumber("- 12") = -12
+         *
+         * @return The clean number string
+         */
+        fun cleanUpSignedNumber(s: String): String {
+            val signedNumberWithSpace = Pattern.compile("-?\\s?\\d+").matcher(s).matches()
+            return if (signedNumberWithSpace) {
+                Timber.w("Extraneous space after negative sign removed from speech input: %s", s)
+                s.replace("\\s".toRegex(), "")
+            } else s
+        }
     }
 
 }

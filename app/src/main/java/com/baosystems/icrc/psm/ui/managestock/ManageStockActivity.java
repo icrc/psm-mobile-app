@@ -158,11 +158,6 @@ public class ManageStockActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onBackPressed() {
         ActivityManager.showBackButtonWarning(this, () -> {
                 super.onBackPressed();
