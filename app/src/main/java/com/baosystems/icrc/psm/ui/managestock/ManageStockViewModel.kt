@@ -48,18 +48,18 @@ class ManageStockViewModel @Inject constructor(
     private val searchRelay = PublishRelay.create<String>()
     private val entryRelay = PublishRelay.create<RowAction>()
     private val stockItems = Transformations.switchMap(search) { q ->
-        _networkState.value = NetworkState.Loading
+        _networkState.value = OperationState.Loading
 
         val result = stockManager.search(q, transaction.facility.uid)
         _itemsAvailableCount.value = result.totalCount
 
-        _networkState.postValue(NetworkState.Completed)
+        _networkState.postValue(OperationState.Completed)
         result.items
     }
     private val itemsCache = linkedMapOf<String, StockEntry>()
 
-    private val _networkState = MutableLiveData<NetworkState<LiveData<PagedList<StockItem>>>>()
-    val networkState: LiveData<NetworkState<LiveData<PagedList<StockItem>>>>
+    private val _networkState = MutableLiveData<OperationState<LiveData<PagedList<StockItem>>>>()
+    val operationState: LiveData<OperationState<LiveData<PagedList<StockItem>>>>
         get() = _networkState
 
     init {

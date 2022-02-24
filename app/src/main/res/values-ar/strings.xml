@@ -16,10 +16,10 @@
     <string name="select_one">اختر واحدة</string>
 
     <!-- Sign in -->
-    <string name="server_url">عنوان URL للخادم</string>
+    <string name="server">الخادم:</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="sign_in_to_your_account">تسجيل الدخول إلى حسابك</string>
-    <string name="sign_in_to_with_oidc">قم بتسجيل الدخول باستخدام Microsoft</string>
+    <string name="sign_in_to_with_oidc">سجّل الدخول باستخدام حساب اللجنة الدولية للصليب الأحمر</string>
     <string name="non_icrc_staff_members">لغير موظفي اللجنة الدولية للصليب الأحمر فقط</string>
     <string name="icrc_staff_members">لموظفي اللجنة الدولية فقط</string>
     <string name="username">اسم المستخدم</string>
@@ -166,4 +166,11 @@
     <string name="negative_number_speech_input_error">
         <xliff:g id="recognized speech">\"%1$s\"</xliff:g>غير مسموح بإدخال الرقم السالب:
     </string>
+
+    <string name="openid_config_load_error">تعذر تحميل تكوين OpenID</string>
+    <string name="unexpected_openid_authentication_error">
+        حدث خطأ غير متوقع أثناء المصادقة باستخدام OpenID
+    </string>
+    <string name="no_network_available">لا يوجد اتصال شبكة متاح</string>
+    <string name="openid_authentication_not_successful">غير قادر على المصادقة مع OpenID</string>
 </resources>

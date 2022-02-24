@@ -59,19 +59,19 @@ class HomeViewModelUnitTest {
     private lateinit var d2: D2
 
     @Mock
-    private lateinit var facilitiesObserver: Observer<NetworkState<List<OrganisationUnit>>>
+    private lateinit var facilitiesObserver: Observer<OperationState<List<OrganisationUnit>>>
 
     @Mock
-    private lateinit var destinationsObserver: Observer<NetworkState<List<Option>>>
+    private lateinit var destinationsObserver: Observer<OperationState<List<Option>>>
 
     @Mock
     private lateinit var preferenceProvider: PreferenceProvider
 
     @Captor
-    private lateinit var facilitiesArgumentCaptor: ArgumentCaptor<NetworkState<List<OrganisationUnit>>>
+    private lateinit var facilitiesArgumentCaptor: ArgumentCaptor<OperationState<List<OrganisationUnit>>>
 
     @Captor
-    private lateinit var destinationsArgumentCaptor: ArgumentCaptor<NetworkState<List<Option>>>
+    private lateinit var destinationsArgumentCaptor: ArgumentCaptor<OperationState<List<Option>>>
 
     @Before
     fun setup() {

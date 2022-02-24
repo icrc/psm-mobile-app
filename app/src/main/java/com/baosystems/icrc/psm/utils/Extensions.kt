@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.commons.Constants.PERIOD_MANUAL
 import com.baosystems.icrc.psm.commons.Constants.PERIOD_WEEKLY
 import org.hisp.dhis.android.core.settings.DataSyncPeriod
 import org.hisp.dhis.android.core.settings.MetadataSyncPeriod
+import org.hisp.dhis.android.core.user.openid.OpenIDConnectConfig
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -42,3 +43,6 @@ fun DataSyncPeriod.toSeconds(): Int {
         DataSyncPeriod.MANUAL -> PERIOD_MANUAL
     }
 }
+
+fun OpenIDConnectConfig.isConfigComplete(): Boolean =
+    discoveryUri !=  null || (authorizationUri != null && tokenUrl != null)

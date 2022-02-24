@@ -15,10 +15,10 @@
     <string name="select_one">Select one</string>
 
     <!-- Sign in -->
-    <string name="server_url">Server URL</string>
+    <string name="server">Server:</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_to_your_account">Sign in to your account</string>
-    <string name="sign_in_to_with_oidc">Sign in with Microsoft</string>
+    <string name="sign_in_to_with_oidc">Sign in with ICRC account</string>
     <string name="non_icrc_staff_members">For non-ICRC staff members only</string>
     <string name="icrc_staff_members">For ICRC staff members only</string>
     <string name="username">Username</string>
@@ -197,4 +197,14 @@
     <string name="negative_number_speech_input_error">
         Negative number input is not allowed: \"%s\"
     </string>
+    <string name="contact_service_desk_message" translatable="false">
+        In case of problems, \nplease contact <a href="servicedesk@icrc.org">ICRC service desk</a>
+    </string>
+
+    <string name="openid_config_load_error">Unable to load OpenID configuration</string>
+    <string name="unexpected_openid_authentication_error">
+        An unexpected error occurred while authenticating with OpenID
+    </string>
+    <string name="no_network_available">No network connection available</string>
+    <string name="openid_authentication_not_successful">Unable to authenticate with OpenID</string>
 </resources>

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants.USER_ACTIVITY_COUNT
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.NetworkState
+import com.baosystems.icrc.psm.data.OperationState
 import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
@@ -56,20 +56,20 @@ class HomeViewModel @Inject constructor(
     val transactionDate: LiveData<LocalDateTime>
         get() = _transactionDate
 
-    private val _destination: MutableLiveData<Option> = MutableLiveData(null)
-    val destination: LiveData<Option>
+    private val _destination: MutableLiveData<Option?> = MutableLiveData(null)
+    val destination: LiveData<Option?>
         get() = _destination
 
-    private val _facilities = MutableLiveData<NetworkState<List<OrganisationUnit>>>()
-    val facilities: LiveData<NetworkState<List<OrganisationUnit>>>
+    private val _facilities = MutableLiveData<OperationState<List<OrganisationUnit>>>()
+    val facilities: LiveData<OperationState<List<OrganisationUnit>>>
         get() =  _facilities
 
-    private val _destinations = MutableLiveData<NetworkState<List<Option>>>()
-    val destinationsList: LiveData<NetworkState<List<Option>>>
+    private val _destinations = MutableLiveData<OperationState<List<Option>>>()
+    val destinationsList: LiveData<OperationState<List<Option>>>
         get() = _destinations
 
-    private val _recentActivities: MutableLiveData<NetworkState<List<UserActivity>>> = MutableLiveData()
-    val recentActivities: LiveData<NetworkState<List<UserActivity>>>
+    private val _recentActivities: MutableLiveData<OperationState<List<UserActivity>>> = MutableLiveData()
+    val recentActivities: LiveData<OperationState<List<UserActivity>>>
         get() = _recentActivities
 
     init {
@@ -79,23 +79,23 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadDestinations() {
-        _destinations.postValue(NetworkState.Loading)
+        _destinations.postValue(OperationState.Loading)
 
         disposable.add(
             metadataManager.destinations()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { _destinations.postValue(NetworkState.Success<List<Option>>(it)) },
+                    { _destinations.postValue(OperationState.Success<List<Option>>(it)) },
                     {
                         it.printStackTrace()
-                        _destinations.postValue(NetworkState.Error(R.string.destinations_load_error))
+                        _destinations.postValue(OperationState.Error(R.string.destinations_load_error))
                     })
         )
     }
 
     private fun loadFacilities() {
-        _facilities.postValue(NetworkState.Loading)
+        _facilities.postValue(OperationState.Loading)
 
         disposable.add(
             metadataManager.facilities(config.program)
@@ -103,30 +103,30 @@ class HomeViewModel @Inject constructor(
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
                     {
-                        _facilities.postValue(NetworkState.Success(it))
+                        _facilities.postValue(OperationState.Success(it))
 
                         if (it.size == 1) _facility.postValue(it[0])
                     }, {
                         it.printStackTrace()
-                        _facilities.postValue(NetworkState.Error(R.string.facilities_load_error))
+                        _facilities.postValue(OperationState.Error(R.string.facilities_load_error))
                     }
                 )
         )
     }
 
     private fun loadRecentActivities() {
-        _recentActivities.postValue(NetworkState.Loading)
+        _recentActivities.postValue(OperationState.Loading)
 
         disposable.add(
             userActivityRepository.getRecentActivities(USER_ACTIVITY_COUNT)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    { _recentActivities.postValue(NetworkState.Success(it)) },
+                    { _recentActivities.postValue(OperationState.Success(it)) },
                     {
                         it.printStackTrace()
                         _recentActivities.postValue(
-                            NetworkState.Error(R.string.recent_activities_load_error))
+                            OperationState.Error(R.string.recent_activities_load_error))
                     }
                 )
         )

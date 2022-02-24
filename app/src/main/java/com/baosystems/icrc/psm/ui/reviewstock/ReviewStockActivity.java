@@ -73,13 +73,11 @@ public class ReviewStockActivity extends BaseActivity {
                     viewModel.updateItem(item, qty, stockOnHand, !isValid);
 
                     if (!isValidStockOnHand) {
-                        ActivityManager.showErrorMessage(binding.getRoot(),
-                                getString(R.string.stock_on_hand_exceeded_message));
+                        displayError(binding.getRoot(), R.string.stock_on_hand_exceeded_message);
                     }
 
                     if (!isValidQty) {
-                        ActivityManager.showErrorMessage(binding.getRoot(),
-                                getString(R.string.reviewed_item_cannot_be_empty_message));
+                        displayError(binding.getRoot(), R.string.reviewed_item_cannot_be_empty_message);
                     }
 
                     updateCommitButton();

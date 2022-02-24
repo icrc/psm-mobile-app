@@ -30,7 +30,7 @@ class ActivityManager {
             val color = if (isError) {
                 R.color.error
             } else {
-                R.color.primaryColor
+                R.color.primary_color
             }
 
             if (message.isNotEmpty())

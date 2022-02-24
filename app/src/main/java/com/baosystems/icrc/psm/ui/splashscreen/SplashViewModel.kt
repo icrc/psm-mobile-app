@@ -11,6 +11,7 @@ import com.baosystems.icrc.psm.commons.Constants.CONFIG_PROGRAM
 import com.baosystems.icrc.psm.commons.Constants.CONFIG_STOCK_ON_HAND
 import com.baosystems.icrc.psm.commons.Constants.LAST_DATA_SYNC_STATUS
 import com.baosystems.icrc.psm.commons.Constants.LAST_METADATA_SYNC_STATUS
+import com.baosystems.icrc.psm.commons.Constants.SERVER_URL
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.ConfigUtils
@@ -122,4 +123,6 @@ class SplashViewModel @Inject constructor(
 
         return conditionsMet
     }
+
+    fun getServerUrlPref() = preferenceProvider.getString(SERVER_URL)
 }

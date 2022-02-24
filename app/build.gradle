@@ -11,7 +11,8 @@ apply from: "$rootDir/dependencies.gradle"
 android {
     compileSdkVersion versions.compileSdk
     defaultConfig {
-        applicationId "com.baosystems.icrc.pharmacystockmanagement"
+        applicationId "org.icrc.dhis2.psmadvanced_test"
+        buildConfigField "String", "SERVER_URL", '"https://psm.icrc.baosystems.com"'
 
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
@@ -87,6 +88,7 @@ dependencies {
     implementation "androidx.security:security-crypto:$versions.security_crypto"
     implementation "androidx.security:security-identity-credential:$versions.security_identity"
     implementation "androidx.security:security-app-authenticator:$versions.security_authenticator"
+    implementation "net.openid:appauth:$versions.openid"
 
     // Preferences
     implementation "androidx.preference:preference-ktx:$versions.preference_ktx"

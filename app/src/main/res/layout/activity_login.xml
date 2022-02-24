@@ -15,125 +15,158 @@
         tools:context="com.baosystems.icrc.psm.ui.login.LoginActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/server_url_container"
+            android:id="@+id/login_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/server_url_lr_margin"
-            android:layout_marginRight="@dimen/server_url_lr_margin"
-            android:background="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="0.8">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/server_url_text_field_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/server_url_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
-                android:hint="@string/server_url"
-                android:enabled="@{!viewModel.loginInProgress}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@color/light_grey"
+                android:padding="@dimen/server_container_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/server_url_text_field"
-                    android:text="@={viewModel.serverUrl}"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/server_textview"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:paddingStart="@dimen/server_url_padding"
+                    android:paddingEnd="@dimen/server_url_padding"
+                    android:text="@string/server"
+                    android:textColor="@color/emphasized_text_color"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/login_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/server_url_lr_margin"
-            android:layout_marginRight="@dimen/server_url_lr_margin"
-            android:layout_marginTop="@dimen/server_url_bottom_margin"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/server_url_container">
+                <TextView
+                    android:id="@+id/server_url_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@id/server_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="https://psm.icrc.baosystems.com" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/sign_in_label"
+                style="@style/SignInHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginTop="@dimen/sign_in_header_label_top_margin"
+                android:gravity="center_horizontal"
                 android:text="@string/sign_in_to_your_account"
-                style="@style/TextAppearance.MaterialComponents.Subtitle2"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/server_url_container" />
+
+            <TextView
+                android:id="@+id/non_members_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_32"
+                android:gravity="center_horizontal"
+                android:text="@string/non_icrc_staff_members"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_in_label" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/username_text_field_layout"
-                android:hint="@string/username"
-                android:enabled="@{!viewModel.loginInProgress}"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                app:layout_constraintTop_toBottomOf="@id/sign_in_label"
+                android:layout_marginTop="@dimen/username_top_margin"
+                android:enabled="@{!viewModel.loginInProgress}"
+                android:hint="@string/username"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/non_members_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username_text_field"
-                    android:text="@={viewModel.username}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.username}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/password_text_field_layout"
-                android:hint="@string/password"
-                android:enabled="@{!viewModel.loginInProgress}"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@id/username_text_field_layout"
+                android:layout_marginTop="@dimen/password_top_margin"
+                android:enabled="@{!viewModel.loginInProgress}"
+                android:hint="@string/password"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/username_text_field_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_text_field"
-                    android:inputType="textPassword"
-                    android:text="@={viewModel.password}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- TODO: Use titlecase for forgot password button -->
-            <Button
-                android:id="@+id/forgot_password_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/forgot_password"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintTop_toBottomOf="@id/password_text_field_layout"
-                app:layout_constraintEnd_toEndOf="@id/password_text_field_layout" />
 
             <Button
                 android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginTop="@dimen/sign_in_button_top_margin"
+                android:enabled="@{viewModel.canLogin}"
                 android:text="@string/action_sign_in_short"
-                android:layout_marginTop="@dimen/margin_32"
-                app:layout_constraintTop_toBottomOf="@id/forgot_password_button"
+                android:textAllCaps="false"
+                app:cornerRadius="@dimen/round_button_corner_radius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password_text_field_layout" />
+
+            <TextView
+                android:id="@+id/staff_members_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/staff_members_label_top_margin"
+                android:gravity="center_horizontal"
+                android:text="@string/icrc_staff_members"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_in_button" />
+
+            <Button
+                android:id="@+id/oidc_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/oidc_button_top_margin"
+                android:text="@string/sign_in_to_with_oidc"
+                android:textAllCaps="false"
+                android:textColor="@color/emphasized_text_color"
+                app:cornerRadius="@dimen/round_button_corner_radius"
+                app:icon="@drawable/ic_icrc_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/staff_members_label" />
+
+            <TextView
+                android:id="@+id/contact_textview_line1"
+                android:text="@string/contact_service_desk_message"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/contact_label_top_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:enabled="@{viewModel.canLogin}" />
+                app:layout_constraintTop_toBottomOf="@id/oidc_btn" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

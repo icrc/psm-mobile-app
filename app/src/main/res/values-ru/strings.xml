@@ -15,7 +15,7 @@
     <string name="select_one">Выбери один</string>
 
     <!-- Sign in -->
-    <string name="server_url">URL-адрес сервера</string>
+    <string name="server">Сервер:</string>
     <string name="sign_in">Войти</string>
     <string name="sign_in_to_your_account">Войдите в свой аккаунт</string>
     <string name="sign_in_to_with_oidc">Войти через Microsoft</string>
@@ -191,4 +191,11 @@
     <string name="negative_number_speech_input_error">
         Ввод отрицательных чисел не допускается: \"%s\"
     </string>
+
+    <string name="openid_config_load_error">Не удалось загрузить конфигурацию OpenID</string>
+    <string name="unexpected_openid_authentication_error">
+        Произошла непредвиденная ошибка при аутентификации с помощью OpenID
+    </string>
+    <string name="no_network_available">Нет доступного сетевого подключения</string>
+    <string name="openid_authentication_not_successful">Не удается пройти аутентификацию с помощью OpenID</string>
 </resources>

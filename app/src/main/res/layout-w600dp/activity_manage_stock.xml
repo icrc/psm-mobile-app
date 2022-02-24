@@ -97,7 +97,7 @@
                 android:paddingTop="@dimen/scan_button_tb_padding"
                 android:paddingBottom="@dimen/scan_button_tb_padding"
                 android:text="@string/scan_barcode"
-                app:cornerRadius="@dimen/scan_button_corner_radius"
+                app:cornerRadius="@dimen/round_button_corner_radius"
                 app:icon="@drawable/barcode"
                 app:iconGravity="end"
                 app:layout_constraintEnd_toEndOf="parent"

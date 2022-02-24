@@ -81,4 +81,10 @@ class AppModule {
             SpeechRecognitionManager {
         return SpeechRecognitionManagerImpl(appContext)
     }
+
+    @Provides
+    @Singleton
+    fun provideOpenIdProvider(@ApplicationContext appContext: Context): OpenIdProvider {
+        return OpenIdProviderImpl(appContext.applicationContext)
+    }
 }

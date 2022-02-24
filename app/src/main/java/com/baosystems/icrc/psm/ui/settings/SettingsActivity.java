@@ -23,7 +23,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.work.WorkInfo;
 
 import com.baosystems.icrc.psm.R;
-import com.baosystems.icrc.psm.data.NetworkState;
+import com.baosystems.icrc.psm.data.OperationState;
 import com.baosystems.icrc.psm.databinding.ActivitySettingsBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.login.LoginActivity;
@@ -133,15 +133,15 @@ public class SettingsActivity extends BaseActivity
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            sViewModel.getLogoutStatus().observe(getViewLifecycleOwner(), networkState -> {
-                if (networkState.getClass() == NetworkState.Error.class) {
+            sViewModel.getLogoutStatus().observe(getViewLifecycleOwner(), operationState -> {
+                if (operationState.getClass() == OperationState.Error.class) {
                     ActivityManager.showErrorMessage(view,
-                            getString(((NetworkState.Error) networkState).getErrorStringRes()));
+                            getString(((OperationState.Error) operationState).getErrorStringRes()));
 
                     return;
                 }
 
-                if (networkState.getClass() == NetworkState.Success.class) {
+                if (operationState.getClass() == OperationState.Success.class) {
                     navigateToLogin();
                 }
             });
