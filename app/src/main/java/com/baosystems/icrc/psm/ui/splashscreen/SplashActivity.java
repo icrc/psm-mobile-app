@@ -60,7 +60,7 @@ public class SplashActivity extends BaseActivity {
                 Timber.d("User is logged in.\nHas metadata being synced? %s\nHas data being synced? %s",
                         viewModel.hasSyncedMetadata(), viewModel.hasSyncedData());
 
-                if (viewModel.hasSyncedMetadata()) {
+                if (viewModel.hasSyncedMetadata() && viewModel.hasSyncedData()) {
                     AppConfig config = ConfigUtils.getAppConfig(getResources());
                     intent = HomeActivity.getHomeActivityIntent(this, config);
                 } else

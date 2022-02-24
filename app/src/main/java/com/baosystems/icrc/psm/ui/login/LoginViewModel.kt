@@ -12,6 +12,7 @@ import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.ui.base.BaseViewModel
+import com.baosystems.icrc.psm.utils.Sdk
 import com.baosystems.icrc.psm.utils.isConfigComplete
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Completable
@@ -52,7 +53,6 @@ class LoginViewModel @Inject constructor(
         )
 
         openIdConfig = openIdProvider.loadProvider()
-        Timber.d("Open ID config: %s", openIdConfig)
     }
 
     class Result {
@@ -172,7 +172,7 @@ class LoginViewModel @Inject constructor(
             }
         }
 
-        Timber.e(throwable)
+        Timber.e("Login error: %s", throwable?.let { Sdk.getFriendlyErrorMessage(it) })
 
         // TODO: Extract errors into a single location
         loginResult.postValue(Result("Login error: $errorCode"))

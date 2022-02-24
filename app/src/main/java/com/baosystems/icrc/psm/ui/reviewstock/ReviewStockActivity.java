@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.TransactionType;
 import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.databinding.ActivityReviewStockBinding;
 import com.baosystems.icrc.psm.ui.base.BaseActivity;
@@ -127,6 +129,11 @@ public class ReviewStockActivity extends BaseActivity {
         // Set the activity title to the active transaction name
         // TODO: use localized name for the title
         setTitle(viewModel.getTransaction().getTransactionType().name());
+
+        // Ensure the negative info guide shows up when transaction is of Correction type
+        if (viewModel.getTransaction().getTransactionType() == TransactionType.CORRECTION) {
+            binding.qtyGuide.negativeValueTextView.setVisibility(View.VISIBLE);
+        }
 
         setupSearchInput();
         setupRecyclerView();

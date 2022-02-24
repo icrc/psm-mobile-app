@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.OperationState;
+import com.baosystems.icrc.psm.data.TransactionType;
 import com.baosystems.icrc.psm.data.models.StockItem;
 import com.baosystems.icrc.psm.data.models.Transaction;
 import com.baosystems.icrc.psm.databinding.ActivityManageStockBinding;
@@ -142,6 +143,11 @@ public class ManageStockActivity extends BaseActivity {
         // Set the activity title to the active transaction name
         // TODO: use localized name for the title
         setTitle(viewModel.getTransaction().getTransactionType().name());
+
+        // Ensure the negative info guide shows up when transaction is of Correction type
+        if (viewModel.getTransaction().getTransactionType() == TransactionType.CORRECTION) {
+            binding.qtyGuide.negativeValueTextView.setVisibility(View.VISIBLE);
+        }
 
         setupSearchInput();
         setupRecyclerView();

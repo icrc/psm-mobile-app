@@ -7,6 +7,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/qty_guide_tb_padding"
+        android:paddingBottom="@dimen/qty_guide_tb_padding"
         android:background="@drawable/quantity_guide_background">
 
         <TextView
@@ -14,11 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/InfoBoxTextStyle"
-            android:paddingTop="@dimen/qty_guide_tb_padding"
             android:paddingStart="@dimen/qty_guide_lr_padding"
             android:paddingEnd="@dimen/qty_guide_lr_padding"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/positive_value"/>
 
         <TextView
@@ -26,12 +28,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/InfoBoxTextStyle"
-            android:paddingBottom="@dimen/qty_guide_tb_padding"
             android:paddingStart="@dimen/qty_guide_lr_padding"
             android:paddingEnd="@dimen/qty_guide_lr_padding"
             android:layout_marginTop="@dimen/qty_guide_message_margin"
             app:layout_constraintTop_toBottomOf="@id/positiveValueTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             android:text="@string/negative_value"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
