@@ -160,8 +160,6 @@
             <TextView
                 android:id="@+id/contact_textview"
                 android:text="@string/contact_service_desk_message"
-                android:autoLink="email"
-                android:linksClickable="true"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

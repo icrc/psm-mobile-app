@@ -21,9 +21,9 @@
     <string name="sign_in_to_your_account">Iniciar sesión en su cuenta</string>
     <string name="sign_in_to_with_oidc">Iniciar sesión con Microsoft</string>
     <string name="non_icrc_staff_members">
-        Solo para miembros del personal que no pertenecen al CICR
+        Solo para miembros del personal que no pertenecen al ICRC
     </string>
-    <string name="icrc_staff_members">Solo para miembros del personal del CICR</string>
+    <string name="icrc_staff_members">Solo para miembros del personal del ICRC</string>
     <string name="username">Nombre de usuario</string>
     <string name="password">Contraseña</string>
     <string name="forgot_password">Se te olvidó tu contraseña\?</string>
@@ -200,7 +200,6 @@
     <string name="negative_number_speech_input_error">
         No se permite la entrada de números negativos: \"%s\"
     </string>
-    <string name="non_numeric_speech_input_error">No se permite la entrada no numérica: \"%s\"</string>
 
     <string name="openid_config_load_error">No se puede cargar la configuración de OpenID</string>
     <string name="unexpected_openid_authentication_error">
@@ -208,4 +207,8 @@
     </string>
     <string name="no_network_available">No hay conexión de red disponible</string>
     <string name="openid_authentication_not_successful">No se puede autenticar con OpenID</string>
+
+    <string name="contact_service_desk_message">
+        En caso de problemas, \ncomuníquese con el <a href="mailto:servicedesk@icrc.org">servicio de atención al cliente del ICRC</a>
+    </string>
 </resources>

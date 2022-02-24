@@ -157,7 +157,7 @@
                 app:layout_constraintTop_toBottomOf="@id/staff_members_label" />
 
             <TextView
-                android:id="@+id/contact_textview_line1"
+                android:id="@+id/contact_textview"
                 android:text="@string/contact_service_desk_message"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"

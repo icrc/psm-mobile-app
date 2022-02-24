@@ -197,8 +197,8 @@
     <string name="negative_number_speech_input_error">
         Negative number input is not allowed: \"%s\"
     </string>
-    <string name="contact_service_desk_message" translatable="false">
-        In case of problems, \nplease contact <a href="servicedesk@icrc.org">ICRC service desk</a>
+    <string name="contact_service_desk_message">
+        In case of problems, \nplease contact <a href="mailto:servicedesk@icrc.org">ICRC service desk</a>
     </string>
 
     <string name="openid_config_load_error">Unable to load OpenID configuration</string>
