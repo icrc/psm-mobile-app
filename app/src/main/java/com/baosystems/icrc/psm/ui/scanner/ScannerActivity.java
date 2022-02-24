@@ -101,13 +101,11 @@ public class ScannerActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.flashlight_btn_switch:
-                toggleFlashlight();
-                break;
-            case R.id.barcode_scanner_btn_close:
-                closeScanner();
-                break;
+        int id = v.getId();
+        if (id == R.id.flashlight_btn_switch) {
+            toggleFlashlight();
+        } else if (id == R.id.barcode_scanner_btn_close) {
+            closeScanner();
         }
     }
 
