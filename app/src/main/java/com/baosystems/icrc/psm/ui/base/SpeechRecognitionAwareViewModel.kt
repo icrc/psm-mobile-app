@@ -12,9 +12,6 @@ open class SpeechRecognitionAwareViewModel @Inject constructor(
     private val speechRecognitionManager: SpeechRecognitionManager
 ): BaseViewModel(preferenceProvider, schedulerProvider) {
     fun startListening() {
-        // Stop any running events
-//        stopListening()
-
         speechRecognitionManager.start()
     }
 
@@ -33,8 +30,4 @@ open class SpeechRecognitionAwareViewModel @Inject constructor(
             startListening()
         }
     }
-
-//    fun restartSpeechRecognizer() {
-//        speechRecognitionManager.restart()
-//    }
 }

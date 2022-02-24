@@ -20,18 +20,26 @@
     <string name="sign_in">S\'identifier</string>
     <string name="sign_in_to_your_account">Connectez-vous à votre compte</string>
     <string name="sign_in_to_with_oidc">Connectez-vous avec Microsoft</string>
-    <string name="non_icrc_staff_members">Pour les non-membres du personnel du CICR uniquement</string>
+    <string name="non_icrc_staff_members">
+        Pour les non-membres du personnel du CICR uniquement
+    </string>
     <string name="icrc_staff_members">Pour les membres du personnel du CICR uniquement</string>
     <string name="username">Nom d\'utilisateur</string>
     <string name="password">Mot de passe</string>
     <string name="forgot_password">Mot de passe oublié\?</string>
 
-    <string name="recent_activities_loading_message">Chargement des activités récentes&#8230;</string>
-    <string name="recent_activities_empty_message">Vous n\'avez pas encore effectué d\'activité</string>
+    <string name="recent_activities_loading_message">
+        Chargement des activités récentes&#8230;
+    </string>
+    <string name="recent_activities_empty_message">
+        Vous n\'avez pas encore effectué d\'activité
+    </string>
 
     <!-- Sync -->
     <string name="metadata_sync_in_progress">Synchroniser les métadonnées&#8230;</string>
-    <string name="metadata_sync_error">Impossible de terminer la synchronisation des métadonnées</string>
+    <string name="metadata_sync_error">
+        Impossible de terminer la synchronisation des métadonnées
+    </string>
     <string name="data_sync_in_progress">Synchronisation des données&#8230;</string>
     <string name="data_sync_error">Impossible de terminer la synchronisation des données</string>
     <string name="metadata_sync_completed">Synchronisation des métadonnées terminée !</string>
@@ -58,7 +66,9 @@
     <string name="language_russian">russe</string>
 
     <!-- Settings -->
-    <string name="use_microphone_for_data_entry">Utiliser un microphone pour la saisie de données</string>
+    <string name="use_microphone_for_data_entry">
+        Utiliser un microphone pour la saisie de données
+    </string>
     <string name="language">Langue</string>
     <string name="force_sync">Forcer la synchronisation</string>
     <string name="logout">Se déconnecter</string>
@@ -78,14 +88,18 @@
 
     
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">Tous les champs doivent être remplis avant de pouvoir continuer.</string>
+    <string name="cannot_proceed_from_home_warning">
+        Tous les champs doivent être remplis avant de pouvoir continuer.
+    </string>
     <string name="previous_page_lose_data_warning">
         Voulez-vous vraiment revenir à l\'écran précédent\?
         Vous perdrez les données que vous venez de saisir si vous décidez de continuer.
     </string>
     <string name="transaction_completed">La transaction a été effectuée avec succès!</string>
     <string name="transaction_cancelled">La transaction a été annulée avec succès!</string>
-    <string name="force_sync_confirmation_message">Voulez-vous vraiment forcer la synchronisation\?</string>
+    <string name="force_sync_confirmation_message">
+        Voulez-vous vraiment forcer la synchronisation\?
+    </string>
     <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter\?</string>
 
     <string name="remove_confirmation_message">
@@ -113,10 +127,18 @@
     <!-- Errors -->
     <string name="login_error">Connection impossible</string>
     <string name="config_file_error">Impossible de charger le fichier de configuration</string>
-    <string name="config_file_program_error">L\'identifiant du programme de stock n\'a pas été défini dans le fichier de configuration</string>
-    <string name="recent_activities_load_error">Impossible de charger vos activités récentes</string>
-    <string name="facilities_load_error">Impossible de charger la liste des installations disponibles</string>
-    <string name="destinations_load_error">Impossible de charger la liste des destinations disponibles</string>
+    <string name="config_file_program_error">
+        L\'identifiant du programme de stock n\'a pas été défini dans le fichier de configuration
+    </string>
+    <string name="recent_activities_load_error">
+        Impossible de charger vos activités récentes
+    </string>
+    <string name="facilities_load_error">
+        Impossible de charger la liste des installations disponibles
+    </string>
+    <string name="destinations_load_error">
+        Impossible de charger la liste des destinations disponibles
+    </string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_sync_info">Informations de synchronisation</string>
@@ -131,33 +153,54 @@
     <string name="content_desc_recent_activity_status">Statut de l\'activité récente</string>
 
     <string name="commit_transaction_label">S\'engager</string>
-    <string name="missing_configuration">Un ou plusieurs champs obligatoires sont manquants dans le fichier de configuration</string>
+    <string name="missing_configuration">
+        Un ou plusieurs champs obligatoires sont manquants dans le fichier de configuration
+    </string>
     <string name="select_language">Sélectionnez la langue souhaitée</string>
 
     <string name="restart_later">Recommence plus tard</string>
     <string name="language_change_dialog_title">Confirmer le redémarrage</string>
-    <string name="confirm_app_restart_message">L\'application doit être redémarrée pour que les modifications soient prises en compte, cependant, toutes les modifications non enregistrées seront perdues.\n\nVoulez-vous procéder au redémarrage?</string>
+    <string name="confirm_app_restart_message">
+        L\'application doit être redémarrée pour que les modifications soient prises en compte, cependant, toutes les modifications non enregistrées seront perdues.\n\nVoulez-vous procéder au redémarrage?
+    </string>
     <string name="scan_canceled">Scan annulé !</string>
-    <string name="logout_error_message">Une erreur s\'est produite lors de la déconnexion. Veuillez réessayer plus tard.</string>
+    <string name="logout_error_message">
+        Une erreur s\'est produite lors de la déconnexion. Veuillez réessayer plus tard.
+    </string>
     <string name="logout_success_message">Déconnecté avec succès</string>
 
     <string name="invalid_quantity">Invalide</string>
-    <string name="stock_on_hand_exceeded_message">Le stock disponible ne peut pas être dépassé</string>
-    <string name="reviewed_item_cannot_be_empty_message">Un stock en révision ne peut pas être vide. Vous pouvez supprimer l\'article si vous ne le souhaitez pas</string>
+    <string name="stock_on_hand_exceeded_message">
+        Le stock disponible ne peut pas être dépassé
+    </string>
+    <string name="reviewed_item_cannot_be_empty_message">
+        Un stock en révision ne peut pas être vide. Vous pouvez supprimer l\'article si vous ne le souhaitez pas
+    </string>
 
     <string name="permission_granted">Permission accordée</string>
     <string name="permission_denied">Permission refusée</string>
 
     <!-- Speech error messages -->
-    <string name="insufficient_speech_permissions_error">Permissions insuffisantes. Demande android.permission.RECORD_AUDIO</string>
+    <string name="insufficient_speech_permissions_error">
+        Permissions insuffisantes. Demande android.permission.RECORD_AUDIO
+    </string>
     <string name="speech_audio_error">Erreur d\'enregistrement audio</string>
-    <string name="speech_client_error">Erreur côté client. S\'il vous plait, vérifiez votre connexion internet!</string>
+    <string name="speech_client_error">
+        Erreur côté client. S\'il vous plait, vérifiez votre connexion internet!
+    </string>
     <string name="speech_network_error">Erreur réseau</string>
     <string name="speech_network_timeout_error">L\'opération réseau a expiré</string>
     <string name="no_speech_match_error">Aucun résultat de reconnaissance ne correspond.</string>
-    <string name="speech_recognition_service_busy_error">Le service de reconnaissance est occupé</string>
+    <string name="speech_recognition_service_busy_error">
+        Le service de reconnaissance est occupé
+    </string>
     <string name="speech_server_error">Une erreur s\'est produite sur le serveur vocal</string>
     <string name="speech_timeout_error">Aucune entrée vocale détectée</string>
     <string name="unknown_speech_error">Une erreur inconnue est survenue</string>
-    <string name="non_numeric_speech_input_error">La saisie non numérique n\'est pas autorisée: \"%s\"</string>
+    <string name="non_numeric_speech_input_error">
+        La saisie non numérique n\'est pas autorisée: \"%s\"
+    </string>
+    <string name="negative_number_speech_input_error">
+        La saisie d\'un nombre négatif n\'est pas autorisée: \"%s\"
+    </string>
 </resources>

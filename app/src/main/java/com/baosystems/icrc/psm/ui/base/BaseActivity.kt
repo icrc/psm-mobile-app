@@ -104,7 +104,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     /**
-     * Should be overriden by subclasses that require custom logic
+     * Should be overridden by subclasses that require custom logic
      */
     open fun onVoiceInputStateChanged() {}
 
@@ -259,11 +259,13 @@ abstract class BaseActivity : AppCompatActivity() {
             SpeechRecognizer.ERROR_SERVER -> R.string.speech_server_error
             SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> R.string.speech_timeout_error
             Constants.NON_NUMERIC_SPEECH_INPUT_ERROR -> R.string.non_numeric_speech_input_error
+            Constants.NEGATIVE_NUMBER_NOT_ALLOWED_INPUT_ERROR -> R.string.negative_number_speech_input_error
             else -> R.string.unknown_speech_error
         }
 
         val message =
-            if (code == Constants.NON_NUMERIC_SPEECH_INPUT_ERROR)
+            if (code == Constants.NON_NUMERIC_SPEECH_INPUT_ERROR ||
+                code == Constants.NEGATIVE_NUMBER_NOT_ALLOWED_INPUT_ERROR)
                 getString(resId, data ?: "")
             else
                 getString(resId)
