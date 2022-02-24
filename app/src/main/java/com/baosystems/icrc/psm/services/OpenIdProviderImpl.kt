@@ -4,7 +4,6 @@ import android.content.Context
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.data.models.OpenIDAuthConfigModel
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import org.hisp.dhis.android.core.user.openid.OpenIDConnectConfig
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -26,7 +25,9 @@ class OpenIdProviderImpl @Inject constructor(
             return try {
                 Gson().fromJson(reader, OpenIDAuthConfigModel::class.java)
                     .toOpenIDConnectionConfig()
-            } catch (jpe: JsonParseException) {
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+
                 null
             }
         }
