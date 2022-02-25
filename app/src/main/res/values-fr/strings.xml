@@ -108,9 +108,9 @@
     </string>
 
     <plurals name="items_found">
-        <item quantity="one">%d article trouvé</item>
-        <item quantity="other">%d objets trouvés</item>
-        <item quantity="many">%d objets trouvés</item>
+        <item quantity="one">%d Objet</item>
+        <item quantity="other">%d éléments</item>
+        <item quantity="many">%d éléments</item>
     </plurals>
     <string name="no_items_found">Aucun élément trouvé</string>
     <string name="loading_items_message">Chargement des articles en stock &#8230;</string>

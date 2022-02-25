@@ -90,11 +90,11 @@
     </string>
 
     <plurals name="items_found">
-        <item quantity="zero"> تم العثور على سلع<xliff:g id="zero_item">%d</xliff:g></item>
-        <item quantity="one"> م العثور على العنصر<xliff:g id="one_item">%d</xliff:g></item>
-        <item quantity="two"> م العثور على سلع<xliff:g id="two_items">%d</xliff:g></item>
-        <item quantity="few"> م العثور على سلع<xliff:g id="few_items">%d</xliff:g></item>
-        <item quantity="many"> تم العثور على سلع<xliff:g id="many_items">%d</xliff:g></item>
+        <item quantity="zero"> العناصر<xliff:g id="zero_item">%d</xliff:g></item>
+        <item quantity="one"> غرض<xliff:g id="one_item">%d</xliff:g></item>
+        <item quantity="two"> العناصر<xliff:g id="two_items">%d</xliff:g></item>
+        <item quantity="few"> العناصر<xliff:g id="few_items">%d</xliff:g></item>
+        <item quantity="many"> العناصر<xliff:g id="many_items">%d</xliff:g></item>
     </plurals>
 
     <string name="no_items_found">لم يتم العثور على العناصر</string>
