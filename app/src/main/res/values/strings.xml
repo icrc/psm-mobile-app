@@ -94,8 +94,16 @@
     </string>
     <string name="logout_confirmation_message">Are you sure you want to log out\?</string>
 
-    <string name="remove_confirmation_message">
+    <string name="remove_correction_item_confirmation_message">
         Are you sure you want to permanently delete the entry for the correction of \"%1$s\"\?
+        This action cannot be undone.
+    </string>
+    <string name="remove_distribution_item_confirmation_message">
+        Are you sure you want to permanently delete the entry for the distribution of \"%1$s\"\?
+        This action cannot be undone.
+    </string>
+    <string name="remove_discard_item_confirmation_message">
+        Are you sure you want to permanently delete the entry for the discard of \"%1$s\"\?
         This action cannot be undone.
     </string>
 

@@ -84,9 +84,17 @@
     <string name="force_sync_confirmation_message">هل أنت متأكد أنك تريد فرض التزامن ؟</string>
     <string name="logout_confirmation_message">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
 
-    <string name="remove_confirmation_message">
-        هل أنت متأكد من أنك تريد حذف الإدخال نهائيًا لتصحيح <xliff:g id="item_name_to_remove">\"%1$s\"</xliff:g>؟
-لا يمكن التراجع عن هذا الإجراء.
+    <string name="remove_correction_item_confirmation_message">
+        هل تريد بالتأكيد حذف الإدخال نهائيًا لتصحيح <xliff:g id="item_name_to_remove">\"%1$s\"</xliff:g>؟
+         لا يمكن التراجع عن هذا الإجراء.
+    </string>
+    <string name="remove_distribution_item_confirmation_message">
+        هل تريد بالتأكيد حذف الإدخال نهائيًا لتوزيع <xliff:g id="item_name_to_remove">\"%1$s\"</xliff:g>؟
+         لا يمكن التراجع عن هذا الإجراء.
+    </string>
+    <string name="remove_discard_item_confirmation_message">
+        هل تريد بالتأكيد حذف الإدخال نهائيًا لتجاهل <xliff:g id="item_name_to_remove">\"%1$s\"</xliff:g>؟
+         لا يمكن التراجع عن هذا الإجراء.
     </string>
 
     <plurals name="items_found">

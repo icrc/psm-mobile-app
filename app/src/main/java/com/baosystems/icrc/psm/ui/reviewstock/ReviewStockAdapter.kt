@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.ui.base.ItemWatcher
@@ -61,12 +62,16 @@ class ReviewStockAdapter(
             KeyboardUtils.configureInputTypeForTransaction(transaction, tvItemQtyLayout.editText)
 
             btnRemoveItem.setOnClickListener {
+                val messageResId = when (transaction.transactionType) {
+                    TransactionType.DISTRIBUTION -> R.string.remove_distribution_item_confirmation_message
+                    TransactionType.DISCARD -> R.string.remove_discard_item_confirmation_message
+                    TransactionType.CORRECTION -> R.string.remove_correction_item_confirmation_message
+                }
+
                 ActivityManager.showDialog(
                     context,
                     R.string.confirmation,
-                    context.getString(R.string.remove_confirmation_message,
-                        getItem(adapterPosition).item.name
-                    )
+                    context.getString(messageResId, getItem(adapterPosition).item.name)
                 ) {
                     watcher.removeItem(getItem(adapterPosition))
                 }

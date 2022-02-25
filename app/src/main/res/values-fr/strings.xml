@@ -102,8 +102,16 @@
     </string>
     <string name="logout_confirmation_message">Êtes-vous sûr de vouloir vous déconnecter\?</string>
 
-    <string name="remove_confirmation_message">
+    <string name="remove_correction_item_confirmation_message">
         Êtes-vous sûr de vouloir effacer définitivement l\'entrée pour la correction de \"%1$s\"?
+         Cette action ne peut pas être annulée.
+    </string>
+    <string name="remove_distribution_item_confirmation_message">
+        Êtes-vous sûr de vouloir supprimer définitivement l\'entrée pour la distribution de \"%1$s\"\?
+         Cette action ne peut pas être annulée.
+    </string>
+    <string name="remove_discard_item_confirmation_message">
+        Êtes-vous sûr de vouloir supprimer définitivement l\'entrée pour le rejet de \"%1$s\"\?
          Cette action ne peut pas être annulée.
     </string>
 

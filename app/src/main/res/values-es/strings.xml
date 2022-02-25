@@ -98,8 +98,16 @@
         ¿Está seguro de que desea cerrar la sesión\?
     </string>
 
-    <string name="remove_confirmation_message">
+    <string name="remove_correction_item_confirmation_message">
         ¿Está seguro de que desea eliminar de forma permanente la entrada para la corrección de \"%1$s\"?
+         Esta acción no se puede deshacer.
+    </string>
+    <string name="remove_distribution_item_confirmation_message">
+        ¿Está seguro de que desea eliminar permanentemente la entrada para la distribución de \"%1$s\"\?
+         Esta acción no se puede deshacer.
+    </string>
+    <string name="remove_discard_item_confirmation_message">
+        ¿Está seguro de que desea eliminar permanentemente la entrada para el descarte de \"%1$s\"\?
          Esta acción no se puede deshacer.
     </string>
 

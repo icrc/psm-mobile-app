@@ -95,10 +95,16 @@
     </string>
     <string name="logout_confirmation_message">Вы действительно хотите выйти\?</string>
 
-
-
-    <string name="remove_confirmation_message">
+    <string name="remove_correction_item_confirmation_message">
         Вы уверены, что хотите навсегда сохранить Удалить для исправления \"%1$s\"?
+         Это действие не может быть отменено.
+    </string>
+    <string name="remove_distribution_item_confirmation_message">
+        Вы уверены, что хотите навсегда удалить запись о распространении \"%1$s\"\?
+         Это действие не может быть отменено.
+    </string>
+    <string name="remove_discard_item_confirmation_message">
+        Вы уверены, что хотите навсегда удалить запись об отмене \"%1$s\"\?
          Это действие не может быть отменено.
     </string>
 
