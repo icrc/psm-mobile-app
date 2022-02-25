@@ -43,6 +43,8 @@
 
     <color name="label_text_color">#2E384D</color>
     <color name="normal_text_color">#757D84</color>
+    <color name="recent_activity_transaction_text_color">#000000</color>
+    <color name="recent_activity_date_text_color">#333333</color>
 
     <color name="amber">#FFBF00</color>
     <color name="viewfinder_mask">#E0161616</color>

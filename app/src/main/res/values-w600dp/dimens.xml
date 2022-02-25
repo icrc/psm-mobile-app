@@ -13,7 +13,7 @@
     <dimen name="transaction_button_corner_radius">8dp</dimen>
 
     <dimen name="content_area_lr_margin">16dp</dimen>
-    <dimen name="content_area_top_margin">40dp</dimen>
+    <dimen name="content_area_top_margin">30dp</dimen>
 
     <dimen name="available_count_top_margin">32dp</dimen>
 

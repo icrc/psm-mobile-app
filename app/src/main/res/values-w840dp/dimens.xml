@@ -13,7 +13,7 @@
     <dimen name="transaction_button_tb_padding">56dp</dimen>
     <dimen name="transaction_center_button_margin">16dp</dimen>
     <dimen name="content_area_lr_margin">24dp</dimen>
-    <dimen name="content_area_top_margin">32dp</dimen>
+    <dimen name="content_area_top_margin">24dp</dimen>
     <dimen name="transaction_button_corner_radius">12dp</dimen>
 
     <dimen name="available_count_top_margin">32dp</dimen>

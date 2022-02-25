@@ -12,8 +12,7 @@ object Constants {
     const val PASSWORD = "PASSWORD"
 
     const val ITEM_PAGE_SIZE = 20
-    const val USER_ACTIVITY_COUNT = 15
-    const val SYNC_COMPLETED_DELAY = 1L
+    const val USER_ACTIVITY_COUNT = 8
 
     // Configuration file keys
     const val CONFIG_PROGRAM = "program"

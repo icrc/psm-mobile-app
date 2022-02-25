@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/dp_16"
+    android:paddingBottom="@dimen/dp_16"
     android:background="@drawable/border">
 
     <TextView
@@ -11,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/recent_activity_margin"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:textColor="@color/recent_activity_transaction_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,9 +35,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/recent_activity_margin"
+        android:textColor="@color/normal_text_color"
         android:textStyle="italic"
-        app:layout_constraintStart_toEndOf="@+id/ra_directional_arrow_image_view"
         app:layout_constraintBaseline_toBaselineOf="@id/ra_transaction_type_text_view"
+        app:layout_constraintStart_toEndOf="@+id/ra_directional_arrow_image_view"
         tools:text="Sterilization Department" />
 
     <TextView
@@ -44,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/recent_activity_date_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
