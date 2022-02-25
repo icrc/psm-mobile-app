@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@{lastSyncDate}"
+            android:textColor="@color/normal_text_color"
             app:layout_constraintBaseline_toBaselineOf="@id/last_sync_desc_text_view"
             app:layout_constraintStart_toEndOf="@id/last_sync_desc_text_view"
             tools:text="2021-06-30 14:32:33" />
