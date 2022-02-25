@@ -27,4 +27,9 @@
         <item name="android:textSize">14sp</item>
         <item name="android:paddingBottom">@dimen/dp_8</item>
     </style>
+
+    <style name="SplashScreenLabel">
+        <item name="android:textSize">@dimen/splash_screen_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
