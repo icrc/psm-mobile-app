@@ -204,7 +204,9 @@
         Произошла непредвиденная ошибка при аутентификации с помощью OpenID
     </string>
     <string name="no_network_available">Нет доступного сетевого подключения</string>
-    <string name="openid_authentication_not_successful">Не удается пройти аутентификацию с помощью OpenID</string>
+    <string name="openid_authentication_not_successful">
+        Не удалось пройти аутентификацию с помощью вашей учетной записи ICRC
+    </string>
 
     <string name="contact_service_desk_message">
         В случае проблем, \nобратитесь в <a href="mailto:servicedesk@icrc.org">службу поддержки ICRC</a>

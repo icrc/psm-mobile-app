@@ -215,7 +215,9 @@
         Ocurrió un error inesperado al autenticarse con OpenID
     </string>
     <string name="no_network_available">No hay conexión de red disponible</string>
-    <string name="openid_authentication_not_successful">No se puede autenticar con OpenID</string>
+    <string name="openid_authentication_not_successful">
+        No se puede autenticar con su cuenta ICRC
+    </string>
 
     <string name="contact_service_desk_message">
         En caso de problemas, \ncomuníquese con el <a href="mailto:servicedesk@icrc.org">servicio de atención al cliente del ICRC</a>

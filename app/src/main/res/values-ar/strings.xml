@@ -181,7 +181,9 @@
         حدث خطأ غير متوقع أثناء المصادقة باستخدام OpenID
     </string>
     <string name="no_network_available">لا يوجد اتصال شبكة متاح</string>
-    <string name="openid_authentication_not_successful">غير قادر على المصادقة مع OpenID</string>
+    <string name="openid_authentication_not_successful">
+        غير قادر على المصادقة مع حساب ICRC الخاص بك
+    </string>
 
     <string name="contact_service_desk_message">
         في حالة وجود مشاكل ،n\يرجى الاتصال بـ <a href="mailto:servicedesk@icrc.org"> مكتب خدمات اللجنة الدولية للصليب الأحمر </a>
