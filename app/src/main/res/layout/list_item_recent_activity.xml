@@ -17,6 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/recent_activity_transaction_text_color"
         tools:text="Distribution" />
 
     <ImageView
@@ -39,6 +40,7 @@
         android:textStyle="italic"
         app:layout_constraintStart_toEndOf="@+id/ra_directional_arrow_image_view"
         app:layout_constraintBaseline_toBaselineOf="@id/ra_transaction_type_text_view"
+        android:textColor="@color/normal_text_color"
         tools:text="Sterilization Department" />
 
     <TextView
@@ -50,5 +52,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/recent_activity_date_text_color"
         tools:text="2021-06-22 09:14:11" />
 </androidx.constraintlayout.widget.ConstraintLayout>
