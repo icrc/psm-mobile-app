@@ -11,7 +11,8 @@
         android:id="@+id/col_review_item_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="16">
+        android:layout_weight="16"
+        android:background="@color/light_grey">
 
         <TextView
             android:id="@+id/review_stock_item_name_text_view"
@@ -20,6 +21,7 @@
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="@dimen/stock_item_entry_left_margin"
             android:layout_marginEnd="@dimen/stock_item_entry_left_margin"
+            android:textColor="@color/table_text_color"
             tools:text="DORAPARA5T - PARACETAMOL (acetaminophen), 500 mg, tab." />
     </FrameLayout>
 
@@ -27,7 +29,8 @@
         android:id="@+id/col_stock_on_hand"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:background="@color/gray_200">
 
         <TextView
             android:id="@+id/review_stock_on_hand_value_text_view"
@@ -36,6 +39,7 @@
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="@dimen/stock_item_margin"
             tools:ignore="RtlCompat"
+            android:textColor="@color/table_text_color"
             tools:text="537" />
     </FrameLayout>
 

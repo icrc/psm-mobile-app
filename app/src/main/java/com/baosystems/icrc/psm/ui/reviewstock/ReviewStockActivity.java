@@ -20,6 +20,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
@@ -202,6 +203,9 @@ public class ReviewStockActivity extends BaseActivity {
                 getVoiceInputEnabled()
         );
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        );
 
         viewModel.getReviewedItems().observe(this, adapter::submitList);
 
