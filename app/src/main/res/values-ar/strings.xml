@@ -120,9 +120,9 @@
     <string name="destinations_load_error">تعذر تحميل قائمة الوجهات المتاحة</string>
 
     <!-- Content descriptions for accessibility -->
-    <string name="content_description_sync_info">معلومات المزامنة</string>
-    <string name="content_description_search">بحث</string>
-    <string name="content_description_clear_text">نص واضح</string>
+    <string name="content_desc_sync_info">معلومات المزامنة</string>
+    <string name="content_desc_search">بحث</string>
+    <string name="content_desc_clear_text">نص واضح</string>
     <string name="content_desc_transaction_date">إظهار منتقي التاريخ</string>
     <string name="content_desc_distributed_to">وزعت على</string>
     <string name="content_desc_last_sync">آخر مزامنة</string>
@@ -130,6 +130,7 @@
     <string name="content_desc_remove">إزالة بند</string>
     <string name="content_desc_recent_activity">سهم اتجاهي</string>
     <string name="content_desc_recent_activity_status">حالة النشاط الأخيرة</string>
+    <string name="content_desc_close_info_guide">إغلاق دليل المعلومات</string>
 
     <string name="commit_transaction_label">ارتكب</string>
     <string name="missing_configuration">واحد أو أكثر من الحقول المطلوبة مفقود في ملف التكوين</string>

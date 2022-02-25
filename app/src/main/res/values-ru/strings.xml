@@ -133,9 +133,9 @@
     </string>
 
     <!-- Content descriptions for accessibility -->
-    <string name="content_description_sync_info">Информация о синхронизации</string>
-    <string name="content_description_search">Поиск</string>
-    <string name="content_description_clear_text">Очистить текст</string>
+    <string name="content_desc_sync_info">Информация о синхронизации</string>
+    <string name="content_desc_search">Поиск</string>
+    <string name="content_desc_clear_text">Очистить текст</string>
     <string name="content_desc_transaction_date">Показать выбор даты</string>
     <string name="content_desc_distributed_to">Распространено в</string>
     <string name="content_desc_last_sync">Последняя синхронизация</string>
@@ -143,6 +143,7 @@
     <string name="content_desc_remove">Убрать предмет</string>
     <string name="content_desc_recent_activity">Направленная стрелка</string>
     <string name="content_desc_recent_activity_status">Статус недавней активности</string>
+    <string name="content_desc_close_info_guide">Закрыть информационный гид</string>
 
     <string name="commit_transaction_label">Совершить</string>
     <string name="missing_configuration">

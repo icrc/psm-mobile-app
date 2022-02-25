@@ -136,9 +136,9 @@
     </string>
 
     <!-- Content descriptions for accessibility -->
-    <string name="content_description_sync_info">Sincronizar información</string>
-    <string name="content_description_search">Buscar</string>
-    <string name="content_description_clear_text">Borrar texto</string>
+    <string name="content_desc_sync_info">Sincronizar información</string>
+    <string name="content_desc_search">Buscar</string>
+    <string name="content_desc_clear_text">Borrar texto</string>
     <string name="content_desc_transaction_date">Mostrar selector de fecha</string>
     <string name="content_desc_distributed_to">Distribuido a</string>
     <string name="content_desc_last_sync">Última sincronización</string>
@@ -146,6 +146,7 @@
     <string name="content_desc_remove">Remover el artículo</string>
     <string name="content_desc_recent_activity">Flecha direccional</string>
     <string name="content_desc_recent_activity_status">Estado de actividad reciente</string>
+    <string name="content_desc_close_info_guide">Cerrar guía de información</string>
 
     <string name="commit_transaction_label">Cometer</string>
     <string name="missing_configuration">

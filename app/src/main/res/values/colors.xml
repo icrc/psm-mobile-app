@@ -49,7 +49,7 @@
 
     <color name="info_guide_background_color">#F5FCFF</color>
     <color name="info_guide_border_color">#0F579DBB</color>
-    <color name="info_guide_icon_color">#D8D8D8</color>
+    <color name="info_guide_icon_color">#5B97B1</color>
 
     <!-- mic color definition -->
     <color name="mic_active">#E00019</color>

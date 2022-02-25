@@ -30,7 +30,7 @@
 
         <ImageView
             android:id="@+id/info_icon"
-            android:contentDescription="@string/content_description_sync_info"
+            android:contentDescription="@string/content_desc_sync_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -128,9 +128,9 @@
     </string>
 
     <!-- Content descriptions for accessibility -->
-    <string name="content_description_sync_info">Sync information</string>
-    <string name="content_description_search">Search</string>
-    <string name="content_description_clear_text">Clear text</string>
+    <string name="content_desc_sync_info">Sync information</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_clear_text">Clear text</string>
     <string name="content_desc_transaction_date">Show date picker</string>
     <string name="content_desc_distributed_to">Distributed to</string>
     <string name="content_desc_last_sync">Last Synced</string>
@@ -138,6 +138,7 @@
     <string name="content_desc_remove">Remove item</string>
     <string name="content_desc_recent_activity">Directional arrow</string>
     <string name="content_desc_recent_activity_status">Recent activity status</string>
+    <string name="content_desc_close_info_guide">Close information guide</string>
 
     <string name="commit_transaction_label">Commit</string>
     <string name="missing_configuration">

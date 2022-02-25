@@ -141,9 +141,9 @@
     </string>
 
     <!-- Content descriptions for accessibility -->
-    <string name="content_description_sync_info">Informations de synchronisation</string>
-    <string name="content_description_search">Chercher</string>
-    <string name="content_description_clear_text">Effacer le texte</string>
+    <string name="content_desc_sync_info">Informations de synchronisation</string>
+    <string name="content_desc_search">Chercher</string>
+    <string name="content_desc_clear_text">Effacer le texte</string>
     <string name="content_desc_transaction_date">Afficher le sélecteur de date</string>
     <string name="content_desc_distributed_to">Distribué à</string>
     <string name="content_desc_last_sync">Dernière synchronisation</string>
@@ -151,6 +151,7 @@
     <string name="content_desc_remove">Retirer l\'objet</string>
     <string name="content_desc_recent_activity">Flèche directionnelle</string>
     <string name="content_desc_recent_activity_status">Statut de l\'activité récente</string>
+    <string name="content_desc_close_info_guide">Fermer le guide d\'information</string>
 
     <string name="commit_transaction_label">S\'engager</string>
     <string name="missing_configuration">
