@@ -8,6 +8,7 @@
     <string name="distribution">Distribution</string>
     <string name="discard">Jeter</string>
     <string name="correction">Correction</string>
+    <string name="select_transaction">Sélectionnez l\'opération</string>
     <string name="transaction_date">Date de l\'opération</string>
     <string name="recent_activity">Activité récente</string>
     <string name="last_synced">Dernière synchronisation:</string>
@@ -48,7 +49,6 @@
     <!-- FloatingActionButtons -->
     <string name="proceed">procéder</string>
     <string name="review">Revoir</string>
-    <string name="transaction">Transaction</string>
 
     <string name="scan_barcode">Scannez le code-barres</string>
     <string name="scanning">Balayage&#8230;</string>

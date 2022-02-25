@@ -51,7 +51,7 @@
     <dimen name="choices_padding_bottom">16dp</dimen>
     <dimen name="choices_padding_right">16dp</dimen>
     <dimen name="recent_activity_top_margin">24dp</dimen>
-    <dimen name="recent_activity_list_top_margin">8dp</dimen>
+    <dimen name="recent_activity_list_top_margin">4dp</dimen>
 
     <dimen name="select_facility_bottom_margin">16dp</dimen>
     <dimen name="border_radius">4dp</dimen>
@@ -77,11 +77,11 @@
     <dimen name="recent_activity_list_margin_bottom">96dp</dimen>
 
 
-    <dimen name="margin_8">8dp</dimen>
-    <dimen name="margin_16">16dp</dimen>
-    <dimen name="margin_24">24dp</dimen>
-    <dimen name="margin_32">32dp</dimen>
-    <dimen name="margin_64">64dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_24">24dp</dimen>
+    <dimen name="dp_32">32dp</dimen>
+    <dimen name="dp_64">64dp</dimen>
 
     <dimen name="round_button_corner_radius">24dp</dimen>
     <dimen name="scan_button_tb_padding">8dp</dimen>

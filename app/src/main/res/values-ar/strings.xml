@@ -8,6 +8,7 @@
     <string name="distribution">توزيع</string>
     <string name="discard">تجاهل</string>
     <string name="correction">تصحيح</string>
+    <string name="select_transaction">حدد الصفقة</string>
     <string name="transaction_date">تاريخ الصفقة</string>
     <string name="recent_activity">النشاط الأخير</string>
     <string name="last_synced">آخر مزامنة:</string>
@@ -40,7 +41,6 @@
     <!-- FloatingActionButtons -->
     <string name="proceed">تقدم</string>
     <string name="review">إعادة النظر</string>
-    <string name="transaction">عملية تجارية</string>
 
     <string name="scan_barcode">مسح الرمز الشريطى</string>
     <string name="scanning">&#8230;يتم المسح</string>

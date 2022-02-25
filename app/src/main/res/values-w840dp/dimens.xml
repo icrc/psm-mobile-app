@@ -23,7 +23,7 @@
 
     <dimen name="choices_padding_bottom">16dp</dimen>
     <dimen name="recent_activity_top_margin">48dp</dimen>
-    <dimen name="recent_activity_list_top_margin">16dp</dimen>
+    <dimen name="recent_activity_list_top_margin">8dp</dimen>
 
     <dimen name="select_facility_bottom_margin">16dp</dimen>
 

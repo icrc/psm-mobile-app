@@ -7,6 +7,7 @@
     <string name="distribution">Распределение</string>
     <string name="discard">Отказаться</string>
     <string name="correction">Исправление</string>
+    <string name="select_transaction">Выберите транзакцию</string>
     <string name="transaction_date">Дата транзакции</string>
     <string name="recent_activity">Недавняя активность</string>
     <string name="last_synced">Последняя синхронизация:</string>
@@ -41,7 +42,6 @@
     <!-- FloatingActionButtons -->
     <string name="proceed">Продолжить</string>
     <string name="review">Рассмотрение</string>
-    <string name="transaction">Сделка</string>
 
     <string name="scan_barcode">Сканировать штрих-код</string>
 

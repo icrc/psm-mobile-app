@@ -7,6 +7,7 @@
     <string name="distribution">Distribution</string>
     <string name="discard">Discard</string>
     <string name="correction">Correction</string>
+    <string name="select_transaction">Select transaction</string>
     <string name="transaction_date">Date of Transaction</string>
     <string name="recent_activity">Recent Activity</string>
     <string name="last_synced">Last synced:</string>
@@ -39,7 +40,6 @@
     <!-- FloatingActionButtons -->
     <string name="proceed">Proceed</string>
     <string name="review">Review</string>
-    <string name="transaction">Transaction</string>
 
     <string name="scan_barcode">Scan barcode</string>
     <string name="scanning">Scanning&#8230;</string>
