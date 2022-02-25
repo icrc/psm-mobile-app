@@ -132,7 +132,7 @@
     <string name="content_desc_recent_activity_status">حالة النشاط الأخيرة</string>
     <string name="content_desc_close_info_guide">إغلاق دليل المعلومات</string>
 
-    <string name="commit_transaction_label">ارتكب</string>
+    <string name="confirm_transaction_label">يتأكد</string>
     <string name="missing_configuration">واحد أو أكثر من الحقول المطلوبة مفقود في ملف التكوين</string>
     <string name="select_language">حدد اللغة التي تريدها</string>
 

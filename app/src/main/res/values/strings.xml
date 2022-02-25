@@ -140,7 +140,7 @@
     <string name="content_desc_recent_activity_status">Recent activity status</string>
     <string name="content_desc_close_info_guide">Close information guide</string>
 
-    <string name="commit_transaction_label">Commit</string>
+    <string name="confirm_transaction_label">Confirm</string>
     <string name="missing_configuration">
         One or more required fields are missing in the configuration file
     </string>

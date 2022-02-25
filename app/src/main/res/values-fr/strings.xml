@@ -153,7 +153,7 @@
     <string name="content_desc_recent_activity_status">Statut de l\'activité récente</string>
     <string name="content_desc_close_info_guide">Fermer le guide d\'information</string>
 
-    <string name="commit_transaction_label">S\'engager</string>
+    <string name="confirm_transaction_label">Confirmer</string>
     <string name="missing_configuration">
         Un ou plusieurs champs obligatoires sont manquants dans le fichier de configuration
     </string>

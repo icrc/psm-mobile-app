@@ -148,7 +148,7 @@
     <string name="content_desc_recent_activity_status">Estado de actividad reciente</string>
     <string name="content_desc_close_info_guide">Cerrar guía de información</string>
 
-    <string name="commit_transaction_label">Cometer</string>
+    <string name="confirm_transaction_label">Confirmar</string>
     <string name="missing_configuration">
         Faltan uno o más campos obligatorios en el archivo de configuración
     </string>
