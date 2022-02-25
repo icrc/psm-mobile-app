@@ -70,8 +70,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="org.dhis2"
-                    android:path="/xSLzBBuLJunOQPB89rtzM54FXx4%3D"
+                    android:host="org.icrc.dhis2.psmbasic_test"
+                    android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY%3D"
                     android:scheme="msauth" />
             </intent-filter>
         </activity>
