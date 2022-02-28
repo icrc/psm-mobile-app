@@ -173,6 +173,7 @@ class RuleValidationHelperImpl @Inject constructor(
         return d2.eventModule().events().byEnrollmentUid().eq(enrollment.uid())
             .byStatus().notIn(EventStatus.SCHEDULE, EventStatus.SKIPPED, EventStatus.OVERDUE)
             .byEventDate().beforeOrEqual(Date())
+            .orderByCreated(RepositoryScope.OrderByDirection.DESC)
             .withTrackedEntityDataValues()
             .get()
             .toFlowable().flatMapIterable { events -> events }
