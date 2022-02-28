@@ -11,7 +11,7 @@
 
     <Preference
         app:key="@string/force_sync_pref_key"
-        app:title="@string/force_sync"
+        app:title="@string/force_data_sync"
         app:persistent="false" />
 
     <Preference

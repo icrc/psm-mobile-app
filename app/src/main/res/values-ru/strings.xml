@@ -62,7 +62,7 @@
     <!-- Settings -->
     <string name="use_microphone_for_data_entry">Используйте микрофон для ввода данных</string>
     <string name="language">Язык</string>
-    <string name="force_sync">Синхронизация силы</string>
+    <string name="force_data_sync">Принудительная синхронизация данных</string>
     <string name="logout">Выйти</string>
 
 

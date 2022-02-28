@@ -64,7 +64,7 @@
         Utilice el micrófono para la entrada de datos
     </string>
     <string name="language">Idioma</string>
-    <string name="force_sync">Forzar sincronización</string>
+    <string name="force_data_sync">Forzar sincronización de datos</string>
     <string name="logout">Cerrar sesión</string>
 
 

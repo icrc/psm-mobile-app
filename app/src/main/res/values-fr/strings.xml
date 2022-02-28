@@ -70,7 +70,7 @@
         Utiliser un microphone pour la saisie de données
     </string>
     <string name="language">Langue</string>
-    <string name="force_sync">Forcer la synchronisation</string>
+    <string name="force_data_sync">Forcer la synchronisation des données</string>
     <string name="logout">Se déconnecter</string>
 
 

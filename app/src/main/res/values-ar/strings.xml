@@ -60,7 +60,7 @@
     <!-- Settings -->
     <string name="use_microphone_for_data_entry">استخدم الميكروفون لإدخال البيانات</string>
     <string name="language">لغة</string>
-    <string name="force_sync">قوة التزامن</string>
+    <string name="force_data_sync">فرض مزامنة البيانات</string>
     <string name="logout">تسجيل خروج</string>
 
     <!-- Stock table -->

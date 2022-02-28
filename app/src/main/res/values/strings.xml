@@ -59,7 +59,7 @@
     <!-- Settings -->
     <string name="use_microphone_for_data_entry">Use microphone for data entry</string>
     <string name="language">Language</string>
-    <string name="force_sync">Force synchronization</string>
+    <string name="force_data_sync">Force data synchronization</string>
     <string name="logout">Logout</string>
 
 
