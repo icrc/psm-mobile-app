@@ -33,7 +33,7 @@
             android:paddingStart="@dimen/qty_guide_lr_padding"
             android:paddingEnd="@dimen/qty_guide_lr_padding"
             android:text="@string/negative_value"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

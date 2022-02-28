@@ -18,9 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/stock_item_margin"
-            android:layout_marginTop="@dimen/stock_item_margin"
+            android:layout_gravity="center_vertical"
             android:text="@string/item"
-            android:textAlignment="textStart"
             android:textColor="@color/white" />
     </FrameLayout>
 
@@ -33,9 +32,7 @@
             android:id="@+id/stockOnHandHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/stock_item_margin"
-            android:layout_marginTop="@dimen/stock_item_margin"
+            android:layout_gravity="center"
             android:text="@string/stock_on_hand"
             android:textColor="@color/white" />
     </FrameLayout>
@@ -59,22 +56,26 @@
                 android:layout_height="wrap_content"
                 android:text="@string/quantity"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/qtyInfoIconButton"
-                app:layout_constraintEnd_toStartOf="@+id/qtyInfoIconButton"
                 app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/qtyInfoIconButton" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/qtyInfoIconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
+                android:contentDescription="@string/content_desc_quantity_info"
                 android:src="@drawable/info_white"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/qtyHeaderTextView"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

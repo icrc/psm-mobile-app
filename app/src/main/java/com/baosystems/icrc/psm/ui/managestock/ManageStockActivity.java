@@ -69,16 +69,9 @@ public class ManageStockActivity extends BaseActivity {
         // TODO: use localized name for the title
         setTitle(viewModel.getTransaction().getTransactionType().name());
 
-        // Ensure the negative info guide shows up when transaction is of Correction type
+        // Enable the ability to show the info guide when the transaction is of Correction type
         if (viewModel.getTransaction().getTransactionType() == TransactionType.CORRECTION) {
-            binding.qtyGuide.negativeValueTextView.setVisibility(View.VISIBLE);
-
-            int padding = getResources().getDimensionPixelSize(R.dimen.qty_guide_tb_padding);
-            binding.qtyGuide.getRoot().setPadding(
-                    binding.qtyGuide.getRoot().getPaddingLeft(),
-                    padding,
-                    binding.qtyGuide.getRoot().getPaddingRight(),
-                    padding);
+            binding.stockEntriesTableHeader.qtyInfoIconButton.setVisibility(View.VISIBLE);
         }
 
         setupSearchInput();

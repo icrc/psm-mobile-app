@@ -50,6 +50,42 @@ public class ReviewStockActivity extends BaseActivity {
     private ActivityReviewStockBinding binding;
     private ReviewStockAdapter adapter;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = (ReviewStockViewModel) getViewModel();
+        binding = (ActivityReviewStockBinding) getViewBinding();
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
+
+        // Set the activity title to the active transaction name
+        // TODO: use localized name for the title
+        setTitle(viewModel.getTransaction().getTransactionType().name());
+
+        // Enable the ability to show the info guide when the transaction is of Correction type
+        if (viewModel.getTransaction().getTransactionType() == TransactionType.CORRECTION) {
+            binding.stockEntriesTableHeader.qtyInfoIconButton.setVisibility(View.VISIBLE);
+        }
+
+        setupSearchInput();
+        setupRecyclerView();
+        configureScanner();
+
+        binding.fabCommitStock.setOnClickListener(view -> viewModel.commitTransaction());
+
+        viewModel.getCommitStatus().observe(this, status -> {
+            if (status)
+                navigateToHome();
+        });
+
+        viewModel.getShowGuide().observe(this,
+                showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
+                        getResources().getInteger(android.R.integer.config_shortAnimTime)));
+
+        updateCommitButton();
+    }
+
     private final ItemWatcher<StockEntry, String, String> itemWatcher =
             new ItemWatcher<StockEntry, String, String>() {
 
@@ -116,42 +152,6 @@ public class ReviewStockActivity extends BaseActivity {
 
     private void updateCommitButton() {
         runOnUiThread(() -> binding.fabCommitStock.setEnabled(viewModel.canCommit()));
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        viewModel = (ReviewStockViewModel) getViewModel();
-        binding = (ActivityReviewStockBinding) getViewBinding();
-        binding.setViewModel(viewModel);
-        binding.setLifecycleOwner(this);
-
-        // Set the activity title to the active transaction name
-        // TODO: use localized name for the title
-        setTitle(viewModel.getTransaction().getTransactionType().name());
-
-        // Ensure the negative info guide shows up when transaction is of Correction type
-        if (viewModel.getTransaction().getTransactionType() == TransactionType.CORRECTION) {
-            binding.qtyGuide.negativeValueTextView.setVisibility(View.VISIBLE);
-        }
-
-        setupSearchInput();
-        setupRecyclerView();
-        configureScanner();
-
-        binding.fabCommitStock.setOnClickListener(view -> viewModel.commitTransaction());
-
-        viewModel.getCommitStatus().observe(this, status -> {
-            if (status)
-                navigateToHome();
-        });
-
-        viewModel.getShowGuide().observe(this,
-                showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
-                        getResources().getInteger(android.R.integer.config_shortAnimTime)));
-
-        updateCommitButton();
     }
 
     @Override
