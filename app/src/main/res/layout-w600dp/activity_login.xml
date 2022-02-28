@@ -152,7 +152,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/label_text_color"
                 app:cornerRadius="@dimen/round_button_corner_radius"
-                app:icon="@drawable/ic_icrc_logo"
+                app:icon="@drawable/icrc_logo"
+                app:iconTint="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/staff_members_label" />
