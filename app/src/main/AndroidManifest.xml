@@ -71,7 +71,7 @@
 
                 <data
                     android:host="org.icrc.dhis2.psmadvanced_test"
-                    android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY%3D"
+                    android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY="
                     android:scheme="msauth" />
             </intent-filter>
         </activity>
@@ -86,7 +86,9 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="https" />
+            <data android:host="org.icrc.dhis2.psmadvanced_test"
+                android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY="
+                android:scheme="msauth" />
         </intent>
 
         <intent>

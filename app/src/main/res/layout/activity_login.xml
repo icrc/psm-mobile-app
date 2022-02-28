@@ -74,16 +74,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/server_url_container" />
 
-            <TextView
-                android:id="@+id/non_members_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_32"
-                android:gravity="center_horizontal"
-                android:text="@string/non_icrc_staff_members"
+            <include
+                android:id="@+id/non_staff_members_container"
+                layout="@layout/textview_with_line_endings"
+                app:text="@{@string/non_icrc_staff_members}"
+                app:layout_constraintTop_toBottomOf="@id/sign_in_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sign_in_label" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_32" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/username_text_field_layout"
@@ -95,7 +95,7 @@
                 android:hint="@string/username"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/non_members_label">
+                app:layout_constraintTop_toBottomOf="@id/non_staff_members_container">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username_text_field"
@@ -137,13 +137,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/password_text_field_layout" />
 
-            <TextView
-                android:id="@+id/staff_members_label"
+            <include
+                android:id="@+id/staff_members_container"
+                layout="@layout/textview_with_line_endings"
+                app:text="@{@string/icrc_staff_members}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/staff_members_label_top_margin"
-                android:gravity="center_horizontal"
-                android:text="@string/icrc_staff_members"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/sign_in_button" />
@@ -162,7 +162,7 @@
                 app:iconTint="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/staff_members_label" />
+                app:layout_constraintTop_toBottomOf="@id/staff_members_container" />
 
             <TextView
                 android:id="@+id/contact_textview"

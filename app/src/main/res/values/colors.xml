@@ -12,6 +12,7 @@
     <color name="distribution_color">#FF5F8D79</color>
     <color name="discard_color">#FFAF2D3B</color>
     <color name="correction_color">#FF969191</color>
+
     <!-- Change to actual red color for errors -->
     <color name="error">#FFAF2D3B</color>
 
@@ -26,6 +27,7 @@
     <color name="gray_600">#757575</color>
     <color name="gray_700">#616161</color>
     <color name="gray_900">#212121</color>
+    <color name="login_separator_line_color">#E1E1E1</color>
 
     <color name="primary_color">#FF62A3BB</color>
     <color name="primary_light_color">#94D4ED</color>
