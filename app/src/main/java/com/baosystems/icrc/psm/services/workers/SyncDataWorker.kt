@@ -2,6 +2,7 @@ package com.baosystems.icrc.psm.services.workers
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
+import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.baosystems.icrc.psm.R
@@ -15,14 +16,14 @@ import com.baosystems.icrc.psm.services.SyncManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.utils.DateUtils
 import com.baosystems.icrc.psm.utils.NotificationHelper
+import com.baosystems.icrc.psm.utils.Sdk
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import timber.log.Timber
 import java.time.LocalDateTime
 
 @HiltWorker
 class SyncDataWorker @AssistedInject constructor(
-    @Assisted context: Context,
+    @Assisted private val context: Context,
     @Assisted workerParams: WorkerParameters,
     private val appConfig: AppConfig,
     private val syncManager: SyncManager,
@@ -31,6 +32,7 @@ class SyncDataWorker @AssistedInject constructor(
 
     override fun doWork(): Result {
         var teiSynced = false
+        var errorPayload: Data? = null
 
         triggerNotification(
             R.string.app_name,
@@ -42,8 +44,11 @@ class SyncDataWorker @AssistedInject constructor(
             syncManager.syncTEIs(appConfig.program)
             teiSynced = true
         } catch (e: Exception) {
-            Timber.e(e)
             e.printStackTrace()
+
+            Sdk.getFriendlyErrorMessage(e)?.let {
+                errorPayload = Data.Builder().putInt(Constants.WORKER_ERROR_MESSAGE_KEY, it).build()
+            }
         }
 
         triggerNotification(
@@ -68,7 +73,9 @@ class SyncDataWorker @AssistedInject constructor(
         return if (teiSynced) {
             Result.success()
         } else {
-            Result.failure()
+            errorPayload?.let {
+                Result.failure(it)
+            } ?: Result.failure()
         }
     }
 

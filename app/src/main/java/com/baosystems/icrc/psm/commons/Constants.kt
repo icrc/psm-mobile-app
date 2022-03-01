@@ -54,6 +54,7 @@ object Constants {
     const val SYNC_METADATA_NOTIFICATION_CHANNEL = "SYNC_METADATA_CHANNEL"
     const val SYNC_METADATA_CHANNEL_NAME = "METADATA_SYNC"
     const val SYNC_METADATA_NOTIFICATION_ID = 893455
+    const val WORKER_ERROR_MESSAGE_KEY = "ERROR_MESSAGE"
 
     // Metadata & Data sync periods
     const val PERIOD_DAILY = 24 * 60 * 60

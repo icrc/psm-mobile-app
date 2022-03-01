@@ -4,6 +4,7 @@ import static com.baosystems.icrc.psm.commons.Constants.INITIAL_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.INSTANT_DATA_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.INSTANT_METADATA_SYNC;
 import static com.baosystems.icrc.psm.commons.Constants.SCREEN_TRANSITION_DELAY;
+import static com.baosystems.icrc.psm.commons.Constants.WORKER_ERROR_MESSAGE_KEY;
 
 import android.content.Context;
 import android.content.Intent;
@@ -74,6 +75,11 @@ public class SyncActivity extends BaseActivity {
             navigateToHomeAfterDelay();
         } else if (workInfo.getState() == WorkInfo.State.FAILED) {
             showError(R.string.data_sync_error);
+            
+            int errorMessageRes = workInfo.getOutputData().getInt(WORKER_ERROR_MESSAGE_KEY, -1);
+            if (errorMessageRes != -1) {
+                ActivityManager.showErrorMessage(binding.getRoot(), errorMessageRes);
+            }
         }
     }
 
