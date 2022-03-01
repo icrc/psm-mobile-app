@@ -16,36 +16,6 @@ class UserManagerImpl @Inject constructor(val d2: D2) : UserManager {
         return Observable.defer {
             d2.userModule().logIn(username, password, serverUrl).toObservable()
         }
-
-
-//        return d2.userModule()?.logIn(username.value, password.value, serverUrl.value)
-//            ?.subscribeOn(Schedulers.io())
-//            ?.observeOn(AndroidSchedulers.mainThread())
-//            // TODO: Extract errors into a single location
-//            ?.doOnSuccess { user ->
-//                run {
-//                    if (user != null) {
-//                        Log.d("LoginModel", "user is logged in")
-//                        loginResult.postValue(LoginModel.Result(user))
-//                    } else {
-//                        Log.d("LoginModel", "user is logged in but empty")
-//                        loginResult.postValue(LoginModel.Result("Login error: no user"))
-//                    }
-//                }
-//            }
-//            ?.doOnError { throwable ->
-//                run {
-//                    var errorCode = ""
-//                    try {
-//                        if (throwable is D2Error) {
-//                            errorCode = ":" + throwable.errorCode()
-//                        }
-//                    } catch (e: Exception) {
-//                    }
-//                    loginResult.postValue(LoginModel.Result("Login error$errorCode"))
-//                    throwable.printStackTrace()
-//                }
-//            };
     }
 
     override fun login(config: OpenIDConnectConfig): Observable<IntentWithRequestCode?> {
