@@ -28,7 +28,7 @@ ext.versions = [
     security_crypto             : '1.0.0',
     security_identity           : '1.0.0-alpha02',
     security_authenticator      : '1.0.0-alpha02',
-    openid                      : '0.11.1',
+    openid                      : '0.7.1',
 
     // DI
     hilt                        : '2.41',
