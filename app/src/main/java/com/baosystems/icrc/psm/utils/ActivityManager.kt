@@ -52,7 +52,12 @@ class ActivityManager {
 
         @JvmStatic
         fun showToast(context: Context, messageRes: Int) {
-            Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
+            showToast(context, context.getString(messageRes))
+        }
+
+        @JvmStatic
+        fun showToast(context: Context, message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
 
         @JvmStatic
