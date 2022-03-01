@@ -1,4 +1,10 @@
-// Define versions
+// Define desired app id
+ext.appConfig = [
+    applicationId               : "org.icrc.dhis2.psmadvanced_test",
+    serverUrl                   : '"https://dhis2psm.test.icrc.org/dhis"'
+]
+
+// Define dependency versions
 ext.versions = [
     // SDK and Tools
     gradle_plugin               : '7.0.4',
