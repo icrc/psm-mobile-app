@@ -20,13 +20,14 @@ The application is integrated with the ICRC information system through the IRIS 
   
   > N.B: The `serverUrl` must be quoted in single and double quotes as you currently have it, to
   avoid breaking the build.
-3. Update the data definition for the activity `net.openid.appauth.RedirectUriReceiverActivity` in 
+3. Sync the updated config using the _"Sync now"_ button at the top of the editor window
+4. Update the data definition for the activity `net.openid.appauth.RedirectUriReceiverActivity` in 
    `AndroidManifest.xml` to match the `redirectUri` OAuth2 provider configuration defined above 
    in **(1)**. 
    The same should be done for the respective intent defined within the `<queries>` block. i.e.
-4. Clean and rebuild the project
-5. Build your APK (**Build > Build Bundle(s) / APK (s) menu**)
-6. [Sign your APK](https://github.com/dhis2/dhis2-android-capture-app/wiki/Modifying-the-APK#how-to-generate-a-keystore-and-sign-the-apk) for distribution
+5. Clean and rebuild the project
+6. Build your APK (**Build > Build Bundle(s) / APK (s) menu**)
+7. [Sign your APK](https://github.com/dhis2/dhis2-android-capture-app/wiki/Modifying-the-APK#how-to-generate-a-keystore-and-sign-the-apk) for distribution
    
 
 
