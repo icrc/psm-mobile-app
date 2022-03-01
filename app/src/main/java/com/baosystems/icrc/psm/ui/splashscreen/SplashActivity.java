@@ -11,7 +11,6 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.baosystems.icrc.psm.BuildConfig;
 import com.baosystems.icrc.psm.R;
 import com.baosystems.icrc.psm.data.AppConfig;
 import com.baosystems.icrc.psm.databinding.ActivitySplashBinding;
@@ -55,8 +54,7 @@ public class SplashActivity extends BaseActivity {
 
             // Ensure the server url stored in preferences for the logged in user,
             // matches the current one in the build
-            boolean serverUrlMatch = BuildConfig.SERVER_URL.equals(viewModel.getServerUrlPref());
-            if (loggedIn && serverUrlMatch) {
+            if (loggedIn) {
                 Timber.d("User is logged in.\nHas metadata being synced? %s\nHas data being synced? %s",
                         viewModel.hasSyncedMetadata(), viewModel.hasSyncedData());
 
@@ -66,9 +64,6 @@ public class SplashActivity extends BaseActivity {
                 } else
                     intent = SyncActivity.getSyncActivityIntent(this);
             } else {
-                if (!serverUrlMatch)
-                    Timber.w("User needs to re-login as server url does not match the previously saved value");
-
                 intent = LoginActivity.getLoginActivityIntent(this);
             }
 
