@@ -188,4 +188,39 @@
     <string name="contact_service_desk_message">
         في حالة وجود مشاكل ،n\يرجى الاتصال بـ <a href="mailto:servicedesk@icrc.org"> مكتب خدمات اللجنة الدولية للصليب الأحمر </a>
     </string>
+
+    <!--SDK error codes-->
+    <string name="login_error_unsuccessful_response">هناك خطأ ما. يرجى التحقق من صحة عنوان URL الخاص بالخادم واسم المستخدم وكلمة المرور وحاول مرة أخرى.</string>
+    <string name="login_error_error_response">وجه الفتاة! حدث خطأ ما من جانب الخادم.</string>
+    <string name="login_error_no_dhis_instance">عنوان URL المقدم ليس خادم DHIS2.</string>
+    <string name="login_error_bad_credentials">اسم المستخدم و / أو كلمة المرور غير صحيحة</string>
+    <string name="login_error_unknown_host">خادم غير معروف</string>
+    <string name="online_search_parsing_error">خطأ أثناء تحليل النتائج</string>
+    <string name="error_unexpected">حدث خطأ غير متوقع.</string>
+    <string name="error_many_requests">الخادم مشغول بعض الشيء في هذه اللحظة. من فضلك حاول قليلا في وقت لاحق.</string>
+    <string name="error_already_authenticated">تم تسجيل دخول المستخدم بالفعل.</string>
+    <string name="error_already_executed">تم تنفيذ الطلب بالفعل.</string>
+    <string name="error_api_invalid_query">طلب الخادم غير صالح.</string>
+    <string name="error_create_existing_error">إحباط الخلق. الكائن موجود بالفعل.</string>
+    <string name="error_export_login">الرجاء تسجيل الدخول لتصدير قاعدة البيانات.</string>
+    <string name="error_export_encrypted">تصدير قاعدة بيانات مشفرة غير مدعوم.</string>
+    <string name="error_import_exist">أنت تستورد قاعدة بيانات موجودة بالفعل.</string>
+    <string name="error_import_logout">الرجاء تسجيل الخروج لاستيراد قاعدة بيانات جديدة.</string>
+    <string name="error_import_version">إصدار قاعدة البيانات المستوردة أعلى من الإصدار المدعوم.</string>
+    <string name="error_user_no_authenticated">لا يوجد مستخدم مصدق عليه.</string>
+    <string name="error_user_no_authenticated_offline">لا يوجد مستخدم تمت مصادقته في وضع عدم الاتصال.</string>
+    <string name="error_different_offline_user">أنت تحاول تسجيل الدخول دون اتصال مع مستخدم مختلف.</string>
+    <string name="error_object_update">لا يمكن تحديث الكائن.</string>
+    <string name="error_object_insert">لا يمكن إدراج الكائن.</string>
+    <string name="error_ownership_access">ليس لديك حق الوصول.</string>
+    <string name="error_null_url">عنوان URL للخادم مفقود. الرجاء إدخال URL.</string>
+    <string name="error_server_malformed">عنوان URL للخادم غير منسق بشكل جيد. رجاءا تأكد.</string>
+    <string name="error_settings_app_not_supported">هذا الإصدار من Settings Web App غير مدعوم.</string>
+    <string name="error_settings_app_not_intalled">لم يتم تثبيت تطبيق ويب الإعدادات في الخادم.</string>
+    <string name="error_socket_timeout">تم إلغاء الطلب. استغرق الخادم وقتًا طويلاً للاستجابة.</string>
+    <string name="error_url_not_found">تعذر العثور على URL. الرجاء التحقق من ذلك.</string>
+    <string name="error_account_disabled">تم تعطيل حساب المستخدم الخاص بك. يرجى الاتصال بالمسؤول إذا كان هذا خطأ.</string>
+    <string name="error_account_locked">تم قفل حساب المستخدم الخاص بك. يرجى الاتصال بالمسؤول إذا كان هذا خطأ.</string>
+    <string name="error_set_value">لا يمكن تعيين القيمة.</string>
+    <string name="error_ssl">هناك مشكلة في شهادات الخادم. من فضلك ، اتصل بالمسؤول الخاص بك.</string>
 </resources>

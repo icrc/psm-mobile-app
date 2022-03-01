@@ -224,4 +224,73 @@
     <string name="contact_service_desk_message">
         En cas de problème, \n veuillez contacter le <a href="mailto:servicedesk@icrc.org">bureau d\'assistance du ICRC</a>
     </string>
+
+    <!--SDK error codes-->
+    <string name="login_error_unsuccessful_response">
+        Quelque chose s\'est mal passé. Veuillez vérifier que l\'URL du serveur, le nom d\'utilisateur et le mot de passe sont corrects et réessayez.
+    </string>
+    <string name="login_error_error_response">
+        Oups! Quelque chose s\'est mal passé côté serveur.
+    </string>
+    <string name="login_error_no_dhis_instance">L\'URL fournie n\'est pas un serveur DHIS2.</string>
+    <string name="login_error_bad_credentials">
+        Le nom d\'utilisateur et/ou le mot de passe sont incorrects
+    </string>
+    <string name="login_error_unknown_host">Serveur inconnu</string>
+    <string name="online_search_parsing_error">Erreur lors de l\'analyse des résultats</string>
+    <string name="error_unexpected">Quelque chose d\'inattendu s\'est mal passé.</string>
+    <string name="error_many_requests">
+        Le serveur est un peu occupé en ce moment. Veuillez essayer un peu plus tard.
+    </string>
+    <string name="error_already_authenticated">L\'utilisateur est déjà connecté.</string>
+    <string name="error_already_executed">La demande a déjà été exécutée.</string>
+    <string name="error_api_invalid_query">La requête du serveur n\'est pas valide.</string>
+    <string name="error_create_existing_error">Création avortée. L\'objet existe déjà.</string>
+    <string name="error_export_login">
+        Veuillez vous connecter pour exporter la base de données.
+    </string>
+    <string name="error_export_encrypted">
+        L\'exportation d\'une base de données chiffrée n\'est pas prise en charge.
+    </string>
+    <string name="error_import_exist">Vous importez une base de données déjà existante.</string>
+    <string name="error_import_logout">
+        Veuillez vous déconnecter pour importer une nouvelle base de données.
+    </string>
+    <string name="error_import_version">
+        La version de la base de données importée est supérieure à celle prise en charge.
+    </string>
+    <string name="error_user_no_authenticated">Il n\'y a pas d\'utilisateur authentifié.</string>
+    <string name="error_user_no_authenticated_offline">
+        Aucun utilisateur n\'est authentifié hors ligne.
+    </string>
+    <string name="error_different_offline_user">
+        Vous essayez de vous connecter hors ligne avec un autre utilisateur.
+    </string>
+    <string name="error_object_update">L\'objet n\'a pas pu être mis à jour.</string>
+    <string name="error_object_insert">L\'objet n\'a pas pu être inséré.</string>
+    <string name="error_ownership_access">Vous n\'avez pas accès.</string>
+    <string name="error_null_url">L\'URL du serveur est manquante. Veuillez saisir l\'URL.</string>
+    <string name="error_server_malformed">
+        L\'URL du serveur n\'est pas bien formée. S\'il te plaît vérifie le.
+    </string>
+    <string name="error_settings_app_not_supported">
+        Cette version de l\'application Web Paramètres n\'est pas prise en charge.
+    </string>
+    <string name="error_settings_app_not_intalled">
+        L\'application Web Paramètres n\'est pas installée sur le serveur.
+    </string>
+    <string name="error_socket_timeout">
+        Demande annulée. Le serveur a mis trop de temps à répondre.
+    </string>
+    <string name="error_url_not_found">Impossible de trouver l\'URL. Veuillez le vérifier.</string>
+    <string name="error_account_disabled">
+        Votre compte utilisateur a été désactivé. Veuillez contacter votre administrateur s\'il s\'agit d\'une erreur.
+    </string>
+    <string name="error_account_locked">
+        Votre compte utilisateur est verrouillé. Veuillez contacter votre administrateur s\'il s\'agit d\'une erreur.
+    </string>
+    <string name="error_set_value">La valeur n\'a pas pu être définie.</string>
+    <string name="error_ssl">
+        Il y a un problème avec les certificats du serveur. Veuillez contacter votre administrateur.
+    </string>
 </resources>

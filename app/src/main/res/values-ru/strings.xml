@@ -211,4 +211,69 @@
     <string name="contact_service_desk_message">
         В случае проблем, \nобратитесь в <a href="mailto:servicedesk@icrc.org">службу поддержки ICRC</a>
     </string>
+
+    <!--SDK error codes-->
+    <string name="login_error_unsuccessful_response">
+        Что-то пошло не так. Пожалуйста, проверьте правильность URL-адреса сервера, имени пользователя и пароля и повторите попытку.
+    </string>
+    <string name="login_error_error_response">Ой! Что-то пошло не так на стороне сервера.</string>
+    <string name="login_error_no_dhis_instance">
+        Предоставленный URL-адрес не является сервером DHIS2.
+    </string>
+    <string name="login_error_bad_credentials">Имя пользователя и/или пароль неверны</string>
+    <string name="login_error_unknown_host">Неизвестный сервер</string>
+    <string name="online_search_parsing_error">Ошибка при анализе результатов</string>
+    <string name="error_unexpected">Что-то неожиданное пошло не так.</string>
+    <string name="error_many_requests">
+        В данный момент сервер немного занят. Пожалуйста, попробуйте чуть позже.
+    </string>
+    <string name="error_already_authenticated">Пользователь уже авторизован.</string>
+    <string name="error_already_executed">Запрос уже выполнен.</string>
+    <string name="error_api_invalid_query">Запрос сервера недействителен.</string>
+    <string name="error_create_existing_error">Создание прервано. Объект уже существует.</string>
+    <string name="error_export_login">
+        Пожалуйста, войдите, чтобы экспортировать базу данных.
+    </string>
+    <string name="error_export_encrypted">
+        Экспорт зашифрованной базы данных не поддерживается.
+    </string>
+    <string name="error_import_exist">Вы импортируете уже существующую базу данных.</string>
+    <string name="error_import_logout">
+        Выйдите из системы, чтобы импортировать новую базу данных.</string>
+    <string name="error_import_version">Версия импортированной базы данных выше поддерживаемой.
+    </string>
+    <string name="error_user_no_authenticated">Нет аутентифицированного пользователя.</string>
+    <string name="error_user_no_authenticated_offline">
+        Нет пользователя, прошедшего проверку подлинности в автономном режиме.
+    </string>
+    <string name="error_different_offline_user">
+        Вы пытаетесь войти в систему в автономном режиме с другим пользователем.
+    </string>
+    <string name="error_object_update">Не удалось обновить объект.</string>
+    <string name="error_object_insert">Объект не может быть вставлен.</string>
+    <string name="error_ownership_access">У вас нет доступа.</string>
+    <string name="error_null_url">URL-адрес сервера отсутствует. Пожалуйста, введите URL.</string>
+    <string name="error_server_malformed">
+        URL-адрес сервера имеет неправильный формат. Пожалуйста, проверь это.
+    </string>
+    <string name="error_settings_app_not_supported">
+        Эта версия веб-приложения настроек не поддерживается.
+    </string>
+    <string name="error_settings_app_not_intalled">
+        Веб-приложение настроек не установлено на сервере.
+    </string>
+    <string name="error_socket_timeout">
+        Запрос отменен. Серверу потребовалось слишком много времени, чтобы ответить.
+    </string>
+    <string name="error_url_not_found">Не удалось найти URL. Пожалуйста, подтвердите это.</string>
+    <string name="error_account_disabled">
+        Ваша учетная запись пользователя отключена. Пожалуйста, свяжитесь с вашим администратором, если это ошибка.
+    </string>
+    <string name="error_account_locked">
+        Ваша учетная запись пользователя заблокирована. Пожалуйста, свяжитесь с вашим администратором, если это ошибка.
+    </string>
+    <string name="error_set_value">Не удалось установить значение.</string>
+    <string name="error_ssl">
+        Проблема с сертификатами сервера. Пожалуйста, свяжитесь с вашим администратором.
+    </string>
 </resources>

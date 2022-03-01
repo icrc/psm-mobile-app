@@ -17,8 +17,6 @@ import com.baosystems.icrc.psm.utils.isConfigComplete
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
-import org.hisp.dhis.android.core.maintenance.D2Error
-import org.hisp.dhis.android.core.maintenance.D2ErrorCode
 import org.hisp.dhis.android.core.user.User
 import org.hisp.dhis.android.core.user.openid.IntentWithRequestCode
 import org.hisp.dhis.android.core.user.openid.OpenIDConnectConfig
@@ -57,13 +55,13 @@ class LoginViewModel @Inject constructor(
 
     class Result {
         var user: User? = null
-        var error: String? = null
+        var error: Int? = null
 
         constructor(user: User?) {
             this.user = user
         }
 
-        constructor(error: String?) {
+        constructor(error: Int?) {
             this.error = error
         }
     }
@@ -155,29 +153,11 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun handleError(throwable: Throwable?) {
-        var errorCode = ""
-        if (throwable is D2Error) {
-            errorCode = throwable.errorCode().toString()
-
-            // TODO: Sometimes the error is D2 ALREADY_AUTHENTICATED error,
-            //  ensure you handle it appropriately
-            if (throwable.errorCode() == D2ErrorCode.ALREADY_AUTHENTICATED) {
-                disposable.add(
-                    userManager.userName().subscribe(
-                        { name -> Timber.d("The already logged in user is : $name") },
-                        { err -> err.message?.let { Timber.e(it) } }
-                    )
-                )
-
-            }
-        }
-
-        Timber.e("Login error: %s", throwable?.let { Sdk.getFriendlyErrorMessage(it) })
-
-        // TODO: Extract errors into a single location
-        loginResult.postValue(Result("Login error: $errorCode"))
-
         throwable?.printStackTrace()
+
+        loginResult.postValue(
+            Result(throwable?.let { Sdk.getFriendlyErrorMessage(throwable) })
+        )
     }
 
     private fun handleLoginResponse(user: User?) {
@@ -185,8 +165,8 @@ class LoginViewModel @Inject constructor(
             Timber.d(user.name() + " is logged in")
             loginResult.postValue(Result(user))
         } else {
-            Timber.d("user is logged in but empty")
-            loginResult.postValue(Result("Login error: no user"))
+            Timber.e("User is logged in but the User object is null")
+            loginResult.postValue(Result(R.string.error_unexpected))
         }
     }
 

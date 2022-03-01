@@ -222,4 +222,73 @@
     <string name="contact_service_desk_message">
         En caso de problemas, \ncomuníquese con el <a href="mailto:servicedesk@icrc.org">servicio de atención al cliente del ICRC</a>
     </string>
+
+    <!--SDK error codes-->
+    <string name="login_error_unsuccessful_response">
+        Algo salió mal. Verifique que la URL del servidor, el nombre de usuario y la contraseña sean correctos y vuelva a intentarlo.
+    </string>
+    <string name="login_error_error_response">
+        ¡UPS! Algo salió mal en el lado del servidor.
+    </string>
+    <string name="login_error_no_dhis_instance">
+        La URL proporcionada no es un servidor DHIS2.
+    </string>
+    <string name="login_error_bad_credentials">
+        El nombre de usuario y/o la contraseña son incorrectos
+    </string>
+    <string name="login_error_unknown_host">servidor desconocido</string>
+    <string name="online_search_parsing_error">Error al analizar los resultados</string>
+    <string name="error_unexpected">Algo inesperado salió mal.</string>
+    <string name="error_many_requests">
+        El servidor está un poco ocupado en este momento. Intente un poco más tarde.
+    </string>
+    <string name="error_already_authenticated">El usuario ya está logueado.</string>
+    <string name="error_already_executed">La solicitud ya ha sido ejecutada.</string>
+    <string name="error_api_invalid_query">La solicitud del servidor no es válida.</string>
+    <string name="error_create_existing_error">Creación abortada. El objeto ya existe.</string>
+    <string name="error_export_login">Inicie sesión para exportar la base de datos.</string>
+    <string name="error_export_encrypted">
+        No se admite la exportación de una base de datos cifrada.
+    </string>
+    <string name="error_import_exist">Está importando una base de datos ya existente.</string>
+    <string name="error_import_logout">
+        Cierre la sesión para importar una nueva base de datos.
+    </string>
+    <string name="error_import_version">
+        La versión de la base de datos importada es superior a la admitida.
+    </string>
+    <string name="error_user_no_authenticated">No hay ningún usuario autenticado.</string>
+    <string name="error_user_no_authenticated_offline">
+        No hay ningún usuario autenticado sin conexión.
+    </string>
+    <string name="error_different_offline_user">
+        Está intentando iniciar sesión sin conexión con un usuario diferente.
+    </string>
+    <string name="error_object_update">No se pudo actualizar el objeto.</string>
+    <string name="error_object_insert">No se pudo insertar el objeto.</string>
+    <string name="error_ownership_access">No tienes acceso.</string>
+    <string name="error_null_url">Falta la URL del servidor. Introduzca la URL.</string>
+    <string name="error_server_malformed">
+        La URL del servidor no está bien formada. Compruébelo por favor.
+    </string>
+    <string name="error_settings_app_not_supported">
+        Esta versión de la aplicación web de configuración no es compatible.
+    </string>
+    <string name="error_settings_app_not_intalled">
+        La aplicación web de configuración no está instalada en el servidor.
+    </string>
+    <string name="error_socket_timeout">
+        Solicitud cancelada. El servidor tardó demasiado en responder.
+    </string>
+    <string name="error_url_not_found">No se pudo encontrar la URL. Por favor verifíquelo.</string>
+    <string name="error_account_disabled">
+        Su cuenta de usuario ha sido deshabilitada. Póngase en contacto con su administrador si se trata de un error.
+    </string>
+    <string name="error_account_locked">
+        Su cuenta de usuario está bloqueada. Póngase en contacto con su administrador si se trata de un error.
+    </string>
+    <string name="error_set_value">No se pudo establecer el valor.</string>
+    <string name="error_ssl">
+        Hay un problema con los certificados del servidor. Por favor, póngase en contacto con su administrador.
+    </string>
 </resources>

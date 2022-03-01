@@ -75,7 +75,7 @@ public class SyncActivity extends BaseActivity {
             navigateToHomeAfterDelay();
         } else if (workInfo.getState() == WorkInfo.State.FAILED) {
             showError(R.string.data_sync_error);
-            
+
             int errorMessageRes = workInfo.getOutputData().getInt(WORKER_ERROR_MESSAGE_KEY, -1);
             if (errorMessageRes != -1) {
                 ActivityManager.showErrorMessage(binding.getRoot(), errorMessageRes);

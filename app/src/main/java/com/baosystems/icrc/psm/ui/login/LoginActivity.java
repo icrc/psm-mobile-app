@@ -127,10 +127,8 @@ public class LoginActivity extends BaseActivity {
 
             displayError(binding.getRoot(), R.string.openid_authentication_not_successful);
         }
-    }
 
-    private void handleOpenIdAuthResponseData(Intent data, int requestCode) {
-
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void displayOpenIdAuthError(OperationState<IntentWithRequestCode> state) {
@@ -146,9 +144,9 @@ public class LoginActivity extends BaseActivity {
         );
     }
 
-    private void showLoginFailed(String error) {
+    private void showLoginFailed(Integer errorRes) {
         KeyboardUtils.hideKeyboard(this);
-        ActivityManager.showErrorMessage(binding.loginContainer, error);
+        ActivityManager.showErrorMessage(binding.loginContainer, getString(errorRes));
     }
 
     private void login() {
