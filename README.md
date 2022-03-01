@@ -8,20 +8,42 @@ order status information and stock information at supplying ICRC medical distrib
 
 The application is integrated with the ICRC information system through the IRIS platform.
 
-### Todo
 
-- Go through all the possible return values from `usermodel().login()` and handle them accordingly. 
-  There are cases where `ALREADY_AUTHENTICATED` is returned from the call. SUch return values should be
-  handled appropriately
-- Switch to lottie animation for the `SyncActivity` page (_optional_)
-- Handle session expired scenarios (See _ActivityGlobalAbstract.showSessionExpired_) for example
-- Handle Crash Reporting (_optional_)
+### How to Create an APK
 
-### DHIS2 Android SDK feature requests
+1. Update `app/src/main/res/raw/openid_config` to match the configuration of your desired 
+  OAuth2 provider as described [here](https://github.com/dhis2/dhis2-android-capture-app/wiki/Modifying-the-APK#configure-openid--oauth). 
+2. Update the `applicationId` and `serverUrl` in `dependencies.gradle` file accordingly. The former
+  will be used as the [_application package name_](https://github.com/dhis2/dhis2-android-capture-app/wiki/Modifying-the-APK#change-package-name), 
+  and also in the `user-agent` header of all HTTP requests within the app, while the later is the
+  desired DHIS2 server the app will be communicating with.
+  
+  > N.B: The `serverUrl` must be quoted in single and double quotes as you currently have it, to
+  avoid breaking the build.
+3. Update the data definition for the activity `net.openid.appauth.RedirectUriReceiverActivity` in 
+   `AndroidManifest.xml` to match the `redirectUri` OAuth2 provider configuration defined above 
+   in **(1)**. 
+   The same should be done for the respective intent defined within the `<queries>` block. i.e.
+4. Clean and rebuild the project
+5. Build your APK (**Build > Build Bundle(s) / APK (s) menu**)
+6. [Sign your APK](https://github.com/dhis2/dhis2-android-capture-app/wiki/Modifying-the-APK#how-to-generate-a-keystore-and-sign-the-apk) for distribution
+   
 
-- Ability to create multiple events at once
 
 ### Notes
+
+- **Library version issues**:
+  - The latest version of `net.openid:appauth` library (**v0.11.1**) currently restricts the user from 
+    successful authentication due tot he error:
+    
+    > Audience mismatch / Invalid Token ID
+    
+    To get around this issue, the old version of the library (**0.7.1**) that is currently being used
+    in DHIS2 Android Capture app was settled for.
+    
+    Likewise, the latest version of `androidx.security:security-identity-credential` 
+    library (**1.0.0-alpha03**) was leadint to errors, so the previous version (**1.0.0-alpha02**)
+    was settled for.
 
 - **Android Permissions** - Starting in Android 11 (API level 30), if the user taps Deny for a
 specific permission more than once during your app's lifetime of installation on a device,
@@ -35,3 +57,14 @@ selected a __"don't ask again"__ checkbox or option.
   not assume anything about automatic behavior. Each time your app needs to access functionality 
   that requires a permission, you should check that your app is still granted that permission. 
   ([guide](https://developer.android.com/training/permissions/requesting))
+
+
+### DHIS2 Android SDK feature requests
+
+- Ability to create multiple events at once
+
+
+### Todo
+
+- Switch to lottie animation for the `SyncActivity` page (_optional_)
+- Handle Crash Reporting (_optional_)
