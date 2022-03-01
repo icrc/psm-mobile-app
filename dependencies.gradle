@@ -9,8 +9,8 @@ ext.versions = [
     minSdk                      : 24,
     targetSdk                   : 30,
     compileSdk                  : 31,
-    versionCode                 : 2,
-    versionName                 : '1.0.0-beta2',
+    versionCode                 : 3,
+    versionName                 : '1.0.0',
 
     // android
     lifecycle                   : '2.4.1', // 2.4.0 now available, but seems to have some breaking changes
@@ -28,6 +28,8 @@ ext.versions = [
     security_crypto             : '1.0.0',
     security_identity           : '1.0.0-alpha02',
     security_authenticator      : '1.0.0-alpha02',
+
+    // current version 0.11.1 results in Audience mismatch/Invalid Token ID error
     openid                      : '0.7.1',
 
     // DI
