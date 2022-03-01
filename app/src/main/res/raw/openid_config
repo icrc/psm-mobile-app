@@ -1,1 +1,9 @@
-{}
+{
+ "serverUrl": "https://dhis2psm.test.icrc.org/dhis",
+ "loginLabel": "Sign in with ICRC Account",
+ "clientId": "api://f80330eb-a3c9-4626-bead-407b3996e651",
+ "redirectUri": "msauth://org.icrc.dhis2.psmadvanced_test/J4CFTTod1TjeYgl9zsMgdcEaXnY%3D",
+ "discoveryUri": "https://login.microsoftonline.com/9e8a5334-497c-4d8a-a797-7997cf8cc763/v2.0/.well-known/openid-configuration",
+ "authorizationUrl": null ,
+ "tokenUrl": null
+ }
