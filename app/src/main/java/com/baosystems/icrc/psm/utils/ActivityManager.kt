@@ -46,6 +46,11 @@ class ActivityManager {
         }
 
         @JvmStatic
+        fun showErrorMessage(view: View, messageRes: Int) {
+            showErrorMessage(view, view.context.getString(messageRes))
+        }
+
+        @JvmStatic
         fun showInfoMessage(view: View, message: String) {
             showMessage(view, message, false)
         }
