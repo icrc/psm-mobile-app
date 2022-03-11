@@ -4,7 +4,6 @@ import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
-import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
@@ -60,7 +59,6 @@ class MetadataManagerImpl @Inject constructor(
                         .options()
                         .byOptionSetUid()
                         .eq(it.optionSetUid())
-                        .orderByDisplayName(RepositoryScope.OrderByDirection.ASC)
                         .get()
                 }
         }
