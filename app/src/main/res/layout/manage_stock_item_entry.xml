@@ -63,8 +63,7 @@
             android:maxWidth="@dimen/text_input_width"
             app:errorEnabled="true"
             android:layout_gravity="center"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            tools:text="20">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:inputType="number"
@@ -72,7 +71,8 @@
                 android:maxLength="19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/table_text_color" />
+                android:textColor="@color/table_text_color"
+                tools:text="201827" />
         </com.google.android.material.textfield.TextInputLayout>
     </FrameLayout>
 </LinearLayout>
