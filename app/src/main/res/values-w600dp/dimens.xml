@@ -22,5 +22,5 @@
     <dimen name="recent_activity_list_top_margin">8dp</dimen>
 
     <!-- Stock entry table  -->
-    <dimen name="text_input_width">95dp</dimen>
+    <dimen name="text_input_width">130dp</dimen>
 </resources>
