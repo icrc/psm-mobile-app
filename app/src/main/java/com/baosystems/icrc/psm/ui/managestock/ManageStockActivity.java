@@ -165,6 +165,11 @@ public class ManageStockActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (viewModel.getItemCount() == 0) {
+            super.onBackPressed();
+            return;
+        }
+
         ActivityManager.showBackButtonWarning(this, () -> {
                 super.onBackPressed();
                 return null;

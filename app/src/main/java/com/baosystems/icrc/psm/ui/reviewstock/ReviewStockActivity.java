@@ -156,6 +156,12 @@ public class ReviewStockActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        Integer itemsCount = viewModel.getReviewedItemsCount().getValue();
+        if (itemsCount != null && itemsCount == 0) {
+            super.onBackPressed();
+            return;
+        }
+
         ActivityManager.showBackButtonWarning(this, () -> {
             super.onBackPressed();
             return null;

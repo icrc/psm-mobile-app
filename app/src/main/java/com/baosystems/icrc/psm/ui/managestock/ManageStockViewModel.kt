@@ -167,4 +167,6 @@ class ManageStockViewModel @Inject constructor(
     private fun getPopulatedEntries() = Collections.synchronizedList(itemsCache.values.toList())
 
     fun getData(): ReviewStockData = ReviewStockData(transaction, getPopulatedEntries())
+
+    fun getItemCount(): Int = itemsCache.size
 }
