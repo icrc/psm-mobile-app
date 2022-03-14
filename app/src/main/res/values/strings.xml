@@ -217,7 +217,7 @@
     </string>
 
     <string name="contact_service_desk_message">
-        In case of problems, \nplease contact <a href="mailto:servicedesk@icrc.org">ICRC service desk</a>
+        In case of problems, \nplease contact ICRC service desk
     </string>
 
     <!--SDK error codes-->

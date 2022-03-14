@@ -209,7 +209,7 @@
     </string>
 
     <string name="contact_service_desk_message">
-        В случае проблем, \nобратитесь в <a href="mailto:servicedesk@icrc.org">службу поддержки ICRC</a>
+        В случае проблем, \nобратитесь в службу поддержки ICRC
     </string>
 
     <!--SDK error codes-->

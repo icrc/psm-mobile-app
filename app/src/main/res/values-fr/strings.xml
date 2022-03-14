@@ -222,7 +222,7 @@
     </string>
 
     <string name="contact_service_desk_message">
-        En cas de problème, \n veuillez contacter le <a href="mailto:servicedesk@icrc.org">bureau d\'assistance du ICRC</a>
+        En cas de problème, \n veuillez contacter le bureau d\'assistance du ICRC
     </string>
 
     <!--SDK error codes-->
