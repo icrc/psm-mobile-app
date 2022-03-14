@@ -188,6 +188,7 @@ public class ManageStockActivity extends BaseActivity {
 
         viewModel.onScanCompleted(data);
         binding.searchFieldLayout.searchInputField.setText(data);
+        binding.stockItemsList.requestFocus();
     }
 
     private void setupObservers() {
