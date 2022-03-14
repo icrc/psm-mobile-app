@@ -66,9 +66,7 @@ public class ManageStockActivity extends BaseActivity {
         binding.setLifecycleOwner(this);
         binding.fabReviewStock.setOnClickListener(view -> navigateToReviewStock());
 
-        // Set the activity title to the active transaction name
-        // TODO: use localized name for the title
-        setTitle(viewModel.getTransaction().getTransactionType().name());
+        setTitle(viewModel.getTransaction().getTransactionType());
 
         // Enable the ability to show the info guide when the transaction is of Correction type
         if (viewModel.getTransaction().getTransactionType() == TransactionType.CORRECTION) {

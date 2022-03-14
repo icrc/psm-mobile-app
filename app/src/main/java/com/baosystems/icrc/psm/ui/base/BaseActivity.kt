@@ -22,6 +22,7 @@ import com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE
 import com.baosystems.icrc.psm.data.SpeechRecognitionState
 import com.baosystems.icrc.psm.data.SpeechRecognitionState.Errored
+import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.ui.scanner.ScannerActivity
 import com.baosystems.icrc.psm.ui.settings.SettingsActivity
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.checkPermission
@@ -276,5 +277,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun displayError(view: View, messageRes: Int) {
         showErrorMessage(view, getString(messageRes))
+    }
+
+    fun setTitle(transactionType: TransactionType) {
+        when(transactionType) {
+            TransactionType.CORRECTION -> setTitle(R.string.correction)
+            TransactionType.DISTRIBUTION -> setTitle(R.string.distribution)
+            TransactionType.DISCARD -> setTitle(R.string.discard)
+        }
     }
 }
