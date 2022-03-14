@@ -37,6 +37,7 @@ import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanIntentResult;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import org.hisp.dhis.rules.models.RuleActionAssign;
@@ -176,12 +177,17 @@ public class ManageStockActivity extends BaseActivity {
                     if (scanIntentResult.getContents() == null) {
                         ActivityManager.showToast(this, R.string.scan_canceled);
                     } else {
-                        String data = scanIntentResult.getContents();
-                        viewModel.onScanCompleted(data);
-                        binding.searchFieldLayout.searchInputField.setText(data);
+                        onScanCompleted(scanIntentResult);
                     }
                 });
         binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
+    }
+
+    private void onScanCompleted(ScanIntentResult scanIntentResult) {
+        String data = scanIntentResult.getContents();
+
+        viewModel.onScanCompleted(data);
+        binding.searchFieldLayout.searchInputField.setText(data);
     }
 
     private void setupObservers() {
@@ -191,14 +197,7 @@ public class ManageStockActivity extends BaseActivity {
             adapter.submitList(pagedListLiveData);
 
             // Scroll back to the top of the recyclerview if a new paged list is added
-            LinearLayoutManager layoutManager =
-                    (LinearLayoutManager) binding.stockItemsList.getLayoutManager();
-            if (layoutManager != null) {
-                int position = layoutManager.findFirstCompletelyVisibleItemPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    binding.stockItemsList.scrollToPosition(position);
-                }
-            }
+            resetListScrollPosition();
 
             // Handle empty results state
             updateStocklistInfoBox(R.drawable.ic_empty_list, R.string.no_items_found,
@@ -210,6 +209,17 @@ public class ManageStockActivity extends BaseActivity {
         viewModel.getShowGuide().observe(this,
                 showGuide -> crossFade(binding.qtyGuide.getRoot(), showGuide,
                         getResources().getInteger(android.R.integer.config_shortAnimTime)));
+    }
+
+    private void resetListScrollPosition() {
+        LinearLayoutManager layoutManager =
+                (LinearLayoutManager) binding.stockItemsList.getLayoutManager();
+        if (layoutManager != null) {
+            int position = layoutManager.findFirstCompletelyVisibleItemPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                binding.stockItemsList.scrollToPosition(position);
+            }
+        }
     }
 
     private void updateStocklistInfoBox(Integer drawableRes, Integer stringRes, boolean show) {
