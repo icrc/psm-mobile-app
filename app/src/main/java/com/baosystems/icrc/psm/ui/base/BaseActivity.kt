@@ -35,8 +35,9 @@ import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 /**
- * The base Activity
- * Has the menu set, and also sets the action bar.
+ * The base activity
+ *
+ * Sets the menu, and action bar.
  */
 abstract class BaseActivity : AppCompatActivity() {
     private lateinit var viewModel: ViewModel
