@@ -21,7 +21,6 @@ import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.sync.SyncActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.baosystems.icrc.psm.utils.KeyboardUtils;
-import com.baosystems.icrc.psm.utils.NetworkUtils;
 
 import org.hisp.dhis.android.core.user.openid.IntentWithRequestCode;
 
@@ -143,20 +142,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
-        // TODO: Hide whatever component needs to be hidden,
-        //  and show whichever one needs showing (e.g. progress bar)
         if (isConnectedToNetwork()) {
             loginViewModel.login();
         }
-    }
-
-    private boolean isConnectedToNetwork() {
-        boolean networkIsAvailable = NetworkUtils.isOnline(this);
-        if (!networkIsAvailable) {
-            displayError(binding.getRoot(), R.string.no_network_available);
-        }
-
-        return networkIsAvailable;
     }
 
     private void loginWithOpenId() {

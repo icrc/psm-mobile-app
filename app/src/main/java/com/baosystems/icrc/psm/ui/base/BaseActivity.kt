@@ -30,6 +30,7 @@ import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showErrorMessage
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showToast
 import com.baosystems.icrc.psm.utils.LocaleManager
+import com.baosystems.icrc.psm.utils.NetworkUtils.Companion.isOnline
 import com.journeyapps.barcodescanner.ScanOptions
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -286,5 +287,13 @@ abstract class BaseActivity : AppCompatActivity() {
             TransactionType.DISTRIBUTION -> setTitle(R.string.distribution)
             TransactionType.DISCARD -> setTitle(R.string.discard)
         }
+    }
+
+    fun isConnectedToNetwork(): Boolean {
+        val networkIsAvailable = isOnline(this)
+        if (!networkIsAvailable) {
+            displayError(binding.root, R.string.no_network_available)
+        }
+        return networkIsAvailable
     }
 }
