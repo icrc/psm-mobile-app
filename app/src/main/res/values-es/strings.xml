@@ -215,6 +215,9 @@
         Ocurrió un error inesperado al autenticarse con OpenID
     </string>
     <string name="no_network_available">No hay conexión de red disponible</string>
+    <string name="unable_to_sync_data_no_network_available">
+        No se pueden sincronizar los datos porque no hay una conexión de red disponible
+    </string>
     <string name="openid_authentication_not_successful">
         No se puede autenticar con su cuenta ICRC
     </string>

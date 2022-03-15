@@ -181,6 +181,9 @@
         حدث خطأ غير متوقع أثناء المصادقة باستخدام OpenID
     </string>
     <string name="no_network_available">لا يوجد اتصال شبكة متاح</string>
+    <string name="unable_to_sync_data_no_network_available">
+        غير قادر على مزامنة البيانات بسبب عدم توفر اتصال بالشبكة
+    </string>
     <string name="openid_authentication_not_successful">
         غير قادر على المصادقة مع حساب ICRC الخاص بك
     </string>

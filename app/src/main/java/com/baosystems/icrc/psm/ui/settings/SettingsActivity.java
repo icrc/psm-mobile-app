@@ -29,6 +29,7 @@ import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.login.LoginActivity;
 import com.baosystems.icrc.psm.ui.splashscreen.SplashActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
+import com.baosystems.icrc.psm.utils.NetworkUtils;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.disposables.CompositeDisposable;
@@ -44,7 +45,7 @@ public class SettingsActivity extends BaseActivity
         super.onCreate(savedInstanceState);
 
         SettingsViewModel viewModel = (SettingsViewModel) getViewModel();
-        com.baosystems.icrc.psm.databinding.ActivitySettingsBinding binding = (ActivitySettingsBinding) getViewBinding();
+        ActivitySettingsBinding binding = (ActivitySettingsBinding) getViewBinding();
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
@@ -100,7 +101,7 @@ public class SettingsActivity extends BaseActivity
     }
 
     @Override
-    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+    public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller, Preference pref) {
         // Instantiate the new Fragment
         Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
                 getClassLoader(),
@@ -153,7 +154,7 @@ public class SettingsActivity extends BaseActivity
                     .get(SettingsViewModel.class);
 
             getPreferenceManager().setPreferenceDataStore(
-                    sViewModel.preferenceDataStore(getActivity().getApplicationContext())
+                    sViewModel.preferenceDataStore(requireContext())
             );
 
             setPreferencesFromResource(R.xml.preferences, rootKey);
@@ -173,6 +174,13 @@ public class SettingsActivity extends BaseActivity
             Preference forceSyncPref = findPreference(getString(R.string.force_sync_pref_key));
             if (forceSyncPref != null) {
                 forceSyncPref.setOnPreferenceClickListener(preference -> {
+                    boolean isNetworkAvailable = NetworkUtils.isOnline(requireContext());
+                    if (!isNetworkAvailable) {
+                        ActivityManager.showErrorMessage(requireView(),
+                                R.string.unable_to_sync_data_no_network_available);
+                        return false;
+                    }
+
                     sViewModel.syncData();
                     sViewModel.getSyncDataStatus().observe(getViewLifecycleOwner(), workInfoList ->
                             workInfoList.forEach(workInfo -> {
@@ -249,7 +257,7 @@ public class SettingsActivity extends BaseActivity
         }
 
         @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
+        public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
             confirmAppRestart();
             return true;
         }

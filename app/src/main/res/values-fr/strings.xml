@@ -217,6 +217,9 @@
     <string name="unexpected_openid_authentication_error">
         Une erreur inattendue s\'est produite lors de l\'authentification avec OpenID
     </string><string name="no_network_available">Aucune connexion réseau disponible</string>
+    <string name="unable_to_sync_data_no_network_available">
+        Impossible de synchroniser les données car aucune connexion réseau n\'est disponible
+    </string>
     <string name="openid_authentication_not_successful">
         Impossible de s\'authentifier avec votre compte ICRC
     </string>

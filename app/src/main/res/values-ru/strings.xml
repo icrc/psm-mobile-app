@@ -204,6 +204,9 @@
         Произошла непредвиденная ошибка при аутентификации с помощью OpenID
     </string>
     <string name="no_network_available">Нет доступного сетевого подключения</string>
+    <string name="unable_to_sync_data_no_network_available">
+        Невозможно синхронизировать данные, так как нет доступного сетевого подключения
+    </string>
     <string name="openid_authentication_not_successful">
         Не удалось пройти аутентификацию с помощью вашей учетной записи ICRC
     </string>
