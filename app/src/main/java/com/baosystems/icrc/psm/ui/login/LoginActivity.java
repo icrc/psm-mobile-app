@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,8 +65,6 @@ public class LoginActivity extends BaseActivity {
         binding.signInButton.setOnClickListener(view -> login());
         binding.oidcBtn.setOnClickListener(view -> loginWithOpenId());
 
-        setupHyperlink();
-
         loginViewModel.getLoginResult().observe(this, loginResult -> {
             if (loginResult == null)
                 return;
@@ -87,10 +84,6 @@ public class LoginActivity extends BaseActivity {
         });
 
         observeOpenIdLoginActivity();
-    }
-
-    private void setupHyperlink() {
-        binding.contactTextview.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void observeOpenIdLoginActivity() {
