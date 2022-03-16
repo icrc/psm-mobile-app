@@ -298,8 +298,9 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void navigateToManageStock() {
-        if (!viewModel.readyManageStock()) {
-            displayError(binding.getRoot(), R.string.cannot_proceed_from_home_warning);
+        Integer fieldError = viewModel.checkForFieldErrors();
+        if (fieldError != null) {
+            displayError(binding.getRoot(), fieldError);
             return;
         }
 

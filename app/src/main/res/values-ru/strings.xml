@@ -81,8 +81,17 @@
     </string>
 
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">
-        Все поля должны быть заполнены, прежде чем вы сможете продолжить.
+    <string name="mandatory_transaction_selection">
+        Прежде чем продолжить, необходимо выбрать тип транзакции и заполнить все поля.
+    </string>
+    <string name="mandatory_facility_selection">
+        Поле объекта должно быть заполнено, прежде чем вы сможете продолжить
+    </string>
+    <string name="mandatory_distributed_to_selection">
+        Поле "Распространено на" должно быть заполнено, прежде чем вы сможете продолжить
+    </string>
+    <string name="mandatory_transaction_date_selection">
+        Поле даты транзакции должно быть заполнено, прежде чем вы сможете продолжить
     </string>
     <string name="previous_page_lose_data_warning">
         Вы уверены, что хотите вернуться к предыдущему экрану?

@@ -76,8 +76,17 @@
     </string>
 
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">
-        All fields must be filled before you can proceed.
+    <string name="mandatory_transaction_selection">
+        A transaction type must be selected and all fields must be filled before you can proceed
+    </string>
+    <string name="mandatory_facility_selection">
+        The facility field must be filled before you can proceed
+    </string>
+    <string name="mandatory_distributed_to_selection">
+        The "Distributed to" field must be filled before you can proceed
+    </string>
+    <string name="mandatory_transaction_date_selection">
+        The \"Distributed to\" field must be filled before you can proceed
     </string>
     <string name="previous_page_lose_data_warning">
         Are you sure you want to go back to the previous screen\?

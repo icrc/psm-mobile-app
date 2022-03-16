@@ -155,16 +155,18 @@ class HomeViewModel @Inject constructor(
         _destination.value = destination
     }
 
-    fun readyManageStock(): Boolean {
-        if (transactionType.value == null) return false
-
-        if (isDistribution.value == true) {
-            return !(_destination.value == null
-                    || _facility.value == null
-                    || transactionDate.value == null)
-        }
-
-        return _facility.value != null && transactionDate.value != null
+    fun checkForFieldErrors(): Int? {
+        return if (_transactionType.value == null)
+            R.string.mandatory_transaction_selection
+        else if (_facility.value == null)
+            R.string.mandatory_facility_selection
+        else if (_transactionDate.value == null)
+            R.string.mandatory_transaction_date_selection
+        else if (_transactionType.value == TransactionType.DISTRIBUTION &&
+            _destination.value == null)
+            R.string.mandatory_distributed_to_selection
+        else
+            null
     }
 
     fun getData(): Transaction {

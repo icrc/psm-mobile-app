@@ -88,8 +88,18 @@
 
     
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">
-        Tous les champs doivent être remplis avant de pouvoir continuer.
+    <string name="mandatory_transaction_selection">
+        Un type de transaction doit être sélectionné et tous les champs doivent être
+        remplis avant de pouvoir continuer
+    </string>
+    <string name="mandatory_facility_selection">
+        Le champ de l\'établissement doit être rempli avant de pouvoir continuer
+    </string>
+    <string name="mandatory_distributed_to_selection">
+        Le champ "Distribué à" doit être rempli avant de pouvoir continuer
+    </string>
+    <string name="mandatory_transaction_date_selection">
+        Le champ de la date de transaction doit être rempli avant de pouvoir continuer
     </string>
     <string name="previous_page_lose_data_warning">
         Voulez-vous vraiment revenir à l\'écran précédent\?

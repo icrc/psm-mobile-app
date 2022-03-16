@@ -82,8 +82,18 @@
     </string>
 
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">
-        Todos los campos deben completarse antes de poder continuar.
+    <string name="mandatory_transaction_selection">
+        Se debe seleccionar un tipo de transacción y se deben completar todos los campos
+        antes de poder continuar
+    </string>
+    <string name="mandatory_facility_selection">
+        El campo de la instalación debe completarse antes de poder continuar
+    </string>
+    <string name="mandatory_distributed_to_selection">
+        El campo "Distribuido a" debe completarse antes de poder continuar
+    </string>
+    <string name="mandatory_transaction_date_selection">
+        El campo de fecha de la transacción debe completarse antes de poder continuar
     </string>
     <string name="previous_page_lose_data_warning">
         ¿Está seguro de que desea volver a la pantalla anterior?

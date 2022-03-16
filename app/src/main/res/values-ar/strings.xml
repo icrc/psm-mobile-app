@@ -76,7 +76,20 @@
     </string>
 
     <!-- Messages -->
-    <string name="cannot_proceed_from_home_warning">يجب ملء جميع الحقول قبل أن تتمكن من المتابعة.</string>
+    <string name="mandatory_transaction_selection">
+        يجب تحديد نوع المعاملة وملء جميع الحقول قبل أن تتمكن من المتابعة
+    </string>
+    <string name="mandatory_facility_selection">
+        يجب ملء حقل المنشأة قبل المتابعة
+    </string>
+    <string name="mandatory_distributed_to_selection">
+        يجب ملء الحقل "موزع على" قبل أن تتمكن من المتابعة
+    </string>
+    <string name="mandatory_transaction_date_selection">
+        يجب ملء حقل تاريخ المعاملة قبل أن تتمكن من المتابعة
+    </string>
+
+
 
     <string name="previous_page_lose_data_warning">هل أنت متأكد أنك تريد العودة إلى الشاشة السابقة؟ ستفقد البيانات التي تم إدخالها للتو إذا قررت المتابعة.</string>
     <string name="transaction_completed">تمت المعاملة بنجاح!</string>
