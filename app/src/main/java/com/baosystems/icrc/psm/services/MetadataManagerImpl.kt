@@ -4,6 +4,7 @@ import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
+import org.hisp.dhis.android.core.arch.repositories.scope.RepositoryScope
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
@@ -37,7 +38,7 @@ class MetadataManagerImpl @Inject constructor(
     override fun facilities(programUid: String): Single<MutableList<OrganisationUnit>> {
         return Single.defer {
             stockManagementProgram(programUid).map { program ->
-                // TODO Flag situations where the intersection is nil (i.e. no facility obtained)
+                // TODO: Flag situations where the intersection is nil (i.e. no facility obtained)
                 d2.organisationUnitModule()
                     .organisationUnits()
                     .byOrganisationUnitScope(
@@ -57,6 +58,7 @@ class MetadataManagerImpl @Inject constructor(
                 .flatMap {
                     d2.optionModule()
                         .options()
+                        .orderBySortOrder(RepositoryScope.OrderByDirection.DESC)
                         .byOptionSetUid()
                         .eq(it.optionSetUid())
                         .get()
