@@ -58,7 +58,7 @@ class MetadataManagerImpl @Inject constructor(
                 .flatMap {
                     d2.optionModule()
                         .options()
-                        .orderBySortOrder(RepositoryScope.OrderByDirection.DESC)
+                        .orderBySortOrder(RepositoryScope.OrderByDirection.ASC)
                         .byOptionSetUid()
                         .eq(it.optionSetUid())
                         .get()
