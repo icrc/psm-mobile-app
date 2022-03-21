@@ -70,6 +70,7 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:maxLength="19"
+                android:textAlignment="textEnd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="20" />
