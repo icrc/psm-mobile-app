@@ -8,3 +8,9 @@
 - Inform user if no network is available during forced sync attempt
 - Be more explicit when reporting missing information on the home screen
 - Prevent prompt from showing if no data will be lost during back navigation
+
+### 1.0.2 (March 21, 2022)
+
+- Use ascending sort order for options listing
+- Allow Snackbar to span max. 2 lines
+- Right-align review screen quantity field

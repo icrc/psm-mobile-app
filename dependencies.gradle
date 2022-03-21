@@ -15,8 +15,8 @@ ext.versions = [
     minSdk                      : 24,
     targetSdk                   : 30,
     compileSdk                  : 31,
-    versionCode                 : 4,
-    versionName                 : '1.0.1',
+    versionCode                 : 5,
+    versionName                 : '1.0.2',
 
     // android
     lifecycle                   : '2.4.1', // 2.4.0 now available, but seems to have some breaking changes
