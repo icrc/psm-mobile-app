@@ -125,6 +125,9 @@ abstract class BaseActivity : AppCompatActivity() {
             showInfoMessage(
                 getViewBinding().root, it
             )
+
+            // Clear the intent payload to prevent persistent notifications
+            intent.removeExtra(INTENT_EXTRA_MESSAGE)
         }
     }
 
