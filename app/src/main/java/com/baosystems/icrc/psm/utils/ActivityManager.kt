@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -34,10 +35,12 @@ class ActivityManager {
             }
 
             if (message.isNotEmpty())
-            // TODO: Move the error and success Snackbar styling to the theme or styles (whichever is appropriate)
                 Snackbar.make(view, message, LENGTH_LONG).setBackgroundTint(
                     ContextCompat.getColor(view.context, color)
-                ).show()
+                ).apply {
+                    this.view.findViewById<TextView>(
+                        com.google.android.material.R.id.snackbar_text)?.maxLines = 2
+                }.show()
         }
 
         @JvmStatic
