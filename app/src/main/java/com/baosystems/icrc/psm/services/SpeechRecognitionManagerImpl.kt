@@ -67,10 +67,13 @@ class SpeechRecognitionManagerImpl(
         speechRecognizer?.destroy()
     }
 
+    override fun resetStatus() {
+        _speechRecognitionStatus.value = SpeechRecognitionState.NotInitialized
+    }
+
     override fun getStatus() = _speechRecognitionStatus
     override fun supportNegativeNumberInput(allow: Boolean) {
         allowNegativeNumberInput = allow
-        Timber.d("Speech recognizer: supportNegativeNumberInput() : %s", allow)
     }
 
     private fun getIntent(): Intent {

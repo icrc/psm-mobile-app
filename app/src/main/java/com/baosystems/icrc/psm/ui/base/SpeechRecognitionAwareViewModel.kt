@@ -30,4 +30,8 @@ open class SpeechRecognitionAwareViewModel @Inject constructor(
             startListening()
         }
     }
+
+    fun resetSpeechStatus() {
+        speechRecognitionManager.resetStatus()
+    }
 }

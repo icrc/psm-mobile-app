@@ -68,6 +68,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
         if (viewModel is SpeechRecognitionAwareViewModel) {
             val speechAwareViewModel = viewModel as SpeechRecognitionAwareViewModel
+            speechAwareViewModel.resetSpeechStatus()
+
             speechController = SpeechControllerImpl(speechAwareViewModel)
 
             registerSpeechRecognitionStatusObserver(
@@ -246,6 +248,7 @@ abstract class BaseActivity : AppCompatActivity() {
         speechController: SpeechController?
     ) {
         speechStatus.observe(this) { state: SpeechRecognitionState ->
+            Timber.d("SpeechRecognitionState: %s", state)
             if (state is Errored) {
                 handleSpeechError(state.code, state.data)
             }

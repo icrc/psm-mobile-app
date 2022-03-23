@@ -8,6 +8,7 @@ interface SpeechRecognitionManager {
     fun restart()
     fun stop()
     fun cleanUp()
+    fun resetStatus()
     fun getStatus(): LiveData<SpeechRecognitionState>
     fun supportNegativeNumberInput(allow: Boolean)
 }
