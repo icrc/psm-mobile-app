@@ -14,3 +14,7 @@
 - Use ascending sort order for options listing
 - Allow Snackbar to span max. 2 lines
 - Right-align review screen quantity field
+
+### 1.0.3 (March 25, 2022)
+
+- Fix persistent voice input error across various screens
