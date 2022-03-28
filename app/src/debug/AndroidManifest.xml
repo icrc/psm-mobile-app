@@ -72,11 +72,12 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="org.icrc.dhis2.psmadvanced_test"
+                    android:host="org.icrc.dhis2.psmadvanced_uat"
                     android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY="
                     android:scheme="msauth" />
             </intent-filter>
         </activity>
+        <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity" />
     </application>
 
     <queries>
@@ -88,7 +89,7 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data
-                android:host="org.icrc.dhis2.psmadvanced_test"
+                android:host="org.icrc.dhis2.psmadvanced_uat"
                 android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY="
                 android:scheme="msauth" />
         </intent>
