@@ -20,16 +20,14 @@ open class BaseViewModel @Inject constructor(
     private val preferenceProvider: PreferenceProvider,
     private val schedulerProvider: BaseSchedulerProvider
 ): ViewModel() {
-    val lastSyncDate: MutableLiveData<String> = MutableLiveData()
+    val lastSyncDate: LiveData<String> = MutableLiveData(
+        preferenceProvider.getString(Constants.LAST_DATA_SYNC_DATE)
+    )
     private val _showGuide: MutableLiveData<Boolean> = MutableLiveData(false)
     val showGuide: LiveData<Boolean>
         get() = _showGuide
 
     val appVersion: LiveData<String> = MutableLiveData( getAppVersion() )
-
-    init {
-        lastSyncDate.value = preferenceProvider.getString(Constants.LAST_DATA_SYNC_DATE)
-    }
 
     /**
      * Evaluates the quantity assigned to the StockItem
