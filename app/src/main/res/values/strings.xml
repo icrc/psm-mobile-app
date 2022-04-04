@@ -164,6 +164,7 @@
     <string name="select_language">Select your desired language</string>
 
     <!-- Preferences -->
+    <string name="username_pref_key" translatable="false">logged_in_user</string>
     <string name="language_pref_key" translatable="false">language_preference</string>
     <string name="logout_pref_key" translatable="false">logout</string>
     <string name="force_sync_pref_key" translatable="false">force_sync</string>

@@ -27,6 +27,22 @@ class SettingsViewModel @Inject constructor(
     val logoutStatus: LiveData<OperationState<Boolean>>
         get() = _logoutStatus
 
+    private val _loggedInUser: MutableLiveData<String> = MutableLiveData()
+    val loggedInUser: LiveData<String>
+        get() = _loggedInUser
+
+    init {
+        disposable.add(
+            userManager.userName()
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                    {   username -> username?.let { _loggedInUser.value = it } },
+                    { it.printStackTrace() }
+                )
+        )
+    }
+
     fun logout() {
         _logoutStatus.postValue(OperationState.Loading)
 

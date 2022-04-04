@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        app:key="@string/username_pref_key"
+        app:persistent="false"
+        android:selectable="false"
+        android:icon="@drawable/ic_user_profile"
+        tools:title="district" />
+
     <SwitchPreferenceCompat
         app:defaultValue="false"
         app:key="@string/use_mic_pref_key"

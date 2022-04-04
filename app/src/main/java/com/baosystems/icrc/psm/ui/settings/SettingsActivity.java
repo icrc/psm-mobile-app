@@ -146,6 +146,16 @@ public class SettingsActivity extends BaseActivity
                     navigateToLogin();
                 }
             });
+
+            sViewModel.getLoggedInUser().observe(
+                    getViewLifecycleOwner(), this::updateLoggedInUsername);
+        }
+
+        private void updateLoggedInUsername(String username) {
+            Preference userPref = findPreference(getString(R.string.username_pref_key));
+            if (userPref != null) {
+                userPref.setTitle(username);
+            }
         }
 
         @Override
