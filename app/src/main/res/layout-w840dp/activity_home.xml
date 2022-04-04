@@ -299,6 +299,7 @@
         <include
             android:id="@+id/home_footer"
             layout="@layout/footer"
-            app:lastSyncDate="@{viewModel.lastSyncDate}" />
+            app:lastSyncDate="@{viewModel.lastSyncDate}"
+            app:appVersion="@{viewModel.appVersion}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

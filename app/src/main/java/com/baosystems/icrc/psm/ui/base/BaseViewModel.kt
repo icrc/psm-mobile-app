@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.ui.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.baosystems.icrc.psm.BuildConfig
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.RowAction
 import com.baosystems.icrc.psm.data.models.Transaction
@@ -23,6 +24,8 @@ open class BaseViewModel @Inject constructor(
     private val _showGuide: MutableLiveData<Boolean> = MutableLiveData(false)
     val showGuide: LiveData<Boolean>
         get() = _showGuide
+
+    val appVersion: LiveData<String> = MutableLiveData( getAppVersion() )
 
     init {
         lastSyncDate.value = preferenceProvider.getString(Constants.LAST_DATA_SYNC_DATE)
@@ -51,4 +54,6 @@ open class BaseViewModel @Inject constructor(
     }
 
     fun isVoiceInputEnabled(prefKey: String) = preferenceProvider.getBoolean(prefKey, false)
+
+    private fun getAppVersion() = "v" + BuildConfig.VERSION_NAME
 }
