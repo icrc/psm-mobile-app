@@ -22,7 +22,7 @@ The application is integrated with the ICRC information system through the IRIS 
   avoid breaking the build.
 3. Sync the updated config using the _"Sync now"_ button at the top of the editor window
 4. Update the data definition for the activity `net.openid.appauth.RedirectUriReceiverActivity` in 
-   `AndroidManifest.xml` to match the `redirectUri` OAuth2 provider configuration defined above 
+   `AndroidManifest.xml` (debug & release) to match the `redirectUri` OAuth2 provider configuration defined above 
    in **(1)**. 
    The same should be done for the respective intent defined within the `<queries>` block. i.e.
 5. Clean and rebuild the project
@@ -69,3 +69,7 @@ selected a __"don't ask again"__ checkbox or option.
 
 - Switch to lottie animation for the `SyncActivity` page (_optional_)
 - Handle Crash Reporting (_optional_)
+- **Automatically activate microphone after a successful scan:** The first iteration of this was 
+  achieved by granting focus to the stock item recyclerview after a successful scan, however 
+  due to repeated successive focus being granted to the active field by Android OS, it does not 
+  exactly produce the expected result, so this feature is currently deactivated.
