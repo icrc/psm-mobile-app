@@ -37,7 +37,6 @@ import com.baosystems.icrc.psm.ui.reviewstock.ReviewStockActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.journeyapps.barcodescanner.ScanContract;
-import com.journeyapps.barcodescanner.ScanIntentResult;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import org.hisp.dhis.rules.models.RuleActionAssign;
@@ -180,18 +179,14 @@ public class ManageStockActivity extends BaseActivity {
                     if (scanIntentResult.getContents() == null) {
                         ActivityManager.showToast(this, R.string.scan_canceled);
                     } else {
-                        onScanCompleted(scanIntentResult);
+                        onScanCompleted(
+                                scanIntentResult,
+                                binding.searchFieldLayout.searchInputField,
+                                binding.stockItemsList
+                        );
                     }
                 });
         binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
-    }
-
-    private void onScanCompleted(ScanIntentResult scanIntentResult) {
-        String data = scanIntentResult.getContents();
-
-        viewModel.onScanCompleted(data);
-        binding.searchFieldLayout.searchInputField.setText(data);
-        binding.stockItemsList.requestFocus();
     }
 
     private void setupObservers() {

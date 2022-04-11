@@ -6,7 +6,7 @@ class SpeechControllerImpl(private val viewModel: SpeechRecognitionAwareViewMode
     private var callback: Function1<SpeechRecognitionState, Unit>? = null
 
     override fun onStateChange(state: SpeechRecognitionState) {
-        if (callback != null) callback!!.invoke(state)
+        callback?.invoke(state)
     }
 
     override fun startListening(callback: (state: SpeechRecognitionState) -> Unit) {

@@ -10,12 +10,14 @@ import android.speech.SpeechRecognizer
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.commons.Constants.AUDIO_RECORDING_REQUEST_CODE
@@ -31,6 +33,7 @@ import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showInfoMessage
 import com.baosystems.icrc.psm.utils.ActivityManager.Companion.showToast
 import com.baosystems.icrc.psm.utils.LocaleManager
 import com.baosystems.icrc.psm.utils.NetworkUtils.Companion.isOnline
+import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -301,5 +304,14 @@ abstract class BaseActivity : AppCompatActivity() {
             displayError(binding.root, R.string.no_network_available)
         }
         return networkIsAvailable
+    }
+
+    open fun onScanCompleted(result: ScanIntentResult, textInput: EditText,
+                             stockItemList: RecyclerView) {
+        val data = result.contents
+        textInput.setText(data)
+
+        // TODO: Automatically activating the microphone after a successful scan
+//        stockItemList.requestFocus();
     }
 }

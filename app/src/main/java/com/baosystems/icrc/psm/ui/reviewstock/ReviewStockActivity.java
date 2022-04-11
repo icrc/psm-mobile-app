@@ -173,8 +173,11 @@ public class ReviewStockActivity extends BaseActivity {
                         ActivityManager.showInfoMessage(binding.getRoot(),
                                 getString(R.string.scan_canceled));
                     } else {
-                        String data = scanIntentResult.getContents();
-                        binding.searchFieldLayout.searchInputField.setText(data);
+                        onScanCompleted(
+                                scanIntentResult,
+                                binding.searchFieldLayout.searchInputField,
+                                binding.stockItemsList
+                        );
                     }
                 });
         binding.scanButton.setOnClickListener(view -> scanBarcode(barcodeLauncher));
