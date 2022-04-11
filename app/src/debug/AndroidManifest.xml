@@ -72,7 +72,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="org.icrc.dhis2.psmadvanced_uat"
+                    android:host="org.icrc.dhis2.psmadvanced_test"
                     android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY="
                     android:scheme="msauth" />
             </intent-filter>
@@ -89,7 +89,7 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data
-                android:host="org.icrc.dhis2.psmadvanced_uat"
+                android:host="org.icrc.dhis2.psmadvanced_test"
                 android:path="/J4CFTTod1TjeYgl9zsMgdcEaXnY="
                 android:scheme="msauth" />
         </intent>
