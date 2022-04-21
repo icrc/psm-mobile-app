@@ -18,3 +18,8 @@
 ### 1.0.3 (March 25, 2022)
 
 - Fix persistent voice input error across various screens
+
+### 1.0.5 (April 21, 2022)
+
+- Update transaction buttons text size
+- Display app version on other screens
