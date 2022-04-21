@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    val disposable: CompositeDisposable,
+    private val disposable: CompositeDisposable,
     val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
