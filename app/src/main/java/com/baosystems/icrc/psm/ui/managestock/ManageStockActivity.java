@@ -1,7 +1,6 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION;
-import static com.baosystems.icrc.psm.utils.DebugUtilsKt.printRuleEffects;
 import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
 
 import android.content.Context;
@@ -85,9 +84,6 @@ public class ManageStockActivity extends BaseActivity {
         @Override
         public void updateFields(StockItem item, @Nullable String qty, int position,
                                  @NonNull List<? extends RuleEffect> ruleEffects) {
-            // TODO: remove logging below (just for debugging)
-            printRuleEffects("Final RuleEffects", ruleEffects, null);
-
             ruleEffects.forEach(ruleEffect -> {
                 if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
                         (((RuleActionAssign) ruleEffect.ruleAction()).field()

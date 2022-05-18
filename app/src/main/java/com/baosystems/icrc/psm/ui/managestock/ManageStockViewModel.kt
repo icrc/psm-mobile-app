@@ -154,7 +154,6 @@ class ManageStockViewModel @Inject constructor(
             return
         }
 
-        // TODO: Flag invalid entries that are not positive or negative numbers
         itemsCache[item.id] = StockEntry(item, qty, stockOnHand, hasError)
     }
 

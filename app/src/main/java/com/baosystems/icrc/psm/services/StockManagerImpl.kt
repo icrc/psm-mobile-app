@@ -195,7 +195,6 @@ class StockManagerImpl @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
 
-            // TODO: WIP
             if (e is D2Error) {
                 Timber.e("Unable to save event: %s", e.errorCode().toString())
             }
@@ -239,7 +238,6 @@ class StockManagerImpl @Inject constructor(
                         } catch (e: Exception) {
                             e.printStackTrace()
 
-                            // TODO: WIP
                             if (e is D2Error) {
                                 Timber.e("Unable to save rule effect data: %s", e.errorCode().toString())
                             }

@@ -34,8 +34,6 @@ public class LoginActivity extends BaseActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 
-    // TODO: See if the view model and the two-way binding can handle
-    //  this alone without using a textwatcher or creating an infinite loop
     private final TextWatcher afterTextChangedListener = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence,
@@ -68,10 +66,8 @@ public class LoginActivity extends BaseActivity {
             if (loginResult == null)
                 return;
 
-            // TODO: Hide progress bar, if required
-
             if(loginResult.getError() != null) {
-                // TODO: Show login error
+                // Show login error
                 showLoginFailed(loginResult.getError());
             }
 

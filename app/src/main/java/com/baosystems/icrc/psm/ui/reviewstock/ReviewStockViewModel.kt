@@ -86,7 +86,6 @@ class ReviewStockViewModel @Inject constructor(
                 .subscribe(
                     {  query -> _reviewedItems.postValue(performSearch(query)) },
                     {
-                        // TODO: Report the error to the user
                         it.printStackTrace()
                     })
         )
@@ -162,12 +161,10 @@ class ReviewStockViewModel @Inject constructor(
 
     fun commitTransaction() {
         if (reviewedItems.value == null || reviewedItems.value?.isEmpty() == true) {
-            // TODO: Report error/warning to user that there are currently no reviewed items
-            Timber.d("No items to commit")
+            Timber.w("No items to commit")
             return
         }
 
-        // TODO: Notify observer on completion
         disposable.add(
             stockManager.saveTransaction(reviewedItems.value!!, transaction)
                 .subscribeOn(schedulerProvider.io())

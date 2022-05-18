@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
                     disposable.add(saveUserCredentials().subscribe())
                 }
                 .doOnTerminate {
-                    // TODO: Perform any cleanups after the background login process is done
+                    // Perform any cleanups after the background login process is done
                     loginInProgress.value = false
                     updateLoginStatus()
                 }

@@ -102,30 +102,13 @@ fun ProgramRuleAction.toRuleEngineObject(): RuleAction {
     } else if (programRuleActionType() == ProgramRuleActionType.ERRORONCOMPLETE) {
         return RuleActionErrorOnCompletion.create(content(), data(), field)
     } else if (programRuleActionType() == ProgramRuleActionType.ASSIGN) {
-//        ProgramRuleActionType.ASSIGN -> {
-//            if (field.isEmpty() && content().isNullOrEmpty()) {
-//                RuleActionUnsupported.create(
-//                    "ASSIGN RULE IS MISSING FIELD TO ASSIGN TO",
-//                    name() ?: uid()
-//                )
-//            } else {
-//                RuleActionAssign.create(content(), data() ?: "", field)
-//            }
-//        }
-
-       // TODO: Temporarily ignore the missing field as you have above until you create
+       // Temporarily ignore the missing field as you have above until you create
         // an unsupported rule class (RuleActionUnsupported)
         return RuleActionAssign.create(content(), data() ?: "", field)
     }
 
-    // TODO: Temporarily returns ProgramRuleActionType.HIDEFIELD for the sake of testing
-//    return RuleActionUnsupported.create(
-//        "HIDE OPTION GROUP RULE IS MISSING OPTION GROUP",
-//        name() ?: uid()
-//    )
+    // Temporarily returns ProgramRuleActionType.HIDEFIELD for the sake of testing
     return RuleActionHideField.create(content(), field)
-
-
 }
 
 fun ProgramRuleVariable.toRuleVariable(

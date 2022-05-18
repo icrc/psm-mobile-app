@@ -23,7 +23,6 @@ class Transaction(
 
     override fun writeToParcel(out: Parcel, flags: Int) {
         out.writeString(transactionType.name)
-        // TODO: Uncomment facility OU to write OU info to parcel
         out.writeParcelable(facility, flags)
         out.writeString(transactionDate)
         out.writeParcelable(distributedTo, flags)
