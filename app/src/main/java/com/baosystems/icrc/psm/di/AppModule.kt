@@ -37,7 +37,6 @@ class AppModule {
     @Provides
     @Singleton
     fun providesPreferenceProvider(@ApplicationContext appContext: Context): PreferenceProvider {
-//        return SecurePreferenceProviderImpl(appContext)
         return PreferenceProviderImpl(appContext)
     }
 

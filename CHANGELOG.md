@@ -23,3 +23,8 @@
 
 - Update transaction buttons text size
 - Display app version on other screens
+
+### 1.0.6 (May 30, 2022)
+
+- Update to latest OpenId AppAuth library (0.11.1)
+- Remove secure shared preferences feature

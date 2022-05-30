@@ -79,7 +79,6 @@ dependencies {
 
     implementation "androidx.legacy:legacy-support-v4:$versions.legacy_support_v4"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.desugar_jdk_libs"
-//    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "com.google.android.material:material:$versions.material"
@@ -89,9 +88,6 @@ dependencies {
     implementation "com.jakewharton.rxrelay2:rxrelay:$versions.rxrelay"
 
     // Security
-    implementation "androidx.security:security-crypto:$versions.security_crypto"
-    implementation "androidx.security:security-identity-credential:$versions.security_identity"
-    implementation "androidx.security:security-app-authenticator:$versions.security_authenticator"
     implementation "net.openid:appauth:$versions.openid"
 
     // Preferences

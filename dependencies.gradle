@@ -30,11 +30,6 @@ ext.versions = [
     room                        : '2.4.2',
     workmanager                 : '2.7.1',
 
-    // security
-    security_crypto             : '1.0.0',
-    security_identity           : '1.0.0-alpha02',
-    security_authenticator      : '1.0.0-alpha02',
-
     // current version 0.11.1 results in Audience mismatch/Invalid Token ID error
     openid                      : '0.11.1',
 
