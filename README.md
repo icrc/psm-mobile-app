@@ -33,19 +33,6 @@ The application is integrated with the ICRC information system through the IRIS 
 
 ### Notes
 
-- **Library version issues**:
-  - The latest version of `net.openid:appauth` library (**v0.11.1**) currently restricts the user from 
-    successful authentication due tot he error:
-    
-    > Audience mismatch / Invalid Token ID
-    
-    To get around this issue, the old version of the library (**0.7.1**) that is currently being used
-    in DHIS2 Android Capture app was settled for.
-    
-    Likewise, the latest version of `androidx.security:security-identity-credential` 
-    library (**1.0.0-alpha03**) was leadint to errors, so the previous version (**1.0.0-alpha02**)
-    was settled for.
-
 - **Android Permissions** - Starting in Android 11 (API level 30), if the user taps Deny for a
 specific permission more than once during your app's lifetime of installation on a device,
 the user doesn't see the system permissions dialog if your app requests that permission again.
