@@ -15,11 +15,11 @@ ext.versions = [
     minSdk                      : 24,
     targetSdk                   : 30,
     compileSdk                  : 31,
-    versionCode                 : 9,
-    versionName                 : '1.0.6',
+    versionCode                 : 10,
+    versionName                 : '1.0.7',
 
     // android
-    lifecycle                   : '2.4.1', // 2.4.0 now available, but seems to have some breaking changes
+    lifecycle                   : '2.4.1',
     annotation                  : '1.3.0',
     appcompat                   : '1.4.1',
     material                    : '1.6.0',
@@ -30,15 +30,14 @@ ext.versions = [
     room                        : '2.4.2',
     workmanager                 : '2.7.1',
 
-    // current version 0.11.1 results in Audience mismatch/Invalid Token ID error
-    openid                      : '0.11.1',
+    openid                      : '0.8.1',
 
     // DI
     hilt                        : '2.41',
     hilt_work                   : '1.0.0',
 
     // DHIS2
-    dhis_core                   : '1.5.2',
+    dhis_core                   : '1.5.3',
     dhis_rules_engine           : '2.0.36',
 
     // Rx

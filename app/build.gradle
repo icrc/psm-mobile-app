@@ -131,6 +131,5 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"
 
     // For App Authentication API testing
-    androidTestImplementation "androidx.security:security-app-authenticator:$versions.security_authenticator"
     androidTestImplementation "androidx.room:room-testing:$versions.room"
 }
