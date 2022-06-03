@@ -29,3 +29,8 @@
 - Update to latest OpenId AppAuth library (0.11.1)
 - Remove secure shared preferences feature
 - Update material-ui and constraintlayout libraries
+
+### 1.0.7 (June 3, 2022)
+
+- Update DHIS2 Android SDK library, downgrade OpenId AppAUth library to 0.8.1 and update OpenId
+application ID in the config to ensure that the required OpenID standards are implemented.

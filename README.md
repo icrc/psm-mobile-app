@@ -9,6 +9,12 @@ order status information and stock information at supplying ICRC medical distrib
 The application is integrated with the ICRC information system through the IRIS platform.
 
 
+## Dependencies
+
+- DHIS2 Android SDK 1.5.3
+- OpenID AppAuth 0.8.1
+
+
 ### How to Create an APK
 
 1. Update `app/src/main/res/raw/openid_config` to match the configuration of your desired 
