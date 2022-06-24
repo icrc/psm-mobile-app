@@ -8,6 +8,7 @@ order status information and stock information at supplying ICRC medical distrib
 
 The application is integrated with the ICRC information system through the IRIS platform.
 
+[![CodeQL](https://github.com/icrc/psm-mobile-app/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/icrc/psm-mobile-app/actions/workflows/codeql-analysis.yml)
 
 ## Dependencies
 
