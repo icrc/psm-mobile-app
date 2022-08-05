@@ -18,7 +18,7 @@ class Sdk {
             return try {
                 D2Manager.getD2()
             } catch (e: IllegalStateException) {
-                D2Manager.blockingInstantiateD2(getD2Configuration(context))
+                D2Manager.blockingInstantiateD2(getD2Configuration(context))!!
             }
         }
 

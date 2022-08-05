@@ -11,15 +11,19 @@ import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.services.MetadataManager
+import com.baosystems.icrc.psm.services.SpeechRecognitionManager
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
+import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.services.scheduler.TrampolineSchedulerProvider
+import com.baosystems.icrc.psm.ui.base.ItemWatcher
 import com.baosystems.icrc.psm.ui.managestock.ManageStockViewModel
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.github.javafaker.Faker
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.attribute.AttributeValue
+import org.hisp.dhis.rules.models.RuleEffect
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -27,8 +31,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import timber.log.Timber
 
 @RunWith(MockitoJUnitRunner::class)
 class ManageStockViewModelTest {
@@ -44,6 +50,11 @@ class ManageStockViewModelTest {
 
     private lateinit var schedulerProvider: BaseSchedulerProvider
     private lateinit var appConfig: AppConfig
+
+    @Mock
+    private lateinit var ruleValidationHelperImpl: RuleValidationHelper
+    @Mock
+    private lateinit var speechRecognitionManagerImpl: SpeechRecognitionManager
 
     @Mock
     private lateinit var metadataManager: MetadataManager
@@ -64,7 +75,9 @@ class ManageStockViewModelTest {
             appConfig,
             schedulerProvider,
             preferenceProvider,
-            stockManager
+            stockManager,
+            ruleValidationHelperImpl,
+            speechRecognitionManagerImpl
         )
 
     private fun createStockEntry(uid: String) = StockItem(
@@ -73,14 +86,14 @@ class ManageStockViewModelTest {
     @Before
     fun setUp() {
         appConfig = AppConfig(
-            "programUid",
-            "itemCodeUid",
-            "itemNameUid",
-            "stockOnHandUid",
-            "distributedToUid",
-            "stockDistributionUid",
-            "stockCorrectionUid",
-            "stockDiscardedUid"
+            "F5ijs28K4s8",
+            "wBr4wccNBj1",
+            "sLMTQUHAZnk",
+            "RghnAkDBDI4",
+            "yfsEseIcEXr",
+            "lpGYJoVUudr",
+            "ej1YwWaYGmm",
+            "I7cmT3iXT0y"
         )
 
         facility = ParcelUtils.facilityToIdentifiableModelParcel(
@@ -149,7 +162,13 @@ class ManageStockViewModelTest {
         val item = createStockEntry("someUid")
         val qty = 319L
 
-        viewModel.setQuantity(item, qty)
+        viewModel.setQuantity(item, 0, qty.toString(),
+            object : ItemWatcher.OnQuantityValidated {
+                override fun validationCompleted(ruleEffects: List<RuleEffect>) {
+                    Timber.tag("ruleEffects2").d("$ruleEffects")
+                }
+
+            })
         assertEquals(viewModel.getItemQuantity(item), qty)
     }
 
@@ -158,9 +177,15 @@ class ManageStockViewModelTest {
         val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
         val qty2 = 95L
         val item = createStockEntry("someUid")
+        val qty = 49
 
-        viewModel.setQuantity(item, 49)
-        viewModel.setQuantity(item, qty2)
+        viewModel.setQuantity(item, 0, qty.toString(),
+            object : ItemWatcher.OnQuantityValidated {
+                override fun validationCompleted(ruleEffects: List<RuleEffect>) {
+                    Timber.tag("ruleEffects").d("$ruleEffects")
+                }
+            })
+        //viewModel.setQuantity(item, qty2)
         assertEquals(viewModel.getItemQuantity(item), qty2)
     }
 

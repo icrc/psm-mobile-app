@@ -1,7 +1,7 @@
 // Define desired app id
 ext.appConfig = [
-    applicationId               : "",
-    serverUrl                   : '""'
+        applicationId               : "com.baosystems.icrc.psm",
+        serverUrl                   : '"https://lmis.integration.dhis2.org/sandbox-dev/"'
 ]
 
 // Define dependency versions
@@ -37,7 +37,7 @@ ext.versions = [
     hilt_work                   : '1.0.0',
 
     // DHIS2
-    dhis_core                   : '1.5.3',
+    dhis_core                   : '1.6.1',
     dhis_rules_engine           : '2.0.36',
 
     // Rx
