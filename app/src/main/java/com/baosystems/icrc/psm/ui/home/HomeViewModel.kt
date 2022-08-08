@@ -192,7 +192,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setTransactionDate(epoch: Long) {
-        _transactionDate.value = Instant.ofEpochMilli(epoch)
+        _transactionDate.value = Instant.ofEpochSecond(epoch)
             .atZone(
                 ZoneId.systemDefault()
             )
