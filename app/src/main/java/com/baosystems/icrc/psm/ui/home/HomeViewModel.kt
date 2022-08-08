@@ -18,18 +18,13 @@ import com.baosystems.icrc.psm.ui.base.BaseViewModel
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.Single
-import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.hisp.dhis.android.core.program.Program
-import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.concurrent.Flow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,7 +73,7 @@ class HomeViewModel @Inject constructor(
         get() = _recentActivities
 
     init {
-        /* loadFacilities()
+         /*loadFacilities()
          loadDestinations()
          loadRecentActivities()*/
     }
@@ -100,9 +95,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadFacilities() {
-        val temp = mutableListOf<OperationState<List<OrganisationUnit>>>()
         _facilities.value = OperationState.Loading
-        temp.add(OperationState.Loading)
 
         disposable.add(
             metadataManager.facilities(config.program)
@@ -110,32 +103,22 @@ class HomeViewModel @Inject constructor(
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
                     {
-                        temp.add(OperationState.Success(it))
                         _facilities.postValue(OperationState.Success(it))
 
                         if (it.size == 1) _facility.postValue(it[0])
-                    }, {
+                    },
+                    {
                         it.printStackTrace()
-                        temp.add(OperationState.Error(R.string.facilities_load_error))
                         _facilities.postValue(OperationState.Error(R.string.facilities_load_error))
                     }
                 )
         )
-        _facilities.value = temp.first()
-        println("$temp")
-    }
-
-
-
-    fun setFacilities(facilities: OperationState<List<OrganisationUnit>>) {
-        _facilities.value = facilities
     }
 
     fun loadRecentActivities() {
         _recentActivities.postValue(OperationState.Loading)
 
         disposable.add(
-
             userActivityRepository.getRecentActivities(USER_ACTIVITY_COUNT)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
@@ -210,7 +193,8 @@ class HomeViewModel @Inject constructor(
 
     fun setTransactionDate(epoch: Long) {
         _transactionDate.value = Instant.ofEpochMilli(epoch)
-            .atZone(ZoneId.systemDefault()
+            .atZone(
+                ZoneId.systemDefault()
             )
             .toLocalDateTime()
     }

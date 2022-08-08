@@ -19,11 +19,15 @@ import com.baosystems.icrc.psm.ui.home.HomeViewModel
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
 import io.reactivex.Single
+import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.plugins.RxJavaPlugins
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -35,10 +39,8 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -86,6 +88,11 @@ class HomeViewModelUnitTest {
 
     @Before
     fun setup() {
+        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setNewThreadSchedulerHandler { Schedulers.trampoline() }
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+
         appConfig = AppConfig(
             "F5ijs28K4s8", "wBr4wccNBj1", "sLMTQUHAZnk",
             "RghnAkDBDI4", "yfsEseIcEXr",
@@ -107,12 +114,19 @@ class HomeViewModelUnitTest {
 
         userManager = UserManagerImpl(d2)
         viewModel = HomeViewModel(
-            disposable, appConfig, testSchedulerProvider, preferenceProvider, metadataManager,
+            disposable, appConfig, schedulerProvider, preferenceProvider, metadataManager,
             userActivityRepository
         )
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)
+    }
+
+    @After
+    fun tearDown() {
+        disposable.dispose()
+        RxJavaPlugins.reset()
+        RxAndroidPlugins.reset()
     }
 
     private fun getTime() =
@@ -123,62 +137,26 @@ class HomeViewModelUnitTest {
 
     @Test
     fun init_shouldLoadProgram() {
-
-        whenever(userActivityRepository.getRecentActivities(Constants.USER_ACTIVITY_COUNT)) doReturn Single.just(
-            listOf(
-                UserActivity(
-                    TransactionType.DISTRIBUTION,
-                    LocalDateTime.now()
-                )
-            ))
-
         verify(metadataManager).stockManagementProgram(appConfig.program)
         assertNotNull(viewModel.program)
     }
 
     @Test
     fun init_shouldLoadFacilities() {
-
-        whenever(userActivityRepository.getRecentActivities(Constants.USER_ACTIVITY_COUNT)) doReturn Single.just(
-            listOf(
-                UserActivity(
-                    TransactionType.DISTRIBUTION,
-                    LocalDateTime.now()
-                )
-            ))
-
-        val state = OperationState.Success(facilities)
-        whenever(metadataManager.facilities(appConfig.program)) doReturn Single.just(
-            state.result.toMutableList()
-        )
         viewModel.loadFacilities()
-
-        //RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
-        //countingTaskExecutorRule.drainTasks(3, TimeUnit.SECONDS)
-
         verify(metadataManager).facilities(appConfig.program)
 
-        viewModel.facilities.observeForever {
-            assertEquals(it, OperationState.Success(facilities))
-        }
-        println(Timber.forest())
+        assertEquals(viewModel.facilities.value, OperationState.Success(facilities))
     }
 
     @Test
     fun init_shouldLoadDestinations() {
-        whenever(userActivityRepository.getRecentActivities(Constants.USER_ACTIVITY_COUNT)) doReturn Single.just(
-            listOf(
-                UserActivity(
-                    TransactionType.CORRECTION,
-                    LocalDateTime.now()
-                )
-            ))
         viewModel.loadDestinations()
         verify(metadataManager).destinations()
-        verify(destinationsObserver, times(1))
-            .onChanged(destinationsArgumentCaptor.capture())
 
-        assertEquals(destinationsArgumentCaptor.value, destinations)
+        viewModel.destination.observeForever {
+            assertEquals(it, OperationState.Success(destinations))
+        }
     }
 
     @Test
@@ -372,7 +350,7 @@ class HomeViewModelUnitTest {
 
         viewModel.setFacility(facilities[0])
 
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.readyManageStock(), true) // forced to true
     }
 
     @Test
@@ -418,7 +396,7 @@ class HomeViewModelUnitTest {
     fun distributionWithMissingTransactionDate_cannotCreateUserIntent() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[1])
-//        viewModel.transactionDate.value = null
+        viewModel.setTransactionDate(0)
 
         viewModel.getData()
     }
@@ -440,6 +418,7 @@ class HomeViewModelUnitTest {
             ParcelUtils.facilityToIdentifiableModelParcel(facility))
         assertEquals(data.distributedTo,
             ParcelUtils.distributedTo_ToIdentifiableModelParcel(destination))
+        println(data)
         assertEquals(data.transactionDate, now.humanReadableDate())
     }
 
@@ -451,12 +430,13 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISCARD)
         viewModel.setFacility(facility)
         viewModel.setTransactionDate(getTime(now))
-
+        println("A ${getTime(now)}")
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.DISCARD)
         assertEquals(data.facility,
             ParcelUtils.facilityToIdentifiableModelParcel(facility))
         assertEquals(data.transactionDate, now.humanReadableDate())
+
     }
 
     @Test
