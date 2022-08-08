@@ -24,6 +24,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
@@ -39,6 +41,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
@@ -49,6 +52,7 @@ import java.time.ZoneId
 class HomeViewModelUnitTest {
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
+
     @get:Rule
     val countingTaskExecutorRule = CountingTaskExecutorRule()
 
@@ -60,6 +64,7 @@ class HomeViewModelUnitTest {
     private lateinit var viewModel: HomeViewModel
     private lateinit var userManager: UserManager
     private lateinit var schedulerProvider: BaseSchedulerProvider
+
     @Mock
     private lateinit var testSchedulerProvider: TestSchedulerProvider
     private lateinit var facilities: List<OrganisationUnit>
@@ -97,7 +102,8 @@ class HomeViewModelUnitTest {
             "F5ijs28K4s8", "wBr4wccNBj1", "sLMTQUHAZnk",
             "RghnAkDBDI4", "yfsEseIcEXr",
             "lpGYJoVUudr", "ej1YwWaYGmm",
-            "I7cmT3iXT0y")
+            "I7cmT3iXT0y"
+        )
 
         facilities = FacilityFactory.getListOf(3)
         destinations = DestinationFactory.getListOf(5)
@@ -120,6 +126,7 @@ class HomeViewModelUnitTest {
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)
+
     }
 
     @After
@@ -154,7 +161,7 @@ class HomeViewModelUnitTest {
         viewModel.loadDestinations()
         verify(metadataManager).destinations()
 
-        viewModel.destination.observeForever {
+        viewModel.destinationsList.observeForever {
             assertEquals(it, OperationState.Success(destinations))
         }
     }
@@ -235,7 +242,9 @@ class HomeViewModelUnitTest {
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyTransactionDateIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        viewModel.setTransactionDate(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond())
+        viewModel.setTransactionDate(
+            LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
+        )
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -275,7 +284,8 @@ class HomeViewModelUnitTest {
                     TransactionType.DISTRIBUTION,
                     LocalDateTime.now()
                 )
-            ))
+            )
+        )
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
@@ -414,10 +424,14 @@ class HomeViewModelUnitTest {
 
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.DISTRIBUTION)
-        assertEquals(data.facility,
-            ParcelUtils.facilityToIdentifiableModelParcel(facility))
-        assertEquals(data.distributedTo,
-            ParcelUtils.distributedTo_ToIdentifiableModelParcel(destination))
+        assertEquals(
+            data.facility,
+            ParcelUtils.facilityToIdentifiableModelParcel(facility)
+        )
+        assertEquals(
+            data.distributedTo,
+            ParcelUtils.distributedTo_ToIdentifiableModelParcel(destination)
+        )
         println(data)
         assertEquals(data.transactionDate, now.humanReadableDate())
     }
@@ -433,8 +447,10 @@ class HomeViewModelUnitTest {
         println("A ${getTime(now)}")
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.DISCARD)
-        assertEquals(data.facility,
-            ParcelUtils.facilityToIdentifiableModelParcel(facility))
+        assertEquals(
+            data.facility,
+            ParcelUtils.facilityToIdentifiableModelParcel(facility)
+        )
         assertEquals(data.transactionDate, now.humanReadableDate())
 
     }
@@ -450,8 +466,10 @@ class HomeViewModelUnitTest {
 
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.CORRECTION)
-        assertEquals(data.facility,
-            ParcelUtils.facilityToIdentifiableModelParcel(facility))
+        assertEquals(
+            data.facility,
+            ParcelUtils.facilityToIdentifiableModelParcel(facility)
+        )
         assertEquals(data.transactionDate, now.humanReadableDate())
     }
 
