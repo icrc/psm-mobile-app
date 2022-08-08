@@ -9,6 +9,7 @@ import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
+import com.baosystems.icrc.psm.services.MetadataManagerImpl
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.UserManagerImpl
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
@@ -58,6 +59,9 @@ class HomeViewModelUnitTest {
 
     @Mock
     private lateinit var metadataManager: MetadataManager
+
+    @Mock
+    private lateinit var metadatManagerImpl: MetadataManagerImpl
 
     @Mock
     private lateinit var userActivityRepository: UserActivityRepository
@@ -114,6 +118,7 @@ class HomeViewModelUnitTest {
         doReturn(
             Single.just(facilities)
         ).whenever(metadataManager).facilities(appConfig.program)
+
 
         Mockito.`when`(metadataManager.destinations())
             .thenReturn(Single.just(destinations))
