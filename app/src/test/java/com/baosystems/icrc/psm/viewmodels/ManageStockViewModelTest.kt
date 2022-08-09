@@ -51,20 +51,29 @@ class ManageStockViewModelTest {
 
     @Mock
     private lateinit var ruleValidationHelperImpl: RuleValidationHelper
+
     @Mock
     private lateinit var speechRecognitionManagerImpl: SpeechRecognitionManager
 
     @Mock
     private lateinit var metadataManager: MetadataManager
+
     @Mock
     private lateinit var preferenceProvider: PreferenceProvider
+
     @Mock
     private lateinit var stockManager: StockManager
+
     @Mock
     private lateinit var stockItemsObserver: Observer<PagedList<AttributeValue>>
+
     @Captor
     private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
+    private fun getModel(
+        type: TransactionType,
+        distributedTo: IdentifiableModel?
+    ) =
     private fun getModel() =
         ManageStockViewModel(
             SavedStateHandle(),
@@ -76,6 +85,10 @@ class ManageStockViewModelTest {
             ruleValidationHelperImpl,
             speechRecognitionManagerImpl
         )
+
+    private fun createStockEntry(uid: String) = StockItem(
+        uid, faker.name().name(), faker.number().numberBetween(1, 800).toString()
+    )
 
     private fun createStockEntry(
         uid: String,
@@ -104,9 +117,11 @@ class ManageStockViewModelTest {
         )
 
         facility = ParcelUtils.facilityToIdentifiableModelParcel(
-            FacilityFactory.create(57L))
+            FacilityFactory.create(57L)
+        )
         distributedTo = ParcelUtils.distributedTo_ToIdentifiableModelParcel(
-            DestinationFactory.create(23L))
+            DestinationFactory.create(23L)
+        )
         transactionDate = "2021-08-05"
 
         schedulerProvider = TrampolineSchedulerProvider()
@@ -124,6 +139,20 @@ class ManageStockViewModelTest {
         }
     }
 
+    @Test(expected = UnsupportedOperationException::class)
+    fun init_distributedToMustBeSetForDistribution() {
+        getModel(TransactionType.DISTRIBUTION, null)
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun init_distributedToMustNotBeSetForDiscard() {
+        getModel(TransactionType.DISCARD, distributedTo)
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun init_distributedToMustNotBeSetForCorrection() {
+       val response =  getModel(TransactionType.CORRECTION, distributedTo)
+    }
 
     @Test
     fun init_shouldSetFacilityAndDateForDiscard() {
@@ -142,7 +171,6 @@ class ManageStockViewModelTest {
         val viewModel = getModel()
 
         viewModel.transaction?.let {
-
             assertNotNull(it.facility)
             assertNull(it.distributedTo)
             assertEquals(it.facility.displayName, facility.displayName)
@@ -160,16 +188,24 @@ class ManageStockViewModelTest {
     fun canSetAndGetItemQuantityForSelectedItem() {
         val viewModel = getModel()
 
+        val item = createStockEntry("kcasjcbjboab2sh")
+//        val item = createStockEntry("kcasjcbjboabhsh")
+
         val qty = 319L
         val item = createStockEntry("someUid", viewModel, qty.toString())
 
-        viewModel.setQuantity(item, 0, qty.toString(),
+        viewModel.setQuantity(item, 200, qty.toString(),
             object : ItemWatcher.OnQuantityValidated {
                 override fun validationCompleted(ruleEffects: List<RuleEffect>) {
                     Timber.tag("ruleEffects2").d("$ruleEffects")
                 }
 
             })
+
+
+//        println("ItemMiguel "+item)
+        println("ItemMiguel "+viewModel.getItemQuantity(item))
+//        assertEquals(viewModel.getItemQuantity(item), qty)
         println(item)
         println(viewModel.getItemQuantity(item))
         assertEquals(viewModel.getItemQuantity(item)?.toLong(), qty)
@@ -179,7 +215,11 @@ class ManageStockViewModelTest {
     fun canUpdateExistingItemQuantityForSelectedItem() {
         val viewModel = getModel()
         val qty2 = 95L
+
+        val item = createStockEntry("kcasjcbjboabhsh")
+
         val item = createStockEntry("someUid", viewModel, qty2.toString())
+
         val qty = 49
 
         viewModel.setQuantity(item, 0, qty.toString(),
@@ -189,6 +229,11 @@ class ManageStockViewModelTest {
                 }
             })
 
+        assertEquals(viewModel.getItemQuantity(item), qty2)
+
+        //viewModel.setQuantity(item, qty2)
+//        println("ItemMiguel "+viewModel.getItemQuantity(item))
+//        println("ItemMiguel "+item)
         assertEquals(viewModel.getItemQuantity(item), qty2.toString())
     }
 
