@@ -44,7 +44,6 @@ import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-// TODO: Fix the failing tests
 @RunWith(MockitoJUnitRunner::class)
 class HomeViewModelUnitTest {
     @get:Rule
@@ -212,22 +211,16 @@ class HomeViewModelUnitTest {
         assertEquals(viewModel.readyManageStock(), false)
     }
 
-    private fun removeDefaultTransactionDate() {
-//        viewModel.transactionDate.value = null
-    }
-
     @Test
     fun distributionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        removeDefaultTransactionDate()
-
         assertEquals(viewModel.readyManageStock(), false)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        removeDefaultTransactionDate()
+        
 
         viewModel.setFacility(facilities[0])
 
@@ -248,7 +241,7 @@ class HomeViewModelUnitTest {
     fun distributionTransaction_cannotManageStock_ifOnlyDistributedToIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setDestination(destinations[0])
-        removeDefaultTransactionDate()
+        
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -276,7 +269,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
-        removeDefaultTransactionDate()
+        
 
         assertEquals(viewModel.readyManageStock(), true)
     }
@@ -295,7 +288,7 @@ class HomeViewModelUnitTest {
     @Test
     fun discardTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-        removeDefaultTransactionDate()
+        
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -303,7 +296,7 @@ class HomeViewModelUnitTest {
     @Test
     fun discardTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-        removeDefaultTransactionDate()
+        
 
         viewModel.setFacility(facilities[0])
 
@@ -337,7 +330,7 @@ class HomeViewModelUnitTest {
     @Test
     fun correctionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-        removeDefaultTransactionDate()
+        
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -345,7 +338,7 @@ class HomeViewModelUnitTest {
     @Test
     fun correctionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-        removeDefaultTransactionDate()
+        
 
         viewModel.setFacility(facilities[0])
 
@@ -462,16 +455,4 @@ class HomeViewModelUnitTest {
         )
         assertEquals(data.transactionDate, now.humanReadableDate())
     }
-
-    // TODO: Implement shouldSetDefaultFacility_ifOnlyOneFacilityIsAvailable
-//    @Test
-//    fun shouldSetDefaultFacility_ifOnlyOneFacilityIsAvailable() {
-//
-//    }
-
-    // TODO: Implement shouldDisplayRecentActivity_IfAvailable
-//    @Test
-//    fun shouldDisplayRecentActivity_IfAvailable() {
-//
-//    }
 }
