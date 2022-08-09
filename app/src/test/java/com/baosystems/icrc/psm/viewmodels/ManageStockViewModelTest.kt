@@ -70,10 +70,6 @@ class ManageStockViewModelTest {
     @Captor
     private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
-    private fun getModel(
-        type: TransactionType,
-        distributedTo: IdentifiableModel?
-    ) =
     private fun getModel() =
         ManageStockViewModel(
             SavedStateHandle(),
@@ -139,21 +135,6 @@ class ManageStockViewModelTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustBeSetForDistribution() {
-        getModel(TransactionType.DISTRIBUTION, null)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustNotBeSetForDiscard() {
-        getModel(TransactionType.DISCARD, distributedTo)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustNotBeSetForCorrection() {
-       val response =  getModel(TransactionType.CORRECTION, distributedTo)
-    }
-
     @Test
     fun init_shouldSetFacilityAndDateForDiscard() {
         val viewModel = getModel()
@@ -188,9 +169,6 @@ class ManageStockViewModelTest {
     fun canSetAndGetItemQuantityForSelectedItem() {
         val viewModel = getModel()
 
-        val item = createStockEntry("kcasjcbjboab2sh")
-//        val item = createStockEntry("kcasjcbjboabhsh")
-
         val qty = 319L
         val item = createStockEntry("someUid", viewModel, qty.toString())
 
@@ -202,12 +180,6 @@ class ManageStockViewModelTest {
 
             })
 
-
-//        println("ItemMiguel "+item)
-        println("ItemMiguel "+viewModel.getItemQuantity(item))
-//        assertEquals(viewModel.getItemQuantity(item), qty)
-        println(item)
-        println(viewModel.getItemQuantity(item))
         assertEquals(viewModel.getItemQuantity(item)?.toLong(), qty)
     }
 
@@ -215,8 +187,6 @@ class ManageStockViewModelTest {
     fun canUpdateExistingItemQuantityForSelectedItem() {
         val viewModel = getModel()
         val qty2 = 95L
-
-        val item = createStockEntry("kcasjcbjboabhsh")
 
         val item = createStockEntry("someUid", viewModel, qty2.toString())
 

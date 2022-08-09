@@ -35,11 +35,11 @@ class HomeViewModel @Inject constructor(
     preferenceProvider: PreferenceProvider,
     private val metadataManager: MetadataManager,
     private val userActivityRepository: UserActivityRepository
-): BaseViewModel(preferenceProvider, schedulerProvider) {
+) : BaseViewModel(preferenceProvider, schedulerProvider) {
     // TODO: Move all the properties below into a singular object
     var program: Program? = null
 
-    private val _transactionType =  MutableLiveData<TransactionType>()
+    private val _transactionType = MutableLiveData<TransactionType>()
     val transactionType: LiveData<TransactionType>
         get() = _transactionType
 
@@ -62,20 +62,21 @@ class HomeViewModel @Inject constructor(
 
     private val _facilities = MutableLiveData<OperationState<List<OrganisationUnit>>>()
     val facilities: LiveData<OperationState<List<OrganisationUnit>>>
-        get() =  _facilities
+        get() = _facilities
 
     private val _destinations = MutableLiveData<OperationState<List<Option>>>()
     val destinationsList: LiveData<OperationState<List<Option>>>
         get() = _destinations
 
-    private val _recentActivities: MutableLiveData<OperationState<List<UserActivity>>> = MutableLiveData()
+    private val _recentActivities: MutableLiveData<OperationState<List<UserActivity>>> =
+        MutableLiveData()
     val recentActivities: LiveData<OperationState<List<UserActivity>>>
         get() = _recentActivities
 
     init {
-         /*loadFacilities()
-         loadDestinations()
-         loadRecentActivities()*/
+        /*loadFacilities()
+        loadDestinations()*/
+        loadRecentActivities()
     }
 
     fun loadDestinations() {
@@ -127,7 +128,8 @@ class HomeViewModel @Inject constructor(
                     {
                         it.printStackTrace()
                         _recentActivities.postValue(
-                            OperationState.Error(R.string.recent_activities_load_error))
+                            OperationState.Error(R.string.recent_activities_load_error)
+                        )
                     }
                 )
         )
@@ -151,7 +153,8 @@ class HomeViewModel @Inject constructor(
     fun setDestination(destination: Option?) {
         if (isDistribution.value == false)
             throw UnsupportedOperationException(
-                "Cannot set 'distributed to' for non-distribution transactions")
+                "Cannot set 'distributed to' for non-distribution transactions"
+            )
 
         _destination.value = destination
     }
@@ -164,7 +167,8 @@ class HomeViewModel @Inject constructor(
         else if (_transactionDate.value == null)
             R.string.mandatory_transaction_date_selection
         else if (_transactionType.value == TransactionType.DISTRIBUTION &&
-            _destination.value == null)
+            _destination.value == null
+        )
             R.string.mandatory_distributed_to_selection
         else
             null
@@ -173,15 +177,18 @@ class HomeViewModel @Inject constructor(
     fun getData(): Transaction {
         if (transactionType.value == null)
             throw UserIntentParcelCreationException(
-                "Unable to create parcel with empty transaction type")
+                "Unable to create parcel with empty transaction type"
+            )
 
         if (facility.value == null)
             throw UserIntentParcelCreationException(
-                "Unable to create parcel with empty facility")
+                "Unable to create parcel with empty facility"
+            )
 
         if (transactionDate.value == null)
             throw UserIntentParcelCreationException(
-                "Unable to create parcel with empty transaction date")
+                "Unable to create parcel with empty transaction date"
+            )
 
         return Transaction(
             transactionType.value!!,

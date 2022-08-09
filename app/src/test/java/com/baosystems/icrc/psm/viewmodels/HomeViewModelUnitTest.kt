@@ -404,6 +404,7 @@ class HomeViewModelUnitTest {
     }
 
     @Test(expected = UserIntentParcelCreationException::class)
+//    @Test
     fun distributionWithMissingTransactionDate_cannotCreateUserIntent() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[1])
