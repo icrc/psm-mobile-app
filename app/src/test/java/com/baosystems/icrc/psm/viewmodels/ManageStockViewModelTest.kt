@@ -124,20 +124,6 @@ class ManageStockViewModelTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustBeSetForDistribution() {
-        getModel()
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustNotBeSetForDiscard() {
-        getModel()
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustNotBeSetForCorrection() {
-        getModel()
-    }
 
     @Test
     fun init_shouldSetFacilityAndDateForDiscard() {
