@@ -3,9 +3,7 @@ package com.baosystems.icrc.psm.viewmodels
 import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.*
-import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
@@ -140,15 +138,14 @@ class HomeViewModelUnitTest {
     }
 
     private fun getTime() =
-        LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
+        LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
     private fun getTime(dateTime: LocalDateTime) =
-        dateTime.atZone(ZoneId.systemDefault()).toEpochSecond()
+        dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
 
     @Test
     fun init_shouldLoadFacilities() {
-        viewModel.loadFacilities()
         verify(metadataManager).facilities(appConfig.program)
 
         assertEquals(viewModel.facilities.value, OperationState.Success(facilities))
@@ -156,7 +153,7 @@ class HomeViewModelUnitTest {
 
     @Test
     fun init_shouldLoadDestinations() {
-        viewModel.loadDestinations()
+
         verify(metadataManager).destinations()
 
         viewModel.destinationsList.observeForever {
@@ -276,14 +273,6 @@ class HomeViewModelUnitTest {
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyFacilityAndDestinedToIsSet() {
-        whenever(userActivityRepository.getRecentActivities(Constants.USER_ACTIVITY_COUNT)) doReturn Single.just(
-            listOf(
-                UserActivity(
-                    TransactionType.DISTRIBUTION,
-                    LocalDateTime.now()
-                )
-            )
-        )
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
