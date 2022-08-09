@@ -21,7 +21,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
-import org.hisp.dhis.android.core.program.Program
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -38,6 +37,7 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel(preferenceProvider, schedulerProvider) {
     // TODO: Move all the properties below into a singular object
     var program: Program? = null
+): BaseViewModel(preferenceProvider, schedulerProvider) {
 
     private val _transactionType = MutableLiveData<TransactionType>()
     val transactionType: LiveData<TransactionType>
@@ -74,12 +74,14 @@ class HomeViewModel @Inject constructor(
         get() = _recentActivities
 
     init {
-        /*loadFacilities()
-        loadDestinations()*/
-        loadRecentActivities()
+        loadFacilities()
+        loadDestinations()
+        try {
+            loadRecentActivities()
+        } catch (e: Exception) {}
     }
 
-    fun loadDestinations() {
+    private fun loadDestinations() {
         _destinations.postValue(OperationState.Loading)
 
         disposable.add(
@@ -95,8 +97,8 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun loadFacilities() {
-        _facilities.value = OperationState.Loading
+    private fun loadFacilities() {
+        _facilities.postValue(OperationState.Loading)
 
         disposable.add(
             metadataManager.facilities(config.program)
@@ -116,7 +118,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun loadRecentActivities() {
+    private fun loadRecentActivities() {
         _recentActivities.postValue(OperationState.Loading)
 
         disposable.add(
@@ -199,11 +201,16 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setTransactionDate(epoch: Long) {
-        _transactionDate.value = Instant.ofEpochSecond(epoch)
-            .atZone(
-                ZoneId.systemDefault()
-            )
-            .toLocalDateTime()
+        if (epoch == 0L) {
+            throw UserIntentParcelCreationException(
+                "Unable to create user intent with empty transaction date")
+        } else {
+            _transactionDate.value = Instant.ofEpochMilli(epoch)
+                .atZone(
+                    ZoneId.systemDefault()
+                )
+                .toLocalDateTime()
+        }
     }
 
     fun readyManageStock(): Boolean {

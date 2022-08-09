@@ -70,6 +70,7 @@ class ManageStockViewModelTest {
     @Captor
     private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
+
     private fun getModel() =
         ManageStockViewModel(
             SavedStateHandle(),
@@ -160,11 +161,6 @@ class ManageStockViewModelTest {
 
     }
 
-//    @Test
-//    fun init_shouldHaveNoQuantitiesAlreadySet() {
-//
-//    }
-
     @Test
     fun canSetAndGetItemQuantityForSelectedItem() {
         val viewModel = getModel()
@@ -199,44 +195,6 @@ class ManageStockViewModelTest {
                 }
             })
 
-        assertEquals(viewModel.getItemQuantity(item), qty2)
-
-        //viewModel.setQuantity(item, qty2)
-//        println("ItemMiguel "+viewModel.getItemQuantity(item))
-//        println("ItemMiguel "+item)
         assertEquals(viewModel.getItemQuantity(item), qty2.toString())
     }
-
-    // TODO: init_shouldFetchAllStockItems
-//    @Test
-//    fun init_shouldFetchAllStockItems() {
-//        val viewModel = getModel()
-//        viewModel.getStockItems().observeForever(stockItemsObserver)
-//
-//        val search = ""
-//        viewModel.setSearchTerm(search)
-//        verify(metadataManager).queryStock(search)
-//        verify(stockItemsObserver).onChanged(stockItemsCaptor.capture())
-//    }
-
-    // DESCOMENTAR ESTES DOIS MËTODO
-//    // TODO: Implement shouldSearchStockItems_onSearchQueryChange()
-//    @Test
-//    fun shouldSearchStockItems_onSearchQueryChange() {
-//
-//    }
-//
-//    @Test
-//    fun canFetchPaginatedStockItems() {
-//
-//    }
-
-//    @Test
-//    fun canSetQueryStockList() {
-//        val viewModel = getModel()
-//        val q = "Parac"
-//        viewModel.setSearchTerm(q)
-//
-//        assertEquals(viewModel.search.value, q)
-//    }
 }
