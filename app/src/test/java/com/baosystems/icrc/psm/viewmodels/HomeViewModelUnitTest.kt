@@ -25,13 +25,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,7 +41,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
@@ -147,11 +145,6 @@ class HomeViewModelUnitTest {
     private fun getTime(dateTime: LocalDateTime) =
         dateTime.atZone(ZoneId.systemDefault()).toEpochSecond()
 
-    @Test
-    fun init_shouldLoadProgram() {
-        verify(metadataManager).stockManagementProgram(appConfig.program)
-        assertNotNull(viewModel.program)
-    }
 
     @Test
     fun init_shouldLoadFacilities() {
