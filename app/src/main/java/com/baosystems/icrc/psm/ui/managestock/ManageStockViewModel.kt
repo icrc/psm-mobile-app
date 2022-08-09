@@ -77,11 +77,13 @@ class ManageStockViewModel @Inject constructor(
         )
 
         configureRelays()
-        loadStockItems()
+        try {
+            loadStockItems()
+        } catch (e: Exception) {}
     }
 
     private fun loadStockItems() {
-//        search.value = SearchParametersModel(null, null, transaction!!.facility.uid)
+        search.value = SearchParametersModel(null, null, transaction!!.facility.uid)
     }
 
     fun getStockItems() = stockItems
