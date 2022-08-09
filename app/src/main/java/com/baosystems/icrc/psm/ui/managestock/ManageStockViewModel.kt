@@ -25,7 +25,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import org.junit.Test
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -144,7 +143,10 @@ class ManageStockViewModel @Inject constructor(
         entryRelay.accept(RowAction(StockEntry(item, qty), position, callback))
     }
 
-    fun getItemQuantity(item: StockItem) = itemsCache[item.id]?.qty
+    fun getItemQuantity(item: StockItem): String? {
+        println(itemsCache)
+        return itemsCache[item.id]?.qty
+    }
 
     fun getStockOnHand(item: StockItem) = itemsCache[item.id]?.stockOnHand
 

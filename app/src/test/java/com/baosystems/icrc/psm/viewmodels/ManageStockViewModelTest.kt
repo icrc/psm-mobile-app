@@ -7,7 +7,6 @@ import androidx.paging.PagedList
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.DestinationFactory
 import com.baosystems.icrc.psm.data.FacilityFactory
-import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.data.models.StockItem
 import com.baosystems.icrc.psm.services.MetadataManager
@@ -31,7 +30,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
-import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import timber.log.Timber
@@ -67,8 +65,7 @@ class ManageStockViewModelTest {
     @Captor
     private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
-    private fun getModel(type: TransactionType,
-                         distributedTo: IdentifiableModel?) =
+    private fun getModel() =
         ManageStockViewModel(
             SavedStateHandle(),
             disposable,
@@ -80,8 +77,18 @@ class ManageStockViewModelTest {
             speechRecognitionManagerImpl
         )
 
-    private fun createStockEntry(uid: String) = StockItem(
-        uid, faker.name().name(), faker.number().numberBetween(1, 800).toString())
+    private fun createStockEntry(
+        uid: String,
+        viewModel: ManageStockViewModel,
+        qty: String?
+    ): StockItem {
+        val stockItem = StockItem(
+            uid, faker.name().name(), faker.number().numberBetween(1, 800).toString())
+
+        viewModel.addItem(stockItem, qty, stockItem.stockOnHand, false)
+
+        return stockItem
+    }
 
     @Before
     fun setUp() {
@@ -107,7 +114,7 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityDateAndDistributedToForDistribution() {
-        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+        val viewModel = getModel()
 
         viewModel.transaction?.let {
             assertNotNull(it.facility)
@@ -117,24 +124,10 @@ class ManageStockViewModelTest {
         }
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustBeSetForDistribution() {
-        getModel(TransactionType.DISTRIBUTION, null)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustNotBeSetForDiscard() {
-        getModel(TransactionType.DISCARD, distributedTo)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun init_distributedToMustNotBeSetForCorrection() {
-        getModel(TransactionType.CORRECTION, distributedTo)
-    }
 
     @Test
     fun init_shouldSetFacilityAndDateForDiscard() {
-        val viewModel = getModel(TransactionType.DISCARD, null)
+        val viewModel = getModel()
 
         viewModel.transaction?.let {
             assertNotNull(it.facility)
@@ -146,7 +139,7 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityAndDateForCorrection() {
-        val viewModel = getModel(TransactionType.CORRECTION, null)
+        val viewModel = getModel()
 
         viewModel.transaction?.let {
 
@@ -165,10 +158,10 @@ class ManageStockViewModelTest {
 
     @Test
     fun canSetAndGetItemQuantityForSelectedItem() {
-        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+        val viewModel = getModel()
 
-        val item = createStockEntry("someUid")
         val qty = 319L
+        val item = createStockEntry("someUid", viewModel, qty.toString())
 
         viewModel.setQuantity(item, 0, qty.toString(),
             object : ItemWatcher.OnQuantityValidated {
@@ -177,30 +170,32 @@ class ManageStockViewModelTest {
                 }
 
             })
-        assertEquals(viewModel.getItemQuantity(item), qty)
+        println(item)
+        println(viewModel.getItemQuantity(item))
+        assertEquals(viewModel.getItemQuantity(item)?.toLong(), qty)
     }
 
     @Test
     fun canUpdateExistingItemQuantityForSelectedItem() {
-        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+        val viewModel = getModel()
         val qty2 = 95L
-        val item = createStockEntry("someUid")
+        val item = createStockEntry("someUid", viewModel, qty2.toString())
         val qty = 49
 
         viewModel.setQuantity(item, 0, qty.toString(),
             object : ItemWatcher.OnQuantityValidated {
                 override fun validationCompleted(ruleEffects: List<RuleEffect>) {
-                    Timber.tag("ruleEffects").d("$ruleEffects")
+                    println("$ruleEffects")
                 }
             })
-        //viewModel.setQuantity(item, qty2)
-        assertEquals(viewModel.getItemQuantity(item), qty2)
+
+        assertEquals(viewModel.getItemQuantity(item), qty2.toString())
     }
 
     // TODO: init_shouldFetchAllStockItems
 //    @Test
 //    fun init_shouldFetchAllStockItems() {
-//        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+//        val viewModel = getModel()
 //        viewModel.getStockItems().observeForever(stockItemsObserver)
 //
 //        val search = ""
@@ -223,7 +218,7 @@ class ManageStockViewModelTest {
 
 //    @Test
 //    fun canSetQueryStockList() {
-//        val viewModel = getModel(TransactionType.DISTRIBUTION, distributedTo)
+//        val viewModel = getModel()
 //        val q = "Parac"
 //        viewModel.setSearchTerm(q)
 //
