@@ -1,8 +1,17 @@
 package com.baosystems.icrc.psm.viewmodels
 
+import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.baosystems.icrc.psm.data.*
+import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants
+import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.DestinationFactory
+import com.baosystems.icrc.psm.data.FacilityFactory
+import com.baosystems.icrc.psm.data.OperationState
+import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.persistence.UserActivity
+import com.baosystems.icrc.psm.data.persistence.UserActivityDao
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
@@ -10,16 +19,23 @@ import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.UserManagerImpl
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
+import com.baosystems.icrc.psm.services.scheduler.TestSchedulerProvider
 import com.baosystems.icrc.psm.services.scheduler.TrampolineSchedulerProvider
 import com.baosystems.icrc.psm.ui.home.HomeViewModel
 import com.baosystems.icrc.psm.utils.ParcelUtils
 import com.baosystems.icrc.psm.utils.humanReadableDate
 import io.reactivex.Single
+import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.plugins.RxJavaPlugins
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.schedulers.TestScheduler
 import org.hisp.dhis.android.core.D2
 import org.hisp.dhis.android.core.option.Option
 import org.hisp.dhis.android.core.organisationunit.OrganisationUnit
-import org.junit.Assert.*
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,30 +43,38 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-// TODO: Fix the failing tests
 @RunWith(MockitoJUnitRunner::class)
 class HomeViewModelUnitTest {
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val countingTaskExecutorRule = CountingTaskExecutorRule()
+
     @Mock
     private lateinit var metadataManager: MetadataManager
+
     @Mock
+    private lateinit var userActivityDao: UserActivityDao
+
     private lateinit var userActivityRepository: UserActivityRepository
     private lateinit var viewModel: HomeViewModel
     private lateinit var userManager: UserManager
     private lateinit var schedulerProvider: BaseSchedulerProvider
+
+    @Mock
+    private lateinit var testSchedulerProvider: TestSchedulerProvider
     private lateinit var facilities: List<OrganisationUnit>
     private lateinit var destinations: List<Option>
+    private lateinit var recentActivities: List<UserActivity>
     private lateinit var appConfig: AppConfig
 
     private val disposable = CompositeDisposable()
@@ -75,24 +99,36 @@ class HomeViewModelUnitTest {
 
     @Before
     fun setup() {
+        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setNewThreadSchedulerHandler { Schedulers.trampoline() }
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+
         appConfig = AppConfig(
-            "programUid", "itemCodeUid", "itemNameUid",
-            "stockOnHandUid", "distributedToUid",
-            "stockDistributionUid", "stockCorrectionUid",
-            "stockDiscardedUid")
+            "F5ijs28K4s8", "wBr4wccNBj1", "sLMTQUHAZnk",
+            "RghnAkDBDI4", "yfsEseIcEXr",
+            "lpGYJoVUudr", "ej1YwWaYGmm",
+            "I7cmT3iXT0y"
+        )
 
         facilities = FacilityFactory.getListOf(3)
         destinations = DestinationFactory.getListOf(5)
+        recentActivities = emptyList()
 
         schedulerProvider = TrampolineSchedulerProvider()
+        testSchedulerProvider = TestSchedulerProvider(TestScheduler())
 
         doReturn(
             Single.just(facilities)
         ).whenever(metadataManager).facilities(appConfig.program)
 
-        Mockito.`when`(metadataManager.destinations())
+        `when`(metadataManager.destinations())
             .thenReturn(Single.just(destinations))
 
+        `when`(userActivityDao.getRecentActivities(Constants.USER_ACTIVITY_COUNT))
+            .thenReturn(Single.just(recentActivities))
+
+        userActivityRepository = UserActivityRepository(userActivityDao)
         userManager = UserManagerImpl(d2)
         viewModel = HomeViewModel(
             disposable, appConfig, schedulerProvider, preferenceProvider, metadataManager,
@@ -101,37 +137,37 @@ class HomeViewModelUnitTest {
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)
+
+    }
+
+    @After
+    fun tearDown() {
+        disposable.dispose()
+        RxJavaPlugins.reset()
+        RxAndroidPlugins.reset()
     }
 
     private fun getTime() =
-        LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
-    
-    private fun getTime(dateTime: LocalDateTime) =
-        dateTime.atZone(ZoneId.systemDefault()).toEpochSecond()
+        LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-    @Test
-    fun init_shouldLoadProgram() {
-        verify(metadataManager).stockManagementProgram(appConfig.program)
-        assertNotNull(viewModel.program)
-    }
+    private fun getTime(dateTime: LocalDateTime) =
+        dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+
 
     @Test
     fun init_shouldLoadFacilities() {
         verify(metadataManager).facilities(appConfig.program)
-        verify(facilitiesObserver, times(1))
-            .onChanged(facilitiesArgumentCaptor.capture())
 
-        assertEquals(viewModel.facilities.value, facilities)
-        assertEquals(facilitiesArgumentCaptor.value, facilities)
+        assertEquals(viewModel.facilities.value, OperationState.Success(facilities))
     }
 
     @Test
     fun init_shouldLoadDestinations() {
         verify(metadataManager).destinations()
-        verify(destinationsObserver, times(1))
-            .onChanged(destinationsArgumentCaptor.capture())
 
-        assertEquals(destinationsArgumentCaptor.value, destinations)
+        viewModel.destinationsList.observeForever {
+            assertEquals(it, OperationState.Success(destinations))
+        }
     }
 
     @Test
@@ -182,46 +218,36 @@ class HomeViewModelUnitTest {
 
     @Test
     fun cannotManageStock_ifNoTransactionIsSelected() {
-        assertEquals(viewModel.readyManageStock(), false)
-    }
-
-    private fun removeDefaultTransactionDate() {
-//        viewModel.transactionDate.value = null
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_transaction_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        removeDefaultTransactionDate()
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        removeDefaultTransactionDate()
-
         viewModel.setFacility(facilities[0])
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_distributed_to_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyTransactionDateIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        viewModel.setTransactionDate(LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond())
-
-        assertEquals(viewModel.readyManageStock(), false)
+        viewModel.setTransactionDate(
+            LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
+        )
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyDistributedToIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setDestination(destinations[0])
-        removeDefaultTransactionDate()
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -229,8 +255,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setTransactionDate(getTime())
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_distributed_to_selection)
     }
 
     @Test
@@ -238,8 +263,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setDestination(destinations[0])
         viewModel.setTransactionDate(getTime())
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -247,9 +271,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
-        removeDefaultTransactionDate()
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
@@ -258,26 +280,20 @@ class HomeViewModelUnitTest {
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
         viewModel.setTransactionDate(getTime())
-
-        assertEquals(viewModel.readyManageStock(), true)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
     fun discardTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-        removeDefaultTransactionDate()
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun discardTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-        removeDefaultTransactionDate()
-
         viewModel.setFacility(facilities[0])
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
@@ -285,7 +301,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISCARD)
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -294,7 +310,7 @@ class HomeViewModelUnitTest {
         viewModel.setFacility(facilities[0])
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), true)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test(expected = UnsupportedOperationException::class)
@@ -306,19 +322,14 @@ class HomeViewModelUnitTest {
     @Test
     fun correctionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-        removeDefaultTransactionDate()
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun correctionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-        removeDefaultTransactionDate()
-
         viewModel.setFacility(facilities[0])
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
@@ -326,7 +337,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.CORRECTION)
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -335,7 +346,7 @@ class HomeViewModelUnitTest {
         viewModel.setFacility(facilities[0])
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), true)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test(expected = UnsupportedOperationException::class)
@@ -360,13 +371,15 @@ class HomeViewModelUnitTest {
         viewModel.getData()
     }
 
-    @Test(expected = UserIntentParcelCreationException::class)
-    fun distributionWithMissingTransactionDate_cannotCreateUserIntent() {
+    @Test
+    fun distributionWithMissingTransactionDate_willCreateUSerIntentWithCurrentDay() {
+        val now = LocalDateTime.now()
+
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[1])
-//        viewModel.transactionDate.value = null
 
-        viewModel.getData()
+        val data = viewModel.getData()
+        assertEquals(data.transactionDate, now.humanReadableDate())
     }
 
     @Test
@@ -382,10 +395,15 @@ class HomeViewModelUnitTest {
 
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.DISTRIBUTION)
-        assertEquals(data.facility,
-            ParcelUtils.facilityToIdentifiableModelParcel(facility))
-        assertEquals(data.distributedTo,
-            ParcelUtils.distributedTo_ToIdentifiableModelParcel(destination))
+        assertEquals(
+            data.facility,
+            ParcelUtils.facilityToIdentifiableModelParcel(facility)
+        )
+        assertEquals(
+            data.distributedTo,
+            ParcelUtils.distributedTo_ToIdentifiableModelParcel(destination)
+        )
+        println(data)
         assertEquals(data.transactionDate, now.humanReadableDate())
     }
 
@@ -397,12 +415,15 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISCARD)
         viewModel.setFacility(facility)
         viewModel.setTransactionDate(getTime(now))
-
+        println("A ${getTime(now)}")
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.DISCARD)
-        assertEquals(data.facility,
-            ParcelUtils.facilityToIdentifiableModelParcel(facility))
+        assertEquals(
+            data.facility,
+            ParcelUtils.facilityToIdentifiableModelParcel(facility)
+        )
         assertEquals(data.transactionDate, now.humanReadableDate())
+
     }
 
     @Test
@@ -416,20 +437,10 @@ class HomeViewModelUnitTest {
 
         val data = viewModel.getData()
         assertEquals(data.transactionType, TransactionType.CORRECTION)
-        assertEquals(data.facility,
-            ParcelUtils.facilityToIdentifiableModelParcel(facility))
+        assertEquals(
+            data.facility,
+            ParcelUtils.facilityToIdentifiableModelParcel(facility)
+        )
         assertEquals(data.transactionDate, now.humanReadableDate())
     }
-
-    // TODO: Implement shouldSetDefaultFacility_ifOnlyOneFacilityIsAvailable
-//    @Test
-//    fun shouldSetDefaultFacility_ifOnlyOneFacilityIsAvailable() {
-//
-//    }
-
-    // TODO: Implement shouldDisplayRecentActivity_IfAvailable
-//    @Test
-//    fun shouldDisplayRecentActivity_IfAvailable() {
-//
-//    }
 }

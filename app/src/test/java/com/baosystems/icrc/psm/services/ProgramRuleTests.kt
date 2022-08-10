@@ -1,57 +1,111 @@
 package com.baosystems.icrc.psm.services
 
 import com.google.common.collect.Lists
-import junit.framework.Assert.assertEquals
 import org.hisp.dhis.rules.RuleEngine
 import org.hisp.dhis.rules.RuleEngineContext
-import org.hisp.dhis.rules.models.*
+import org.hisp.dhis.rules.models.Rule
+import org.hisp.dhis.rules.models.RuleAction
+import org.hisp.dhis.rules.models.RuleActionAssign
+import org.hisp.dhis.rules.models.RuleDataValue
+import org.hisp.dhis.rules.models.RuleEnrollment
+import org.hisp.dhis.rules.models.RuleEvent
+import org.hisp.dhis.rules.models.RuleValueType
+import org.hisp.dhis.rules.models.RuleVariable
+import org.hisp.dhis.rules.models.RuleVariableCurrentEvent
+import org.hisp.dhis.rules.models.RuleVariablePreviousEvent
+import org.hisp.dhis.rules.models.TriggerEnvironment
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
+import java.util.Arrays
+import java.util.Date
 
 @RunWith(JUnit4::class)
 class ProgramRuleTests {
-    private fun getRuleEngine(rules: List<Rule>): RuleEngine.Builder? {
-        val ruleVariable: RuleVariable = RuleVariableCalculatedValue
-            .create("test_calculated_value", "", RuleValueType.TEXT)
+    /**
+     * Gets the rule engine with all the rule variables configured in the server
+     */
+    private fun getRuleEngine(rules: List<Rule>): RuleEngine.Builder {
+        //Variable used by the program rules in the program rule expressions and actions
+        val rulesVariables = listOf<RuleVariable>(
+            RuleVariablePreviousEvent
+                .create(
+                    "PSM- Initial stock on hand - Previous event",
+                    "ypCQAFr1a5l",
+                    RuleValueType.NUMERIC
+                ),
+            RuleVariableCurrentEvent
+                .create(
+                    "PSM- Previous stock balance",
+                    "oc8tn8CewiP",
+                    RuleValueType.NUMERIC
+                ),
+            RuleVariableCurrentEvent
+                .create(
+                    "PSM- Stock consumed distributed",
+                    "lpGYJoVUudr",
+                    RuleValueType.NUMERIC
+                ),
+            RuleVariableCurrentEvent
+                .create(
+                    "PSM- Stock corrected",
+                    "ej1YwWaYGmm",
+                    RuleValueType.NUMERIC
+                ),
+            RuleVariableCurrentEvent
+                .create(
+                    "PSM- Stock discarded",
+                    "I7cmT3iXT0y",
+                    RuleValueType.NUMERIC
+                ),
+            RuleVariableCurrentEvent
+                .create(
+                    "PSM- Stock received",
+                    "j3ydinp6Qp8",
+                    RuleValueType.NUMERIC
+                )
+        )
         return RuleEngineContext
             .builder()
             .rules(rules)
-            .ruleVariables(Arrays.asList(ruleVariable))
+            .ruleVariables(rulesVariables)
             .supplementaryData(HashMap())
             .constantsValue(HashMap())
             .build().toEngineBuilder().triggerEnvironment(TriggerEnvironment.SERVER)
     }
 
-    private fun createRules(i: Int): List<Rule>? {
+    /**
+     * Create 3 the tree program rules configured in th server
+     *
+     * Rule 1: PSM- Assign Stock on Hand
+     * Expression: true
+     * Actions: assign value to Data element PSM-Stock on hand
+     *
+     * //TODO Create the two remaining program rules
+     */
+    private fun createRules(): List<Rule> {
         val rules = Lists.newArrayList<Rule>()
+        //Rule 1: PSM- Assign Stock on Hand
         val assignAction: RuleAction =
-            RuleActionAssign.create("#{test_calculated_value}", "2+1", null)
-        val rule = Rule
-            .create(null, 1, "true", Arrays.asList(assignAction), "test_program_rule1", "")
-        val sendMessageAction: RuleAction = RuleActionSendMessage.create("test_notification", "4")
-        val rule2 = Rule
-            .create(
+            RuleActionAssign.create(
                 null,
-                4,
-                "#{test_calculated_value}==4",
-                Arrays.asList(sendMessageAction),
-                "test_program_rule2",
-                ""
+                "#{PSM- Previous stock balance} + #{PSM- Stock received} - #{PSM- Stock consumed distributed} - #{PSM- Stock discarded} - #{PSM- Stock corrected}",
+                "ypCQAFr1a5l"
             )
-        for (j in 0 until i) {
-            rules.add(rule)
-            rules.add(rule2)
-        }
+        val rule1 = Rule
+            .create(null, 1, "true", listOf(assignAction), "PSM- Assign Stock on Hand", "rule1Uid")
+        rules.add(rule1)
+
+        //TODO Add the two remaining program rules
+
         return rules
     }
 
     @Test
     @Throws(Exception::class)
     fun evaluateTOneRuleTest() {
-        val i = 1
-        val ruleEngineBuilder = getRuleEngine(createRules(i)!!)
+        val ruleEngineBuilder = getRuleEngine(createRules())
         val enrollment = RuleEnrollment.builder()
             .enrollment("test_enrollment")
             .programName("test_program")
@@ -72,65 +126,32 @@ class ProgramRuleTests {
             .organisationUnit("")
             .organisationUnitCode("")
             .dataValues(
-                Arrays.asList(
+                listOf(
+                    //PRevious Stock Balance
                     RuleDataValue.create(
-                        Date(), "test_program_stage", "test_data_element", "test_value"
+                        Date(), "", "oc8tn8CewiP", "3"
+                    ),
+                    //PSM Stock received
+                    RuleDataValue.create(
+                        Date(), "", "j3ydinp6Qp8", "4"
+                    ),
+                    //PSM- Stock consumed distributed
+                    RuleDataValue.create(
+                        Date(), "", "lpGYJoVUudr", "2"
+                    ),
+                    //PSM- Stock discarded
+                    RuleDataValue.create(
+                        Date(), "", "I7cmT3iXT0y", "1"
+                    ),
+                    //PSM- Stock corrected
+                    RuleDataValue.create(
+                        Date(), "", "ej1YwWaYGmm", "3"
                     )
                 )
             )
             .build()
-        val ruleEngine = ruleEngineBuilder!!.enrollment(enrollment).build()
+        val ruleEngine = ruleEngineBuilder.enrollment(enrollment).build()
         val ruleEffects = ruleEngine.evaluate(ruleEvent).call()
-        assertEquals(ruleEffects.size, i)
+        assertEquals(ruleEffects.find { it.ruleId().equals("rule1Uid") }?.data(), "1")
     }
-
-//    @Test
-//    @Throws(Exception::class)
-//    fun sendMessageMustGetValueFromAssignAction() {
-//        val assignAction: RuleAction =
-//            RuleActionAssign.create("#{test_calculated_value}", "2+2", null)
-//        val rule = Rule
-//            .create(null, 1, "true", Arrays.asList(assignAction), "test_program_rule1", "")
-////        val sendMessageAction: RuleAction = RuleActionSendMessage.create("test_notification", "4")
-////        val rule2 = Rule
-////            .create(
-////                null,
-////                4,
-////                "#{test_calculated_value}==4",
-////                Arrays.asList(sendMessageAction),
-////                "test_program_rule2",
-////                ""
-////            )
-//        val enrollment = RuleEnrollment.builder()
-//            .enrollment("test_enrollment")
-//            .programName("test_program")
-//            .incidentDate(Date())
-//            .enrollmentDate(Date())
-//            .status(RuleEnrollment.Status.ACTIVE)
-//            .organisationUnit("test_ou")
-//            .organisationUnitCode("test_ou_code")
-//            .attributeValues(Arrays.asList())
-//            .build()
-//        val ruleEvent = RuleEvent.builder()
-//            .event("test_event")
-//            .programStage("test_program_stage")
-//            .programStageName("")
-//            .status(RuleEvent.Status.ACTIVE)
-//            .eventDate(Date())
-//            .dueDate(Date())
-//            .organisationUnit("")
-//            .organisationUnitCode("")
-//            .dataValues(
-//                Arrays.asList(
-//                    RuleDataValue.create(
-//                        Date(), "test_program_stage", "test_data_element", "test_value"
-//                    )
-//                )
-//            )
-//            .build()
-//        val ruleEngine = getRuleEngine(Arrays.asList(rule))!!.enrollment(enrollment).build()
-//        val ruleEffects = ruleEngine.evaluate(ruleEvent).call()
-//        assertEquals(ruleEffects[0].data(), "4")
-////        assertEquals(ruleEffects[0].ruleAction(), sendMessageAction)
-//    }
 }
