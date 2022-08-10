@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.commons.Constants.QUANTITY_ENTRY_DEBOUNCE
 import com.baosystems.icrc.psm.commons.Constants.SEARCH_QUERY_DEBOUNCE
@@ -39,7 +40,6 @@ import javax.inject.Inject
 class ManageStockViewModel @Inject constructor(
     savedState: SavedStateHandle,
     private val disposable: CompositeDisposable,
-    val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
@@ -53,6 +53,9 @@ class ManageStockViewModel @Inject constructor(
     val transaction: Transaction = savedState.get<Transaction>(INTENT_EXTRA_TRANSACTION)
         ?: throw InitializationException("Transaction information is missing")
 
+    val config: AppConfig = savedState.get<AppConfig>(Constants.INTENT_EXTRA_APP_CONFIG)
+        ?: throw InitializationException("Some configuration parameters are missing")
+
     private val _itemsAvailableCount = MutableLiveData<Int>(0)
     private var search = MutableLiveData<SearchParametersModel>()
     private val searchRelay = PublishRelay.create<String>()
@@ -60,7 +63,7 @@ class ManageStockViewModel @Inject constructor(
     private val stockItems = Transformations.switchMap(search) { q ->
         _networkState.value = OperationState.Loading
 
-        val result = stockManager.search(q, transaction.facility.uid)
+        val result = stockManager.search(q, transaction.facility.uid, config)
         _itemsAvailableCount.value = result.totalCount
 
         _networkState.postValue(OperationState.Completed)
@@ -135,7 +138,8 @@ class ManageStockViewModel @Inject constructor(
                                 it,
                                 config.program,
                                 transaction,
-                                Date()
+                                Date(),
+                                config
                             )
                         )
                     },

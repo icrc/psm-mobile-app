@@ -131,30 +131,30 @@ public class HomeActivity extends BaseActivity {
 
         viewModel.getFacility().observe(this, ou -> facilityTextView.setText(ou.displayName()));
 
-        facilityTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
+        facilityTextView.setOnItemClickListener((adapterView, view, position, rowId) ->
                 viewModel.setFacility((OrganisationUnit) facilityTextView.getAdapter().getItem(position))
         );
 
-        distributedToTextView.setOnItemClickListener((adapterView, view, position, row_id) ->
+        distributedToTextView.setOnItemClickListener((adapterView, view, position, rowId) ->
                 viewModel.setDestination(
                         (Option) distributedToTextView.getAdapter().getItem(position))
         );
 
-        binding.fabManageStock.setOnClickListener(view -> navigateToManageStock());
+        binding.fabManageStock.setOnClickListener(view ->
+                navigateToManageStock(
+                        getIntent().getParcelableExtra(INTENT_EXTRA_APP_CONFIG)
+                )
+        );
         setupTransactionDateField();
         setupRecentActivities();
     }
 
     private void setupButtons() {
         // Add listeners to the buttons
-        Map<TransactionType, MaterialButton> buttonsMap =
-                new HashMap<TransactionType, MaterialButton>() {
-            {
-                put(TransactionType.DISTRIBUTION, binding.distributionButton);
-                put(TransactionType.DISCARD, binding.discardButton);
-                put(TransactionType.CORRECTION, binding.correctionButton);
-            }
-        };
+        Map<TransactionType, MaterialButton> buttonsMap = new HashMap<>();
+        buttonsMap.put(TransactionType.DISTRIBUTION, binding.distributionButton);
+        buttonsMap.put(TransactionType.DISCARD, binding.discardButton);
+        buttonsMap.put(TransactionType.CORRECTION, binding.correctionButton);
 
         buttonsMap.entrySet().iterator().forEachRemaining(entry -> {
             TransactionType type = entry.getKey();
@@ -297,7 +297,7 @@ public class HomeActivity extends BaseActivity {
         binding.recentActivityMessageTextview.setText(R.string.recent_activities_loading_message);
     }
 
-    private void navigateToManageStock() {
+    private void navigateToManageStock(AppConfig appConfig) {
         Integer fieldError = viewModel.checkForFieldErrors();
         if (fieldError != null) {
             displayError(binding.getRoot(), fieldError);
@@ -305,7 +305,11 @@ public class HomeActivity extends BaseActivity {
         }
 
         startActivity(
-                ManageStockActivity.getManageStockActivityIntent(this, viewModel.getData())
+                ManageStockActivity.getManageStockActivityIntent(
+                        this,
+                        viewModel.getData(),
+                        appConfig
+                )
         );
     }
 

@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.services
 
+import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.models.SearchParametersModel
 import com.baosystems.icrc.psm.data.models.SearchResult
 import com.baosystems.icrc.psm.data.models.StockEntry
@@ -17,8 +18,8 @@ interface StockManager {
      * and total count of matched items
      */
 
-    fun search(query: SearchParametersModel, ou: String?): SearchResult
+    fun search(query: SearchParametersModel, ou: String?, config: AppConfig): SearchResult
 
-    fun saveTransaction(items: List<StockEntry>, transaction: Transaction):
-            Single<Unit>
+    fun saveTransaction(items: List<StockEntry>, transaction: Transaction, appConfig: AppConfig):
+        Single<Unit>
 }

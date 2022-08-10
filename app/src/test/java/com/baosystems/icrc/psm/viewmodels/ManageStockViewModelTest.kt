@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_APP_CONFIG
 import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.DestinationFactory
@@ -76,7 +77,10 @@ class ManageStockViewModelTest {
     private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
     private fun getStateHandle(transaction: Transaction): SavedStateHandle {
-        val state = hashMapOf<String, Any>(INTENT_EXTRA_TRANSACTION to transaction)
+        val state = hashMapOf<String, Any>(
+            INTENT_EXTRA_TRANSACTION to transaction,
+            INTENT_EXTRA_APP_CONFIG to appConfig
+        )
         return SavedStateHandle(state)
     }
 
@@ -84,7 +88,6 @@ class ManageStockViewModelTest {
         ManageStockViewModel(
             getStateHandle(transaction),
             disposable,
-            appConfig,
             schedulerProvider,
             preferenceProvider,
             stockManager,

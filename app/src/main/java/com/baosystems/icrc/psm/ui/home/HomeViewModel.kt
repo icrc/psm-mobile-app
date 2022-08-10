@@ -2,7 +2,9 @@ package com.baosystems.icrc.psm.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.R
+import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_APP_CONFIG
 import com.baosystems.icrc.psm.commons.Constants.USER_ACTIVITY_COUNT
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.OperationState
@@ -10,6 +12,7 @@ import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
+import com.baosystems.icrc.psm.exceptions.InitializationException
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
@@ -29,12 +32,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val disposable: CompositeDisposable,
-    val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val metadataManager: MetadataManager,
-    private val userActivityRepository: UserActivityRepository
+    private val userActivityRepository: UserActivityRepository,
+    savedState: SavedStateHandle
 ) : BaseViewModel(preferenceProvider, schedulerProvider) {
+
+    val config: AppConfig = savedState.get<AppConfig>(INTENT_EXTRA_APP_CONFIG)
+        ?: throw InitializationException("Some configuration parameters are missing")
 
     private val _transactionType = MutableLiveData<TransactionType>()
     val transactionType: LiveData<TransactionType>
@@ -80,7 +86,7 @@ class HomeViewModel @Inject constructor(
         _destinations.postValue(OperationState.Loading)
 
         disposable.add(
-            metadataManager.destinations()
+            metadataManager.destinations(config.distributedTo)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(

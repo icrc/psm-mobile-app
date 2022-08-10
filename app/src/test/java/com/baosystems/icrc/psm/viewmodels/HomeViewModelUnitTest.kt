@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.viewmodels
 import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
@@ -122,7 +123,7 @@ class HomeViewModelUnitTest {
             Single.just(facilities)
         ).whenever(metadataManager).facilities(appConfig.program)
 
-        `when`(metadataManager.destinations())
+        `when`(metadataManager.destinations(appConfig.distributedTo))
             .thenReturn(Single.just(destinations))
 
         `when`(userActivityDao.getRecentActivities(Constants.USER_ACTIVITY_COUNT))
@@ -131,13 +132,24 @@ class HomeViewModelUnitTest {
         userActivityRepository = UserActivityRepository(userActivityDao)
         userManager = UserManagerImpl(d2)
         viewModel = HomeViewModel(
-            disposable, appConfig, schedulerProvider, preferenceProvider, metadataManager,
-            userActivityRepository
+            disposable,
+            schedulerProvider,
+            preferenceProvider,
+            metadataManager,
+            userActivityRepository,
+            getStateHandle()
         )
 
         viewModel.facilities.observeForever(facilitiesObserver)
         viewModel.destinationsList.observeForever(destinationsObserver)
 
+    }
+
+    private fun getStateHandle(): SavedStateHandle {
+        val state = hashMapOf<String, Any>(
+            Constants.INTENT_EXTRA_APP_CONFIG to appConfig
+        )
+        return SavedStateHandle(state)
     }
 
     @After
@@ -163,7 +175,7 @@ class HomeViewModelUnitTest {
 
     @Test
     fun init_shouldLoadDestinations() {
-        verify(metadataManager).destinations()
+        verify(metadataManager).destinations(appConfig.distributedTo)
 
         viewModel.destinationsList.observeForever {
             assertEquals(it, OperationState.Success(destinations))
