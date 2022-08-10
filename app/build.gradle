@@ -73,6 +73,7 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:$versions.room"
+    implementation project(path: ':stock-managment')
     kapt("androidx.room:room-compiler:$versions.room")
     kapt("androidx.room:room-ktx:$versions.room")
     implementation "androidx.room:room-rxjava2:$versions.room"
