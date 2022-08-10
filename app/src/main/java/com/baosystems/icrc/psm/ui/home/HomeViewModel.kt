@@ -196,17 +196,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setTransactionDate(epoch: Long) {
-        if (epoch == 0L) {
-            throw UserIntentParcelCreationException(
-                "Unable to create user intent with empty transaction date"
-            )
-        } else {
-            _transactionDate.value = Instant.ofEpochMilli(epoch)
-                .atZone(
-                    ZoneId.systemDefault()
-                )
-                .toLocalDateTime()
-        }
+        _transactionDate.value = Instant.ofEpochMilli(epoch)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
     }
 
     fun readyManageStock(): Boolean {

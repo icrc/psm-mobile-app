@@ -394,14 +394,15 @@ class HomeViewModelUnitTest {
         viewModel.getData()
     }
 
-    @Test(expected = UserIntentParcelCreationException::class)
-//    @Test
-    fun distributionWithMissingTransactionDate_cannotCreateUserIntent() {
+    @Test
+    fun distributionWithMissingTransactionDate_willCreateUSerIntentWithCurrentDay() {
+        val now = LocalDateTime.now()
+
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[1])
-        viewModel.setTransactionDate(0)
 
-        viewModel.getData()
+        val data = viewModel.getData()
+        assertEquals(data.transactionDate, now.humanReadableDate())
     }
 
     @Test
