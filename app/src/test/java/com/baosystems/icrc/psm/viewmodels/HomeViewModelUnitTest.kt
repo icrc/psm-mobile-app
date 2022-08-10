@@ -3,6 +3,7 @@ package com.baosystems.icrc.psm.viewmodels
 import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.baosystems.icrc.psm.R
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.DestinationFactory
@@ -217,23 +218,20 @@ class HomeViewModelUnitTest {
 
     @Test
     fun cannotManageStock_ifNoTransactionIsSelected() {
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_transaction_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-
-
         viewModel.setFacility(facilities[0])
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_distributed_to_selection)
     }
 
     @Test
@@ -242,17 +240,14 @@ class HomeViewModelUnitTest {
         viewModel.setTransactionDate(
             LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond()
         )
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyDistributedToIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setDestination(destinations[0])
-
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -260,8 +255,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setTransactionDate(getTime())
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_distributed_to_selection)
     }
 
     @Test
@@ -269,8 +263,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setDestination(destinations[0])
         viewModel.setTransactionDate(getTime())
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -278,9 +271,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
-
-
-        assertEquals(viewModel.readyManageStock(), true)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
@@ -289,28 +280,20 @@ class HomeViewModelUnitTest {
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
         viewModel.setTransactionDate(getTime())
-
-        //@TODO: review readyManageStock()
-        assertEquals(viewModel.readyManageStock(), true) // forced to true
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
     fun discardTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun discardTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-
-
         viewModel.setFacility(facilities[0])
-
-        //@TODO: review readyManageStock()
-        assertEquals(viewModel.readyManageStock(), true) // forced to true
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
@@ -318,7 +301,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISCARD)
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -327,7 +310,7 @@ class HomeViewModelUnitTest {
         viewModel.setFacility(facilities[0])
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), true)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test(expected = UnsupportedOperationException::class)
@@ -339,20 +322,14 @@ class HomeViewModelUnitTest {
     @Test
     fun correctionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-
-
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
     fun correctionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-
-
         viewModel.setFacility(facilities[0])
-
-        //@TODO: review readyManageStock()
-        assertEquals(viewModel.readyManageStock(), true) // forced to true
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test
@@ -360,7 +337,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.CORRECTION)
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), false)
+        assertEquals(viewModel.checkForFieldErrors(), R.string.mandatory_facility_selection)
     }
 
     @Test
@@ -369,7 +346,7 @@ class HomeViewModelUnitTest {
         viewModel.setFacility(facilities[0])
         viewModel.setTransactionDate(getTime())
 
-        assertEquals(viewModel.readyManageStock(), true)
+        assertEquals(viewModel.checkForFieldErrors(), null)
     }
 
     @Test(expected = UnsupportedOperationException::class)

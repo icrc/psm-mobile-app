@@ -200,16 +200,4 @@ class HomeViewModel @Inject constructor(
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
     }
-
-    fun readyManageStock(): Boolean {
-        if (transactionType.value == null) return false
-
-        if (isDistribution.value == true) {
-            return !(_destination.value == null
-                || _facility.value == null
-                || transactionDate.value == null)
-        }
-
-        return _facility.value != null && transactionDate.value != null
-    }
 }
