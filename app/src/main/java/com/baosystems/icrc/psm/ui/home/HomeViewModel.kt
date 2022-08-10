@@ -35,9 +35,6 @@ class HomeViewModel @Inject constructor(
     private val metadataManager: MetadataManager,
     private val userActivityRepository: UserActivityRepository
 ) : BaseViewModel(preferenceProvider, schedulerProvider) {
-    // TODO: Move all the properties below into a singular object
-    var program: Program? = null
-): BaseViewModel(preferenceProvider, schedulerProvider) {
 
     private val _transactionType = MutableLiveData<TransactionType>()
     val transactionType: LiveData<TransactionType>
@@ -76,9 +73,7 @@ class HomeViewModel @Inject constructor(
     init {
         loadFacilities()
         loadDestinations()
-        try {
-            loadRecentActivities()
-        } catch (e: Exception) {}
+        loadRecentActivities()
     }
 
     private fun loadDestinations() {
@@ -203,7 +198,8 @@ class HomeViewModel @Inject constructor(
     fun setTransactionDate(epoch: Long) {
         if (epoch == 0L) {
             throw UserIntentParcelCreationException(
-                "Unable to create user intent with empty transaction date")
+                "Unable to create user intent with empty transaction date"
+            )
         } else {
             _transactionDate.value = Instant.ofEpochMilli(epoch)
                 .atZone(
@@ -218,8 +214,8 @@ class HomeViewModel @Inject constructor(
 
         if (isDistribution.value == true) {
             return !(_destination.value == null
-                    || _facility.value == null
-                    || transactionDate.value == null)
+                || _facility.value == null
+                || transactionDate.value == null)
         }
 
         return _facility.value != null && transactionDate.value != null

@@ -3,11 +3,17 @@ package com.baosystems.icrc.psm.viewmodels
 import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.baosystems.icrc.psm.data.*
+import com.baosystems.icrc.psm.commons.Constants
+import com.baosystems.icrc.psm.data.AppConfig
+import com.baosystems.icrc.psm.data.DestinationFactory
+import com.baosystems.icrc.psm.data.FacilityFactory
+import com.baosystems.icrc.psm.data.OperationState
+import com.baosystems.icrc.psm.data.TransactionType
+import com.baosystems.icrc.psm.data.persistence.UserActivity
+import com.baosystems.icrc.psm.data.persistence.UserActivityDao
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
 import com.baosystems.icrc.psm.exceptions.UserIntentParcelCreationException
 import com.baosystems.icrc.psm.services.MetadataManager
-import com.baosystems.icrc.psm.services.MetadataManagerImpl
 import com.baosystems.icrc.psm.services.UserManager
 import com.baosystems.icrc.psm.services.UserManagerImpl
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
@@ -36,7 +42,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.verify
@@ -56,9 +62,8 @@ class HomeViewModelUnitTest {
     private lateinit var metadataManager: MetadataManager
 
     @Mock
-    private lateinit var metadatManagerImpl: MetadataManagerImpl
+    private lateinit var userActivityDao: UserActivityDao
 
-    @Mock
     private lateinit var userActivityRepository: UserActivityRepository
     private lateinit var viewModel: HomeViewModel
     private lateinit var userManager: UserManager
@@ -68,6 +73,7 @@ class HomeViewModelUnitTest {
     private lateinit var testSchedulerProvider: TestSchedulerProvider
     private lateinit var facilities: List<OrganisationUnit>
     private lateinit var destinations: List<Option>
+    private lateinit var recentActivities: List<UserActivity>
     private lateinit var appConfig: AppConfig
 
     private val disposable = CompositeDisposable()
@@ -106,6 +112,7 @@ class HomeViewModelUnitTest {
 
         facilities = FacilityFactory.getListOf(3)
         destinations = DestinationFactory.getListOf(5)
+        recentActivities = emptyList()
 
         schedulerProvider = TrampolineSchedulerProvider()
         testSchedulerProvider = TestSchedulerProvider(TestScheduler())
@@ -114,10 +121,13 @@ class HomeViewModelUnitTest {
             Single.just(facilities)
         ).whenever(metadataManager).facilities(appConfig.program)
 
-
-        Mockito.`when`(metadataManager.destinations())
+        `when`(metadataManager.destinations())
             .thenReturn(Single.just(destinations))
 
+        `when`(userActivityDao.getRecentActivities(Constants.USER_ACTIVITY_COUNT))
+            .thenReturn(Single.just(recentActivities))
+
+        userActivityRepository = UserActivityRepository(userActivityDao)
         userManager = UserManagerImpl(d2)
         viewModel = HomeViewModel(
             disposable, appConfig, schedulerProvider, preferenceProvider, metadataManager,
@@ -152,7 +162,6 @@ class HomeViewModelUnitTest {
 
     @Test
     fun init_shouldLoadDestinations() {
-
         verify(metadataManager).destinations()
 
         viewModel.destinationsList.observeForever {
@@ -220,7 +229,7 @@ class HomeViewModelUnitTest {
     @Test
     fun distributionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
-        
+
 
         viewModel.setFacility(facilities[0])
 
@@ -241,7 +250,7 @@ class HomeViewModelUnitTest {
     fun distributionTransaction_cannotManageStock_ifOnlyDistributedToIsSet() {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setDestination(destinations[0])
-        
+
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -269,7 +278,7 @@ class HomeViewModelUnitTest {
         viewModel.selectTransaction(TransactionType.DISTRIBUTION)
         viewModel.setFacility(facilities[0])
         viewModel.setDestination(destinations[0])
-        
+
 
         assertEquals(viewModel.readyManageStock(), true)
     }
@@ -288,7 +297,7 @@ class HomeViewModelUnitTest {
     @Test
     fun discardTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-        
+
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -296,7 +305,7 @@ class HomeViewModelUnitTest {
     @Test
     fun discardTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.DISCARD)
-        
+
 
         viewModel.setFacility(facilities[0])
 
@@ -330,7 +339,7 @@ class HomeViewModelUnitTest {
     @Test
     fun correctionTransaction_cannotManageStock_ifNoParametersAreSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-        
+
 
         assertEquals(viewModel.readyManageStock(), false)
     }
@@ -338,7 +347,7 @@ class HomeViewModelUnitTest {
     @Test
     fun correctionTransaction_cannotManageStock_ifOnlyFacilityIsSet() {
         viewModel.selectTransaction(TransactionType.CORRECTION)
-        
+
 
         viewModel.setFacility(facilities[0])
 
