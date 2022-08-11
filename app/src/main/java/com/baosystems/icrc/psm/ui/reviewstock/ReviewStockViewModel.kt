@@ -14,6 +14,7 @@ import com.baosystems.icrc.psm.data.models.StockEntry
 import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.data.persistence.UserActivity
 import com.baosystems.icrc.psm.data.persistence.UserActivityRepository
+import com.baosystems.icrc.psm.exceptions.InitializationException
 import com.baosystems.icrc.psm.services.SpeechRecognitionManager
 import com.baosystems.icrc.psm.services.StockManager
 import com.baosystems.icrc.psm.services.preferences.PreferenceProvider
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import timber.log.Timber
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -36,17 +37,23 @@ import javax.inject.Inject
 class ReviewStockViewModel @Inject constructor(
     savedState: SavedStateHandle,
     private val disposable: CompositeDisposable,
-    val config: AppConfig,
     private val schedulerProvider: BaseSchedulerProvider,
     preferenceProvider: PreferenceProvider,
     private val stockManager: StockManager,
     private val userActivityRepository: UserActivityRepository,
     private val ruleValidationHelper: RuleValidationHelper,
     speechRecognitionManager: SpeechRecognitionManager
-): SpeechRecognitionAwareViewModel(preferenceProvider, schedulerProvider, speechRecognitionManager) {
+) : SpeechRecognitionAwareViewModel(
+    preferenceProvider,
+    schedulerProvider,
+    speechRecognitionManager
+) {
     // TODO: Figure out a better way than using !!
     val data = savedState.get<ReviewStockData>(INTENT_EXTRA_STOCK_ENTRIES)!!
     val transaction = data.transaction
+
+    val config: AppConfig = savedState.get<AppConfig>(Constants.INTENT_EXTRA_APP_CONFIG)
+        ?: throw InitializationException("Some configuration parameters are missing")
 
     private var search = MutableLiveData<String>()
     private val searchRelay = PublishRelay.create<String>()
@@ -84,7 +91,7 @@ class ReviewStockViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                    {  query -> _reviewedItems.postValue(performSearch(query)) },
+                    { query -> _reviewedItems.postValue(performSearch(query)) },
                     {
                         it.printStackTrace()
                     })
@@ -95,15 +102,22 @@ class ReviewStockViewModel @Inject constructor(
                 .debounce(Constants.QUANTITY_ENTRY_DEBOUNCE, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged { t1, t2 ->
                     t1.entry.item.id == t2.entry.item.id &&
-                            t1.position == t2.position &&
-                            t1.entry.qty == t2.entry.qty
+                        t1.position == t2.position &&
+                        t1.entry.qty == t2.entry.qty
                 }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
                     {
                         disposable.add(
-                            evaluate(ruleValidationHelper, it, config.program, transaction, Date())
+                            evaluate(
+                                ruleValidationHelper,
+                                it,
+                                config.program,
+                                transaction,
+                                Date(),
+                                config
+                            )
                         )
                     },
                     {
@@ -119,8 +133,10 @@ class ReviewStockViewModel @Inject constructor(
         }
     }
 
-    fun updateItem(entry: StockEntry, qty: String?, stockOnHand: String?,
-                   hasError: Boolean = false) {
+    fun updateItem(
+        entry: StockEntry, qty: String?, stockOnHand: String?,
+        hasError: Boolean = false
+    ) {
         _reviewedItems.value?.let { items ->
             val itemIndex = items.indexOfFirst { it.item.id == entry.item.id }
 
@@ -166,7 +182,7 @@ class ReviewStockViewModel @Inject constructor(
         }
 
         disposable.add(
-            stockManager.saveTransaction(reviewedItems.value!!, transaction)
+            stockManager.saveTransaction(reviewedItems.value!!, transaction, config)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({

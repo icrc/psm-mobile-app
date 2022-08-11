@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.managestock;
 
+import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_APP_CONFIG;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION;
 import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
 
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.AppConfig;
 import com.baosystems.icrc.psm.data.OperationState;
 import com.baosystems.icrc.psm.data.TransactionType;
 import com.baosystems.icrc.psm.data.models.StockItem;
@@ -62,7 +64,11 @@ public class ManageStockActivity extends BaseActivity {
         binding = (ActivityManageStockBinding) getViewBinding();
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
-        binding.fabReviewStock.setOnClickListener(view -> navigateToReviewStock());
+        binding.fabReviewStock.setOnClickListener(view ->
+                navigateToReviewStock(
+                        getIntent().getParcelableExtra(INTENT_EXTRA_APP_CONFIG)
+                )
+        );
 
         setTitle(viewModel.getTransaction().getTransactionType());
 
@@ -81,66 +87,67 @@ public class ManageStockActivity extends BaseActivity {
     private final ItemWatcher<StockItem, String, String> itemWatcher =
             new ItemWatcher<StockItem, String, String>() {
 
-        @Override
-        public void updateFields(StockItem item, @Nullable String qty, int position,
-                                 @NonNull List<? extends RuleEffect> ruleEffects) {
-            ruleEffects.forEach(ruleEffect -> {
-                if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
-                        (((RuleActionAssign) ruleEffect.ruleAction()).field()
-                                .equals(viewModel.getConfig().getStockOnHand()))) {
+                @Override
+                public void updateFields(StockItem item, @Nullable String qty, int position,
+                                         @NonNull List<? extends RuleEffect> ruleEffects) {
+                    ruleEffects.forEach(ruleEffect -> {
+                        if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
+                                (((RuleActionAssign) ruleEffect.ruleAction()).field()
+                                        .equals(viewModel.getConfig().getStockOnHand()))) {
 
-                    String value = ruleEffect.data();
-                    boolean isValid = isValidStockOnHand(value);
-                    String stockOnHand = isValid ? value : item.getStockOnHand();
+                            String value = ruleEffect.data();
+                            boolean isValid = isValidStockOnHand(value);
+                            String stockOnHand = isValid ? value : item.getStockOnHand();
 
-                    viewModel.addItem(item, qty, stockOnHand, !isValid);
-                    if (!isValid) {
-                        displayError(binding.getRoot(), R.string.stock_on_hand_exceeded_message);
+                            viewModel.addItem(item, qty, stockOnHand, !isValid);
+                            if (!isValid) {
+                                displayError(binding.getRoot(), R.string.stock_on_hand_exceeded_message);
+                            }
+
+                            updateItemView(position);
+                            updateNextButton();
+                        }
+                    });
+
+                    updateNextButton();
+                }
+
+                @Override
+                public String getStockOnHand(StockItem item) {
+                    return viewModel.getStockOnHand(item);
+                }
+
+                @Override
+                public void quantityChanged(StockItem item, int position, @Nullable String value,
+                                            @Nullable OnQuantityValidated callback) {
+                    // If the qty is cleared, remove from cache if already present
+                    if (value == null || value.isEmpty()) {
+                        boolean outcome = viewModel.removeItemFromCache(item);
+                        if (outcome) {
+                            updateItemView(position);
+                            updateNextButton();
+                        }
+                        return;
                     }
 
-                    updateItemView(position);
-                    updateNextButton();
+                    viewModel.setQuantity(item, position, value, callback);
                 }
-            });
 
-            updateNextButton();
-        }
-
-        @Override
-        public String getStockOnHand(StockItem item) {
-            return viewModel.getStockOnHand(item);
-        }
-
-        @Override
-        public void quantityChanged(StockItem item, int position, @Nullable String value,
-                                    @Nullable OnQuantityValidated callback) {
-            // If the qty is cleared, remove from cache if already present
-            if (value == null || value.isEmpty()) {
-                boolean outcome = viewModel.removeItemFromCache(item);
-                if (outcome) {
-                    updateItemView(position);
-                    updateNextButton();
+                @Override
+                public void removeItem(StockItem item) {
                 }
-                return;
-            }
 
-            viewModel.setQuantity(item, position, value, callback);
-        }
+                @Nullable
+                @Override
+                public String getQuantity(StockItem item) {
+                    return viewModel.getItemQuantity(item);
+                }
 
-        @Override
-        public void removeItem(StockItem item) { }
-
-        @Nullable
-        @Override
-        public String getQuantity(StockItem item) {
-            return viewModel.getItemQuantity(item);
-        }
-
-        @Override
-        public boolean hasError(StockItem item) {
-            return viewModel.hasError(item);
-        }
-    };
+                @Override
+                public boolean hasError(StockItem item) {
+                    return viewModel.hasError(item);
+                }
+            };
 
     private void updateItemView(int position) {
         runOnUiThread(() -> adapter.notifyItemRangeChanged(position, 1));
@@ -164,8 +171,8 @@ public class ManageStockActivity extends BaseActivity {
         }
 
         ActivityManager.showBackButtonWarning(this, () -> {
-                super.onBackPressed();
-                return null;
+            super.onBackPressed();
+            return null;
         });
     }
 
@@ -258,7 +265,7 @@ public class ManageStockActivity extends BaseActivity {
     @org.jetbrains.annotations.Nullable
     @Override
     public Integer getCustomTheme(@NotNull ViewModel viewModel) {
-        switch (((ManageStockViewModel)viewModel).getTransaction().getTransactionType()) {
+        switch (((ManageStockViewModel) viewModel).getTransaction().getTransactionType()) {
             case DISTRIBUTION:
                 return R.style.Theme_App_Distribution;
             case DISCARD:
@@ -295,10 +302,12 @@ public class ManageStockActivity extends BaseActivity {
         searchInputField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
-                    CharSequence charSequence, int start, int count, int after) {}
+                    CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {}
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -319,9 +328,13 @@ public class ManageStockActivity extends BaseActivity {
         return DataBindingUtil.setContentView(this, R.layout.activity_manage_stock);
     }
 
-    private void navigateToReviewStock() {
+    private void navigateToReviewStock(AppConfig appConfig) {
         startActivity(
-                ReviewStockActivity.getReviewStockActivityIntent(this, viewModel.getData())
+                ReviewStockActivity.getReviewStockActivityIntent(
+                        this,
+                        viewModel.getData(),
+                        appConfig
+                )
         );
     }
 
@@ -331,9 +344,14 @@ public class ManageStockActivity extends BaseActivity {
         return ((ActivityManageStockBinding) getViewBinding()).toolbarContainer.toolbar;
     }
 
-    public static Intent getManageStockActivityIntent(Context context, Transaction bundle) {
+    public static Intent getManageStockActivityIntent(
+            Context context,
+            Transaction bundle,
+            AppConfig appConfig
+    ) {
         Intent intent = new Intent(context, ManageStockActivity.class);
         intent.putExtra(INTENT_EXTRA_TRANSACTION, bundle);
+        intent.putExtra(INTENT_EXTRA_APP_CONFIG, appConfig);
         return intent;
     }
 }

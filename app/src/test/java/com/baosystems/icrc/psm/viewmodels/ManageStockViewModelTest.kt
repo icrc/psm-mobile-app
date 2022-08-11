@@ -4,11 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagedList
+import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_APP_CONFIG
+import com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_TRANSACTION
 import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.data.DestinationFactory
 import com.baosystems.icrc.psm.data.FacilityFactory
+import com.baosystems.icrc.psm.data.TransactionType
 import com.baosystems.icrc.psm.data.models.IdentifiableModel
 import com.baosystems.icrc.psm.data.models.StockItem
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.services.MetadataManager
 import com.baosystems.icrc.psm.services.SpeechRecognitionManager
 import com.baosystems.icrc.psm.services.StockManager
@@ -23,7 +27,9 @@ import com.github.javafaker.Faker
 import io.reactivex.disposables.CompositeDisposable
 import org.hisp.dhis.android.core.attribute.AttributeValue
 import org.hisp.dhis.rules.models.RuleEffect
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -70,12 +76,18 @@ class ManageStockViewModelTest {
     @Captor
     private lateinit var stockItemsCaptor: ArgumentCaptor<PagedList<AttributeValue>>
 
+    private fun getStateHandle(transaction: Transaction): SavedStateHandle {
+        val state = hashMapOf<String, Any>(
+            INTENT_EXTRA_TRANSACTION to transaction,
+            INTENT_EXTRA_APP_CONFIG to appConfig
+        )
+        return SavedStateHandle(state)
+    }
 
-    private fun getModel() =
+    private fun getModel(transaction: Transaction) =
         ManageStockViewModel(
-            SavedStateHandle(),
+            getStateHandle(transaction),
             disposable,
-            appConfig,
             schedulerProvider,
             preferenceProvider,
             stockManager,
@@ -93,7 +105,8 @@ class ManageStockViewModelTest {
         qty: String?
     ): StockItem {
         val stockItem = StockItem(
-            uid, faker.name().name(), faker.number().numberBetween(1, 800).toString())
+            uid, faker.name().name(), faker.number().numberBetween(1, 800).toString()
+        )
 
         viewModel.addItem(stockItem, qty, stockItem.stockOnHand, false)
 
@@ -126,9 +139,15 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityDateAndDistributedToForDistribution() {
-        val viewModel = getModel()
+        val transaction = Transaction(
+            transactionType = TransactionType.DISTRIBUTION,
+            facility = facility,
+            transactionDate = transactionDate,
+            distributedTo = distributedTo
+        )
+        val viewModel = getModel(transaction)
 
-        viewModel.transaction?.let {
+        viewModel.transaction.let {
             assertNotNull(it.facility)
             assertEquals(it.facility.displayName, facility.displayName)
             assertEquals(it.distributedTo!!.displayName, distributedTo.displayName)
@@ -138,9 +157,15 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityAndDateForDiscard() {
-        val viewModel = getModel()
+        val transaction = Transaction(
+            transactionType = TransactionType.DISCARD,
+            facility = facility,
+            transactionDate = transactionDate,
+            distributedTo = null
+        )
+        val viewModel = getModel(transaction)
 
-        viewModel.transaction?.let {
+        viewModel.transaction.let {
             assertNotNull(it.facility)
             assertNull(it.distributedTo)
             assertEquals(it.facility.displayName, facility.displayName)
@@ -150,9 +175,15 @@ class ManageStockViewModelTest {
 
     @Test
     fun init_shouldSetFacilityAndDateForCorrection() {
-        val viewModel = getModel()
+        val transaction = Transaction(
+            transactionType = TransactionType.CORRECTION,
+            facility = facility,
+            transactionDate = transactionDate,
+            distributedTo = null
+        )
+        val viewModel = getModel(transaction)
 
-        viewModel.transaction?.let {
+        viewModel.transaction.let {
             assertNotNull(it.facility)
             assertNull(it.distributedTo)
             assertEquals(it.facility.displayName, facility.displayName)
@@ -163,7 +194,13 @@ class ManageStockViewModelTest {
 
     @Test
     fun canSetAndGetItemQuantityForSelectedItem() {
-        val viewModel = getModel()
+        val transaction = Transaction(
+            transactionType = TransactionType.DISTRIBUTION,
+            facility = facility,
+            transactionDate = transactionDate,
+            distributedTo = distributedTo
+        )
+        val viewModel = getModel(transaction)
 
         val qty = 319L
         val item = createStockEntry("someUid", viewModel, qty.toString())
@@ -181,7 +218,13 @@ class ManageStockViewModelTest {
 
     @Test
     fun canUpdateExistingItemQuantityForSelectedItem() {
-        val viewModel = getModel()
+        val transaction = Transaction(
+            transactionType = TransactionType.DISTRIBUTION,
+            facility = facility,
+            transactionDate = transactionDate,
+            distributedTo = distributedTo
+        )
+        val viewModel = getModel(transaction)
         val qty2 = 95L
 
         val item = createStockEntry("someUid", viewModel, qty2.toString())

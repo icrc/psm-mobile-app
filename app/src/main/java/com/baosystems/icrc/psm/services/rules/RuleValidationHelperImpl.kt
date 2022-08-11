@@ -22,16 +22,17 @@ import javax.inject.Inject
 
 class RuleValidationHelperImpl @Inject constructor(
     private val d2: D2,
-    private val appConfig: AppConfig,
-): RuleValidationHelper {
+) : RuleValidationHelper {
+
     override fun evaluate(
         entry: StockEntry,
         eventDate: Date,
         program: String,
         transaction: Transaction,
-        eventUid: String?
+        eventUid: String?,
+        appConfig: AppConfig
     ): Flowable<List<RuleEffect>> {
-        return ruleEngine(entry.item.id).flatMap { ruleEngine ->
+        return ruleEngine(entry.item.id, appConfig.program).flatMap { ruleEngine ->
             val programStage = programStage(program)
 
             Flowable.fromCallable(
@@ -39,17 +40,28 @@ class RuleValidationHelperImpl @Inject constructor(
             ).flatMap { prelimRuleEffects ->
                 val dataValues = mutableListOf<RuleDataValue>().apply {
                     addAll(
-                        entryDataValues(entry.qty, programStage.uid(), transaction, eventDate)
+                        entryDataValues(
+                            entry.qty,
+                            programStage.uid(),
+                            transaction,
+                            eventDate,
+                            appConfig
+                        )
                     )
                 }
 
                 prelimRuleEffects.forEach { ruleEffect ->
-                    when(ruleEffect.ruleAction()) {
+                    when (ruleEffect.ruleAction()) {
                         is RuleActionAssign -> {
                             val ruleAction = ruleEffect.ruleAction() as RuleActionAssign
                             ruleEffect.data()?.let { data ->
                                 dataValues.add(
-                                    RuleDataValue.create(eventDate, programStage.uid(), ruleAction.field(), data)
+                                    RuleDataValue.create(
+                                        eventDate,
+                                        programStage.uid(),
+                                        ruleAction.field(),
+                                        data
+                                    )
                                 )
                             }
                         }
@@ -60,7 +72,13 @@ class RuleValidationHelperImpl @Inject constructor(
 
                 Flowable.fromCallable(
                     ruleEngine.evaluate(
-                        createRuleEvent(programStage, transaction.facility.uid, dataValues, eventDate, null)
+                        createRuleEvent(
+                            programStage,
+                            transaction.facility.uid,
+                            dataValues,
+                            eventDate,
+                            null
+                        )
                     )
                 )
             }
@@ -124,8 +142,11 @@ class RuleValidationHelperImpl @Inject constructor(
 
     private fun supplementaryData(): Single<Map<String, List<String>>> = Single.just(hashMapOf())
 
-    private fun ruleEngine(teiUid: String): Flowable<RuleEngine> {
-        val enrollment = currentEnrollment(teiUid, appConfig.program)
+    private fun ruleEngine(
+        teiUid: String,
+        programUid: String
+    ): Flowable<RuleEngine> {
+        val enrollment = currentEnrollment(teiUid, programUid)
 
         val enrollmentEvents = if (enrollment == null) {
             Single.just(listOf())
@@ -134,8 +155,8 @@ class RuleValidationHelperImpl @Inject constructor(
         }
 
         return Single.zip(
-            programRules(appConfig.program),
-            ruleVariables(appConfig.program),
+            programRules(programUid),
+            ruleVariables(programUid),
             constants(),
             supplementaryData(),
             enrollmentEvents
@@ -234,13 +255,15 @@ class RuleValidationHelperImpl @Inject constructor(
         qty: String?,
         programStage: String,
         transaction: Transaction,
-        eventDate: Date
+        eventDate: Date,
+        appConfig: AppConfig
     ): List<RuleDataValue> {
         val values = mutableListOf<RuleDataValue>()
 
         // Add the quantity if defined, and valid (signs (+/-) could come as streams if incomplete)
         if (qty != null && NumberUtils.isCreatable(qty)) {
-            val deUid = ConfigUtils.getTransactionDataElement(transaction.transactionType, appConfig)
+            val deUid =
+                ConfigUtils.getTransactionDataElement(transaction.transactionType, appConfig)
             values.add(RuleDataValue.create(eventDate, programStage, deUid, qty))
 
             // Add the 'deliver to' if it's a distribution event
@@ -252,7 +275,13 @@ class RuleValidationHelperImpl @Inject constructor(
                         .blockingGet()
                         .code()?.let { code ->
                             values.add(
-                                RuleDataValue.create(eventDate, programStage, appConfig.distributedTo, code))
+                                RuleDataValue.create(
+                                    eventDate,
+                                    programStage,
+                                    appConfig.distributedTo,
+                                    code
+                                )
+                            )
                         }
                 }
             }
