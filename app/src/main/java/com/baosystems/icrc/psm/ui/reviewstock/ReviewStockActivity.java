@@ -1,5 +1,6 @@
 package com.baosystems.icrc.psm.ui.reviewstock;
 
+import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_APP_CONFIG;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_MESSAGE;
 import static com.baosystems.icrc.psm.commons.Constants.INTENT_EXTRA_STOCK_ENTRIES;
 import static com.baosystems.icrc.psm.utils.Utils.isValidStockOnHand;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.baosystems.icrc.psm.R;
+import com.baosystems.icrc.psm.data.AppConfig;
 import com.baosystems.icrc.psm.data.TransactionType;
 import com.baosystems.icrc.psm.data.models.StockEntry;
 import com.baosystems.icrc.psm.databinding.ActivityReviewStockBinding;
@@ -31,7 +33,6 @@ import com.baosystems.icrc.psm.ui.base.BaseActivity;
 import com.baosystems.icrc.psm.ui.base.ItemWatcher;
 import com.baosystems.icrc.psm.ui.home.HomeActivity;
 import com.baosystems.icrc.psm.utils.ActivityManager;
-import com.baosystems.icrc.psm.utils.ConfigUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -87,66 +88,66 @@ public class ReviewStockActivity extends BaseActivity {
     private final ItemWatcher<StockEntry, String, String> itemWatcher =
             new ItemWatcher<StockEntry, String, String>() {
 
-        @Override
-        public void quantityChanged(StockEntry item, int position, @Nullable String value,
-                                    @Nullable OnQuantityValidated callback) {
-            viewModel.setQuantity(item, position, value, callback);
-        }
+                @Override
+                public void quantityChanged(StockEntry item, int position, @Nullable String value,
+                                            @Nullable OnQuantityValidated callback) {
+                    viewModel.setQuantity(item, position, value, callback);
+                }
 
                 @Override
-        public void updateFields(StockEntry item, @Nullable String qty, int position,
-                                 @NonNull List<? extends RuleEffect> ruleEffects) {
-            ruleEffects.forEach(ruleEffect -> {
-                if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
-                        (((RuleActionAssign) ruleEffect.ruleAction()).field()
-                                .equals(viewModel.getConfig().getStockOnHand()))) {
+                public void updateFields(StockEntry item, @Nullable String qty, int position,
+                                         @NonNull List<? extends RuleEffect> ruleEffects) {
+                    ruleEffects.forEach(ruleEffect -> {
+                        if (ruleEffect.ruleAction() instanceof RuleActionAssign &&
+                                (((RuleActionAssign) ruleEffect.ruleAction()).field()
+                                        .equals(viewModel.getConfig().getStockOnHand()))) {
 
-                    String value = ruleEffect.data();
-                    boolean isValidStockOnHand = isValidStockOnHand(value);
-                    boolean isValidQty = !(qty == null || qty.isEmpty());
-                    boolean isValid = isValidStockOnHand && isValidQty;
+                            String value = ruleEffect.data();
+                            boolean isValidStockOnHand = isValidStockOnHand(value);
+                            boolean isValidQty = !(qty == null || qty.isEmpty());
+                            boolean isValid = isValidStockOnHand && isValidQty;
 
-                    String stockOnHand = isValid ? value : item.getStockOnHand();
-                    viewModel.updateItem(item, qty, stockOnHand, !isValid);
+                            String stockOnHand = isValid ? value : item.getStockOnHand();
+                            viewModel.updateItem(item, qty, stockOnHand, !isValid);
 
-                    if (!isValidStockOnHand) {
-                        displayError(binding.getRoot(), R.string.stock_on_hand_exceeded_message);
-                    }
+                            if (!isValidStockOnHand) {
+                                displayError(binding.getRoot(), R.string.stock_on_hand_exceeded_message);
+                            }
 
-                    if (!isValidQty) {
-                        displayError(binding.getRoot(), R.string.reviewed_item_cannot_be_empty_message);
-                    }
+                            if (!isValidQty) {
+                                displayError(binding.getRoot(), R.string.reviewed_item_cannot_be_empty_message);
+                            }
 
+                            updateCommitButton();
+                        }
+                    });
+
+                    updateItemView(position);
                     updateCommitButton();
                 }
-            });
 
-            updateItemView(position);
-            updateCommitButton();
-        }
+                @Override
+                public void removeItem(StockEntry item) {
+                    viewModel.removeItem(item);
+                    updateCommitButton();
+                }
 
-        @Override
-        public void removeItem(StockEntry item) {
-            viewModel.removeItem(item);
-            updateCommitButton();
-        }
+                @Nullable
+                @Override
+                public String getStockOnHand(StockEntry item) {
+                    return viewModel.getItemStockOnHand(item);
+                }
 
-        @Nullable
-        @Override
-        public String getStockOnHand(StockEntry item) {
-            return viewModel.getItemStockOnHand(item);
-        }
+                @Override
+                public String getQuantity(StockEntry item) {
+                    return viewModel.getItemQuantity(item);
+                }
 
-        @Override
-        public String getQuantity(StockEntry item) {
-            return viewModel.getItemQuantity(item);
-        }
-
-        @Override
-        public boolean hasError(StockEntry item) {
-            return item.getHasError();
-        }
-    };
+                @Override
+                public boolean hasError(StockEntry item) {
+                    return item.getHasError();
+                }
+            };
 
     private void updateCommitButton() {
         runOnUiThread(() -> binding.fabCommitStock.setEnabled(viewModel.canCommit()));
@@ -186,7 +187,7 @@ public class ReviewStockActivity extends BaseActivity {
     private void navigateToHome() {
         Intent intent = HomeActivity.getHomeActivityIntent(
                 this,
-                ConfigUtils.getAppConfig(getResources())
+                getIntent().getParcelableExtra(INTENT_EXTRA_APP_CONFIG)
         );
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(INTENT_EXTRA_MESSAGE, getString(R.string.transaction_completed));
@@ -226,11 +227,13 @@ public class ReviewStockActivity extends BaseActivity {
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
-                    CharSequence charSequence, int start, int count, int after) {}
+                    CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(
-                    CharSequence charSequence, int start, int before, int count) {}
+                    CharSequence charSequence, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -242,7 +245,7 @@ public class ReviewStockActivity extends BaseActivity {
     @Nullable
     @Override
     public Integer getCustomTheme(@NonNull ViewModel viewModel) {
-        switch (((ReviewStockViewModel)viewModel).getTransaction().getTransactionType()) {
+        switch (((ReviewStockViewModel) viewModel).getTransaction().getTransactionType()) {
             case DISTRIBUTION:
                 return R.style.Theme_App_Distribution;
             case DISCARD:
@@ -254,9 +257,14 @@ public class ReviewStockActivity extends BaseActivity {
         }
     }
 
-    public static Intent getReviewStockActivityIntent(Context context, Parcelable bundle) {
+    public static Intent getReviewStockActivityIntent(
+            Context context,
+            Parcelable bundle,
+            AppConfig appConfig
+    ) {
         Intent intent = new Intent(context, ReviewStockActivity.class);
         intent.putExtra(INTENT_EXTRA_STOCK_ENTRIES, bundle);
+        intent.putExtra(INTENT_EXTRA_APP_CONFIG, appConfig);
         return intent;
     }
 

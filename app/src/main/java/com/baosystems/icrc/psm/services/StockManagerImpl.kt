@@ -4,7 +4,12 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import com.baosystems.icrc.psm.commons.Constants
 import com.baosystems.icrc.psm.data.AppConfig
-import com.baosystems.icrc.psm.data.models.*
+import com.baosystems.icrc.psm.data.models.IdentifiableModel
+import com.baosystems.icrc.psm.data.models.SearchParametersModel
+import com.baosystems.icrc.psm.data.models.SearchResult
+import com.baosystems.icrc.psm.data.models.StockEntry
+import com.baosystems.icrc.psm.data.models.StockItem
+import com.baosystems.icrc.psm.data.models.Transaction
 import com.baosystems.icrc.psm.services.rules.RuleValidationHelper
 import com.baosystems.icrc.psm.services.scheduler.BaseSchedulerProvider
 import com.baosystems.icrc.psm.utils.AttributeHelper
@@ -24,20 +29,21 @@ import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance
 import org.hisp.dhis.rules.models.RuleActionAssign
 import org.hisp.dhis.rules.models.RuleEffect
 import timber.log.Timber
-import java.util.*
+import java.util.Collections
+import java.util.Date
 import javax.inject.Inject
 
 class StockManagerImpl @Inject constructor(
     val d2: D2,
-    val config: AppConfig,
     private val disposable: CompositeDisposable,
     private val schedulerProvider: BaseSchedulerProvider,
     private val ruleValidationHelper: RuleValidationHelper
-): StockManager {
+) : StockManager {
 
     override fun search(
         query: SearchParametersModel,
-        ou: String?
+        ou: String?,
+        config: AppConfig
     ): SearchResult {
         var teiRepository = d2.trackedEntityModule().trackedEntityInstanceQuery()
 
@@ -74,11 +80,13 @@ class StockManagerImpl @Inject constructor(
             .mapByPage { transform(it, config) }
 
         val totalCount = teiRepository.blockingCount()
-        val pagedList =  LivePagedListBuilder(
+        val pagedList = LivePagedListBuilder(
             object : DataSource.Factory<TrackedEntityInstance, StockItem>() {
                 override fun create(): DataSource<TrackedEntityInstance, StockItem> {
                     return dataSource
-                }}, Constants.ITEM_PAGE_SIZE)
+                }
+            }, Constants.ITEM_PAGE_SIZE
+        )
             .build()
 
         return SearchResult(pagedList, totalCount)
@@ -118,7 +126,7 @@ class StockManagerImpl @Inject constructor(
     }
 
     private fun filterDeleted(list: MutableList<TrackedEntityInstance>):
-            List<TrackedEntityInstance> {
+        List<TrackedEntityInstance> {
 
         val iterator = list.iterator()
         while (iterator.hasNext()) {
@@ -129,32 +137,39 @@ class StockManagerImpl @Inject constructor(
         return list
     }
 
-    private fun createEventProjection(facility: IdentifiableModel,
-                                      programStage: ProgramStage,
-                                      enrollment: Enrollment): String {
+    private fun createEventProjection(
+        facility: IdentifiableModel,
+        programStage: ProgramStage,
+        enrollment: Enrollment,
+        programUid: String
+    ): String {
         return d2.eventModule().events().blockingAdd(
             EventCreateProjection.builder()
                 .enrollment(enrollment.uid())
-                .program(config.program)
+                .program(programUid)
                 .programStage(programStage.uid())
                 .organisationUnit(facility.uid)
                 .build()
         )
     }
 
-    override fun saveTransaction(items: List<StockEntry>, transaction: Transaction):
-            Single<Unit> {
-        return Single.defer{
+    override fun saveTransaction(
+        items: List<StockEntry>,
+        transaction: Transaction,
+        appConfig: AppConfig
+    ):
+        Single<Unit> {
+        return Single.defer {
             d2.programModule()
                 .programStages()
                 .byProgramUid()
-                .eq(config.program)
+                .eq(appConfig.program)
                 .one()
                 .get()
                 .map { programStage ->
                     items.forEach { entry ->
                         val enrollment = getEnrollment(entry.item.id)
-                        createEvent(entry, programStage, enrollment, transaction)
+                        createEvent(entry, programStage, enrollment, transaction, appConfig)
                     }
                 }
         }
@@ -164,10 +179,16 @@ class StockManagerImpl @Inject constructor(
         item: StockEntry,
         programStage: ProgramStage,
         enrollment: Enrollment,
-        transaction: Transaction
+        transaction: Transaction,
+        appConfig: AppConfig
     ) {
         try {
-            val eventUid = createEventProjection(transaction.facility, programStage, enrollment)
+            val eventUid = createEventProjection(
+                transaction.facility,
+                programStage,
+                enrollment,
+                appConfig.program
+            )
 
             // Set the event date
             transaction.transactionDate.toDate()?.let {
@@ -176,7 +197,7 @@ class StockManagerImpl @Inject constructor(
 
             d2.trackedEntityModule().trackedEntityDataValues().value(
                 eventUid,
-                getTransactionDataElement(transaction.transactionType, config)
+                getTransactionDataElement(transaction.transactionType, appConfig)
             ).blockingSet(item.qty.toString())
 
             transaction.distributedTo?.let {
@@ -187,11 +208,11 @@ class StockManagerImpl @Inject constructor(
 
                 d2.trackedEntityModule().trackedEntityDataValues().value(
                     eventUid,
-                    config.distributedTo
+                    appConfig.distributedTo
                 ).blockingSet(destination.code())
             }
 
-            updateStockOnHand(item, config.program, transaction, eventUid)
+            updateStockOnHand(item, appConfig.program, transaction, eventUid, appConfig)
         } catch (e: Exception) {
             e.printStackTrace()
 
@@ -205,14 +226,15 @@ class StockManagerImpl @Inject constructor(
         entry: StockEntry,
         program: String,
         transaction: Transaction,
-        eventUid: String
+        eventUid: String,
+        appConfig: AppConfig
     ) {
         disposable.add(
-            ruleValidationHelper.evaluate(entry, Date(), program, transaction, eventUid)
-            .doOnError { it.printStackTrace() }
-            .observeOn(schedulerProvider.io())
-            .subscribeOn(schedulerProvider.ui())
-            .subscribe { ruleEffects -> performRuleActions(ruleEffects, eventUid) }
+            ruleValidationHelper.evaluate(entry, Date(), program, transaction, eventUid, appConfig)
+                .doOnError { it.printStackTrace() }
+                .observeOn(schedulerProvider.io())
+                .subscribeOn(schedulerProvider.ui())
+                .subscribe { ruleEffects -> performRuleActions(ruleEffects, eventUid) }
         )
     }
 
@@ -239,7 +261,10 @@ class StockManagerImpl @Inject constructor(
                             e.printStackTrace()
 
                             if (e is D2Error) {
-                                Timber.e("Unable to save rule effect data: %s", e.errorCode().toString())
+                                Timber.e(
+                                    "Unable to save rule effect data: %s",
+                                    e.errorCode().toString()
+                                )
                             }
                         }
                     } else {

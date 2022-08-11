@@ -10,3 +10,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Pharmacy Stock Management"
 include ':app'
+include ':stock-managment'

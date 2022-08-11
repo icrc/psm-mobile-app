@@ -1,6 +1,5 @@
 package com.baosystems.icrc.psm.services
 
-import com.baosystems.icrc.psm.data.AppConfig
 import com.baosystems.icrc.psm.exceptions.InitializationException
 import io.reactivex.Single
 import org.hisp.dhis.android.core.D2
@@ -12,13 +11,14 @@ import javax.inject.Inject
 
 class MetadataManagerImpl @Inject constructor(
     private val d2: D2,
-    val config: AppConfig
-): MetadataManager {
+) : MetadataManager {
+
     override fun stockManagementProgram(programUid: String): Single<Program?> {
         return Single.just(programUid).map {
             if (it.isBlank())
                 throw InitializationException(
-                    "The program config has not been set in the configuration file")
+                    "The program config has not been set in the configuration file"
+                )
 
             d2.programModule()
                 .programs()
@@ -42,18 +42,19 @@ class MetadataManagerImpl @Inject constructor(
                 d2.organisationUnitModule()
                     .organisationUnits()
                     .byOrganisationUnitScope(
-                        OrganisationUnit.Scope.SCOPE_DATA_CAPTURE)
+                        OrganisationUnit.Scope.SCOPE_DATA_CAPTURE
+                    )
                     .byProgramUids(listOf(program.uid()))
                     .blockingGet()
             }
         }
     }
 
-    override fun destinations(): Single<List<Option>> {
+    override fun destinations(distributedTo: String): Single<List<Option>> {
         return Single.defer {
             d2.dataElementModule()
                 .dataElements()
-                .uid(config.distributedTo)
+                .uid(distributedTo)
                 .get()
                 .flatMap {
                     d2.optionModule()

@@ -1,15 +1,15 @@
 // Define desired app id
 ext.appConfig = [
-    applicationId               : "",
-    serverUrl                   : '""'
+        applicationId               : "com.baosystems.icrc.psm",
+        serverUrl                   : '"https://lmis.integration.dhis2.org/sandbox-dev/"'
 ]
 
 // Define dependency versions
 ext.versions = [
     // SDK and Tools
     gradle_plugin               : '7.0.4',
-    kotlin_gradle_plugin        : '1.6.0',
-    hilt_gradle_plugin          : '2.40',
+    kotlin_gradle_plugin        : '1.7.0',
+    hilt_gradle_plugin          : '2.43',
 
     // Changed from 19 to 24 to support 'androidx.security.identity.credential'
     minSdk                      : 24,
@@ -33,11 +33,11 @@ ext.versions = [
     openid                      : '0.8.1',
 
     // DI
-    hilt                        : '2.41',
+    hilt                        : '2.43',
     hilt_work                   : '1.0.0',
 
     // DHIS2
-    dhis_core                   : '1.5.3',
+    dhis_core                   : '1.6.1',
     dhis_rules_engine           : '2.0.36',
 
     // Rx
